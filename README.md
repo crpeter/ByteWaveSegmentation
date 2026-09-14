@@ -4,9 +4,15 @@ A standalone iPhone app that checks the hardware compatibility of all four compo
 
 ## Next device check: predict a subject mask
 
-The initial placement checks passed on the user's phone in all three modes; the
-summary is in `Audit/device-placement-summary.json`. The new prediction screen
-has been statically reviewed but has not yet been built or run on an iPhone.
+**Continuation:** The user has now run first-frame predictions successfully in
+all three modes. The next step is the owned temporal export and Mac comparison
+in [Temporal/README.md](Temporal/README.md). Those models are not generated or
+validated yet. Results from the first-frame runs are preserved in
+`Audit/device-first-frame-summary.json`.
+
+The initial placement checks and subsequent first-frame predictions passed their
+recorded checks on the user's phones. The summaries are in `Audit/`. Instructions
+below remain available for repeating the first-frame diagnostic.
 
 1. Open the project and run on your physical iPhone as below.
 2. Tap **Test a video frame** → **Choose video**. Start with a short clip whose
@@ -68,4 +74,4 @@ The supplied `BackgroundRemovalSource.swift` currently counts/decodes the full c
 
 All four original `.mlpackage` bundles are unchanged, pinned to revision `6bfdd4765e42508c7707566fff52e65add8b8e3a`. Their checksums are in `Audit/download-manifest.json`; parsed model interfaces are in `Audit/model-inspection.json`. In that manifest, `models/` maps to this project's `Models/`; upstream text files map to `ThirdParty/`.
 
-The model license, notice, and original model card are in `ThirdParty/`. The user successfully built and ran the original placement probe on an iPhone. The new first-frame code has been statically reviewed but **has not yet been compiled with Xcode or run on an iPhone**. No builds or tests are run on the user's behalf in this environment.
+The model license, notice, and original model card are in `ThirdParty/`. The user successfully built and ran both the placement probe and first-frame predictions on iPhone. The owned temporal export is **implemented but not yet executed or validated**. No builds or tests are run on the user's behalf in this environment.

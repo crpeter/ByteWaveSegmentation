@@ -1,0 +1,13 @@
+ByteWave owned EdgeTAM temporal tooling
+
+Portions of owned.py adapt attention, rotary encoding and backbone construction
+from EdgeTAM, Copyright (c) Meta Platforms, Inc. and affiliates, under the Apache
+License, Version 2.0. See ../ThirdParty/LICENSE for the license text.
+
+Source: https://github.com/facebookresearch/EdgeTAM
+Revision: 7711e012a30a2402c4eaab637bdb00a521302c91
+
+Changes include fixed memory/pointer slots with explicit validity, real-valued
+rotary encoding inside the model, bounded application state, and four model
+wrappers. The original learned checkpoint is unchanged. This implementation is
+separate from Ahmad Yar's community Core ML conversion and is not endorsed by Meta.

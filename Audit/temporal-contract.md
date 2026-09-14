@@ -1,5 +1,11 @@
 # Temporal contract review — 2026-09-14
 
+Continuation: first-frame predictions subsequently ran successfully on the user's
+phone; see `device-first-frame-summary.json`. `../Temporal/` now contains an owned
+export/runtime and reference-comparison tooling implementing the alternative
+described below. It has not yet been executed or validated. The community export's
+contract remains unresolved; the new contract uses different model names/inputs.
+
 ## Decision
 
 Keep the bundled candidate: all four packages loaded and produced compute plans
