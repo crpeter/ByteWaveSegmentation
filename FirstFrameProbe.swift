@@ -158,7 +158,7 @@ actor FirstFrameRunner {
                 try Task.checkCancellation()
                 await progress("Loading \(name)…")
                 let package = modelsDirectory.appendingPathComponent("EdgeTAMVideo\(name).mlpackage")
-                let compiled = try MLModel.compileModel(at: package)
+                let compiled = try await MLModel.compileModel(at: package)
                 compiledURLs.append(compiled)
                 let config = MLModelConfiguration()
                 config.computeUnits = mode.computeUnits
