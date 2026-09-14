@@ -98,7 +98,7 @@ actor ModelInspector {
         let compiled: URL
         do {
             let start = ProcessInfo.processInfo.systemUptime
-            compiled = try MLModel.compileModel(at: url)
+            compiled = try await MLModel.compileModel(at: url)
             report.compileSeconds = ProcessInfo.processInfo.systemUptime - start
         } catch {
             report.errors["compile"] = describe(error)
