@@ -1,0 +1,158 @@
+{
+  "scope": "User-supplied on-device placement reports. Counts exclude const operations; not runtime utilization or timing percentages. Original private attachments remain outside the repository.",
+  "reports": [
+    {
+      "inputSHA256": "fe4c5937cc89537e23ea7a6ea00722fff773ca7f9614aa9d1f9151a353e7441d",
+      "generatedAt": "2026-09-14T21:57:34Z",
+      "hardware": "iPhone18,1",
+      "mode": "CPU + GPU",
+      "operatingSystem": "Version 27.0 (Build 24A435)",
+      "modelRevision": "6bfdd4765e42508c7707566fff52e65add8b8e3a",
+      "components": [
+        {
+          "model": "EdgeTAMVideoImageEncoder",
+          "loadSucceeded": true,
+          "planSucceeded": true,
+          "errors": {},
+          "nonconstantPreferredDeviceCounts": {
+            "GPU": 280
+          }
+        },
+        {
+          "model": "EdgeTAMVideoInitializer",
+          "loadSucceeded": true,
+          "planSucceeded": true,
+          "errors": {},
+          "nonconstantPreferredDeviceCounts": {
+            "CPU": 71,
+            "unspecified": 30,
+            "GPU": 161
+          }
+        },
+        {
+          "model": "EdgeTAMVideoMemoryEncoder",
+          "loadSucceeded": true,
+          "planSucceeded": true,
+          "errors": {},
+          "nonconstantPreferredDeviceCounts": {
+            "CPU": 1,
+            "GPU": 248,
+            "unspecified": 1
+          }
+        },
+        {
+          "model": "EdgeTAMVideoPropagator",
+          "loadSucceeded": true,
+          "planSucceeded": true,
+          "errors": {},
+          "nonconstantPreferredDeviceCounts": {
+            "CPU": 16,
+            "GPU": 630
+          }
+        }
+      ]
+    },
+    {
+      "inputSHA256": "a4c7bd97520f007e4cb7ada3d9fb09c93a8e11a7da5e84f73ca03255fdbc6a4f",
+      "generatedAt": "2026-09-14T21:58:12Z",
+      "hardware": "iPhone18,1",
+      "mode": "Automatic",
+      "operatingSystem": "Version 27.0 (Build 24A435)",
+      "modelRevision": "6bfdd4765e42508c7707566fff52e65add8b8e3a",
+      "components": [
+        {
+          "model": "EdgeTAMVideoImageEncoder",
+          "loadSucceeded": true,
+          "planSucceeded": true,
+          "errors": {},
+          "nonconstantPreferredDeviceCounts": {
+            "GPU": 2,
+            "Neural Engine": 278
+          }
+        },
+        {
+          "model": "EdgeTAMVideoInitializer",
+          "loadSucceeded": true,
+          "planSucceeded": true,
+          "errors": {},
+          "nonconstantPreferredDeviceCounts": {
+            "CPU": 82,
+            "unspecified": 31,
+            "Neural Engine": 149
+          }
+        },
+        {
+          "model": "EdgeTAMVideoMemoryEncoder",
+          "loadSucceeded": true,
+          "planSucceeded": true,
+          "errors": {},
+          "nonconstantPreferredDeviceCounts": {
+            "Neural Engine": 249,
+            "unspecified": 1
+          }
+        },
+        {
+          "model": "EdgeTAMVideoPropagator",
+          "loadSucceeded": true,
+          "planSucceeded": true,
+          "errors": {},
+          "nonconstantPreferredDeviceCounts": {
+            "Neural Engine": 635,
+            "CPU": 11
+          }
+        }
+      ]
+    },
+    {
+      "inputSHA256": "5824852cc08eb008f4f8211691a11815dee4755357c81db055b3469f403df305",
+      "generatedAt": "2026-09-14T21:55:16Z",
+      "hardware": "iPhone18,1",
+      "mode": "CPU + Neural Engine",
+      "operatingSystem": "Version 27.0 (Build 24A435)",
+      "modelRevision": "6bfdd4765e42508c7707566fff52e65add8b8e3a",
+      "components": [
+        {
+          "model": "EdgeTAMVideoImageEncoder",
+          "loadSucceeded": true,
+          "planSucceeded": true,
+          "errors": {},
+          "nonconstantPreferredDeviceCounts": {
+            "CPU": 2,
+            "Neural Engine": 278
+          }
+        },
+        {
+          "model": "EdgeTAMVideoInitializer",
+          "loadSucceeded": true,
+          "planSucceeded": true,
+          "errors": {},
+          "nonconstantPreferredDeviceCounts": {
+            "CPU": 82,
+            "unspecified": 31,
+            "Neural Engine": 149
+          }
+        },
+        {
+          "model": "EdgeTAMVideoMemoryEncoder",
+          "loadSucceeded": true,
+          "planSucceeded": true,
+          "errors": {},
+          "nonconstantPreferredDeviceCounts": {
+            "Neural Engine": 249,
+            "unspecified": 1
+          }
+        },
+        {
+          "model": "EdgeTAMVideoPropagator",
+          "loadSucceeded": true,
+          "planSucceeded": true,
+          "errors": {},
+          "nonconstantPreferredDeviceCounts": {
+            "Neural Engine": 635,
+            "CPU": 11
+          }
+        }
+      ]
+    }
+  ]
+}

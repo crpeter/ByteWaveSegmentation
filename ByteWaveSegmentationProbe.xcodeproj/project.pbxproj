@@ -9,12 +9,14 @@
 /* Begin PBXBuildFile section */
 		000000000000000000000007 /* SegmentationProbeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000004 /* SegmentationProbeApp.swift */; };
 		000000000000000000000008 /* Models in Resources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000005 /* Models */; };
+		000000000000000000000021 /* FirstFrameProbe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000020 /* FirstFrameProbe.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		000000000000000000000004 /* SegmentationProbeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentationProbeApp.swift; sourceTree = "<group>"; };
 		000000000000000000000005 /* Models */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Models; sourceTree = "<group>"; };
 		000000000000000000000006 /* ByteWaveSegmentationProbe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ByteWaveSegmentationProbe.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		000000000000000000000020 /* FirstFrameProbe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstFrameProbe.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +34,7 @@
 			isa = PBXGroup;
 			children = (
 				000000000000000000000004 /* SegmentationProbeApp.swift */,
+				000000000000000000000020 /* FirstFrameProbe.swift */,
 				000000000000000000000005 /* Models */,
 				000000000000000000000003 /* Products */,
 			);
@@ -116,6 +119,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				000000000000000000000007 /* SegmentationProbeApp.swift in Sources */,
+				000000000000000000000021 /* FirstFrameProbe.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,6 +1,38 @@
 # ByteWave Segmentation Probe
 
-A standalone iPhone app that checks the hardware compatibility of all four components in a candidate video-segmentation model. All model bytes are included; two large weight files are stored in parts. The setup command below restores them locally. The app needs no network access. It does not change ByteWave.
+A standalone iPhone app that checks the hardware compatibility of all four components in a candidate video-segmentation model and tests real first-frame subject predictions. All model bytes are included; two large weight files are stored in parts. The setup command below restores them locally. Model inference needs no network access; Photos may download a selected iCloud video. It does not change ByteWave.
+
+## Next device check: predict a subject mask
+
+The initial placement checks passed on the user's phone in all three modes; the
+summary is in `Audit/device-placement-summary.json`. The new prediction screen
+has been statically reviewed but has not yet been built or run on an iPhone.
+
+1. Open the project and run on your physical iPhone as below.
+2. Tap **Test a video frame** → **Choose video**. Start with a short clip whose
+   subject is clearly visible near the beginning.
+3. Tap the subject in the displayed frame, then **Predict mask** with
+   **CPU + Neural Engine** selected. Keep the app open until it finishes.
+4. Check that the blue overlay matches the selected subject. **Show mask** toggles
+   it; tapping another point clears the previous result. Test an off-center subject
+   and a portrait clip to check orientation and point mapping.
+5. **Share prediction report**, then repeat **CPU + GPU** on the same frame/point.
+   Send both reports and a screenshot of the overlay. A prediction failure is also
+   saved in the report. Each mode keeps its latest report, overwriting earlier runs.
+
+This executes the image encoder, initializer, and initial memory encoder: one
+untimed warm-up plus three measured repetitions on the same frame. It shows a
+thresholded mask and checks final output tensors for shape/type and finite values.
+The reported `bestIoU` is the model's estimate, not measured ground-truth accuracy.
+Model loading, preprocessing and individual prediction-call timings are separate.
+These timings do not establish playback FPS or actual hardware utilization.
+
+It decodes a frame near the start and records its actual timestamp. It retains
+one preview, removes its temporary video import after extraction, and creates no
+video-wide mask cache. This is still **not temporal tracking**. The published
+conversion lacks the bank-building runtime needed to establish the exact
+propagator inputs; see `Audit/temporal-contract.md` for the source audit and the
+specific remaining contract requirements.
 
 ## Run
 
@@ -16,7 +48,7 @@ Each pass compiles and loads the four models one at a time. Compilation may take
 
 The JSON records the device, OS, model revision, load/compile errors, and the preferred and supported compute devices reported for each operation by Apple's [MLComputePlan](https://developer.apple.com/documentation/coreml/mlcomputeplan-1w21n). CPU + Neural Engine permits CPU fallback. A successful load alone does not prove meaningful Neural Engine use. Operation counts are not percentages of execution time.
 
-**This is a compatibility probe, not a live tracking benchmark.** It runs no predictions and measures no tracking quality, playback FPS, runtime hardware utilization, or sustained thermal performance. Compile/load times are diagnostics, not frame-processing times. Actual placement and timing still require on-device profiling of an integrated tracking loop.
+**The Inspect models screen is a compatibility probe, not a live tracking benchmark.** That screen runs no predictions and measures no tracking quality, playback FPS, runtime hardware utilization, or sustained thermal performance. Compile/load times are diagnostics, not frame-processing times. The separate first-frame screen runs actual predictions as described above; full tracking still needs an integrated temporal loop.
 
 ## Why this candidate needs checking
 
@@ -36,4 +68,4 @@ The supplied `BackgroundRemovalSource.swift` currently counts/decodes the full c
 
 All four original `.mlpackage` bundles are unchanged, pinned to revision `6bfdd4765e42508c7707566fff52e65add8b8e3a`. Their checksums are in `Audit/download-manifest.json`; parsed model interfaces are in `Audit/model-inspection.json`. In that manifest, `models/` maps to this project's `Models/`; upstream text files map to `ThirdParty/`.
 
-The model license, notice, and original model card are in `ThirdParty/`. The generated Swift app and project were statically reviewed; they have **not been compiled with Xcode or run on an iPhone** in this environment.
+The model license, notice, and original model card are in `ThirdParty/`. The user successfully built and ran the original placement probe on an iPhone. The new first-frame code has been statically reviewed but **has not yet been compiled with Xcode or run on an iPhone**. No builds or tests are run on the user's behalf in this environment.
