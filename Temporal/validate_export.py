@@ -74,7 +74,7 @@ def video_frames(path):
                     matrix = np.frombuffer(side, dtype=np.int32).astype(np.float64).reshape(3, 3)
                     if np.linalg.det(matrix[:2, :2]) <= 0:
                         raise ValueError("Mirrored display matrices need a dedicated fixture reader.")
-            # PyAV 14.4 exposes DISPLAYMATRIX rotation in counterclockwise degrees.
+            # PyAV 15 exposes DISPLAYMATRIX rotation in counterclockwise degrees.
             image = frame.to_image().convert("RGB").rotate(rotation, expand=True)
             image = image.resize((1024, 1024), Image.Resampling.BILINEAR)
             pixels = np.asarray(image)
