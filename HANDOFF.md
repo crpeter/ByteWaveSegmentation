@@ -6,9 +6,11 @@ Cody Peter is building ByteWave, a local video editor. The goal is general-subje
 
 ## What exists here
 
-This repository contains a standalone iOS 18+ SwiftUI hardware-placement diagnostic, NOT a working video tracker or ByteWave integration. `SegmentationProbeApp.swift` compiles and loads four Core ML models sequentially and examines `MLComputePlan` under CPU + Neural Engine, CPU + GPU, or Automatic. It exports a JSON report with device/OS, failures, timings, and preferred/supported devices for model operations.
+This repository contains a standalone iOS 18+ SwiftUI hardware-placement diagnostic and a new first-frame prediction screen, NOT a working video tracker or ByteWave integration. `SegmentationProbeApp.swift` compiles and loads four Core ML models sequentially and examines `MLComputePlan` under CPU + Neural Engine, CPU + GPU, or Automatic. It exports a JSON report with device/OS, failures, timings, and preferred/supported devices for model operations.
 
-No predictions are run. No tracking quality, sustained frame rate, thermal behavior, or actual runtime Neural Engine utilization has been measured. Loading successfully does not prove Neural Engine execution; CPU fallback is permitted. Operation counts do not measure execution time. Xcode compilation and device execution remain unverified.
+The user successfully built and ran that original placement screen on iPhone18,1, OS Version 27.0 (Build 24A435), on 2026-09-14. All four components loaded and produced plans in all three modes, without reported errors. `Audit/device-placement-summary.json` preserves counts and input hashes from the three supplied reports. CPU + Neural Engine preferred nonconstant operations: image 278 NE / 2 CPU; initializer 149 NE / 82 CPU / 31 unspecified; memory 249 NE / 1 unspecified; propagator 635 NE / 11 CPU. These are operation counts, not timing shares or measured hardware execution.
+
+`FirstFrameProbe.swift` is the new, unbuilt device-validation step. Choose a video from Photos, tap a subject, and run image encoder → initializer → initial memory encoder. It displays a blue thresholded mask, checks final mask/memory tensors, and exports actual per-call timings (one untimed warm-up, three measured repetitions of the same frame). It uses a single oriented preview frame with an actual timestamp, cleans up the picker import, and creates no whole-video mask cache. No predictions from this new screen have been reported yet. Tracking quality, sustained frame rate, and runtime Neural Engine utilization remain unmeasured.
 
 `Models/` and `ModelParts/` contain all model bytes. Two weight files exceeded the chat connector's upload-request limit and were split. Run `python3 restore_models.py` after cloning; it reconstructs them atomically and verifies all upstream file hashes. It makes no network requests. Then open `ByteWaveSegmentationProbe.xcodeproj`, choose a signing team, and run on a physical phone. Run CPU + Neural Engine and CPU + GPU separately; share both JSON reports for analysis. See README.md.
 
@@ -34,9 +36,9 @@ Cody supplied `BackgroundRemovalSource.swift` as a pasted attachment. That app s
 
 ## Next work
 
-1. Help Cody run the probe and resolve concrete build errors if reported. Inspect both device JSON reports; distinguish planned placement from execution measurements.
-2. Decide whether to repair/re-export these graphs for the Neural Engine or evaluate another genuinely temporal, general-subject model. Do not treat this community conversion as the only option.
-3. Implement and profile a complete live tracking loop with bounded memory, timestamps, subject selection, temporal state, seek/reset behavior, and real clip inputs.
+1. Help Cody build/run **Test a video frame**, resolve concrete errors, and inspect CPU + Neural Engine and CPU + GPU prediction reports plus the visible overlay. Check an off-center subject in portrait/landscape clips. Keep the same point when comparing modes.
+2. Read `Audit/temporal-contract.md`. The public model inventory has no exporter/runtime. Original EdgeTAM memory assembly is understood, but it does not establish this community conversion's fixed-bank attention-bias/rotary construction. Obtain the exporter's bank-building source plus startup/full-bank parity fixtures, or implement an owned export/runtime from the original EdgeTAM source. Do not infer these rules from tensor dimensions. Nothing in the loading results currently requires abandoning Neural Engine evaluation.
+3. Once that contract is established, implement and profile a complete live tracking loop with bounded memory, timestamps, subject selection, temporal state, seek/reset behavior, and real clip inputs.
 4. Evaluate mask edges, hair, occlusion/reappearance, fast motion, tracking drift, latency, and sustained performance before integrating woven text.
 
 The user authorized pushing this project to `crpeter/ByteWaveSegmentation`. The initial GitHub permission issue was fixed by granting repository access. No ByteWave production files have been changed. The previous downloadable ZIP failed to expand on macOS; use this repository instead.
