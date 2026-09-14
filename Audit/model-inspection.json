@@ -1,0 +1,505 @@
+[
+  {
+    "name": "EdgeTAMVideoImageEncoder.mlpackage",
+    "specificationVersion": 9,
+    "inputs": [
+      {
+        "name": "image",
+        "kind": "imageType",
+        "width": 1024,
+        "height": 1024,
+        "colorSpace": "RGB"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "raw_vision_features",
+        "kind": "multiArrayType",
+        "shape": [
+          1,
+          256,
+          64,
+          64
+        ],
+        "dtype": "FLOAT16"
+      },
+      {
+        "name": "initial_vision_features",
+        "kind": "multiArrayType",
+        "shape": [
+          1,
+          256,
+          64,
+          64
+        ],
+        "dtype": "FLOAT16"
+      },
+      {
+        "name": "high_res_feature_0",
+        "kind": "multiArrayType",
+        "shape": [
+          1,
+          32,
+          256,
+          256
+        ],
+        "dtype": "FLOAT16"
+      },
+      {
+        "name": "high_res_feature_1",
+        "kind": "multiArrayType",
+        "shape": [
+          1,
+          64,
+          128,
+          128
+        ],
+        "dtype": "FLOAT16"
+      }
+    ],
+    "operations": {
+      "const": 980,
+      "mul": 12,
+      "cast": 1,
+      "sub": 1,
+      "conv": 132,
+      "gelu": 27,
+      "add": 74,
+      "reduce_mean": 10,
+      "relu": 10,
+      "sigmoid": 10,
+      "upsample_nearest_neighbor": 1,
+      "reshape": 2
+    }
+  },
+  {
+    "name": "EdgeTAMVideoInitializer.mlpackage",
+    "specificationVersion": 9,
+    "inputs": [
+      {
+        "name": "initial_vision_features",
+        "kind": "multiArrayType",
+        "shape": [
+          1,
+          256,
+          64,
+          64
+        ],
+        "dtype": "FLOAT16"
+      },
+      {
+        "name": "high_res_feature_0",
+        "kind": "multiArrayType",
+        "shape": [
+          1,
+          32,
+          256,
+          256
+        ],
+        "dtype": "FLOAT16"
+      },
+      {
+        "name": "high_res_feature_1",
+        "kind": "multiArrayType",
+        "shape": [
+          1,
+          64,
+          128,
+          128
+        ],
+        "dtype": "FLOAT16"
+      },
+      {
+        "name": "point_coords",
+        "kind": "multiArrayType",
+        "shape": [
+          1,
+          1,
+          2
+        ],
+        "dtype": "FLOAT16"
+      },
+      {
+        "name": "point_labels",
+        "kind": "multiArrayType",
+        "shape": [
+          1,
+          1
+        ],
+        "dtype": "INT32"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "low_res_mask",
+        "kind": "multiArrayType",
+        "shape": [
+          1,
+          1,
+          256,
+          256
+        ],
+        "dtype": "FLOAT16"
+      },
+      {
+        "name": "high_res_mask",
+        "kind": "multiArrayType",
+        "shape": [
+          1,
+          1,
+          1024,
+          1024
+        ],
+        "dtype": "FLOAT16"
+      },
+      {
+        "name": "best_iou",
+        "kind": "multiArrayType",
+        "shape": [
+          1
+        ],
+        "dtype": "FLOAT16"
+      },
+      {
+        "name": "object_pointer",
+        "kind": "multiArrayType",
+        "shape": [
+          1,
+          256
+        ],
+        "dtype": "FLOAT16"
+      },
+      {
+        "name": "object_score",
+        "kind": "multiArrayType",
+        "shape": [
+          1,
+          1
+        ],
+        "dtype": "FLOAT16"
+      }
+    ],
+    "operations": {
+      "const": 361,
+      "add": 27,
+      "concat": 4,
+      "slice_by_index": 13,
+      "mul": 14,
+      "slice_update": 2,
+      "sub": 5,
+      "linear": 54,
+      "sin": 1,
+      "cos": 1,
+      "equal": 5,
+      "expand_dims": 7,
+      "cast": 10,
+      "reshape": 34,
+      "transpose": 30,
+      "scaled_dot_product_attention": 7,
+      "layer_norm": 9,
+      "relu": 16,
+      "conv_transpose": 2,
+      "reduce_mean": 2,
+      "pow": 1,
+      "sqrt": 1,
+      "real_div": 1,
+      "batch_norm": 1,
+      "gelu": 2,
+      "stack": 1,
+      "matmul": 1,
+      "sigmoid": 1,
+      "greater": 1,
+      "upsample_bilinear": 1,
+      "reduce_argmax": 1,
+      "tile": 3,
+      "gather_along_axis": 3,
+      "reduce_max": 1
+    }
+  },
+  {
+    "name": "EdgeTAMVideoMemoryEncoder.mlpackage",
+    "specificationVersion": 9,
+    "inputs": [
+      {
+        "name": "raw_vision_features",
+        "kind": "multiArrayType",
+        "shape": [
+          1,
+          256,
+          64,
+          64
+        ],
+        "dtype": "FLOAT16"
+      },
+      {
+        "name": "high_res_mask",
+        "kind": "multiArrayType",
+        "shape": [
+          1,
+          1,
+          1024,
+          1024
+        ],
+        "dtype": "FLOAT16"
+      },
+      {
+        "name": "object_score",
+        "kind": "multiArrayType",
+        "shape": [
+          1,
+          1
+        ],
+        "dtype": "FLOAT16"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "memory_features",
+        "kind": "multiArrayType",
+        "shape": [
+          1,
+          512,
+          64
+        ],
+        "dtype": "FLOAT16"
+      },
+      {
+        "name": "memory_positions",
+        "kind": "multiArrayType",
+        "shape": [
+          1,
+          512,
+          64
+        ],
+        "dtype": "FLOAT16"
+      },
+      {
+        "name": "temporal_positions",
+        "kind": "multiArrayType",
+        "shape": [
+          7,
+          64
+        ],
+        "dtype": "FLOAT16"
+      }
+    ],
+    "operations": {
+      "const": 331,
+      "greater": 1,
+      "cast": 1,
+      "mul": 3,
+      "add": 30,
+      "conv": 9,
+      "reduce_mean": 12,
+      "sub": 6,
+      "pow": 6,
+      "sqrt": 6,
+      "real_div": 6,
+      "batch_norm": 6,
+      "gelu": 14,
+      "transpose": 36,
+      "linear": 42,
+      "reshape": 34,
+      "layer_norm": 20,
+      "split": 8,
+      "scaled_dot_product_attention": 8,
+      "concat": 1,
+      "identity": 1
+    }
+  },
+  {
+    "name": "EdgeTAMVideoPropagator.mlpackage",
+    "specificationVersion": 9,
+    "inputs": [
+      {
+        "name": "raw_vision_features",
+        "kind": "multiArrayType",
+        "shape": [
+          1,
+          256,
+          64,
+          64
+        ],
+        "dtype": "FLOAT16"
+      },
+      {
+        "name": "high_res_feature_0",
+        "kind": "multiArrayType",
+        "shape": [
+          1,
+          32,
+          256,
+          256
+        ],
+        "dtype": "FLOAT16"
+      },
+      {
+        "name": "high_res_feature_1",
+        "kind": "multiArrayType",
+        "shape": [
+          1,
+          64,
+          128,
+          128
+        ],
+        "dtype": "FLOAT16"
+      },
+      {
+        "name": "spatial_bank",
+        "kind": "multiArrayType",
+        "shape": [
+          1,
+          7,
+          512,
+          64
+        ],
+        "dtype": "FLOAT16"
+      },
+      {
+        "name": "spatial_positions",
+        "kind": "multiArrayType",
+        "shape": [
+          1,
+          7,
+          512,
+          64
+        ],
+        "dtype": "FLOAT16"
+      },
+      {
+        "name": "pointer_bank",
+        "kind": "multiArrayType",
+        "shape": [
+          1,
+          16,
+          256
+        ],
+        "dtype": "FLOAT16"
+      },
+      {
+        "name": "attention_bias",
+        "kind": "multiArrayType",
+        "shape": [
+          1,
+          1,
+          1,
+          3648
+        ],
+        "dtype": "FLOAT16"
+      },
+      {
+        "name": "rotary_weight",
+        "kind": "multiArrayType",
+        "shape": [
+          1,
+          1792
+        ],
+        "dtype": "FLOAT16"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "low_res_mask",
+        "kind": "multiArrayType",
+        "shape": [
+          1,
+          1,
+          256,
+          256
+        ],
+        "dtype": "FLOAT16"
+      },
+      {
+        "name": "high_res_mask",
+        "kind": "multiArrayType",
+        "shape": [
+          1,
+          1,
+          1024,
+          1024
+        ],
+        "dtype": "FLOAT16"
+      },
+      {
+        "name": "best_iou",
+        "kind": "multiArrayType",
+        "shape": [
+          1
+        ],
+        "dtype": "FLOAT16"
+      },
+      {
+        "name": "object_pointer",
+        "kind": "multiArrayType",
+        "shape": [
+          1,
+          256
+        ],
+        "dtype": "FLOAT16"
+      },
+      {
+        "name": "object_score",
+        "kind": "multiArrayType",
+        "shape": [
+          1,
+          1
+        ],
+        "dtype": "FLOAT16"
+      },
+      {
+        "name": "memory_features",
+        "kind": "multiArrayType",
+        "shape": [
+          1,
+          512,
+          64
+        ],
+        "dtype": "FLOAT16"
+      },
+      {
+        "name": "memory_positions",
+        "kind": "multiArrayType",
+        "shape": [
+          1,
+          512,
+          64
+        ],
+        "dtype": "FLOAT16"
+      }
+    ],
+    "operations": {
+      "const": 845,
+      "reshape": 109,
+      "concat": 7,
+      "transpose": 79,
+      "add": 68,
+      "layer_norm": 35,
+      "linear": 110,
+      "slice_by_index": 35,
+      "mul": 43,
+      "sub": 18,
+      "stack": 9,
+      "scaled_dot_product_attention": 18,
+      "relu": 18,
+      "conv_transpose": 2,
+      "reduce_mean": 14,
+      "pow": 7,
+      "sqrt": 7,
+      "real_div": 7,
+      "batch_norm": 7,
+      "gelu": 16,
+      "matmul": 1,
+      "sigmoid": 2,
+      "greater": 1,
+      "expand_dims": 2,
+      "cast": 5,
+      "upsample_bilinear": 1,
+      "reduce_argmax": 1,
+      "tile": 3,
+      "gather_along_axis": 3,
+      "reduce_max": 1,
+      "conv": 9,
+      "split": 8
+    }
+  }
+]

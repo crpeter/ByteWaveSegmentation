@@ -2,3 +2,7 @@
 xcuserdata/
 DerivedData/
 *.xcuserstate
+
+# Reassembled by restore_models.py
+/Models/EdgeTAMVideoInitializer.mlpackage/Data/com.apple.CoreML/weights/weight.bin
+/Models/EdgeTAMVideoPropagator.mlpackage/Data/com.apple.CoreML/weights/weight.bin

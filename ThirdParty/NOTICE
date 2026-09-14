@@ -1,0 +1,16 @@
+EdgeTAM Core ML Video
+
+This repository contains a community Core ML conversion derived from EdgeTAM:
+https://github.com/facebookresearch/EdgeTAM
+
+The original EdgeTAM code and checkpoints are Copyright Meta Platforms, Inc.
+and affiliates and are distributed under the Apache License, Version 2.0.
+
+Core ML video conversion, explicit-memory runtime design, iOS integration,
+and validation were performed by Ahmad Yar (AhmadYarAI).
+
+Modified from the original distribution by conversion from PyTorch checkpoint
+components into four Core ML model packages and by exposing an explicit video
+memory-bank interface for application-side orchestration.
+
+This community conversion is not affiliated with or endorsed by Meta.

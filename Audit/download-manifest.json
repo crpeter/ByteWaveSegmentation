@@ -1,0 +1,81 @@
+{
+  "repo": "AhmadYarAI/EdgeTAM-CoreML-Video",
+  "revision": "6bfdd4765e42508c7707566fff52e65add8b8e3a",
+  "files": [
+    {
+      "path": "LICENSE",
+      "size": 11357,
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    {
+      "path": "NOTICE",
+      "size": 716,
+      "sha256": "721f0e357be336a9caaa3f90ce0cf81c4b02ed8afb3b3e582187455541468cb5"
+    },
+    {
+      "path": "README.md",
+      "size": 5146,
+      "sha256": "c69dc9cf92247750ee1eac7994b1eb1da49a77e633da51ef88645646380584e1"
+    },
+    {
+      "path": "models/EdgeTAMVideoImageEncoder.mlpackage/Data/com.apple.CoreML/model.mlmodel",
+      "size": 206807,
+      "sha256": "3f2ae60d50317272cddcd2f0332822d41feafa675f2ff8b785000248ca05c571"
+    },
+    {
+      "path": "models/EdgeTAMVideoImageEncoder.mlpackage/Data/com.apple.CoreML/weights/weight.bin",
+      "size": 9818944,
+      "sha256": "f7ada643c1a6e6620c0aeb4721c7b9359f2bee46c3ef9b96aebae91e86c15d23"
+    },
+    {
+      "path": "models/EdgeTAMVideoImageEncoder.mlpackage/Manifest.json",
+      "size": 617,
+      "sha256": "cdddef0d344d201c580392f3721c606c7a777267d281c7a6775bacffcfc9d680"
+    },
+    {
+      "path": "models/EdgeTAMVideoInitializer.mlpackage/Data/com.apple.CoreML/model.mlmodel",
+      "size": 118000,
+      "sha256": "9f3d8a15689bb26aa66f1df60f945e64c405dea8c50fc178ebfe8a6fd062119d"
+    },
+    {
+      "path": "models/EdgeTAMVideoInitializer.mlpackage/Data/com.apple.CoreML/weights/weight.bin",
+      "size": 12983104,
+      "sha256": "43a41f814b013eef963ecc20db7f42015496ad4cf8ebeb13986c4a2e53350345"
+    },
+    {
+      "path": "models/EdgeTAMVideoInitializer.mlpackage/Manifest.json",
+      "size": 617,
+      "sha256": "fb5bab877951c4adf5c231edae0b62d8be5d75ba7219555db45aa071cb4c91f7"
+    },
+    {
+      "path": "models/EdgeTAMVideoMemoryEncoder.mlpackage/Data/com.apple.CoreML/model.mlmodel",
+      "size": 99581,
+      "sha256": "b563553e5148ba8eb75012ea807a18ea809e1399108efd7834fe57f2fb0130dd"
+    },
+    {
+      "path": "models/EdgeTAMVideoMemoryEncoder.mlpackage/Data/com.apple.CoreML/weights/weight.bin",
+      "size": 3890432,
+      "sha256": "c8a7cda81c1cd0c4fafc94fd14d755d306fa50750dd8d022f974239601dc6f1d"
+    },
+    {
+      "path": "models/EdgeTAMVideoMemoryEncoder.mlpackage/Manifest.json",
+      "size": 617,
+      "sha256": "c61f3a11f60fedc7d40b843b9993fbec23458073e398401240fc7612b5c555e5"
+    },
+    {
+      "path": "models/EdgeTAMVideoPropagator.mlpackage/Data/com.apple.CoreML/model.mlmodel",
+      "size": 281206,
+      "sha256": "2818760b9a5e08a9a551dfd077384001d50311f59c09b199d49045e613491671"
+    },
+    {
+      "path": "models/EdgeTAMVideoPropagator.mlpackage/Data/com.apple.CoreML/weights/weight.bin",
+      "size": 27328768,
+      "sha256": "02d87590e86910e597a8e26713dc32fc4e3a063bbb054f85b2220600f9d38a71"
+    },
+    {
+      "path": "models/EdgeTAMVideoPropagator.mlpackage/Manifest.json",
+      "size": 617,
+      "sha256": "1d6038954a84dceaa571a4a7444ab3aa85a58dfbd66dd2e841c910105977b23e"
+    }
+  ]
+}
