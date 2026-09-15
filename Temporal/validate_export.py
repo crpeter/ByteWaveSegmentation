@@ -250,14 +250,17 @@ def run_comparison(model, backend, args, root, coreml, expected_frames=None):
             for frame in report["frames"]]
 
 
-def export_models(modules, destination):
+def export_models(modules, destination, *, diagnostic_name=None):
     import coremltools as ct
     from coremltools.converters.mil.mil import types
     from coremltools.converters.mil.mil.scope import ScopeSource
     destination.mkdir()
     torch.manual_seed(0)
-    manifest = {"contract": owned.CONTRACT, "precisionPolicy": COREML_PRECISION_POLICY,
+    export_contract = owned.CONTRACT if diagnostic_name is None else owned.CONTRACT + ".diagnostic"
+    manifest = {"contract": export_contract, "precisionPolicy": COREML_PRECISION_POLICY,
                 "tensorInterface": "float32", "models": {}}
+    if diagnostic_name is not None:
+        manifest.update(diagnostic=diagnostic_name, readyForDeviceValidation=False)
     for name, module in modules.items():
         print(f"Exporting {name}…", flush=True)
         examples = []
@@ -333,7 +336,9 @@ def export_models(modules, destination):
                 raise ValueError(f"{name}: IoU head scope was not found; precision policy was not applied.")
             if not any(op["reason"] == "iou-score-path" and op["type"] == "reduce_argmax" for op in retained_ops):
                 raise ValueError(f"{name}: FP32 IoU score path did not reach mask selection.")
-        converted.user_defined_metadata["bytewave.contract"] = owned.CONTRACT
+        converted.user_defined_metadata["bytewave.contract"] = export_contract
+        if diagnostic_name is not None:
+            converted.user_defined_metadata["bytewave.diagnostic"] = diagnostic_name
         converted.user_defined_metadata["bytewave.upstream"] = owned.UPSTREAM_REVISION
         converted.user_defined_metadata["bytewave.checkpoint.sha256"] = owned.CHECKPOINT_SHA256
         converted.user_defined_metadata["bytewave.precision"] = COREML_PRECISION_POLICY
