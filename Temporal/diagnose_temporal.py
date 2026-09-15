@@ -42,6 +42,8 @@ def main():
     parser.add_argument("--video", type=Path, required=True)
     parser.add_argument("--point", type=float, nargs=2, required=True)
     parser.add_argument("--frames", type=int, default=3)
+    parser.add_argument("--torch-image-encoder", action="store_true",
+                        help="Control experiment: feed PyTorch image features to the existing Core ML tracker")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     if platform.system() != "Darwin":
@@ -54,8 +56,9 @@ def main():
     report = {"contract": owned.CONTRACT, "readyForDeviceValidation": False,
               "diagnosticComplete": False, "frames": [],
               "scope": "Each Core ML component is compared to PyTorch with the same actual inputs. "
-                       "Candidate state advances using Core ML outputs only. End-to-end comparison "
+                       "Encoder output source is explicit below; masks and stored state come from Core ML. End-to-end comparison "
                        "uses separate original PyTorch history. No parity gates are changed.",
+              "encoderOutputSource": "pytorch-control" if args.torch_image_encoder else "coreml",
               "pointNormalizedTopLeft": args.point,
               "coremlComputeUnits": "CPU_ONLY", "precisionPolicy": v.COREML_PRECISION_POLICY}
     decoder = None
@@ -84,7 +87,13 @@ def main():
                     expected, heads = capture_torch_head(
                         model, lambda: reference_backend.call(component, inputs))
                     row["sameInputComponents"][component] = {
-                        "outputs": summarize(actual, expected), "torchMaskHeads": heads}
+                        "outputs": summarize(actual, expected), "torchMaskHeads": heads,
+                        "outputFedToNextComponent": "pytorch-control" if
+                        component == "ImageEncoder" and args.torch_image_encoder else "coreml"}
+                    if component == "ImageEncoder" and args.torch_image_encoder:
+                        # Only the feature source changes. Keep Core ML masks,
+                        # pointers and memories in the candidate state throughout.
+                        return expected
                     return actual
 
                 features = predict("ImageEncoder", {"image": tensor, "pil_image": image})
@@ -107,6 +116,7 @@ def main():
         if len(report["frames"]) != args.frames:
             raise ValueError("The video did not supply the requested frames.")
         report["diagnosticComplete"] = True
+        report["allRequestedFramesPassedComparison"] = all(row["endToEnd"]["passed"] for row in report["frames"])
     except Exception as error:
         report["error"] = f"{type(error).__name__}: {error}"
         raise

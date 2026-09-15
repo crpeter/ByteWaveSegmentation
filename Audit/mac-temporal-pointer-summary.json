@@ -1,0 +1,772 @@
+{
+  "sourceAttachment": "Pasted markdown(20260915-022221).md",
+  "sourceSHA256": "a1e9f63bd383332a5ea0e5bd3ad24c568f756448a65aa661955ed08001035266",
+  "scope": "User-run three-frame diagnostic using existing v2 Core ML packages. Encoder discrepancy is a candidate cause, not yet confirmed by intervention.",
+  "report": {
+    "contract": "bytewave.edgetam-temporal-owned.v2",
+    "readyForDeviceValidation": false,
+    "diagnosticComplete": true,
+    "frames": [
+      {
+        "index": 0,
+        "ptsNumerator": 0,
+        "ptsDenominator": 1,
+        "imageSHA256": "df4fd26c6e7c6cce4cd9e6c04ace316788f125eb4f953f0aad96882e7b474dd9",
+        "sameInputComponents": {
+          "ImageEncoder": {
+            "outputs": {
+              "raw_vision_features": {
+                "shape": [
+                  1,
+                  256,
+                  64,
+                  64
+                ],
+                "nonfinite": 0,
+                "minimum": -1.6396484375,
+                "maximum": 1.6865234375,
+                "maximumAbsoluteError": 0.14360103011131287,
+                "cosineSimilarity": 0.998588616975706
+              },
+              "initial_vision_features": {
+                "shape": [
+                  1,
+                  256,
+                  64,
+                  64
+                ],
+                "nonfinite": 0,
+                "minimum": -1.6533203125,
+                "maximum": 1.6728515625,
+                "maximumAbsoluteError": 0.1436430662870407,
+                "cosineSimilarity": 0.9985578027234326
+              },
+              "high_res_feature_0": {
+                "shape": [
+                  1,
+                  32,
+                  256,
+                  256
+                ],
+                "nonfinite": 0,
+                "minimum": -1.140625,
+                "maximum": 0.58935546875,
+                "maximumAbsoluteError": 0.02757847309112549,
+                "cosineSimilarity": 0.9996914303414157
+              },
+              "high_res_feature_1": {
+                "shape": [
+                  1,
+                  64,
+                  128,
+                  128
+                ],
+                "nonfinite": 0,
+                "minimum": -3.18359375,
+                "maximum": 2.66796875,
+                "maximumAbsoluteError": 0.10054957866668701,
+                "cosineSimilarity": 0.9992835786271127
+              }
+            },
+            "torchMaskHeads": []
+          },
+          "Initializer": {
+            "outputs": {
+              "low_res_mask": {
+                "shape": [
+                  1,
+                  1,
+                  256,
+                  256
+                ],
+                "nonfinite": 0,
+                "minimum": -18.125,
+                "maximum": 17.109375,
+                "maximumAbsoluteError": 0.10533332824707031,
+                "cosineSimilarity": 0.9999990070515022,
+                "maskIoUAgainstSameInputTorch": 0.9995990376904571
+              },
+              "high_res_mask": {
+                "shape": [
+                  1,
+                  1,
+                  1024,
+                  1024
+                ],
+                "nonfinite": 0,
+                "minimum": -17.484375,
+                "maximum": 16.59375,
+                "maximumAbsoluteError": 0.0928792953491211,
+                "cosineSimilarity": 0.9999993215022741,
+                "maskIoUAgainstSameInputTorch": 0.9999248572287346
+              },
+              "best_iou": {
+                "shape": [
+                  1
+                ],
+                "nonfinite": 0,
+                "minimum": 0.97802734375,
+                "maximum": 0.97802734375,
+                "maximumAbsoluteError": 0.00016486644744873047,
+                "cosineSimilarity": 1.0
+              },
+              "object_pointer": {
+                "shape": [
+                  1,
+                  256
+                ],
+                "nonfinite": 0,
+                "minimum": -1.359375,
+                "maximum": 1.80859375,
+                "maximumAbsoluteError": 0.007288157939910889,
+                "cosineSimilarity": 0.9999900999940984
+              },
+              "object_score": {
+                "shape": [
+                  1,
+                  1
+                ],
+                "nonfinite": 0,
+                "minimum": 33.34375,
+                "maximum": 33.34375,
+                "maximumAbsoluteError": 0.01259613037109375,
+                "cosineSimilarity": 1.0
+              }
+            },
+            "torchMaskHeads": [
+              {
+                "iouEstimates": [
+                  [
+                    0.9778624773025513,
+                    0.8902517557144165,
+                    0.14991280436515808
+                  ]
+                ],
+                "selectedMaskIndex": [
+                  0
+                ],
+                "topTwoMargin": [
+                  0.08761072158813477
+                ]
+              }
+            ]
+          },
+          "InitialMemoryEncoder": {
+            "outputs": {
+              "memory_features": {
+                "shape": [
+                  1,
+                  512,
+                  64
+                ],
+                "nonfinite": 0,
+                "minimum": -4.875,
+                "maximum": 5.34765625,
+                "maximumAbsoluteError": 0.10025417804718018,
+                "cosineSimilarity": 0.999988574838138
+              },
+              "memory_positions": {
+                "shape": [
+                  1,
+                  512,
+                  64
+                ],
+                "nonfinite": 0,
+                "minimum": -1.0,
+                "maximum": 1.0,
+                "maximumAbsoluteError": 5.960464477539063e-08,
+                "cosineSimilarity": 0.9999999999999993
+              }
+            },
+            "torchMaskHeads": []
+          }
+        },
+        "independentReferenceMaskHeads": [
+          {
+            "iouEstimates": [
+              [
+                0.9753181338310242,
+                0.8770235776901245,
+                0.15926694869995117
+              ]
+            ],
+            "selectedMaskIndex": [
+              0
+            ],
+            "topTwoMargin": [
+              0.09829455614089966
+            ]
+          },
+          {
+            "iouEstimates": [
+              [
+                0.9753181338310242,
+                0.8770235776901245,
+                0.15926694869995117
+              ]
+            ],
+            "selectedMaskIndex": [
+              0
+            ],
+            "topTwoMargin": [
+              0.09829455614089966
+            ]
+          }
+        ],
+        "endToEnd": {
+          "passed": true,
+          "maskIoUAgainstReference": 0.9987975951903808,
+          "sameObjectPresence": true,
+          "outputs": {
+            "low_res_mask": {
+              "maximumAbsoluteError": 0.8135519027709961,
+              "cosineSimilarity": 0.9999742541650767,
+              "float32Close": false
+            },
+            "high_res_mask": {
+              "maximumAbsoluteError": 0.7737216949462891,
+              "cosineSimilarity": 0.9999788688975124,
+              "float32Close": false
+            },
+            "best_iou": {
+              "maximumAbsoluteError": 0.00270920991897583,
+              "cosineSimilarity": 1.0,
+              "float32Close": false
+            },
+            "object_pointer": {
+              "maximumAbsoluteError": 0.06126236915588379,
+              "cosineSimilarity": 0.9991453383407106,
+              "float32Close": false
+            },
+            "object_score": {
+              "maximumAbsoluteError": 0.07802963256835938,
+              "cosineSimilarity": 1.0,
+              "float32Close": false
+            },
+            "memory_features": {
+              "maximumAbsoluteError": 2.7645492553710938,
+              "cosineSimilarity": 0.9969454980893756,
+              "float32Close": false
+            },
+            "memory_positions": {
+              "maximumAbsoluteError": 5.960464477539063e-08,
+              "cosineSimilarity": 0.9999999999999993,
+              "float32Close": true
+            }
+          }
+        },
+        "state": {
+          "acceptedFrames": 1,
+          "spatialEntries": 1,
+          "pointerEntries": 1
+        }
+      },
+      {
+        "index": 1,
+        "ptsNumerator": 1,
+        "ptsDenominator": 30,
+        "imageSHA256": "8c59ab89ffc2586f78ef4ef021e62e9747201bc5ef42e32d8f6efa7854618b3f",
+        "sameInputComponents": {
+          "ImageEncoder": {
+            "outputs": {
+              "raw_vision_features": {
+                "shape": [
+                  1,
+                  256,
+                  64,
+                  64
+                ],
+                "nonfinite": 0,
+                "minimum": -1.67578125,
+                "maximum": 1.583984375,
+                "maximumAbsoluteError": 0.09143120050430298,
+                "cosineSimilarity": 0.9985672062732692
+              },
+              "initial_vision_features": {
+                "shape": [
+                  1,
+                  256,
+                  64,
+                  64
+                ],
+                "nonfinite": 0,
+                "minimum": -1.689453125,
+                "maximum": 1.568359375,
+                "maximumAbsoluteError": 0.09147322177886963,
+                "cosineSimilarity": 0.9985360463729511
+              },
+              "high_res_feature_0": {
+                "shape": [
+                  1,
+                  32,
+                  256,
+                  256
+                ],
+                "nonfinite": 0,
+                "minimum": -1.0439453125,
+                "maximum": 0.634765625,
+                "maximumAbsoluteError": 0.023541368544101715,
+                "cosineSimilarity": 0.9996905084941665
+              },
+              "high_res_feature_1": {
+                "shape": [
+                  1,
+                  64,
+                  128,
+                  128
+                ],
+                "nonfinite": 0,
+                "minimum": -2.908203125,
+                "maximum": 2.783203125,
+                "maximumAbsoluteError": 0.09025800228118896,
+                "cosineSimilarity": 0.9992824726898608
+              }
+            },
+            "torchMaskHeads": []
+          },
+          "Propagator": {
+            "outputs": {
+              "low_res_mask": {
+                "shape": [
+                  1,
+                  1,
+                  256,
+                  256
+                ],
+                "nonfinite": 0,
+                "minimum": -28.875,
+                "maximum": 22.875,
+                "maximumAbsoluteError": 0.10062980651855469,
+                "cosineSimilarity": 0.9999994643472719,
+                "maskIoUAgainstSameInputTorch": 1.0
+              },
+              "high_res_mask": {
+                "shape": [
+                  1,
+                  1,
+                  1024,
+                  1024
+                ],
+                "nonfinite": 0,
+                "minimum": -27.171875,
+                "maximum": 21.578125,
+                "maximumAbsoluteError": 0.08879852294921875,
+                "cosineSimilarity": 0.99999966262091,
+                "maskIoUAgainstSameInputTorch": 0.9999523082792827
+              },
+              "best_iou": {
+                "shape": [
+                  1
+                ],
+                "nonfinite": 0,
+                "minimum": 0.98291015625,
+                "maximum": 0.98291015625,
+                "maximumAbsoluteError": 1.3113021850585938e-06,
+                "cosineSimilarity": 1.0
+              },
+              "object_pointer": {
+                "shape": [
+                  1,
+                  256
+                ],
+                "nonfinite": 0,
+                "minimum": -2.07421875,
+                "maximum": 1.98046875,
+                "maximumAbsoluteError": 0.005272924900054932,
+                "cosineSimilarity": 0.9999976602887461
+              },
+              "object_score": {
+                "shape": [
+                  1,
+                  1
+                ],
+                "nonfinite": 0,
+                "minimum": 9.15625,
+                "maximum": 9.15625,
+                "maximumAbsoluteError": 0.013921737670898438,
+                "cosineSimilarity": 1.0
+              },
+              "memory_features": {
+                "shape": [
+                  1,
+                  512,
+                  64
+                ],
+                "nonfinite": 0,
+                "minimum": -4.82421875,
+                "maximum": 5.46875,
+                "maximumAbsoluteError": 0.7269076108932495,
+                "cosineSimilarity": 0.9998393614326699
+              },
+              "memory_positions": {
+                "shape": [
+                  1,
+                  512,
+                  64
+                ],
+                "nonfinite": 0,
+                "minimum": -1.0,
+                "maximum": 1.0,
+                "maximumAbsoluteError": 5.960464477539063e-08,
+                "cosineSimilarity": 0.9999999999999993
+              }
+            },
+            "torchMaskHeads": [
+              {
+                "iouEstimates": [
+                  [
+                    0.9809468388557434,
+                    0.9829114675521851,
+                    0.9801881313323975
+                  ]
+                ],
+                "selectedMaskIndex": [
+                  1
+                ],
+                "topTwoMargin": [
+                  0.0019646286964416504
+                ]
+              }
+            ]
+          }
+        },
+        "independentReferenceMaskHeads": [
+          {
+            "iouEstimates": [
+              [
+                0.9813329577445984,
+                0.9832684397697449,
+                0.9806298613548279
+              ]
+            ],
+            "selectedMaskIndex": [
+              1
+            ],
+            "topTwoMargin": [
+              0.0019354820251464844
+            ]
+          },
+          {
+            "iouEstimates": [
+              [
+                0.9813329577445984,
+                0.9832684397697449,
+                0.9806298613548279
+              ]
+            ],
+            "selectedMaskIndex": [
+              1
+            ],
+            "topTwoMargin": [
+              0.0019354820251464844
+            ]
+          }
+        ],
+        "endToEnd": {
+          "passed": true,
+          "maskIoUAgainstReference": 0.9984779299847792,
+          "sameObjectPresence": true,
+          "outputs": {
+            "low_res_mask": {
+              "maximumAbsoluteError": 1.3319225311279297,
+              "cosineSimilarity": 0.9999671773959481,
+              "float32Close": false
+            },
+            "high_res_mask": {
+              "maximumAbsoluteError": 1.2376794815063477,
+              "cosineSimilarity": 0.9999747848360019,
+              "float32Close": false
+            },
+            "best_iou": {
+              "maximumAbsoluteError": 0.00035828351974487305,
+              "cosineSimilarity": 1.0,
+              "float32Close": true
+            },
+            "object_pointer": {
+              "maximumAbsoluteError": 0.10484403371810913,
+              "cosineSimilarity": 0.9987314379430129,
+              "float32Close": false
+            },
+            "object_score": {
+              "maximumAbsoluteError": 0.042186737060546875,
+              "cosineSimilarity": 1.0,
+              "float32Close": false
+            },
+            "memory_features": {
+              "maximumAbsoluteError": 2.868727922439575,
+              "cosineSimilarity": 0.9958039717479767,
+              "float32Close": false
+            },
+            "memory_positions": {
+              "maximumAbsoluteError": 5.960464477539063e-08,
+              "cosineSimilarity": 0.9999999999999993,
+              "float32Close": true
+            }
+          }
+        },
+        "state": {
+          "acceptedFrames": 2,
+          "spatialEntries": 2,
+          "pointerEntries": 2
+        }
+      },
+      {
+        "index": 2,
+        "ptsNumerator": 1,
+        "ptsDenominator": 15,
+        "imageSHA256": "105621e87fbb3ffbd493d3256d4e672d453603a91bf2db14bfc36226a013f15f",
+        "sameInputComponents": {
+          "ImageEncoder": {
+            "outputs": {
+              "raw_vision_features": {
+                "shape": [
+                  1,
+                  256,
+                  64,
+                  64
+                ],
+                "nonfinite": 0,
+                "minimum": -1.744140625,
+                "maximum": 1.720703125,
+                "maximumAbsoluteError": 0.12082973122596741,
+                "cosineSimilarity": 0.9985784055266304
+              },
+              "initial_vision_features": {
+                "shape": [
+                  1,
+                  256,
+                  64,
+                  64
+                ],
+                "nonfinite": 0,
+                "minimum": -1.7578125,
+                "maximum": 1.70703125,
+                "maximumAbsoluteError": 0.12081073224544525,
+                "cosineSimilarity": 0.9985470641167914
+              },
+              "high_res_feature_0": {
+                "shape": [
+                  1,
+                  32,
+                  256,
+                  256
+                ],
+                "nonfinite": 0,
+                "minimum": -1.1552734375,
+                "maximum": 0.59326171875,
+                "maximumAbsoluteError": 0.023091822862625122,
+                "cosineSimilarity": 0.9996957819505975
+              },
+              "high_res_feature_1": {
+                "shape": [
+                  1,
+                  64,
+                  128,
+                  128
+                ],
+                "nonfinite": 0,
+                "minimum": -3.271484375,
+                "maximum": 2.552734375,
+                "maximumAbsoluteError": 0.11281180381774902,
+                "cosineSimilarity": 0.9992770244752991
+              }
+            },
+            "torchMaskHeads": []
+          },
+          "Propagator": {
+            "outputs": {
+              "low_res_mask": {
+                "shape": [
+                  1,
+                  1,
+                  256,
+                  256
+                ],
+                "nonfinite": 0,
+                "minimum": -28.796875,
+                "maximum": 23.59375,
+                "maximumAbsoluteError": 0.11703872680664062,
+                "cosineSimilarity": 0.9999994341172191,
+                "maskIoUAgainstSameInputTorch": 1.0
+              },
+              "high_res_mask": {
+                "shape": [
+                  1,
+                  1,
+                  1024,
+                  1024
+                ],
+                "nonfinite": 0,
+                "minimum": -27.265625,
+                "maximum": 22.328125,
+                "maximumAbsoluteError": 0.09089851379394531,
+                "cosineSimilarity": 0.9999996510368628,
+                "maskIoUAgainstSameInputTorch": 0.9998839045230797
+              },
+              "best_iou": {
+                "shape": [
+                  1
+                ],
+                "nonfinite": 0,
+                "minimum": 0.98193359375,
+                "maximum": 0.98193359375,
+                "maximumAbsoluteError": 8.83340835571289e-05,
+                "cosineSimilarity": 1.0
+              },
+              "object_pointer": {
+                "shape": [
+                  1,
+                  256
+                ],
+                "nonfinite": 0,
+                "minimum": -1.2685546875,
+                "maximum": 1.6416015625,
+                "maximumAbsoluteError": 0.0034047365188598633,
+                "cosineSimilarity": 0.9999973674738458
+              },
+              "object_score": {
+                "shape": [
+                  1,
+                  1
+                ],
+                "nonfinite": 0,
+                "minimum": 9.1171875,
+                "maximum": 9.1171875,
+                "maximumAbsoluteError": 0.0025959014892578125,
+                "cosineSimilarity": 1.0
+              },
+              "memory_features": {
+                "shape": [
+                  1,
+                  512,
+                  64
+                ],
+                "nonfinite": 0,
+                "minimum": -4.82421875,
+                "maximum": 5.30078125,
+                "maximumAbsoluteError": 0.9153788089752197,
+                "cosineSimilarity": 0.9997229263765522
+              },
+              "memory_positions": {
+                "shape": [
+                  1,
+                  512,
+                  64
+                ],
+                "nonfinite": 0,
+                "minimum": -1.0,
+                "maximum": 1.0,
+                "maximumAbsoluteError": 5.960464477539063e-08,
+                "cosineSimilarity": 0.9999999999999993
+              }
+            },
+            "torchMaskHeads": [
+              {
+                "iouEstimates": [
+                  [
+                    0.9813411235809326,
+                    0.9818452596664429,
+                    0.979074239730835
+                  ]
+                ],
+                "selectedMaskIndex": [
+                  1
+                ],
+                "topTwoMargin": [
+                  0.0005041360855102539
+                ]
+              }
+            ]
+          }
+        },
+        "independentReferenceMaskHeads": [
+          {
+            "iouEstimates": [
+              [
+                0.981481671333313,
+                0.9820414781570435,
+                0.9795781970024109
+              ]
+            ],
+            "selectedMaskIndex": [
+              1
+            ],
+            "topTwoMargin": [
+              0.0005598068237304688
+            ]
+          },
+          {
+            "iouEstimates": [
+              [
+                0.981481671333313,
+                0.9820414781570435,
+                0.9795781970024109
+              ]
+            ],
+            "selectedMaskIndex": [
+              1
+            ],
+            "topTwoMargin": [
+              0.0005598068237304688
+            ]
+          }
+        ],
+        "endToEnd": {
+          "passed": false,
+          "maskIoUAgainstReference": 1.0,
+          "sameObjectPresence": true,
+          "outputs": {
+            "low_res_mask": {
+              "maximumAbsoluteError": 1.4522209167480469,
+              "cosineSimilarity": 0.9999719506271654,
+              "float32Close": false
+            },
+            "high_res_mask": {
+              "maximumAbsoluteError": 1.3138465881347656,
+              "cosineSimilarity": 0.999978646348479,
+              "float32Close": false
+            },
+            "best_iou": {
+              "maximumAbsoluteError": 0.00010788440704345703,
+              "cosineSimilarity": 1.0,
+              "float32Close": true
+            },
+            "object_pointer": {
+              "maximumAbsoluteError": 0.3357734680175781,
+              "cosineSimilarity": 0.9787294321189709,
+              "float32Close": false
+            },
+            "object_score": {
+              "maximumAbsoluteError": 0.20776653289794922,
+              "cosineSimilarity": 1.0,
+              "float32Close": false
+            },
+            "memory_features": {
+              "maximumAbsoluteError": 2.770819664001465,
+              "cosineSimilarity": 0.9965027444173469,
+              "float32Close": false
+            },
+            "memory_positions": {
+              "maximumAbsoluteError": 5.960464477539063e-08,
+              "cosineSimilarity": 0.9999999999999993,
+              "float32Close": true
+            }
+          }
+        },
+        "state": {
+          "acceptedFrames": 3,
+          "spatialEntries": 3,
+          "pointerEntries": 3
+        }
+      }
+    ],
+    "scope": "Each Core ML component is compared to PyTorch with the same actual inputs. Candidate state advances using Core ML outputs only. End-to-end comparison uses separate original PyTorch history. No parity gates are changed.",
+    "pointNormalizedTopLeft": [
+      0.4912,
+      0.4706
+    ],
+    "coremlComputeUnits": "CPU_ONLY",
+    "precisionPolicy": "fp16-with-fp32-attention.v1",
+    "modelsManifestSHA256": "8d2be810f82b8d8d202b45d4b6d7b6d3bc19660e000dd2f9c461d8ffafb94857"
+  }
+}
