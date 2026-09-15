@@ -2,7 +2,7 @@
   "sourceAttachment": "7039cf38-825f-4673-87f2-a4d45ce47ebf.json",
   "sourceSHA256": "48965c3de11d657ee72a30b1c6e281c6bd57a3994043f07ba02ed9395da75c60",
   "physicalIPhoneConfirmed": false,
-  "scope": "Successful Swift CPU-only fixture comparison. Reported hardware is iPad8,6; actual test host needs user confirmation before calling this iPhone validation.",
+  "scope": "Successful Swift CPU-only fixture comparison on Mac running the iPad build. This is not physical-iPhone validation.",
   "report": {
     "cancelled": false,
     "compileAndLoadMilliseconds": {
@@ -975,5 +975,6 @@
     "thermalStateAtStart": "nominal",
     "timingScope": "Model-call wall time excludes input copies, tensor checks, state assembly, reference comparison, file I/O and display. Prediction-and-state time includes input copies/checks/state. First frame is cold; compile/load is separate. Debug-build timings are diagnostic.",
     "verifiedModelFileCount": 12
-  }
+  },
+  "confirmedHost": "Mac, running the iPad build (confirmed by user)"
 }

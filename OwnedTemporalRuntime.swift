@@ -280,7 +280,8 @@ final class OwnedTemporalSession {
     init(models: [String: MLModel]) { self.models = models }
     func reset() { state.reset() }
 
-    func predict(image: CVPixelBuffer, at time: CMTime, initialPoint: [Double]) throws -> OwnedPrediction {
+    func predict(image: CVPixelBuffer, at time: CMTime, initialPoint: [Double],
+                 beforePrediction: (String) throws -> Void = { _ in }) throws -> OwnedPrediction {
         try Task.checkCancellation()
         try state.validateTime(time)
         let token = state.token
@@ -301,6 +302,9 @@ final class OwnedTemporalSession {
                 }
             }
             let input = try MLDictionaryFeatureProvider(dictionary: values)
+            // Persist the impending component outside the prediction timing.
+            // A native Metal assertion terminates the process without throwing.
+            try beforePrediction(component)
             let start = ProcessInfo.processInfo.systemUptime
             let prediction = try model.prediction(from: input)
             timings[component] = (ProcessInfo.processInfo.systemUptime - start) * 1000

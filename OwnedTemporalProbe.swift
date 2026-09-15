@@ -80,10 +80,11 @@ struct OwnedDeviceReport: Encodable, Sendable {
     let generatedAt = Date()
     let hardware: String
     let operatingSystem = ProcessInfo.processInfo.operatingSystemVersionString
+    let isIOSAppOnMac = ProcessInfo.processInfo.isiOSAppOnMac
     let mode: String
     let reference = "Mac Core ML CPU replay of the passed original-PyTorch comparison fixture"
     let scope = "20 exact-input sequential predictions with bounded Swift state. Low mask, pointer and memory cosine >= 0.99; low-mask IoU >= 0.95; matching object presence; all model outputs finite. High mask is checked for shape/finiteness, not compared numerically. No video decoding, sustained playback FPS, or measured hardware utilization."
-    let timingScope = "Model-call wall time excludes input copies, tensor checks, state assembly, reference comparison, file I/O and display. Prediction-and-state time includes input copies/checks/state. First frame is cold; compile/load is separate. Debug-build timings are diagnostic."
+    let timingScope = "Model-call wall time excludes input copies, tensor checks, state assembly, reference comparison, checkpoint file I/O and display. Prediction-and-state time includes input copies/checks/state and pre-prediction checkpoint writes. First frame is cold; compile/load is separate. Debug-build timings are diagnostic."
     var fixtureSHA256: String?
     var sourceModelsManifestSHA256: String?
     var sourceReportSHA256: String?
@@ -92,6 +93,10 @@ struct OwnedDeviceReport: Encodable, Sendable {
     var compileAndLoadMilliseconds: [String: Double] = [:]
     var frames: [OwnedFrameComparison] = []
     var passed = false
+    var completed = false
+    var lastCheckpoint: String?
+    var activeFrameIndex: Int?
+    var activeComponent: String?
     var cancelled = false
     var failedStage: String?
     var error: String?
@@ -119,12 +124,19 @@ actor OwnedTemporalProbeRunner {
         var models: [String: MLModel] = [:]
         var compiledURLs: [URL] = []
         var stage = "fixture validation"
+        var checkpointURL: URL?
         defer {
             models.removeAll()
             for url in compiledURLs { try? FileManager.default.removeItem(at: url) }
             running = false
         }
         do {
+            let documents = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask,
+                                                        appropriateFor: nil, create: true)
+            let checkpoint = documents.appendingPathComponent("temporal-last-run.json")
+            checkpointURL = checkpoint
+            report.lastCheckpoint = stage
+            try saveCheckpoint(report, to: checkpoint)
             let data = try Data(contentsOf: root.appendingPathComponent("fixture.json"))
             let fixture = try JSONDecoder().decode(OwnedFixture.self, from: data)
             report.fixtureSHA256 = digest(data)
@@ -151,6 +163,9 @@ actor OwnedTemporalProbeRunner {
             for component in OwnedTemporalContract.components {
                 stage = "compile/load \(component)"
                 try Task.checkCancellation()
+                report.activeComponent = component
+                report.lastCheckpoint = stage
+                try saveCheckpoint(report, to: checkpoint)
                 await progress(OwnedProbeUpdate(message: "Loading \(component)…"))
                 let start = ProcessInfo.processInfo.systemUptime
                 let package = root.appendingPathComponent("models/BWTemporal\(component).mlpackage")
@@ -169,6 +184,10 @@ actor OwnedTemporalProbeRunner {
             defer { session.reset() }
             for (index, frame) in fixture.frames.enumerated() {
                 stage = "frame \(index + 1)"
+                report.activeFrameIndex = index
+                report.activeComponent = nil
+                report.lastCheckpoint = "Preparing \(stage)"
+                try saveCheckpoint(report, to: checkpoint)
                 try Task.checkCancellation()
                 guard frame.index == index, frame.ptsDenominator > 0 else {
                     throw OwnedTemporalError.invalid("Invalid fixture frame order or timestamp.")
@@ -178,8 +197,17 @@ actor OwnedTemporalProbeRunner {
                     let buffer = try pixelBuffer(bytes)
                     let timestamp = CMTime(value: frame.ptsNumerator, timescale: frame.ptsDenominator)
                     let start = ProcessInfo.processInfo.systemUptime
-                    let prediction = try session.predict(image: buffer, at: timestamp, initialPoint: fixture.pointNormalizedTopLeft)
+                    let prediction = try session.predict(image: buffer, at: timestamp,
+                                                         initialPoint: fixture.pointNormalizedTopLeft) { component in
+                        stage = "frame \(index + 1), \(component)"
+                        report.activeComponent = component
+                        report.lastCheckpoint = "Before prediction: \(stage)"
+                        try saveCheckpoint(report, to: checkpoint)
+                        print("[OwnedTemporal] \(mode.rawValue): \(stage), beginning prediction")
+                        fflush(stdout)
+                    }
                     let elapsed = (ProcessInfo.processInfo.systemUptime - start) * 1000
+                    stage = "frame \(index + 1), reference comparison"
                     let expectedNames = Set(["low_res_mask", "best_iou", "object_pointer", "object_score",
                                              "memory_features", "memory_positions"])
                     guard Set(frame.tensors.keys) == expectedNames else {
@@ -231,6 +259,9 @@ actor OwnedTemporalProbeRunner {
                     return (row, preview, try maskPNG(actualMask.values))
                 }
                 report.frames.append(result.0)
+                report.activeComponent = nil
+                report.lastCheckpoint = "Completed frame \(index + 1) comparison"
+                try saveCheckpoint(report, to: checkpoint)
                 await progress(OwnedProbeUpdate(message: "Frame \(index + 1)/20: \(result.0.passed ? "passed" : "FAILED")",
                                                previewPNG: result.1, overlayPNG: result.2))
                 try Task.checkCancellation()
@@ -244,8 +275,20 @@ actor OwnedTemporalProbeRunner {
             report.failedStage = stage
             report.error = error.localizedDescription
         }
+        report.completed = true
         report.thermalStateAtEnd = thermal()
+        if let checkpointURL {
+            do { try saveCheckpoint(report, to: checkpointURL) }
+            catch { print("[OwnedTemporal] Final checkpoint save failed: \(error.localizedDescription)") }
+        }
         return report
+    }
+
+    private func saveCheckpoint(_ report: OwnedDeviceReport, to url: URL) throws {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+        encoder.dateEncodingStrategy = .iso8601
+        try encoder.encode(report).write(to: url, options: .atomic)
     }
 
     private func safeURL(_ root: URL, _ relative: String) throws -> URL {
@@ -385,6 +428,15 @@ struct OwnedTemporalProbeView: View {
             }.padding()
         }
         .navigationTitle("Temporal comparison")
+        .onAppear {
+            guard !running, reportURL == nil,
+                  let documents = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
+            let previous = documents.appendingPathComponent("temporal-last-run.json")
+            if FileManager.default.fileExists(atPath: previous.path) {
+                reportURL = previous
+                status = "The previous run's report is available, including its last saved step if interrupted."
+            }
+        }
         .onChange(of: mode) { _, _ in
             reportURL = nil
             preview = nil
