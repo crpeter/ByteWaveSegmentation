@@ -10,7 +10,10 @@ GPU and Automatic also passed; all five phone modes meet this fixture gate.
 The recent owned-device results are on the user's iPhone 14 Pro (iPhone15,2).
 Release GPU/NE runs also passed; median prediction/state time was 282/563 ms,
 with model execution dominating. These results concern one clip and do not
-establish sustained performance or the newer iPhone 17 Pro's behavior.
+establish sustained performance. The same Release modes also pass on iPhone 17
+Pro (iPhone18,1 / OS 27.0): median prediction/state time 100/439 ms GPU/NE.
+Its encoder/propagator medians are 22/67 ms GPU and 81/345 ms NE. Both hardware
+and OS differ from the 14 Pro, so this is not an isolated hardware comparison.
 
 Contract ID: `bytewave.edgetam-temporal-owned.v2`.
 
@@ -194,3 +197,14 @@ learned embeddings. The independent upstream reference and propagator prompt pat
 remain unchanged. Export rejects initializer `non_zero` operations. Normal
 validation, device preparation and Swift loading require matching graph and
 precision metadata; dog-08 fixtures cannot validate the new revision.
+
+## Owned compute-plan inspection
+
+The Temporal comparison screen can inspect the verified owned ImageEncoder and
+Propagator under GPU and Neural Engine settings without predicting any frames.
+It records preferred/supported devices and optional relative operation costs,
+excluding constants, in a separate report/checkpoint. Counts and costs describe
+the compiler plan; they are not measured device utilization or operation times.
+Missing cost estimates are unreported. See Apple's
+[MLComputePlan estimatedCost API](https://developer.apple.com/documentation/coreml/mlcomputeplan-1w21n/estimatedcost%28of%3A%29)
+and [performance tools explanation](https://developer.apple.com/videos/play/wwdc2024/10161/).

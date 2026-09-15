@@ -135,6 +135,47 @@ struct OwnedProbeUpdate: Sendable {
     var overlayPNG: Data? = nil
 }
 
+struct OwnedPlanOperation: Encodable, Sendable {
+    let path: String
+    let operation: String
+    let outputs: [String]
+    let preferredDevice: String?
+    let supportedDevices: [String]
+    let estimatedRelativeCost: Double?
+}
+
+struct OwnedComponentPlan: Encodable, Sendable {
+    let component: String
+    let requestedComputeUnits: String
+    var constantOperationsExcluded = 0
+    var preferredCounts: [String: Int] = [:]
+    var operationsWithEstimatedCost = 0
+    var estimatedRelativeCostByPreferredDevice: [String: Double] = [:]
+    var operations: [OwnedPlanOperation] = []
+    var error: String?
+}
+
+struct OwnedPlanReport: Encodable, Sendable {
+    let schema = "bytewave.temporal-compute-plan.v1"
+    let generatedAt = Date()
+    let contract = OwnedTemporalContract.id
+    let graphRevision = OwnedTemporalContract.graphRevision
+    let precisionPolicy = OwnedTemporalContract.precision
+    let hardware: String
+    let operatingSystem = ProcessInfo.processInfo.operatingSystemVersionString
+    let isIOSAppOnMac = ProcessInfo.processInfo.isiOSAppOnMac
+    let scope = "Verified owned ImageEncoder and Propagator plans under CPU_AND_GPU and CPU_AND_NE. No predictions or numerical validation. Constants excluded. Relative costs are compiler estimates within each model/plan, not measured milliseconds, runtime device utilization, or comparable absolute costs across plans. Missing cost is unreported, not zero."
+    var fixtureSHA256: String?
+    var sourceModelsManifestSHA256: String?
+    var sourceReportSHA256: String?
+    var verifiedModelFileCount = 0
+    var plans: [OwnedComponentPlan] = []
+    var lastCheckpoint: String?
+    var completed = false
+    var allPlansLoaded = false
+    var error: String?
+}
+
 actor OwnedTemporalProbeRunner {
     private var running = false
 
@@ -312,7 +353,129 @@ actor OwnedTemporalProbeRunner {
         return report
     }
 
-    private func saveCheckpoint(_ report: OwnedDeviceReport, to url: URL) throws {
+    func inspectPlans(root: URL, hardware: String,
+                      progress: @Sendable (String) async -> Void) async -> OwnedPlanReport {
+        var report = OwnedPlanReport(hardware: hardware)
+        guard !running else {
+            report.error = "A temporal diagnostic is already running."
+            return report
+        }
+        running = true
+        defer { running = false }
+        var checkpoint: URL?
+        do {
+            let documents = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask,
+                                                        appropriateFor: nil, create: true)
+            let url = documents.appendingPathComponent("temporal-last-plan.json")
+            checkpoint = url
+            report.lastCheckpoint = "Verifying owned fixture and models"
+            try saveCheckpoint(report, to: url)
+            let data = try Data(contentsOf: root.appendingPathComponent("fixture.json"))
+            let fixture = try JSONDecoder().decode(OwnedFixture.self, from: data)
+            guard fixture.schema == "bytewave.temporal-device-fixture.v1",
+                  fixture.contract == OwnedTemporalContract.id,
+                  fixture.graphRevision == OwnedTemporalContract.graphRevision,
+                  fixture.precisionPolicy == OwnedTemporalContract.precision,
+                  fixture.upstream == OwnedTemporalContract.upstream,
+                  fixture.checkpointSHA256 == OwnedTemporalContract.checkpoint,
+                  fixture.referenceComputeUnits == "CPU_ONLY", fixture.frames.count == 20,
+                  !fixture.modelFiles.isEmpty else {
+                throw OwnedTemporalError.invalid("Incompatible owned fixture for plan inspection.")
+            }
+            report.fixtureSHA256 = digest(data)
+            report.sourceModelsManifestSHA256 = fixture.sourceModelsManifestSHA256
+            report.sourceReportSHA256 = fixture.sourceReportSHA256
+            await progress("Verifying owned model files…")
+            for (path, hash) in fixture.modelFiles.sorted(by: { $0.key < $1.key }) {
+                try Task.checkCancellation()
+                _ = try verifiedData(root, path, hash)
+                report.verifiedModelFileCount += 1
+            }
+            // These two components dominate the measured propagation frames.
+            for component in ["ImageEncoder", "Propagator"] {
+                report.lastCheckpoint = "Compiling \(component) for plan inspection"
+                try saveCheckpoint(report, to: url)
+                await progress(report.lastCheckpoint!)
+                try Task.checkCancellation()
+                let package = root.appendingPathComponent("models/BWTemporal\(component).mlpackage")
+                let compiled = try await MLModel.compileModel(at: package)
+                defer { try? FileManager.default.removeItem(at: compiled) }
+                for mode in [OwnedDeviceMode.gpu, .neuralEngine] {
+                    let units = mode.requestedUnitsByComponent[component]!
+                    report.lastCheckpoint = "Loading \(component) plan: \(units)"
+                    try saveCheckpoint(report, to: url)
+                    await progress(report.lastCheckpoint!)
+                    var row = OwnedComponentPlan(component: component, requestedComputeUnits: units)
+                    do {
+                        try Task.checkCancellation()
+                        let configuration = MLModelConfiguration()
+                        configuration.computeUnits = mode.units(for: component)
+                        let model = try await MLModel.load(contentsOf: compiled, configuration: configuration)
+                        try OwnedTemporalContract.validate(model, component: component)
+                        let plan = try await MLComputePlan.load(contentsOf: compiled, configuration: configuration)
+                        guard case let .program(program) = plan.modelStructure else {
+                            throw OwnedTemporalError.invalid("Expected an ML Program compute plan.")
+                        }
+                        for name in program.functions.keys.sorted() {
+                            if let function = program.functions[name] {
+                                try collectPlan(function.block, path: name, plan: plan, into: &row)
+                            }
+                        }
+                        guard !row.operations.isEmpty else {
+                            throw OwnedTemporalError.invalid("Compute plan returned no nonconstant operations.")
+                        }
+                    } catch {
+                        if error is CancellationError { throw error }
+                        row.error = error.localizedDescription
+                    }
+                    report.plans.append(row)
+                    try saveCheckpoint(report, to: url)
+                }
+            }
+            report.allPlansLoaded = report.plans.count == 4 && report.plans.allSatisfy { $0.error == nil }
+            report.completed = true
+            report.lastCheckpoint = "Plan inspection completed"
+        } catch { report.error = error.localizedDescription }
+        if let checkpoint { try? saveCheckpoint(report, to: checkpoint) }
+        return report
+    }
+
+    private func collectPlan(_ block: MLModelStructure.Program.Block, path: String,
+                             plan: MLComputePlan, into report: inout OwnedComponentPlan) throws {
+        func deviceName(_ device: MLComputeDevice) -> String {
+            switch device {
+            case .cpu(_): return "CPU"
+            case .gpu(_): return "GPU"
+            case .neuralEngine(_): return "Neural Engine"
+            @unknown default: return "Unknown"
+            }
+        }
+        for (index, operation) in block.operations.enumerated() {
+            try Task.checkCancellation()
+            let location = "\(path)/\(index)"
+            if operation.operatorName.split(separator: ".").last == "const" {
+                report.constantOperationsExcluded += 1
+            } else {
+                let usage = plan.deviceUsage(for: operation)
+                let preferred = usage.map { deviceName($0.preferred) }
+                let rawCost = plan.estimatedCost(of: operation).map { Double($0.weight) }
+                let cost = rawCost.flatMap { $0.isFinite && $0 >= 0 ? $0 : nil }
+                report.operations.append(OwnedPlanOperation(path: location, operation: operation.operatorName,
+                    outputs: operation.outputs.map { $0.name }, preferredDevice: preferred,
+                    supportedDevices: usage?.supported.map(deviceName) ?? [], estimatedRelativeCost: cost))
+                report.preferredCounts[preferred ?? "Unreported", default: 0] += 1
+                if let cost {
+                    report.operationsWithEstimatedCost += 1
+                    report.estimatedRelativeCostByPreferredDevice[preferred ?? "Unreported", default: 0] += cost
+                }
+            }
+            for (childIndex, child) in operation.blocks.enumerated() {
+                try collectPlan(child, path: "\(location)/block\(childIndex)", plan: plan, into: &report)
+            }
+        }
+    }
+
+    private func saveCheckpoint<T: Encodable>(_ report: T, to url: URL) throws {
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
         encoder.dateEncodingStrategy = .iso8601
@@ -428,6 +591,7 @@ struct OwnedTemporalProbeView: View {
     @State private var overlay: UIImage?
     @State private var showMask = true
     @State private var reportURL: URL?
+    @State private var planReportURL: URL?
     @State private var job: Task<Void, Never>?
     @State private var runner = OwnedTemporalProbeRunner()
 
@@ -437,8 +601,10 @@ struct OwnedTemporalProbeView: View {
                 Picker("Compute devices", selection: $mode) {
                     ForEach(OwnedDeviceMode.allCases) { Text($0.rawValue).tag($0) }
                 }.disabled(running)
-                Button(running ? "Comparing…" : "Run 20-frame comparison", action: start)
+                Button("Run 20-frame comparison", action: start)
                     .buttonStyle(.borderedProminent).disabled(running)
+                Button("Inspect GPU/NE plans", action: startPlans)
+                    .buttonStyle(.bordered).disabled(running)
                 if running { ProgressView() }
                 Text(status).textSelection(.enabled).accessibilityAddTraits(.updatesFrequently)
                 if let preview {
@@ -451,16 +617,23 @@ struct OwnedTemporalProbeView: View {
                     Toggle("Show subject mask", isOn: $showMask)
                 }
                 if let reportURL { ShareLink("Share temporal report", item: reportURL) }
+                if let planReportURL { ShareLink("Share plan report", item: planReportURL) }
                 Text("Tracks one subject through 20 prepared frames, keeping a bounded memory. Each run starts fresh. This checks agreement with your Mac; it is not a playback-speed test.")
+                    .font(.footnote).foregroundStyle(.secondary)
+                Text("Plan inspection checks the encoder and propagator in both GPU and Neural Engine modes without predicting frames. Device assignments and costs are estimates.")
                     .font(.footnote).foregroundStyle(.secondary)
             }.padding()
         }
         .navigationTitle("Temporal comparison")
         .onAppear {
-            guard !running, reportURL == nil,
+            guard !running,
                   let documents = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
+            let previousPlan = documents.appendingPathComponent("temporal-last-plan.json")
+            if planReportURL == nil && FileManager.default.fileExists(atPath: previousPlan.path) {
+                planReportURL = previousPlan
+            }
             let previous = documents.appendingPathComponent("temporal-last-run.json")
-            if FileManager.default.fileExists(atPath: previous.path) {
+            if reportURL == nil && FileManager.default.fileExists(atPath: previous.path) {
                 reportURL = previous
                 status = "The previous run's report is available, including its last saved step if interrupted."
             }
@@ -472,6 +645,44 @@ struct OwnedTemporalProbeView: View {
             status = "Run the comparison in this mode."
         }
         .onDisappear { job?.cancel() }
+    }
+
+    private func startPlans() {
+        #if targetEnvironment(simulator)
+        status = "Inspect the plans on your physical iPhone."
+        return
+        #else
+        guard !running, let root = Bundle.main.resourceURL?.appendingPathComponent("DeviceValidationData/baseline"),
+              let documents = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
+        running = true
+        planReportURL = nil
+        reportURL = nil
+        preview = nil
+        overlay = nil
+        let hardware = hardwareIdentifier()
+        job = Task {
+            defer { running = false }
+            let report = await runner.inspectPlans(root: root, hardware: hardware) { message in
+                await MainActor.run {
+                    guard !Task.isCancelled else { return }
+                    status = message
+                }
+            }
+            do {
+                let encoder = JSONEncoder()
+                encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+                encoder.dateEncodingStrategy = .iso8601
+                let url = documents.appendingPathComponent("temporal-plan-\(UUID().uuidString).json")
+                try encoder.encode(report).write(to: url, options: .atomic)
+                planReportURL = url
+                status = report.allPlansLoaded ? "All four plans loaded. Share the plan report."
+                    : "Plan inspection incomplete. Share the plan report. \(report.error ?? "See component errors.")"
+            } catch {
+                planReportURL = documents.appendingPathComponent("temporal-last-plan.json")
+                status = "Could not save the final plan report: \(error.localizedDescription)"
+            }
+        }
+        #endif
     }
 
     private func start() {

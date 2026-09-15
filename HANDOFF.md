@@ -96,15 +96,39 @@ Swift diagnostic overhead. Models, especially propagation, now dominate; do not
 optimize tensor handling as though it explains most remaining cost. These are
 fixed-fixture measurements, not sustained video playback or observed NE activity.
 
-Next: on the user's 17 Pro, build the same revision and existing dog-09 fixture
-in Release, with debugger/Metal validation disabled for timing, and run GPU then
-CPU + Neural Engine. Share each temporal report. No model export or fixture
-preparation is needed. This provides the target-device comparison before choosing
-model graph optimization work. Continue preserving 14 Pro results separately;
-no broad backend matrix rerun is needed. No code changes were made for this result.
-Commands and filesystem report cat/open instructions belong in chat, not README.
-Assistant verification is static JSON/source review only; no builds, tests or
-model execution. Requested-frame playback and sustained profiling remain ahead.
+The user completed both Release modes on **iPhone 17 Pro**, hardware iPhone18,1,
+OS 27.0 (24A435). Both pass all 20 frames with DEBUG disabled, matching dog-09
+model/fixture/frame/timestamp identities, final banks 7/16 and nominal thermal
+state. GPU minimum mask/pointer/memory metrics: 0.996804/0.998976/0.995975;
+NE: 0.996449/0.998667/0.992680. Full reports and a summary with attachment hashes
+are in the iphone17pro-release Audit files. Hardware AND OS differ from the 14 Pro
+(OS 26.5.2); do not attribute the entire change to hardware alone.
+
+17 Pro median encoder/propagator/session times, excluding cold frame zero:
+GPU 22.04/66.75/100.09 ms; NE 81.46/344.98/439.47 ms. Median summed model calls
+88.82/426.21 ms; non-model session overhead 11.20/12.71 ms. GPU is substantially
+faster for this export. Propagation is the largest remaining cost; these are
+fixed-fixture timings, not playback FPS or observed Neural Engine utilization.
+
+Added **Inspect GPU/NE plans** on the owned Temporal comparison screen. It checks
+the same fixture/model hashes and model metadata, compiles ImageEncoder and
+Propagator, and records both CPU_AND_GPU and CPU_AND_NE plans in one action.
+It does not run predictions, change model precision, or repeat the correctness
+fixture. New schema bytewave.temporal-compute-plan.v1 records all nonconstant
+operations with output names, paths, preferred/supported devices and optional
+estimated relative costs, per-plan counts/cost totals and errors. Missing costs
+stay unreported; estimates are not runtime device usage or measured milliseconds.
+Separate atomic temporal-last-plan.json checkpoints preserve load failures/native
+abort location, and **Share plan report** exports a unique final report. Existing
+prediction function and gates remain unchanged. Only static checks/API review;
+user must build this new UI and inspection path.
+
+Next: pull, rebuild Release on 17 Pro with the existing dog-09 fixture, tap
+**Inspect GPU/NE plans** once, then **Share plan report**. No export/preparation
+or repeated 20-frame run needed. Use plan estimates to choose a focused propagator
+optimization and validate it against the unchanged numerical gates; actual
+execution profiling may still be needed. Commands/report instructions remain in
+chat, not README. Assistant runs no builds, tests or model execution.
 
 ## User goal and decisions
 
@@ -224,7 +248,7 @@ Cody supplied `BackgroundRemovalSource.swift` as a pasted attachment. That app s
 
 ## Next work
 
-1. The 39-edge encoder candidate passed 20 Mac frames with CPU and CPU_AND_NE encoder, tracker CPU. The normal dog-09 export and physical-phone CPU/Encoder NE + CPU tracker modes now passed. All five physical-phone modes and the Release GPU/NE runs now passed on iPhone 14 Pro. Model execution dominates; next compare the same two Release modes on the user's newer 17 Pro before choosing graph optimization work. Preserve old models and parity gates. Include cat/open with report requests. Do not run tests/inference/builds on the user's behalf.
+1. The 39-edge encoder candidate passed 20 Mac frames with CPU and CPU_AND_NE encoder, tracker CPU. The normal dog-09 export and physical-phone CPU/Encoder NE + CPU tracker modes now passed. All five physical-phone modes and the Release GPU/NE runs now passed on iPhone 14 Pro. Both 17 Pro Release modes also passed. GPU session is 100 ms, NE 439 ms; next inspect owned encoder/propagator GPU/NE plans to target graph optimization. Preserve old models and parity gates. Include cat/open with report requests. Do not run tests/inference/builds on the user's behalf.
 2. Resolve concrete parity/export failures without relaxing thresholds to hide a defect. Current gates are explicit engineering policies, not previously measured results. Obtain representative visual review and retain the fixture results. The community contract remains unknown; the owned implementation does not claim to reconstruct it.
 3. The Swift fixed-fixture temporal runner has built and passed CPU-only on both Mac and physical iPhone; accelerated-mode validation remains. Resolve concrete compiler/device failures, then extend to requested-video-frame operation and profile on iPhone. Keep the community packages and existing diagnostic usable until a validated replacement exists. The new export has different input names and no application-supplied rotary tensor; it is not a drop-in replacement.
 4. Evaluate mask edges, hair, occlusion/reappearance, fast motion, tracking drift, latency, and sustained performance before integrating woven text.
