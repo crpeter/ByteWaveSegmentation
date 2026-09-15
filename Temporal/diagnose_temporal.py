@@ -52,6 +52,11 @@ def main():
         parser.error(f"Choose between 1 and {v.COUNT} frames.")
     if not all(np.isfinite(x) and 0 <= x <= 1 for x in args.point):
         parser.error("Point must be finite and in [0,1].")
+    # Diagnostic workaround for a native PyEval_SaveThread abort observed in
+    # PyTorch CPU GELU while interleaving Core ML and PyTorch predictions on Mac.
+    # Configure before any model work; the exact native root cause is unconfirmed.
+    torch.set_num_threads(1)
+    torch.set_num_interop_threads(1)
     args.output.mkdir(parents=True, exist_ok=False)
     report = {"contract": owned.CONTRACT, "readyForDeviceValidation": False,
               "diagnosticComplete": False, "frames": [],
@@ -59,8 +64,11 @@ def main():
                        "Encoder output source is explicit below; masks and stored state come from Core ML. End-to-end comparison "
                        "uses separate original PyTorch history. No parity gates are changed.",
               "encoderOutputSource": "pytorch-control" if args.torch_image_encoder else "coreml",
+              "torchThreads": {"intraOp": torch.get_num_threads(),
+                               "interOp": torch.get_num_interop_threads()},
               "pointNormalizedTopLeft": args.point,
               "coremlComputeUnits": "CPU_ONLY", "precisionPolicy": v.COREML_PRECISION_POLICY}
+    v.write_json(args.output / "report.json", report)
     decoder = None
     try:
         manifest = args.models / "manifest.json"
