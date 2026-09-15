@@ -78,18 +78,37 @@ frame stage field optional for old reports. No model, state, output-copy logic,
 correctness gate or checkpoint behavior is changed. Assistant static review only;
 no builds/tests/model execution.
 
-Next: pull and rebuild the app using Run configuration Release, no debugger and
-Metal API validation disabled for timing, retaining the same dog-09 fixture.
-Run CPU + GPU and CPU + Neural Engine and share both temporal reports. This
-separates Swift diagnostic overhead from model execution before optimizing or
-changing model precision again. No export or fixture preparation is needed.
+The user clarified that these recent runs are on their **iPhone 14 Pro**, not
+their newer 17 Pro; hardware iPhone15,2 is consistent across the owned fixtures.
+Preserve the older-device baseline and do not label these as 17 Pro measurements.
+The new GPU and CPU + NE reports both pass all 20 frames and explicitly record
+swiftDebugCompilation=false and session-stages.v1. Same dog-09 fixture/model/frame
+hashes and final banks; nominal thermal state. Reports and attachment hashes are
+archived in the iphone14pro-release Audit files and summary. Debugger/Metal
+validation settings are not recorded, so do not claim independent verification.
+
+Release medians excluding frame zero: GPU encoder 69.52 ms, propagator 184.78 ms,
+summed model calls 254.37 ms, whole session 281.67 ms. NE encoder 157.08 ms,
+propagator 384.18 ms, model calls 542.60 ms, session 563.16 ms. Per-frame session
+minus model-call medians are 26.98 ms GPU and 20.75 ms NE; instrumentation leaves
+only about 0.04/0.02 ms median unaccounted. Release largely removes the earlier
+Swift diagnostic overhead. Models, especially propagation, now dominate; do not
+optimize tensor handling as though it explains most remaining cost. These are
+fixed-fixture measurements, not sustained video playback or observed NE activity.
+
+Next: on the user's 17 Pro, build the same revision and existing dog-09 fixture
+in Release, with debugger/Metal validation disabled for timing, and run GPU then
+CPU + Neural Engine. Share each temporal report. No model export or fixture
+preparation is needed. This provides the target-device comparison before choosing
+model graph optimization work. Continue preserving 14 Pro results separately;
+no broad backend matrix rerun is needed. No code changes were made for this result.
 Commands and filesystem report cat/open instructions belong in chat, not README.
-After profiling, continue toward requested-frame playback, representative visual
-quality, sustained latency and actual hardware placement measurements.
+Assistant verification is static JSON/source review only; no builds, tests or
+model execution. Requested-frame playback and sustained profiling remain ahead.
 
 ## User goal and decisions
 
-Cody Peter is building ByteWave, a local video editor. The goal is general-subject segmentation and temporal tracking as video frames are requested, eventually enabling woven text (text behind selected subjects). Avoid full-video mask precomputation. There is no rush: choose a sound architecture instead of minimizing implementation effort. Neural Engine acceleration is a hypothesis to evaluate, not an established outcome. Keep explanations short. Do not ask for the Metal renderer at this stage. Do not run iOS builds/tests/servers on Cody's behalf; Cody validates on his Mac and physical iPhone 17 Pro.
+Cody Peter is building ByteWave, a local video editor. The goal is general-subject segmentation and temporal tracking as video frames are requested, eventually enabling woven text (text behind selected subjects). Avoid full-video mask precomputation. There is no rush: choose a sound architecture instead of minimizing implementation effort. Neural Engine acceleration is a hypothesis to evaluate, not an established outcome. Keep explanations short. Do not ask for the Metal renderer at this stage. Do not run iOS builds/tests/servers on Cody's behalf; Cody validates on his Mac and, for convenience, his physical iPhone 14 Pro (iPhone15,2); he also has a newer iPhone 17 Pro. Attribute results by report hardware and explicit user confirmation.
 
 ## What exists here
 
@@ -205,7 +224,7 @@ Cody supplied `BackgroundRemovalSource.swift` as a pasted attachment. That app s
 
 ## Next work
 
-1. The 39-edge encoder candidate passed 20 Mac frames with CPU and CPU_AND_NE encoder, tracker CPU. The normal dog-09 export and physical-phone CPU/Encoder NE + CPU tracker modes now passed. All five physical-phone modes now passed; next obtain Release GPU/NE reports with session-stage timing to identify performance costs. Preserve old models and parity gates. Include cat/open with report requests. Do not run tests/inference/builds on the user's behalf.
+1. The 39-edge encoder candidate passed 20 Mac frames with CPU and CPU_AND_NE encoder, tracker CPU. The normal dog-09 export and physical-phone CPU/Encoder NE + CPU tracker modes now passed. All five physical-phone modes and the Release GPU/NE runs now passed on iPhone 14 Pro. Model execution dominates; next compare the same two Release modes on the user's newer 17 Pro before choosing graph optimization work. Preserve old models and parity gates. Include cat/open with report requests. Do not run tests/inference/builds on the user's behalf.
 2. Resolve concrete parity/export failures without relaxing thresholds to hide a defect. Current gates are explicit engineering policies, not previously measured results. Obtain representative visual review and retain the fixture results. The community contract remains unknown; the owned implementation does not claim to reconstruct it.
 3. The Swift fixed-fixture temporal runner has built and passed CPU-only on both Mac and physical iPhone; accelerated-mode validation remains. Resolve concrete compiler/device failures, then extend to requested-video-frame operation and profile on iPhone. Keep the community packages and existing diagnostic usable until a validated replacement exists. The new export has different input names and no application-supplied rotary tensor; it is not a drop-in replacement.
 4. Evaluate mask edges, hair, occlusion/reappearance, fast motion, tracking drift, latency, and sustained performance before integrating woven text.

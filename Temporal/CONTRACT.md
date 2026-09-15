@@ -7,7 +7,10 @@ with the tracker on CPU_ONLY. The normal exporter now incorporates that rewrite;
 its new dog-09 full-set Mac validation passed all 20 frames. Physical-iPhone CPU,
 encoder-NE/CPU-tracker and full CPU_AND_NE fixtures also passed all 20 frames.
 GPU and Automatic also passed; all five phone modes meet this fixture gate.
-These results concern one clip and do not establish sustained performance.
+The recent owned-device results are on the user's iPhone 14 Pro (iPhone15,2).
+Release GPU/NE runs also passed; median prediction/state time was 282/563 ms,
+with model execution dominating. These results concern one clip and do not
+establish sustained performance or the newer iPhone 17 Pro's behavior.
 
 Contract ID: `bytewave.edgetam-temporal-owned.v2`.
 

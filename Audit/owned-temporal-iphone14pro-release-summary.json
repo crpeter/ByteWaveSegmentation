@@ -1,0 +1,66 @@
+{
+  "deviceNameFromUser": "iPhone 14 Pro",
+  "hardware": "iPhone15,2",
+  "scope": "User ran requested Release GPU/NE comparisons; reports confirm DEBUG compilation disabled. Metal validation and debugger settings are not recorded. Medians exclude first frame. Fixed-fixture timing, not sustained playback FPS or measured hardware utilization.",
+  "fixtureSHA256": "80bfbde3da5d8d650a68d60a1f61e2da0050abbe576e0bc848da46d640298455",
+  "modes": [
+    {
+      "mode": "CPU + GPU",
+      "sourceAttachment": "0dcbcf29-60d0-4c4b-be53-87833b111250.json",
+      "sourceAttachmentSHA256": "2da900ef07ece3461f56e7e32b5cf40ad4f54dad424c27e891094b0eadeb9b43",
+      "report": "owned-temporal-fanout-iphone14pro-release-gpu-report.json",
+      "passed": true,
+      "framesPassed": 20,
+      "swiftDebugCompilation": false,
+      "minimumMaskIoU": 0.9964488636363636,
+      "minimumPointerCosine": 0.998735446241952,
+      "minimumMemoryCosine": 0.9962377999137907,
+      "medianModelMilliseconds": 254.3661666677508,
+      "medianSessionMilliseconds": 281.6664166675764,
+      "medianNonModelSessionMilliseconds": 26.975833334290655,
+      "medianModelsByComponent": {
+        "ImageEncoder": 69.51729166394216,
+        "Propagator": 184.77658333358704
+      },
+      "medianSessionStages": {
+        "ImageEncoder.beforePredictionHook": 1.8332500003452878,
+        "ImageEncoder.inputPreparation": 0.009999999747378752,
+        "ImageEncoder.outputCopyAndValidation": 14.140625000436557,
+        "Propagator.beforePredictionHook": 2.107416668877704,
+        "Propagator.inputPreparation": 0.9212916666001547,
+        "Propagator.outputCopyAndValidation": 6.13754166624858,
+        "state.commit": 0.9602083300705999,
+        "state.pack": 0.34354166564298794
+      }
+    },
+    {
+      "mode": "CPU + Neural Engine",
+      "sourceAttachment": "e6d06eee-277f-4730-a5d3-ab382564f95e.json",
+      "sourceAttachmentSHA256": "9aa93d0f07e9eded42f919a074f1ba1528d6ea53106f5f7e1ca662cea53f2906",
+      "report": "owned-temporal-fanout-iphone14pro-release-ne-report.json",
+      "passed": true,
+      "framesPassed": 20,
+      "swiftDebugCompilation": false,
+      "minimumMaskIoU": 0.9968039772727273,
+      "minimumPointerCosine": 0.998240174294943,
+      "minimumMemoryCosine": 0.9927675932442027,
+      "medianModelMilliseconds": 542.6029583359195,
+      "medianSessionMilliseconds": 563.1552083323186,
+      "medianNonModelSessionMilliseconds": 20.74574999642209,
+      "medianModelsByComponent": {
+        "ImageEncoder": 157.07975000259466,
+        "Propagator": 384.17575000130455
+      },
+      "medianSessionStages": {
+        "ImageEncoder.beforePredictionHook": 1.4080000000831205,
+        "ImageEncoder.inputPreparation": 0.007499998901039362,
+        "ImageEncoder.outputCopyAndValidation": 9.501541666395497,
+        "Propagator.beforePredictionHook": 6.1192499997559935,
+        "Propagator.inputPreparation": 0.7524166685470846,
+        "Propagator.outputCopyAndValidation": 2.1450416679726914,
+        "state.commit": 0.3906250021827873,
+        "state.pack": 0.25170833032461815
+      }
+    }
+  ]
+}
