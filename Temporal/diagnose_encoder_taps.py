@@ -23,6 +23,41 @@ from inspect_encoder_placement import inspect, write_json, sha
 FINAL = ('raw_vision_features', 'initial_vision_features', 'high_res_feature_0', 'high_res_feature_1')
 
 
+def input_path(block, target):
+    """Expose the target's ancestors, stopping at every convolution output.
+
+    Follow named data dependencies, not operation order: parallel branches can
+    feed the same input. Constants and convolution weights are not exposed.
+    """
+    by_output = {out.name: op for op in block.operations for out in op.outputs}
+    pending, visited = [target], set()
+    while pending:
+        name = pending.pop()
+        if name in visited:
+            continue
+        op = by_output.get(name)
+        if op is None:
+            raise ValueError(f'Input path reaches an unsupported graph input: {name}')
+        if op.type == 'const':
+            continue
+        if op.blocks:
+            raise ValueError('Nested operations are not supported by input-path taps')
+        visited.add(name)
+        if op.type != 'conv':
+            pending.extend(arg.name for binding in op.inputs.values() for arg in binding.arguments
+                           if arg.WhichOneof('binding') == 'name')
+    rows = []
+    for op in block.operations:
+        outputs = [out.name for out in op.outputs if out.name in visited]
+        if outputs:
+            rows.append({'type': op.type, 'outputs': outputs,
+                         'inputs': {key: [arg.name for arg in binding.arguments
+                                          if arg.WhichOneof('binding') == 'name']
+                                    for key, binding in op.inputs.items()},
+                         'convolutionBoundary': op.type == 'conv'})
+    return rows
+
+
 def worker():
     import coremltools as ct
     package, image_path, output, units = sys.argv[2:]
@@ -70,6 +105,7 @@ def main():
     parser.add_argument('--plan', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--ne-indices', type=int, nargs='+', help='Zero-based indices among NE-preferred convolutions; default five evenly spaced samples')
+    parser.add_argument('--trace-input', type=int, help='Also expose operations feeding this sampled convolution, back to the nearest convolution outputs on every branch')
     args = parser.parse_args()
     if platform.system() != 'Darwin':
         parser.error('Run on Mac')
@@ -92,6 +128,8 @@ def main():
     indices = sorted(set(args.ne_indices)) if args.ne_indices is not None else sorted({round(i * (len(ne)-1) / 4) for i in range(5)})
     if any(i < 0 or i >= len(ne) for i in indices):
         raise ValueError('NE convolution sample index out of range')
+    if args.trace_input is not None and args.trace_input not in indices:
+        parser.error('--trace-input must also appear in --ne-indices')
     frame = args.run / 'coreml/frame-00.png'
     with Image.open(frame) as image:
         pixels = np.asarray(image.convert('RGB'))
@@ -127,6 +165,14 @@ def main():
                 raise ValueError('Unexpected convolution input')
             samples.append({'neIndex': index, 'input': bindings[0].name, 'output': output_names[0]})
         taps = list(dict.fromkeys(name for sample in samples for name in (sample['input'], sample['output'])))
+        if args.trace_input is not None:
+            target = next(s['input'] for s in samples if s['neIndex'] == args.trace_input)
+            path = input_path(block, target)
+            original_assignment = {name: op['preferred'] for op in operations for name in op['outputs']}
+            for row in path:
+                row['originalPreferredDevices'] = {name: original_assignment.get(name, 'missing') for name in row['outputs']}
+            report['inputPath'] = {'neIndex': args.trace_input, 'target': target, 'operations': path}
+            taps = list(dict.fromkeys(taps + [name for row in path for name in row['outputs']]))
         # coremltools 9 deep-copies the connected MIL graph during extraction.
         # This encoder exceeds Python's default recursion limit in copy.deepcopy.
         # Allow deeper traversal only for extraction; prediction workers keep
@@ -155,6 +201,8 @@ def main():
         assignment = {name: op['preferred'] for op in probe_plan['operations'] for name in op['outputs']}
         for sample in samples:
             sample['probePreferredDevice'] = assignment.get(sample['output'], 'missing')
+        for row in report.get('inputPath', {}).get('operations', []):
+            row['probePreferredDevices'] = {name: assignment.get(name, 'missing') for name in row['outputs']}
         values = {}
         for label, pkg, units in (('original-cpu', package, 'CPU_ONLY'), ('probe-cpu', probe_package, 'CPU_ONLY'),
                                   ('probe-ne', probe_package, 'CPU_AND_NE')):
@@ -170,6 +218,9 @@ def main():
         cpu, actual = values['probe-cpu'], values['probe-ne']
         if set(cpu) != set(actual) or any(not np.isfinite(x).all() for x in cpu.values()):
             raise ValueError('Probe CPU baseline invalid or NE output names changed')
+        if 'inputPath' in report:
+            path_names = [name for row in report['inputPath']['operations'] for name in row['outputs']]
+            report['cpuInputPathOutputs'] = summarize({name: cpu[name] for name in path_names})
         report['neFinalOutputs'] = summarize({n: actual[n] for n in FINAL}, {n: cpu[n] for n in FINAL})
         report['neTapOutputs'] = summarize({n: actual[n] for n in taps}, {n: cpu[n] for n in taps})
         report['finalNonfiniteFailureReproduced'] = any(row['nonfinite'] > 0 for row in report['neFinalOutputs'].values())
