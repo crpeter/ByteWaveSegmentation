@@ -76,7 +76,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--run', type=Path, required=True)
     parser.add_argument('--inspection', type=Path, help='Required for conv2')
-    parser.add_argument('--variant', choices=('conv2', 'chunk256'), default='conv2')
+    parser.add_argument('--variant', choices=('conv2', 'chunk256', 'memoryfp16'), default='conv2')
     parser.add_argument('--candidate', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--units', choices=('CPU_AND_GPU', 'CPU_AND_NE'), default='CPU_AND_GPU')
@@ -85,8 +85,8 @@ def main():
         parser.error('Run on Mac')
     if args.variant == 'conv2' and args.inspection is None:
         parser.error('--inspection is required for conv2')
-    if args.variant == 'chunk256' and (args.units != 'CPU_AND_GPU' or args.inspection is not None):
-        parser.error('chunk256 requires CPU_AND_GPU and no linear inspection')
+    if args.variant != 'conv2' and (args.units != 'CPU_AND_GPU' or args.inspection is not None):
+        parser.error('Attention candidates require CPU_AND_GPU and no linear inspection')
     candidate_contract = CONTRACT if args.variant == 'conv2' else ATTENTION_CONTRACT
     scope = __doc__.replace('conv2', args.variant)
     torch.set_num_threads(1)

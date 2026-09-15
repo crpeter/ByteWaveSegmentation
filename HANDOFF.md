@@ -1,6 +1,28 @@
 # ByteWave segmentation: continuation handoff
 
-## Pending experiment: explicit FP32 memory attention
+## Pending experiment: isolate memory-attention precision
+
+The chunk256 rewrite is slower on Mac despite passing correctness, so the
+original normal export remains selected. The next diagnostic `memoryfp16`
+changes only the four validated large memory SDPA operations to FP16: casts of
+existing Q/K/V and optional bias, fused attention, then restores FP32 output.
+The initializer and all mask-decoder attention, normalization, projections,
+learned weights and external interfaces keep their existing precision. This
+explicitly tests whether memory SDPA alone can tolerate reduced precision; it
+is NOT a claim that the earlier FP16 attention corruption was generally solved.
+No scaling changes, key pruning, head changes, clamping or weakened gates.
+
+`diagnose_propagator_attention.py --experiment memoryfp16` uses a new output
+folder and the same unchanged CPU control plus full candidate CPU/GPU temporal
+comparisons. Exact unrelated/new operation signature checks cover the casts,
+mask source and attention dtypes. Nonfinite outputs or parity failure stop the
+run. The paired benchmark accepts `--variant memoryfp16` only with matching
+passed temporal evidence and package hashes. Device readiness stays false;
+there is no normal model/fixture or Swift app change. Assistant AST/source review
+and diff checks only; this new candidate has not been executed. User commands
+remain in chat, not README.
+
+## Completed Mac experiment: explicit FP32 memory attention
 
 `Temporal/diagnose_propagator_attention.py` prepares an unchanged reconversion
 control and a diagnostic `chunk256` propagator. The rewrite selects exactly four
@@ -28,8 +50,11 @@ with checked warm-up and every output gated. Existing conv2 CLI defaults and its
 legacy summary keys remain available. Shared replay helpers accept an explicit
 contract/script; the old convolution diagnostic retains its required inspection.
 
-Status: assistant static AST/source review and diff checks only. No tests,
-conversion, compilation, model execution or performance result yet. Normal
+The user passed all three full 20-frame comparisons and all 76 paired GPU
+checks. Paired medians: original 14.3616 ms, chunk256 34.5261 ms (2.404 times
+original latency); both call-order strata agree. No promotion. Archive:
+`Audit/mac-attention-chunk256-summary.json`. No candidate iPhone timing exists.
+Assistant work remains static review and uploaded-report parsing only. Normal
 exporter, README, installed dog-09 model set and Swift app are unchanged. Chunk
 score tensors are 4 MiB (self) or 3.5625 MiB (cross), but this is not a guarantee
 of peak allocation: scheduling and buffer lifetimes remain backend-dependent.

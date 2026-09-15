@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Compare explicit FP32 query-chunked memory attention on the saved fixture.
+"""Compare an isolated memory-attention candidate on the saved fixture.
 
-Unchanged CPU reconversion control, then chunk256 CPU/GPU against original
+Unchanged CPU reconversion control, then candidate CPU/GPU against original
 PyTorch over all 20 frames. Every query still attends to every original key.
 Diagnostic only: no normal exporter, installed model or correctness gate changes.
 """
@@ -23,8 +23,10 @@ def main():
     parser.add_argument('--upstream', type=Path, required=True)
     parser.add_argument('--run', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--experiment', choices=('chunk256', 'memoryfp16'), default='chunk256',
+                        help='Explicit FP32 chunks, or FP16 only for four memory SDPA operations')
     parser.add_argument('--candidate', type=Path, help=argparse.SUPPRESS)
-    parser.add_argument('--variant', choices=('unchanged', 'chunk256'), help=argparse.SUPPRESS)
+    parser.add_argument('--variant', choices=('unchanged', 'chunk256', 'memoryfp16'), help=argparse.SUPPRESS)
     parser.add_argument('--units', choices=('CPU_ONLY', 'CPU_AND_GPU'), help=argparse.SUPPRESS)
     args = parser.parse_args()
     args.inspection = None  # This experiment inspects its own four SDPA inputs.
@@ -40,12 +42,13 @@ def main():
     args.output.mkdir(parents=True, exist_ok=False)
     path = args.output / 'report.json'
     report = {'scope': __doc__, 'contract': CONTRACT, 'completed': False, 'passed': False,
+              'candidateVariant': args.experiment,
               'readyForDeviceValidation': False,
               'sourceManifestSHA256': sha(args.run / 'models/manifest.json'),
               'sourceFrameReportSHA256': sha(args.run / 'coreml/report.json'),
               'variants': {}, 'runs': {}}
     try:
-        for variant in ('unchanged', 'chunk256'):
+        for variant in ('unchanged', args.experiment):
             report['stage'] = f'Preparing {variant}'
             write_json(path, report)
             print(report['stage'], flush=True)
@@ -56,8 +59,8 @@ def main():
         write_json(args.output / 'variants.json', {'sourceManifestSHA256': report['sourceManifestSHA256'],
                                                   'variants': report['variants']})
         for label, variant, units in (('unchanged-cpu', 'unchanged', 'CPU_ONLY'),
-                                      ('chunk256-cpu', 'chunk256', 'CPU_ONLY'),
-                                      ('chunk256-gpu', 'chunk256', 'CPU_AND_GPU')):
+                                      (f'{args.experiment}-cpu', args.experiment, 'CPU_ONLY'),
+                                      (f'{args.experiment}-gpu', args.experiment, 'CPU_AND_GPU')):
             report['stage'] = label
             write_json(path, report)
             row = report['runs'][label] = run_worker(args, label, variant, units, script_path=__file__)

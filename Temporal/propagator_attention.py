@@ -1,4 +1,4 @@
-"""Diagnostic FP32 query-chunked attention; no normal export changes.
+"""Isolated memory-attention diagnostics; no normal export changes.
 
 MIL SDPA semantics: softmax(Q K^T / sqrt(d) + mask) V. Each query chunk
 still attends to every key. Only the four 4096-query memory attentions change.
@@ -22,7 +22,7 @@ def make_variant(package, destination, variant):
     from coremltools.converters.mil.frontend.milproto.load import load
     from coremltools.converters.mil.mil import Builder as mb, types
 
-    if variant not in ('unchanged', 'chunk256') or ct.__version__ != '9.0':
+    if variant not in ('unchanged', 'chunk256', 'memoryfp16') or ct.__version__ != '9.0':
         raise ValueError('Requires Core ML Tools 9.0 and a known variant')
     original = ct.models.MLModel(str(package), skip_model_load=True)
     spec = original.get_spec()
@@ -100,8 +100,29 @@ def make_variant(package, destination, variant):
                                     'queryChunkSize': CHUNK, 'chunks': 4096 // CHUNK,
                                     'keysPerChunk': key_count,
                                     'scoreTensorBytesPerChunk': CHUNK * key_count * 4})
-            added_names = {op.outputs[0].name for op in function.operations
-                           if op.op_type != 'const' and op.outputs[0].name not in before}
+        elif variant == 'memoryfp16':
+            with function:
+                for index, op in enumerate(selected):
+                    old = op.outputs[0]
+                    prefix = f'bwmemoryfp16_{index}'
+                    inputs = {}
+                    for key in ('query', 'key', 'value', 'attn_mask'):
+                        value = getattr(op, key)
+                        if value is not None:
+                            inputs[key] = mb.cast(x=value, dtype='fp16', name=f'{prefix}_{key}', before_op=op)
+                    half = mb.scaled_dot_product_attention(**inputs, name=prefix + '_attention', before_op=op)
+                    replacement = mb.cast(x=half, dtype='fp32', name=prefix + '_restore', before_op=op)
+                    if replacement.shape != old.shape or replacement.dtype != old.dtype:
+                        raise ValueError('Attention output interface changed')
+                    function.replace_uses_of_var_after_op(anchor_op=op, old_var=old, new_var=replacement)
+                    function.remove_ops([op])
+                    aliases[replacement.name] = old.name
+                    changes.append({'oldOutput': old.name, 'newOutput': replacement.name,
+                                    'attentionPrecision': 'fp16', 'outputInterface': 'fp32',
+                                    'maskCast': 'fp16' if 'attn_mask' in inputs else None,
+                                    'allQueriesAndKeysRetained': True})
+        added_names = {op.outputs[0].name for op in function.operations
+                       if op.op_type != 'const' and op.outputs[0].name not in before}
         # Freeze the intended graph for conversion: preserve every unrelated op,
         # parameter, mask source and dtype; also compare the new operations exactly.
         expected = signatures(function, {})
@@ -127,10 +148,14 @@ def make_variant(package, destination, variant):
             raise ValueError('Conversion changed the replacement operation set')
         for name in added_names:
             if raw_after.get(name) != expected[name]:
-                raise ValueError(f'Chunked attention changed during conversion: {name}')
+                raise ValueError(f'Diagnostic attention changed during conversion: {name}')
         for op in after_function.operations:
-            if op.outputs[0].name in added_names and any(v.dtype != types.fp32 for v in op.outputs):
-                raise ValueError('Replacement lost FP32 computation')
+            name = op.outputs[0].name
+            if name in added_names:
+                expected_dtype = (types.fp16 if variant == 'memoryfp16' and not name.endswith('_restore')
+                                  else types.fp32)
+                if any(v.dtype != expected_dtype for v in op.outputs):
+                    raise ValueError(f'Replacement precision changed: {name}')
         actual_spec = candidate.get_spec()
         for direction in ('input', 'output'):
             if ({f.name: f.type for f in getattr(spec.description, direction)} !=
@@ -142,7 +167,7 @@ def make_variant(package, destination, variant):
         candidate.save(str(destination))
         return {'variant': variant, 'inspectedAttentions': descriptions, 'modifications': changes,
                 'unrelatedOperationsPreserved': True, 'externalInterfacesPreserved': True,
-                'attentionPrecision': 'fp32',
+                'attentionPrecision': 'fp16' if variant == 'memoryfp16' else 'fp32',
                 'memoryNote': 'Score tensor size is per chunk, not a measured or guaranteed peak allocation.'}
     finally:
         sys.setrecursionlimit(previous)
