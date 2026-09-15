@@ -1,9 +1,9 @@
 # Owned temporal contract v2
 
-Status: the user passed the 20-frame PyTorch comparison and complete Core ML
-precision controls on Mac. The regular exporter now reproduces the selected
-encoder control; a fresh complete export/comparison is required before iPhone
-integration. These results concern one clip on CPU_ONLY, not device performance.
+Status: the user passed both normal 20-frame comparisons in dog-07 on Mac,
+including the selected encoder precision policy. The source-matched Swift
+fixed-fixture device probe is implemented but has not been built/run yet.
+These results concern one clip on CPU_ONLY, not device performance.
 
 Contract ID: `bytewave.edgetam-temporal-owned.v2`.
 
@@ -146,3 +146,18 @@ matrices. This is a shared diagnostic preprocessing path, not a pixel-parity cla
 with the iOS Core Image preprocessing. HDR/color-management parity, longer occlusion
 sequences, actual Neural Engine execution, sustained latency and thermal effects
 remain separate device-validation work.
+
+## Fixed-fixture device comparison
+
+The Swift probe uses the same bounded banks and exact rational CMTime timestamps.
+The Mac preparation step requires the passed normal run and unchanged package
+hashes, then replays its 20 saved images with Core ML CPU to save reference tensors.
+Raw BGRA inputs bypass device video decoding/resizing. The phone verifies resource
+hashes and model metadata/schema before inference, checks all output tensors for
+finite values, and compares low masks, pointers, memories and presence against
+those Mac Core ML references. High masks are shape/finiteness checked only. The
+same cosine 0.99 and low-mask IoU 0.95 gates apply relative to this stated reference.
+The report separates compilation/loading, model calls and state/copy overhead.
+It does not establish sustained frame rate or runtime Neural Engine utilization.
+Only one current input/result and bounded memory are retained; the 20 reference
+frames on disk are a correctness fixture, not a production mask cache.

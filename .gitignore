@@ -12,3 +12,7 @@ __pycache__/
 # Reassembled by restore_models.py
 /Models/EdgeTAMVideoInitializer.mlpackage/Data/com.apple.CoreML/weights/weight.bin
 /Models/EdgeTAMVideoPropagator.mlpackage/Data/com.apple.CoreML/weights/weight.bin
+
+# Locally prepared, fixed-size temporal device validation fixture.
+/DeviceValidationData/*
+!/DeviceValidationData/.gitkeep
