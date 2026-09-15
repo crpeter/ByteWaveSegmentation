@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Localize temporal drift using existing tracker models and optional encoder controls.
 
-The FP32 encoder control exports one diagnostic package. No mode establishes
+Each encoder precision control exports one diagnostic package. No mode establishes
 device readiness or replaces the existing model packages.
 """
 from __future__ import annotations
@@ -39,9 +39,21 @@ def capture_torch_head(model, prediction):
     return result, heads
 
 
-def export_fp32_encoder(module, directory):
+def export_encoder_control(module, directory, fp16_conv=False):
     import coremltools as ct
-    print("Exporting diagnostic Core ML FP32 image encoder...", flush=True)
+    policy = "fp32-with-fp16-conv.v1" if fp16_conv else "float32"
+    print(f"Exporting diagnostic Core ML image encoder ({policy})...", flush=True)
+    converted_convs = []
+
+    def select_conv(op):
+        # Start from the successful FP32 baseline and lower only convolution
+        # operations (including their inputs/weights). Other arithmetic stays
+        # FP32. This tests a group; it does not identify a particular layer.
+        if op.op_type == "conv":
+            converted_convs.append({"name": op.name, "type": op.op_type})
+            return True
+        return False
+
     with torch.inference_mode():
         traced = torch.jit.trace(module, (torch.zeros(v.SHAPES["image"]),),
                                  strict=True, check_trace=False)
@@ -50,12 +62,17 @@ def export_fp32_encoder(module, directory):
         inputs=[ct.ImageType(name="image", shape=v.SHAPES["image"], scale=1 / 255.0,
                              color_layout=ct.colorlayout.RGB)],
         outputs=[ct.TensorType(name=name, dtype=np.float32) for name in owned.IMAGE_OUTPUTS],
-        compute_precision=ct.precision.FLOAT32, minimum_deployment_target=ct.target.iOS18,
+        compute_precision=(ct.transform.FP16ComputePrecision(op_selector=select_conv)
+                           if fp16_conv else ct.precision.FLOAT32),
+        minimum_deployment_target=ct.target.iOS18,
         skip_model_load=True)
-    converted.user_defined_metadata["bytewave.diagnostic"] = "image-encoder-fp32-control"
+    if fp16_conv and not converted_convs:
+        raise ValueError("No encoder convolutions matched; precision control was not applied.")
+    converted.user_defined_metadata["bytewave.diagnostic"] = f"image-encoder-{policy}-control"
     converted.user_defined_metadata["bytewave.upstream"] = owned.UPSTREAM_REVISION
     converted.user_defined_metadata["bytewave.checkpoint.sha256"] = owned.CHECKPOINT_SHA256
-    package = directory / "DiagnosticImageEncoderFP32.mlpackage"
+    package = directory / ("DiagnosticImageEncoderFP16Conv.mlpackage" if fp16_conv
+                           else "DiagnosticImageEncoderFP32.mlpackage")
     converted.save(str(package))
     del converted, traced
     hashes = {}
@@ -63,7 +80,9 @@ def export_fp32_encoder(module, directory):
         if file.is_file():
             with file.open("rb") as stream:
                 hashes[str(file.relative_to(package))] = hashlib.file_digest(stream, "sha256").hexdigest()
-    return ct.models.MLModel(str(package), compute_units=ct.ComputeUnit.CPU_ONLY), hashes
+    details = {"computePrecision": policy, "tensorOutputs": "float32", "files": hashes,
+               "convolutionsSelectedForFP16Transform": converted_convs}
+    return ct.models.MLModel(str(package), compute_units=ct.ComputeUnit.CPU_ONLY), details
 
 
 def main():
@@ -78,6 +97,8 @@ def main():
                                  help="Control experiment: feed PyTorch image features to the existing Core ML tracker")
     encoder_control.add_argument("--fp32-image-encoder", action="store_true",
                                  help="Export one diagnostic FP32 Core ML encoder and retain the existing tracker models")
+    encoder_control.add_argument("--fp16-conv-image-encoder", action="store_true",
+                                 help="Control: FP16 encoder convolutions with other operations in FP32; reuse the tracker")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     if platform.system() != "Darwin":
@@ -93,7 +114,8 @@ def main():
     torch.set_num_interop_threads(1)
     args.output.mkdir(parents=True, exist_ok=False)
     encoder_source = "pytorch-control" if args.torch_image_encoder else (
-        "coreml-fp32-control" if args.fp32_image_encoder else "coreml")
+        "coreml-fp32-control" if args.fp32_image_encoder else (
+            "coreml-fp16-conv-control" if args.fp16_conv_image_encoder else "coreml"))
     report = {"contract": owned.CONTRACT, "readyForDeviceValidation": False,
               "diagnosticComplete": False, "frames": [],
               "scope": "Each Core ML component is compared to PyTorch with the same actual inputs. "
@@ -112,13 +134,13 @@ def main():
         model = owned.load_reference(args.upstream)
         reference_backend = v.TorchBackend(owned.components(model))
         backend = v.CoreMLBackend(args.models)
-        if args.fp32_image_encoder:
-            encoder, hashes = export_fp32_encoder(reference_backend.modules["ImageEncoder"], args.output)
+        if args.fp32_image_encoder or args.fp16_conv_image_encoder:
+            encoder, details = export_encoder_control(reference_backend.modules["ImageEncoder"], args.output,
+                                                      fp16_conv=args.fp16_conv_image_encoder)
             # Deliberate diagnostic override after validating the original set.
             # All other components continue using the supplied model packages.
             backend.models["ImageEncoder"] = encoder
-            report["encoderOverride"] = {"computePrecision": "float32", "tensorOutputs": "float32",
-                                         "files": hashes}
+            report["encoderOverride"] = details
             v.write_json(args.output / "report.json", report)
         state = TemporalState()
         history = {"cond_frame_outputs": {}, "non_cond_frame_outputs": {}}
