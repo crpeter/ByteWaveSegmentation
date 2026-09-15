@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Localize temporal conversion drift using existing models; no export or readiness claim."""
+"""Localize temporal drift using existing tracker models and optional encoder controls.
+
+The FP32 encoder control exports one diagnostic package. No mode establishes
+device readiness or replaces the existing model packages.
+"""
 from __future__ import annotations
 
 import argparse
@@ -35,6 +39,33 @@ def capture_torch_head(model, prediction):
     return result, heads
 
 
+def export_fp32_encoder(module, directory):
+    import coremltools as ct
+    print("Exporting diagnostic Core ML FP32 image encoder...", flush=True)
+    with torch.inference_mode():
+        traced = torch.jit.trace(module, (torch.zeros(v.SHAPES["image"]),),
+                                 strict=True, check_trace=False)
+    converted = ct.convert(
+        traced, source="pytorch", convert_to="mlprogram",
+        inputs=[ct.ImageType(name="image", shape=v.SHAPES["image"], scale=1 / 255.0,
+                             color_layout=ct.colorlayout.RGB)],
+        outputs=[ct.TensorType(name=name, dtype=np.float32) for name in owned.IMAGE_OUTPUTS],
+        compute_precision=ct.precision.FLOAT32, minimum_deployment_target=ct.target.iOS18,
+        skip_model_load=True)
+    converted.user_defined_metadata["bytewave.diagnostic"] = "image-encoder-fp32-control"
+    converted.user_defined_metadata["bytewave.upstream"] = owned.UPSTREAM_REVISION
+    converted.user_defined_metadata["bytewave.checkpoint.sha256"] = owned.CHECKPOINT_SHA256
+    package = directory / "DiagnosticImageEncoderFP32.mlpackage"
+    converted.save(str(package))
+    del converted, traced
+    hashes = {}
+    for file in sorted(package.rglob("*")):
+        if file.is_file():
+            with file.open("rb") as stream:
+                hashes[str(file.relative_to(package))] = hashlib.file_digest(stream, "sha256").hexdigest()
+    return ct.models.MLModel(str(package), compute_units=ct.ComputeUnit.CPU_ONLY), hashes
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--upstream", type=Path, required=True)
@@ -42,8 +73,11 @@ def main():
     parser.add_argument("--video", type=Path, required=True)
     parser.add_argument("--point", type=float, nargs=2, required=True)
     parser.add_argument("--frames", type=int, default=3)
-    parser.add_argument("--torch-image-encoder", action="store_true",
-                        help="Control experiment: feed PyTorch image features to the existing Core ML tracker")
+    encoder_control = parser.add_mutually_exclusive_group()
+    encoder_control.add_argument("--torch-image-encoder", action="store_true",
+                                 help="Control experiment: feed PyTorch image features to the existing Core ML tracker")
+    encoder_control.add_argument("--fp32-image-encoder", action="store_true",
+                                 help="Export one diagnostic FP32 Core ML encoder and retain the existing tracker models")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     if platform.system() != "Darwin":
@@ -58,12 +92,14 @@ def main():
     torch.set_num_threads(1)
     torch.set_num_interop_threads(1)
     args.output.mkdir(parents=True, exist_ok=False)
+    encoder_source = "pytorch-control" if args.torch_image_encoder else (
+        "coreml-fp32-control" if args.fp32_image_encoder else "coreml")
     report = {"contract": owned.CONTRACT, "readyForDeviceValidation": False,
               "diagnosticComplete": False, "frames": [],
               "scope": "Each Core ML component is compared to PyTorch with the same actual inputs. "
                        "Encoder output source is explicit below; masks and stored state come from Core ML. End-to-end comparison "
                        "uses separate original PyTorch history. No parity gates are changed.",
-              "encoderOutputSource": "pytorch-control" if args.torch_image_encoder else "coreml",
+              "encoderOutputSource": encoder_source,
               "torchThreads": {"intraOp": torch.get_num_threads(),
                                "interOp": torch.get_num_interop_threads()},
               "pointNormalizedTopLeft": args.point,
@@ -76,6 +112,14 @@ def main():
         model = owned.load_reference(args.upstream)
         reference_backend = v.TorchBackend(owned.components(model))
         backend = v.CoreMLBackend(args.models)
+        if args.fp32_image_encoder:
+            encoder, hashes = export_fp32_encoder(reference_backend.modules["ImageEncoder"], args.output)
+            # Deliberate diagnostic override after validating the original set.
+            # All other components continue using the supplied model packages.
+            backend.models["ImageEncoder"] = encoder
+            report["encoderOverride"] = {"computePrecision": "float32", "tensorOutputs": "float32",
+                                         "files": hashes}
+            v.write_json(args.output / "report.json", report)
         state = TemporalState()
         history = {"cond_frame_outputs": {}, "non_cond_frame_outputs": {}}
         point = [min(float(x) * 1024, 1023) for x in args.point]
@@ -96,8 +140,7 @@ def main():
                         model, lambda: reference_backend.call(component, inputs))
                     row["sameInputComponents"][component] = {
                         "outputs": summarize(actual, expected), "torchMaskHeads": heads,
-                        "outputFedToNextComponent": "pytorch-control" if
-                        component == "ImageEncoder" and args.torch_image_encoder else "coreml"}
+                        "outputFedToNextComponent": encoder_source if component == "ImageEncoder" else "coreml"}
                     if component == "ImageEncoder" and args.torch_image_encoder:
                         # Only the feature source changes. Keep Core ML masks,
                         # pointers and memories in the candidate state throughout.
