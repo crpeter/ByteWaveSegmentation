@@ -56,9 +56,14 @@ Floating tensor inputs and outputs use float32 in Core ML; labels remain int32.
 This interface change distinguishes v2 from the initial, unvalidated v1 export.
 Internal computation uses `FP16ComputePrecision` except `matmul`, `softmax`, and
 `scaled_dot_product_attention`, which are excluded from the FP16 transform.
-The export manifest records the exact excluded operations per component and
-precision policy `fp16-with-fp32-attention.v1`. All four components use this
-policy because the decoder and memory paths contain attention. The one-frame
+The current policy also preserves the IoU prediction MLP and its floating score
+path through mask selection in FP32. Module scopes identify that MLP; float score
+dependencies identify subsequent slicing and reductions. Export fails if the
+MLP or its argmax path cannot be identified in the initializer or propagator.
+The manifest records excluded operations, their scopes, and preservation reasons
+under policy `fp16-with-fp32-attention-and-iou.v1`. This new selection protection
+has not yet been validated. All four components use the attention policy because
+the decoder and memory paths contain attention. The earlier one-frame
 initializer diagnostic achieved low-mask IoU 0.999599 and high-mask IoU 0.999925
 against identical-input PyTorch; this does not establish temporal parity or
 device performance. No checkpoint weights or comparison thresholds are changed.

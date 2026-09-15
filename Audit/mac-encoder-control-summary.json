@@ -1,0 +1,1161 @@
+{
+  "sourceAttachment": "Pasted markdown(20260915-113741).md",
+  "sourceSHA256": "f60f42bb04b078fc68c9a2c1dc0474757155b52df6a11739e472de8ddbc43ce4",
+  "contract": "bytewave.edgetam-temporal-owned.v2",
+  "precisionPolicy": "fp16-with-fp32-attention.v1",
+  "encoderOutputSource": "pytorch-control",
+  "torchThreads": {
+    "intraOp": 1,
+    "interOp": 1
+  },
+  "modelsManifestSHA256": "8d2be810f82b8d8d202b45d4b6d7b6d3bc19660e000dd2f9c461d8ffafb94857",
+  "diagnosticComplete": true,
+  "allRequestedFramesPassedComparison": false,
+  "scope": "Encoder-only substitution did not resolve drift. Near-tied score selection is a hypothesis requiring controlled validation; Core ML selected indices were not recorded.",
+  "frames": [
+    {
+      "index": 0,
+      "imageSHA256": "df4fd26c6e7c6cce4cd9e6c04ace316788f125eb4f953f0aad96882e7b474dd9",
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.9999846591804731,
+      "memoryCosine": 0.9999160634150852,
+      "sameInputPropagatorPointerCosine": null,
+      "sameInputTorchMaskHeads": null,
+      "independentReferenceMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.9753181338310242,
+              0.8770235776901245,
+              0.15926694869995117
+            ]
+          ],
+          "selectedMaskIndex": [
+            0
+          ],
+          "topTwoMargin": [
+            0.09829455614089966
+          ]
+        },
+        {
+          "iouEstimates": [
+            [
+              0.9753181338310242,
+              0.8770235776901245,
+              0.15926694869995117
+            ]
+          ],
+          "selectedMaskIndex": [
+            0
+          ],
+          "topTwoMargin": [
+            0.09829455614089966
+          ]
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "imageSHA256": "8c59ab89ffc2586f78ef4ef021e62e9747201bc5ef42e32d8f6efa7854618b3f",
+      "passed": true,
+      "maskIoU": 0.9996193376475067,
+      "pointerCosine": 0.9999806447069808,
+      "memoryCosine": 0.9997727777025947,
+      "sameInputPropagatorPointerCosine": 0.9999959277356736,
+      "sameInputTorchMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.9813180565834045,
+              0.9832586050033569,
+              0.9806164503097534
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0019405484199523926
+          ]
+        }
+      ],
+      "independentReferenceMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.9813329577445984,
+              0.9832684397697449,
+              0.9806298613548279
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0019354820251464844
+          ]
+        },
+        {
+          "iouEstimates": [
+            [
+              0.9813329577445984,
+              0.9832684397697449,
+              0.9806298613548279
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0019354820251464844
+          ]
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "imageSHA256": "105621e87fbb3ffbd493d3256d4e672d453603a91bf2db14bfc36226a013f15f",
+      "passed": false,
+      "maskIoU": 0.9856880733944954,
+      "pointerCosine": 0.9488188601252138,
+      "memoryCosine": 0.981102971024347,
+      "sameInputPropagatorPointerCosine": 0.9470670056781982,
+      "sameInputTorchMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.9814903736114502,
+              0.9820652604103088,
+              0.979640543460846
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0005748867988586426
+          ]
+        }
+      ],
+      "independentReferenceMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.981481671333313,
+              0.9820414781570435,
+              0.9795781970024109
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0005598068237304688
+          ]
+        },
+        {
+          "iouEstimates": [
+            [
+              0.981481671333313,
+              0.9820414781570435,
+              0.9795781970024109
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0005598068237304688
+          ]
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "imageSHA256": "a5ff112a614abf780a0ee0a275e0890599673f0cf03a84d4e7d0a65abb4a8767",
+      "passed": false,
+      "maskIoU": 0.9989157932779184,
+      "pointerCosine": 0.9378768192316814,
+      "memoryCosine": 0.9985091657087644,
+      "sameInputPropagatorPointerCosine": 0.9999922309895403,
+      "sameInputTorchMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.9805034399032593,
+              0.98146653175354,
+              0.9793760776519775
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0009630918502807617
+          ]
+        }
+      ],
+      "independentReferenceMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.9808722734451294,
+              0.9819326996803284,
+              0.9795676469802856
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0010604262351989746
+          ]
+        },
+        {
+          "iouEstimates": [
+            [
+              0.9808722734451294,
+              0.9819326996803284,
+              0.9795676469802856
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0010604262351989746
+          ]
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "imageSHA256": "62f93ffbadcdcf628dcc60349c18fa0a12df52ccbf0658b2f20312d3d1af018e",
+      "passed": false,
+      "maskIoU": 0.9985840707964602,
+      "pointerCosine": 0.9687778562891552,
+      "memoryCosine": 0.9998571265265624,
+      "sameInputPropagatorPointerCosine": 0.9999888682916344,
+      "sameInputTorchMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.9784696102142334,
+              0.9794954657554626,
+              0.9766762852668762
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.001025855541229248
+          ]
+        }
+      ],
+      "independentReferenceMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.9787180423736572,
+              0.9798587560653687,
+              0.976889431476593
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0011407136917114258
+          ]
+        },
+        {
+          "iouEstimates": [
+            [
+              0.9787180423736572,
+              0.9798587560653687,
+              0.976889431476593
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0011407136917114258
+          ]
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "imageSHA256": "f6a40decba22d155c87c3c1266d596fd2bd6196f17b8aa8a8e331ce6f5cd4e2d",
+      "passed": true,
+      "maskIoU": 0.9992805755395684,
+      "pointerCosine": 0.9973731692377011,
+      "memoryCosine": 0.9993074476351066,
+      "sameInputPropagatorPointerCosine": 0.9999917288323018,
+      "sameInputTorchMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.9774038791656494,
+              0.9785307049751282,
+              0.975165069103241
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0011268258094787598
+          ]
+        }
+      ],
+      "independentReferenceMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.977577805519104,
+              0.9787816405296326,
+              0.9753976464271545
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0012038350105285645
+          ]
+        },
+        {
+          "iouEstimates": [
+            [
+              0.977577805519104,
+              0.9787816405296326,
+              0.9753976464271545
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0012038350105285645
+          ]
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "imageSHA256": "2ac9074fac47bc62545f8737795e6a64f267b59a0ad55d10b1a85150bcbaa59f",
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.999259674841517,
+      "memoryCosine": 0.9992113575097171,
+      "sameInputPropagatorPointerCosine": 0.999988568306563,
+      "sameInputTorchMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.9784480333328247,
+              0.9793126583099365,
+              0.9760373830795288
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0008646249771118164
+          ]
+        }
+      ],
+      "independentReferenceMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.9785647392272949,
+              0.9793827533721924,
+              0.9761640429496765
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0008180141448974609
+          ]
+        },
+        {
+          "iouEstimates": [
+            [
+              0.9785647392272949,
+              0.9793827533721924,
+              0.9761640429496765
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0008180141448974609
+          ]
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "imageSHA256": "bdc67ced61153a28b0569c2781bdb6aff68dd07dd278389e9ec387fe11e9dc9a",
+      "passed": false,
+      "maskIoU": 0.9869305451829724,
+      "pointerCosine": 0.944647271972658,
+      "memoryCosine": 0.9758487302048439,
+      "sameInputPropagatorPointerCosine": 0.9407180929827662,
+      "sameInputTorchMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.9787054657936096,
+              0.9791311025619507,
+              0.9743137955665588
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.00042563676834106445
+          ]
+        }
+      ],
+      "independentReferenceMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.978863537311554,
+              0.9793633818626404,
+              0.9745650887489319
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0004998445510864258
+          ]
+        },
+        {
+          "iouEstimates": [
+            [
+              0.978863537311554,
+              0.9793633818626404,
+              0.9745650887489319
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0004998445510864258
+          ]
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "imageSHA256": "74ab3b24632b67dd4d82592166b5c02da84d02aa8a00d0aeff6724b6e98d9816",
+      "passed": false,
+      "maskIoU": 0.9902292371288989,
+      "pointerCosine": 0.9669897260560046,
+      "memoryCosine": 0.9606715596003036,
+      "sameInputPropagatorPointerCosine": 0.953091578679237,
+      "sameInputTorchMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.9818929433822632,
+              0.9821904897689819,
+              0.977443516254425
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.00029754638671875
+          ]
+        }
+      ],
+      "independentReferenceMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.9815950393676758,
+              0.9818801879882812,
+              0.9769870042800903
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.00028514862060546875
+          ]
+        },
+        {
+          "iouEstimates": [
+            [
+              0.9815950393676758,
+              0.9818801879882812,
+              0.9769870042800903
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.00028514862060546875
+          ]
+        }
+      ]
+    },
+    {
+      "index": 9,
+      "imageSHA256": "0a7e27e0429e46facf8d23eb41c4ab25e8cebf9b579a9f5c679125bb06cdc782",
+      "passed": true,
+      "maskIoU": 0.9996213555471413,
+      "pointerCosine": 0.995216632982755,
+      "memoryCosine": 0.9995977529185062,
+      "sameInputPropagatorPointerCosine": 0.9999940838502093,
+      "sameInputTorchMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.9761966466903687,
+              0.9766479730606079,
+              0.9681925177574158
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0004513263702392578
+          ]
+        }
+      ],
+      "independentReferenceMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.9758723974227905,
+              0.9764047861099243,
+              0.9686222672462463
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0005323886871337891
+          ]
+        },
+        {
+          "iouEstimates": [
+            [
+              0.9758723974227905,
+              0.9764047861099243,
+              0.9686222672462463
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0005323886871337891
+          ]
+        }
+      ]
+    },
+    {
+      "index": 10,
+      "imageSHA256": "e4257f051a23bb1524c2a20ae52414fa2791055db7e7a7dbb167f3f38af38eda",
+      "passed": true,
+      "maskIoU": 0.9988897113249445,
+      "pointerCosine": 0.9977513742335333,
+      "memoryCosine": 0.9996053573151001,
+      "sameInputPropagatorPointerCosine": 0.9999954211628387,
+      "sameInputTorchMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.9742304086685181,
+              0.9755105972290039,
+              0.967801034450531
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0012801885604858398
+          ]
+        }
+      ],
+      "independentReferenceMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.9742540717124939,
+              0.9755747318267822,
+              0.9682322144508362
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.00132066011428833
+          ]
+        },
+        {
+          "iouEstimates": [
+            [
+              0.9742540717124939,
+              0.9755747318267822,
+              0.9682322144508362
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.00132066011428833
+          ]
+        }
+      ]
+    },
+    {
+      "index": 11,
+      "imageSHA256": "399ed04cfbb7808f567feb7165eb91011183ef33b2974d8b0bda2d917c2561d5",
+      "passed": true,
+      "maskIoU": 0.9989327641408752,
+      "pointerCosine": 0.9990666071742274,
+      "memoryCosine": 0.9993838983638764,
+      "sameInputPropagatorPointerCosine": 0.999993333758312,
+      "sameInputTorchMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.9771842360496521,
+              0.9781497120857239,
+              0.971385657787323
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0009654760360717773
+          ]
+        }
+      ],
+      "independentReferenceMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.9772939085960388,
+              0.9782038927078247,
+              0.9716882705688477
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0009099841117858887
+          ]
+        },
+        {
+          "iouEstimates": [
+            [
+              0.9772939085960388,
+              0.9782038927078247,
+              0.9716882705688477
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0009099841117858887
+          ]
+        }
+      ]
+    },
+    {
+      "index": 12,
+      "imageSHA256": "ff7db0909555b0146117f02782d1239dee34abe6bb449a74ed55810aecd501b9",
+      "passed": true,
+      "maskIoU": 0.9993220338983051,
+      "pointerCosine": 0.9994774325235283,
+      "memoryCosine": 0.9998518676822418,
+      "sameInputPropagatorPointerCosine": 0.9999957110783513,
+      "sameInputTorchMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.9763668179512024,
+              0.9776566624641418,
+              0.9737591743469238
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0012898445129394531
+          ]
+        }
+      ],
+      "independentReferenceMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.976290225982666,
+              0.9776990413665771,
+              0.9738593101501465
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0014088153839111328
+          ]
+        },
+        {
+          "iouEstimates": [
+            [
+              0.976290225982666,
+              0.9776990413665771,
+              0.9738593101501465
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0014088153839111328
+          ]
+        }
+      ]
+    },
+    {
+      "index": 13,
+      "imageSHA256": "f38ef5b23bc0ab5ee6d09f4713dcaaa89cebee59b82ec68ce9f7a55f38a5fbe1",
+      "passed": false,
+      "maskIoU": 0.990070467648943,
+      "pointerCosine": 0.9467163048547343,
+      "memoryCosine": 0.9736223795675407,
+      "sameInputPropagatorPointerCosine": 0.9423467535303707,
+      "sameInputTorchMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.9775751829147339,
+              0.9783636331558228,
+              0.9751526117324829
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0007884502410888672
+          ]
+        }
+      ],
+      "independentReferenceMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.9774009585380554,
+              0.9783491492271423,
+              0.9751678109169006
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0009481906890869141
+          ]
+        },
+        {
+          "iouEstimates": [
+            [
+              0.9774009585380554,
+              0.9783491492271423,
+              0.9751678109169006
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0009481906890869141
+          ]
+        }
+      ]
+    },
+    {
+      "index": 14,
+      "imageSHA256": "19ac8be183ee9a5566c9bad4c3b46cc2fde023da81f6ee81650fd7e3b87a54b1",
+      "passed": true,
+      "maskIoU": 0.9996932515337423,
+      "pointerCosine": 0.9968244026987441,
+      "memoryCosine": 0.9998445764581868,
+      "sameInputPropagatorPointerCosine": 0.9999860423624902,
+      "sameInputTorchMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.9781250953674316,
+              0.9794288277626038,
+              0.9765258431434631
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0013037323951721191
+          ]
+        }
+      ],
+      "independentReferenceMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.9781202673912048,
+              0.9795247912406921,
+              0.9765968918800354
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0014045238494873047
+          ]
+        },
+        {
+          "iouEstimates": [
+            [
+              0.9781202673912048,
+              0.9795247912406921,
+              0.9765968918800354
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0014045238494873047
+          ]
+        }
+      ]
+    },
+    {
+      "index": 15,
+      "imageSHA256": "a1f6f364fc6b52333e04ce09c28846a3605aa2a56ba3ff3614dcdd52533b987d",
+      "passed": true,
+      "maskIoU": 0.9980287243030133,
+      "pointerCosine": 0.9990141041938317,
+      "memoryCosine": 0.9996962678668588,
+      "sameInputPropagatorPointerCosine": 0.9999958429020152,
+      "sameInputTorchMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.9780431985855103,
+              0.9798524379730225,
+              0.9773228168487549
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.001809239387512207
+          ]
+        }
+      ],
+      "independentReferenceMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.977993905544281,
+              0.9799613356590271,
+              0.9774690270423889
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0019674301147460938
+          ]
+        },
+        {
+          "iouEstimates": [
+            [
+              0.977993905544281,
+              0.9799613356590271,
+              0.9774690270423889
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0019674301147460938
+          ]
+        }
+      ]
+    },
+    {
+      "index": 16,
+      "imageSHA256": "9769759d13e3292cd9f6c52fda09ac76903c406362fe801c399c4fa7a1b05a53",
+      "passed": true,
+      "maskIoU": 0.999468085106383,
+      "pointerCosine": 0.9995667444154831,
+      "memoryCosine": 0.9997775169430401,
+      "sameInputPropagatorPointerCosine": 0.9999963384863425,
+      "sameInputTorchMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.9795758724212646,
+              0.9816759824752808,
+              0.9793932437896729
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0021001100540161133
+          ]
+        }
+      ],
+      "independentReferenceMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.9795642495155334,
+              0.9817319512367249,
+              0.9794427752494812
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0021677017211914062
+          ]
+        },
+        {
+          "iouEstimates": [
+            [
+              0.9795642495155334,
+              0.9817319512367249,
+              0.9794427752494812
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0021677017211914062
+          ]
+        }
+      ]
+    },
+    {
+      "index": 17,
+      "imageSHA256": "547d222bd5a2f255779e7afc5269080924c0b7d2475607e930cc59342c0f2a59",
+      "passed": true,
+      "maskIoU": 0.999743128692525,
+      "pointerCosine": 0.9990240349018211,
+      "memoryCosine": 0.9998973289829208,
+      "sameInputPropagatorPointerCosine": 0.999992051551052,
+      "sameInputTorchMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.9794792532920837,
+              0.9820721745491028,
+              0.9794459939002991
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.002592921257019043
+          ]
+        }
+      ],
+      "independentReferenceMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.9795069098472595,
+              0.9821124076843262,
+              0.9794960618019104
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0026054978370666504
+          ]
+        },
+        {
+          "iouEstimates": [
+            [
+              0.9795069098472595,
+              0.9821124076843262,
+              0.9794960618019104
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0026054978370666504
+          ]
+        }
+      ]
+    },
+    {
+      "index": 18,
+      "imageSHA256": "a29dd4d4ec155aef133fe670ff73065aa2558101d980f187e24752dd0976bab9",
+      "passed": true,
+      "maskIoU": 0.9997473471450228,
+      "pointerCosine": 0.9930234345205791,
+      "memoryCosine": 0.9985419862370348,
+      "sameInputPropagatorPointerCosine": 0.9999946590979686,
+      "sameInputTorchMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.9797532558441162,
+              0.9821406006813049,
+              0.9796368479728699
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0023873448371887207
+          ]
+        }
+      ],
+      "independentReferenceMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.9798868894577026,
+              0.982094943523407,
+              0.9796024560928345
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0022080540657043457
+          ]
+        },
+        {
+          "iouEstimates": [
+            [
+              0.9798868894577026,
+              0.982094943523407,
+              0.9796024560928345
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0022080540657043457
+          ]
+        }
+      ]
+    },
+    {
+      "index": 19,
+      "imageSHA256": "05ef5ea441e42bb439f0a87c950f827d4b3cf5e2e6ddcee5125c2462295137a6",
+      "passed": false,
+      "maskIoU": 0.9994983697015299,
+      "pointerCosine": 0.9669659249691747,
+      "memoryCosine": 0.9997339620702892,
+      "sameInputPropagatorPointerCosine": 0.9999950829553738,
+      "sameInputTorchMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.9793620109558105,
+              0.9810173511505127,
+              0.9774486422538757
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0016553401947021484
+          ]
+        }
+      ],
+      "independentReferenceMaskHeads": [
+        {
+          "iouEstimates": [
+            [
+              0.97918701171875,
+              0.9808145761489868,
+              0.9772570133209229
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0016275644302368164
+          ]
+        },
+        {
+          "iouEstimates": [
+            [
+              0.97918701171875,
+              0.9808145761489868,
+              0.9772570133209229
+            ]
+          ],
+          "selectedMaskIndex": [
+            1
+          ],
+          "topTwoMargin": [
+            0.0016275644302368164
+          ]
+        }
+      ]
+    }
+  ]
+}

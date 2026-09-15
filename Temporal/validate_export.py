@@ -25,8 +25,11 @@ import owned
 from state import TemporalState
 
 COUNT = 20  # Includes startup, seven spatial slots, sixteen pointers, and eviction.
-COREML_PRECISION_POLICY = "fp16-with-fp32-attention.v1"
+COREML_PRECISION_POLICY = "fp16-with-fp32-attention-and-iou.v1"
 ATTENTION_FP32_OPS = frozenset(("matmul", "softmax", "scaled_dot_product_attention"))
+IOU_SCORE_PATH_OPS = frozenset(("identity", "cast", "reshape", "transpose", "expand_dims", "squeeze",
+                               "slice_by_index", "slice_by_size", "gather", "gather_along_axis",
+                               "concat", "reduce_max", "reduce_argmax", "topk"))
 NAMES = {"ImageEncoder": owned.IMAGE_OUTPUTS, "Initializer": owned.MASK_OUTPUTS,
          "InitialMemoryEncoder": owned.MEMORY_OUTPUTS,
          "Propagator": owned.MASK_OUTPUTS + owned.MEMORY_OUTPUTS}
@@ -247,6 +250,8 @@ def run_comparison(model, backend, args, root, coreml, expected_frames=None):
 
 def export_models(modules, destination):
     import coremltools as ct
+    from coremltools.converters.mil.mil import types
+    from coremltools.converters.mil.mil.scope import ScopeSource
     destination.mkdir()
     torch.manual_seed(0)
     manifest = {"contract": owned.CONTRACT, "precisionPolicy": COREML_PRECISION_POLICY,
@@ -275,9 +280,22 @@ def export_models(modules, destination):
         # The separate real-frame comparisons are mandatory; tracing alone cannot
         # validate dynamic label/mask choices, startup padding or temporal eviction.
         retained_ops = []
+        protected_scores = set()
         def select_fp16(op):
-            if op.op_type in ATTENTION_FP32_OPS:
-                retained_ops.append({"name": op.name, "type": op.op_type})
+            scopes = op.scopes.get(ScopeSource.TORCHSCRIPT_MODULE_NAME, [])
+            iou_head = any("iou_prediction_head" in scope.split(".") for scope in scopes)
+            inputs = [value for item in op.inputs.values()
+                      for value in (item if isinstance(item, (list, tuple)) else (item,))]
+            score_path = op.op_type in IOU_SCORE_PATH_OPS and any(id(value) in protected_scores for value in inputs)
+            if iou_head or score_path:
+                # Retain the score tensor through slicing/reduction, not just the
+                # MLP: recasting near-tied scores before argmax can change the pointer.
+                # Integer argmax outputs do not extend protection into mask gathers.
+                protected_scores.update(id(value) for value in op.outputs if value.dtype == types.fp32)
+            if op.op_type in ATTENTION_FP32_OPS or iou_head or score_path:
+                retained_ops.append({"name": op.name, "type": op.op_type,
+                                     "reason": "iou-head" if iou_head else "iou-score-path" if score_path else "attention",
+                                     "moduleScopes": scopes})
                 return False
             return True
         converted = ct.convert(traced, source="pytorch", convert_to="mlprogram", inputs=descriptions,
@@ -285,6 +303,11 @@ def export_models(modules, destination):
                                compute_precision=ct.transform.FP16ComputePrecision(op_selector=select_fp16),
                                minimum_deployment_target=ct.target.iOS18,
                                skip_model_load=True)
+        if name in ("Initializer", "Propagator"):
+            if not any(op["reason"] == "iou-head" and op["type"] in ("linear", "matmul") for op in retained_ops):
+                raise ValueError(f"{name}: IoU head scope was not found; precision policy was not applied.")
+            if not any(op["reason"] == "iou-score-path" and op["type"] == "reduce_argmax" for op in retained_ops):
+                raise ValueError(f"{name}: FP32 IoU score path did not reach mask selection.")
         converted.user_defined_metadata["bytewave.contract"] = owned.CONTRACT
         converted.user_defined_metadata["bytewave.upstream"] = owned.UPSTREAM_REVISION
         converted.user_defined_metadata["bytewave.checkpoint.sha256"] = owned.CHECKPOINT_SHA256
@@ -318,12 +341,17 @@ def main():
         parser.error("Video does not exist.")
     if not args.reference_only and platform.system() != "Darwin":
         parser.error("Core ML prediction comparison requires macOS. Use --reference-only elsewhere.")
+    # The user's 20-frame diagnostic completed with these settings after a
+    # native PyEval_SaveThread abort with the default PyTorch thread pools.
+    torch.set_num_threads(1)
+    torch.set_num_interop_threads(1)
     args.output.mkdir(parents=True, exist_ok=False)
     versions = {name: importlib.metadata.version(name) for name in ("torch", "torchvision", "numpy", "av", "timm")}
     if not args.reference_only:
         versions["coremltools"] = importlib.metadata.version("coremltools")
     status = {"contract": owned.CONTRACT, "upstream": owned.UPSTREAM_REVISION,
               "precisionPolicy": COREML_PRECISION_POLICY, "tensorInterface": "float32",
+              "torchThreads": {"intraOp": torch.get_num_threads(), "interOp": torch.get_num_interop_threads()},
               "checkpointSHA256": owned.CHECKPOINT_SHA256, "python": sys.version,
               "versions": versions, "pointNormalizedTopLeft": args.point,
               "referencePassed": False, "coremlPassed": False, "readyForDeviceValidation": False}
