@@ -183,8 +183,21 @@ state commits only after checks pass. Report includes raw timings/checks, order
 strata and a compact summary. This is a co-resident repeated-input Mac benchmark,
 not a new temporal-feedback validation, device pass, hardware-utilization reading
 or sustained playback benchmark. No model promotion or installed fixture change.
-Assistant static review only; user has not run this paired comparison yet.
-Commands and report-reading steps remain in chat, never README.
+The user completed the paired Mac GPU run: all 76 pairs passed their accuracy
+checks. Median original 14.4065 ms, conv2 14.4707 ms; candidate is 0.0642 ms
+(0.45%) slower by median, with no useful gain demonstrated. Balanced-order
+strata also provide no consistent improvement. These data do not establish a
+statistically significant regression or any iPhone effect. Selected supplied
+fields are in `Audit/mac-propagator-paired-gpu-summary.json`. Keep the original
+normal export and device fixture; do not promote conv2 for GPU performance.
+
+Next: use the existing paired benchmark with CPU_AND_NE requested to determine
+whether the rewrite helps that execution path. This uses the already validated
+candidate and unchanged accuracy gates, without conversion or new code. A Mac
+GPU tie does not resolve the NE hypothesis. If NE also shows no useful benefit,
+close this two-linear rewrite experiment rather than repeat GPU runs. Assistant
+runs no benchmarks/tests/inference. Commands and report-reading steps remain in
+chat, never README.
 
 ## User goal and decisions
 
