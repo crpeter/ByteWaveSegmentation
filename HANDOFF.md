@@ -120,15 +120,29 @@ estimated relative costs, per-plan counts/cost totals and errors. Missing costs
 stay unreported; estimates are not runtime device usage or measured milliseconds.
 Separate atomic temporal-last-plan.json checkpoints preserve load failures/native
 abort location, and **Share plan report** exports a unique final report. Existing
-prediction function and gates remain unchanged. Only static checks/API review;
-user must build this new UI and inspection path.
+prediction function and gates remain unchanged. The user built and completed this inspection on iPhone 17 Pro; all four plans loaded.
 
-Next: pull, rebuild Release on 17 Pro with the existing dog-09 fixture, tap
-**Inspect GPU/NE plans** once, then **Share plan report**. No export/preparation
-or repeated 20-frame run needed. Use plan estimates to choose a focused propagator
-optimization and validate it against the unchanged numerical gates; actual
-execution profiling may still be needed. Commands/report instructions remain in
-chat, not README. Assistant runs no builds, tests or model execution.
+The owned 17 Pro plan matches the dog-09 fixture and manifest. Its selected
+operations and source attachment hash are archived in
+`Audit/owned-temporal-iphone17pro-compute-plan-summary.json`. Encoder GPU prefers
+all 489 nonconstant operations; encoder CPU_AND_NE prefers 406 CPU / 83 NE, with
+95.82% of estimated relative cost assigned to CPU-preferred operations.
+Propagator GPU prefers 704 GPU / 18 CPU operations. The two linear outputs
+`linear_9_cast_fp16` and `linear_19_cast_fp16` together account for 46.12% of
+estimated relative cost; adding `linear_74_cast_fp16` and `linear_76_cast_fp16`
+brings this to 57.65%. Propagator CPU_AND_NE prefers 489 NE / 181 CPU / 52
+unreported, but supplies NO cost estimates. Counts and estimates do not measure
+runtime hardware usage or establish an optimization speedup.
+
+Next: run `Temporal/inspect_propagator_linears.py` against dog-09 to map those
+four outputs to exact serialized tensor/weight shapes and neighboring operations.
+The inspector verifies the source manifest and propagator package hashes against
+the phone plan. It only reads protobuf; no compilation, conversion or prediction.
+Full context goes to report.json, compact operation details to summary.json.
+Confirm the shapes before considering an equivalent 1x1-convolution experiment;
+no source role is inferred solely from an operation's generated name. Models,
+precision policies and correctness gates are unchanged. Commands/report
+instructions remain in chat, not README. Assistant runs static checks only.
 
 ## User goal and decisions
 
