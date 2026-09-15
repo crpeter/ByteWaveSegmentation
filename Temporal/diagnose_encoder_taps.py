@@ -127,7 +127,20 @@ def main():
                 raise ValueError('Unexpected convolution input')
             samples.append({'neIndex': index, 'input': bindings[0].name, 'output': output_names[0]})
         taps = list(dict.fromkeys(name for sample in samples for name in (sample['input'], sample['output'])))
-        probe = extract_submodel(model, outputs=list(FINAL) + [n for n in taps if n not in FINAL])
+        # coremltools 9 deep-copies the connected MIL graph during extraction.
+        # This encoder exceeds Python's default recursion limit in copy.deepcopy.
+        # Allow deeper traversal only for extraction; prediction workers keep
+        # their default limit. Do not retry indefinitely or modify the graph.
+        previous_limit = sys.getrecursionlimit()
+        extraction_limit = max(previous_limit, 20_000)
+        report['extractionRecursionLimit'] = {'original': previous_limit, 'temporary': extraction_limit}
+        write_json(report_path, report)
+        print(f'Extracting diagnostic graph (recursion limit {extraction_limit})...', flush=True)
+        try:
+            sys.setrecursionlimit(extraction_limit)
+            probe = extract_submodel(model, outputs=list(FINAL) + [n for n in taps if n not in FINAL])
+        finally:
+            sys.setrecursionlimit(previous_limit)
         probe.user_defined_metadata['bytewave.contract'] = 'bytewave.encoder-taps.diagnostic.v1'
         probe_package = args.output / 'DiagnosticEncoderTaps.mlpackage'
         probe.save(str(probe_package))
