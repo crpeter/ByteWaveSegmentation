@@ -1,9 +1,9 @@
 # Owned temporal contract v2
 
-Status: the user passed the 20-frame PyTorch comparison and exported v1 on Mac.
-The v1 FP16 initializer failed Core ML parity. A one-frame mixed-precision
-diagnostic passed closely; v2 applies that policy to the complete export and
-still requires both full comparisons before iPhone integration.
+Status: the user passed the 20-frame PyTorch comparison and complete Core ML
+precision controls on Mac. The regular exporter now reproduces the selected
+encoder control; a fresh complete export/comparison is required before iPhone
+integration. These results concern one clip on CPU_ONLY, not device performance.
 
 Contract ID: `bytewave.edgetam-temporal-owned.v2`.
 
@@ -54,19 +54,22 @@ uses sigmoid probabilities. The original 20× scale and −10 bias remain in the
 
 Floating tensor inputs and outputs use float32 in Core ML; labels remain int32.
 This interface change distinguishes v2 from the initial, unvalidated v1 export.
-Internal computation uses `FP16ComputePrecision` except `matmul`, `softmax`, and
-`scaled_dot_product_attention`, which are excluded from the FP16 transform.
-The current policy also preserves the IoU prediction MLP and its floating score
-path through mask selection in FP32. Module scopes identify that MLP; float score
-dependencies identify subsequent slicing and reductions. Export fails if the
-MLP or its argmax path cannot be identified in the initializer or propagator.
-The manifest records excluded operations, their scopes, and preservation reasons
-under policy `fp16-with-fp32-attention-and-iou.v1`. This new selection protection
-has not yet been validated. All four components use the attention policy because
-the decoder and memory paths contain attention. The earlier one-frame
-initializer diagnostic achieved low-mask IoU 0.999599 and high-mask IoU 0.999925
-against identical-input PyTorch; this does not establish temporal parity or
-device performance. No checkpoint weights or comparison thresholds are changed.
+Policy `mixed-encoder-late-conv33-and-fp32-attention-iou.v1` uses component-specific
+precision. In the image encoder, 99 convolutions use FP16; 33 named convolution
+module paths and all non-convolution operations retain FP32. The protected paths
+are in `encoder_precision.py`, taken from the passing [99,132) diagnostic control.
+Export checks the expected 132 convolutions, all protected paths, and exactly 33
+FP32 matches. The manifest records per-convolution precision and excluded ops.
+
+The other three components use FP16 except `matmul`, `softmax`,
+`scaled_dot_product_attention`, the IoU prediction MLP, and its floating score
+path through mask selection. Export fails if the initializer/propagator IoU MLP
+or argmax path cannot be identified. This retains the earlier tracker policy.
+
+The chosen encoder control passed all 20 frames: minimum mask IoU 0.997046,
+pointer cosine 0.998431, memory cosine 0.994446. These diagnostic results do not
+replace the normal full-set gate, visual review, or device profiling. No checkpoint
+weights or comparison thresholds are changed.
 Exact names/shapes are in
 `validate_export.py:SHAPES`; no output masks are used to guess memory layouts.
 

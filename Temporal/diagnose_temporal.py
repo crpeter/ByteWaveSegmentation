@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import json
 from pathlib import Path
 import platform
 
@@ -165,9 +166,13 @@ def main():
     try:
         manifest = args.models / "manifest.json"
         report["modelsManifestSHA256"] = hashlib.sha256(manifest.read_bytes()).hexdigest()
+        source_policy = json.loads(manifest.read_text())["precisionPolicy"]
+        if source_policy not in (v.TRACKER_PRECISION_POLICY, v.COREML_PRECISION_POLICY):
+            raise ValueError("Unsupported source model precision policy for this diagnostic.")
+        report["precisionPolicy"] = source_policy
         model = owned.load_reference(args.upstream)
         reference_backend = v.TorchBackend(owned.components(model))
-        backend = v.CoreMLBackend(args.models)
+        backend = v.CoreMLBackend(args.models, precision_policy=source_policy)
         if args.fp32_image_encoder or args.fp16_conv_image_encoder:
             encoder, details = export_encoder_control(reference_backend.modules["ImageEncoder"], args.output,
                                                       fp16_conv=args.fp16_conv_image_encoder,

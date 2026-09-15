@@ -22,10 +22,12 @@ from PIL import Image
 import torch
 
 import owned
+from encoder_precision import ENCODER_FP32_CONV_SCOPES, EXPECTED_ENCODER_CONVOLUTIONS
 from state import TemporalState
 
 COUNT = 20  # Includes startup, seven spatial slots, sixteen pointers, and eviction.
-COREML_PRECISION_POLICY = "fp16-with-fp32-attention-and-iou.v1"
+TRACKER_PRECISION_POLICY = "fp16-with-fp32-attention-and-iou.v1"
+COREML_PRECISION_POLICY = "mixed-encoder-late-conv33-and-fp32-attention-iou.v1"
 ATTENTION_FP32_OPS = frozenset(("matmul", "softmax", "scaled_dot_product_attention"))
 IOU_SCORE_PATH_OPS = frozenset(("identity", "cast", "reshape", "transpose", "expand_dims", "squeeze",
                                "slice_by_index", "slice_by_size", "gather", "gather_along_axis",
@@ -102,14 +104,14 @@ class TorchBackend:
 
 
 class CoreMLBackend:
-    def __init__(self, directory):
+    def __init__(self, directory, *, precision_policy=COREML_PRECISION_POLICY):
         import coremltools as ct
         self.models = {name: ct.models.MLModel(str(directory / f"BWTemporal{name}.mlpackage"),
                                              compute_units=ct.ComputeUnit.CPU_ONLY) for name in INPUTS}
         for name, model in self.models.items():
             if model.user_defined_metadata.get("bytewave.contract") != owned.CONTRACT:
                 raise ValueError(f"Unexpected {name} contract; regenerate the complete model set.")
-            if model.user_defined_metadata.get("bytewave.precision") != COREML_PRECISION_POLICY:
+            if model.user_defined_metadata.get("bytewave.precision") != precision_policy:
                 raise ValueError(f"Unexpected {name} precision policy; regenerate the complete model set.")
 
     def call(self, component, inputs):
@@ -281,8 +283,26 @@ def export_models(modules, destination):
         # validate dynamic label/mask choices, startup padding or temporal eviction.
         retained_ops = []
         protected_scores = set()
+        encoder_convolutions = []
+        encoder_retained_scopes = set()
         def select_fp16(op):
             scopes = op.scopes.get(ScopeSource.TORCHSCRIPT_MODULE_NAME, [])
+            if name == "ImageEncoder":
+                # Reproduce the passing quarter-range control using named
+                # module paths. All non-convolution arithmetic stays FP32.
+                keep_fp32 = True
+                if op.op_type == "conv":
+                    module_path = tuple(scopes[:-1]) if scopes and scopes[-1] == op.name else tuple(scopes)
+                    keep_fp32 = module_path in ENCODER_FP32_CONV_SCOPES
+                    encoder_convolutions.append({"name": op.name, "moduleScopes": scopes,
+                                                 "computePrecision": "float32" if keep_fp32 else "float16"})
+                    if keep_fp32:
+                        encoder_retained_scopes.add(module_path)
+                if keep_fp32:
+                    retained_ops.append({"name": op.name, "type": op.op_type,
+                                         "reason": "encoder-late-convolution" if op.op_type == "conv" else "encoder-non-convolution",
+                                         "moduleScopes": scopes})
+                return not keep_fp32
             iou_head = any("iou_prediction_head" in scope.split(".") for scope in scopes)
             inputs = [value for item in op.inputs.values()
                       for value in (item if isinstance(item, (list, tuple)) else (item,))]
@@ -303,6 +323,11 @@ def export_models(modules, destination):
                                compute_precision=ct.transform.FP16ComputePrecision(op_selector=select_fp16),
                                minimum_deployment_target=ct.target.iOS18,
                                skip_model_load=True)
+        if name == "ImageEncoder":
+            if (len(encoder_convolutions) != EXPECTED_ENCODER_CONVOLUTIONS
+                    or encoder_retained_scopes != ENCODER_FP32_CONV_SCOPES
+                    or sum(op["computePrecision"] == "float32" for op in encoder_convolutions) != 33):
+                raise ValueError("Encoder convolution scopes/count changed; review the precision policy before export.")
         if name in ("Initializer", "Propagator"):
             if not any(op["reason"] == "iou-head" and op["type"] in ("linear", "matmul") for op in retained_ops):
                 raise ValueError(f"{name}: IoU head scope was not found; precision policy was not applied.")
@@ -322,6 +347,8 @@ def export_models(modules, destination):
                     hashes[str(file.relative_to(package))] = hashlib.file_digest(stream, "sha256").hexdigest()
         manifest["models"][name] = {"files": hashes, "inputs": list(INPUTS[name]), "outputs": list(NAMES[name]),
                                     "operationsExcludedFromFP16Transform": retained_ops}
+        if name == "ImageEncoder":
+            manifest["models"][name]["convolutionPrecision"] = encoder_convolutions
         write_json(destination / "manifest.json", manifest)
     return manifest
 
