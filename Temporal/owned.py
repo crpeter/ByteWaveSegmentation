@@ -227,7 +227,7 @@ class Propagator(nn.Module):
         masks = selected_masks(self.model, conditioned, high0, high1)
         features, positions_out = self.model._encode_new_memory(
             [raw.flatten(2).permute(2, 0, 1)], [(64, 64)], masks[1], masks[4], is_mask_from_pts=False)
-        return (*masks, features, positions_out)
+        return (*masks, features, positions_out[0])
 
 
 def components(model):
