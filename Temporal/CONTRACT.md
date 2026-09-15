@@ -1,9 +1,11 @@
-# Owned temporal contract v1
+# Owned temporal contract v2
 
-Status: implemented, not executed or exported in this session. Do not integrate
-these graphs into the iPhone app until both local reference comparisons pass.
+Status: the user passed the 20-frame PyTorch comparison and exported v1 on Mac.
+The v1 FP16 initializer failed Core ML parity. A one-frame mixed-precision
+diagnostic passed closely; v2 applies that policy to the complete export and
+still requires both full comparisons before iPhone integration.
 
-Contract ID: `bytewave.edgetam-temporal-owned.v1`.
+Contract ID: `bytewave.edgetam-temporal-owned.v2`.
 
 This is a new, source-controlled four-model export. It does not claim to recover
 the community export's undocumented `attention_bias` / `rotary_weight` contract.
@@ -38,7 +40,7 @@ or invented reacquisition rule is added.
 | Package | Inputs | Outputs |
 |---|---|---|
 | `BWTemporalImageEncoder` | RGB 1024 × 1024 image | Raw and initial 1 × 256 × 64 × 64 features; high-resolution 1 × 32 × 256 × 256 and 1 × 64 × 128 × 128 features |
-| `BWTemporalInitializer` | Initial features, both high-resolution features, float16 point 1 × 1 × 2, int32 label 1 × 1 | Low/high mask logits, best IoU estimate, pointer and object score |
+| `BWTemporalInitializer` | Initial features, both high-resolution features, float32 point 1 × 1 × 2, int32 label 1 × 1 | Low/high mask logits, best IoU estimate, pointer and object score |
 | `BWTemporalInitialMemoryEncoder` | Raw features, initial high-resolution logits and object score | Memory features and positions, each 1 × 512 × 64 |
 | `BWTemporalPropagator` | Raw/high-resolution features plus the banks below | Mask/score/pointer outputs plus the next memory features and positions |
 
@@ -50,7 +52,17 @@ frames use memory-conditioned features. Both paths select among three masks usin
 the original IoU head. Initial memory binarizes the prompt mask; propagated memory
 uses sigmoid probabilities. The original 20× scale and −10 bias remain in the graph.
 
-Output tensors use float16 in Core ML. Exact names/shapes are in
+Floating tensor inputs and outputs use float32 in Core ML; labels remain int32.
+This interface change distinguishes v2 from the initial, unvalidated v1 export.
+Internal computation uses `FP16ComputePrecision` except `matmul`, `softmax`, and
+`scaled_dot_product_attention`, which are excluded from the FP16 transform.
+The export manifest records the exact excluded operations per component and
+precision policy `fp16-with-fp32-attention.v1`. All four components use this
+policy because the decoder and memory paths contain attention. The one-frame
+initializer diagnostic achieved low-mask IoU 0.999599 and high-mask IoU 0.999925
+against identical-input PyTorch; this does not establish temporal parity or
+device performance. No checkpoint weights or comparison thresholds are changed.
+Exact names/shapes are in
 `validate_export.py:SHAPES`; no output masks are used to guess memory layouts.
 
 ## Application-owned banks
@@ -107,7 +119,7 @@ unpruned 20-entry history; the candidate uses the bounded state and owned graphs
 
 1. Float32 PyTorch: every reported tensor must satisfy atol/rtol 0.001, mask IoU
    at least 0.999 and matching object-presence classification.
-2. Export: four iOS 18 Core ML packages, explicit float16 tensors, new contract
+2. Export: four iOS 18 Core ML packages, explicit float32 tensor interfaces, new contract
    metadata, pinned checkpoint identity and per-file output hashes.
 3. Core ML CPU comparison: repeat the same decoded frames and point, requiring
    mask IoU at least 0.95, cosine similarity at least 0.99 for mask/memory/pointer

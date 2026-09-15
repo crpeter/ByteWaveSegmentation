@@ -25,6 +25,8 @@ import owned
 from state import TemporalState
 
 COUNT = 20  # Includes startup, seven spatial slots, sixteen pointers, and eviction.
+COREML_PRECISION_POLICY = "fp16-with-fp32-attention.v1"
+ATTENTION_FP32_OPS = frozenset(("matmul", "softmax", "scaled_dot_product_attention"))
 NAMES = {"ImageEncoder": owned.IMAGE_OUTPUTS, "Initializer": owned.MASK_OUTPUTS,
          "InitialMemoryEncoder": owned.MEMORY_OUTPUTS,
          "Propagator": owned.MASK_OUTPUTS + owned.MEMORY_OUTPUTS}
@@ -101,15 +103,25 @@ class CoreMLBackend:
         import coremltools as ct
         self.models = {name: ct.models.MLModel(str(directory / f"BWTemporal{name}.mlpackage"),
                                              compute_units=ct.ComputeUnit.CPU_ONLY) for name in INPUTS}
+        for name, model in self.models.items():
+            if model.user_defined_metadata.get("bytewave.contract") != owned.CONTRACT:
+                raise ValueError(f"Unexpected {name} contract; regenerate the complete model set.")
+            if model.user_defined_metadata.get("bytewave.precision") != COREML_PRECISION_POLICY:
+                raise ValueError(f"Unexpected {name} precision policy; regenerate the complete model set.")
 
     def call(self, component, inputs):
         if component == "ImageEncoder":
             values = {"image": inputs["pil_image"]}
         else:
-            values = {name: np.asarray(inputs[name], dtype=np.int32 if name == "point_labels" else np.float16)
+            values = {name: np.asarray(inputs[name], dtype=np.int32 if name == "point_labels" else np.float32)
                       for name in INPUTS[component]}
         output = self.models[component].predict(values)
-        return {name: np.asarray(output[name], dtype=np.float32) for name in NAMES[component]}
+        result = {name: np.asarray(output[name], dtype=np.float32) for name in NAMES[component]}
+        for name, value in result.items():
+            if value.shape != SHAPES[name] or not np.isfinite(value).all():
+                raise ValueError(f"Invalid Core ML {component} output {name}: shape={value.shape}, "
+                                 f"nonfinite={int(value.size - np.isfinite(value).sum())}")
+        return result
 
 
 def cosine(left, right):
@@ -237,7 +249,8 @@ def export_models(modules, destination):
     import coremltools as ct
     destination.mkdir()
     torch.manual_seed(0)
-    manifest = {"contract": owned.CONTRACT, "models": {}}
+    manifest = {"contract": owned.CONTRACT, "precisionPolicy": COREML_PRECISION_POLICY,
+                "tensorInterface": "float32", "models": {}}
     for name, module in modules.items():
         print(f"Exporting {name}…", flush=True)
         examples = []
@@ -256,19 +269,26 @@ def export_models(modules, destination):
                                                   color_layout=ct.colorlayout.RGB))
             else:
                 descriptions.append(ct.TensorType(name=key, shape=shape,
-                                                  dtype=np.int32 if key == "point_labels" else np.float16))
+                                                  dtype=np.int32 if key == "point_labels" else np.float32))
         with torch.inference_mode():
             traced = torch.jit.trace(module, tuple(examples), strict=True, check_trace=False)
         # The separate real-frame comparisons are mandatory; tracing alone cannot
         # validate dynamic label/mask choices, startup padding or temporal eviction.
+        retained_ops = []
+        def select_fp16(op):
+            if op.op_type in ATTENTION_FP32_OPS:
+                retained_ops.append({"name": op.name, "type": op.op_type})
+                return False
+            return True
         converted = ct.convert(traced, source="pytorch", convert_to="mlprogram", inputs=descriptions,
-                               outputs=[ct.TensorType(name=key, dtype=np.float16) for key in NAMES[name]],
-                               compute_precision=ct.precision.FLOAT16,
+                               outputs=[ct.TensorType(name=key, dtype=np.float32) for key in NAMES[name]],
+                               compute_precision=ct.transform.FP16ComputePrecision(op_selector=select_fp16),
                                minimum_deployment_target=ct.target.iOS18,
                                skip_model_load=True)
         converted.user_defined_metadata["bytewave.contract"] = owned.CONTRACT
         converted.user_defined_metadata["bytewave.upstream"] = owned.UPSTREAM_REVISION
         converted.user_defined_metadata["bytewave.checkpoint.sha256"] = owned.CHECKPOINT_SHA256
+        converted.user_defined_metadata["bytewave.precision"] = COREML_PRECISION_POLICY
         package = destination / f"BWTemporal{name}.mlpackage"
         converted.save(str(package))
         del converted, traced
@@ -277,7 +297,8 @@ def export_models(modules, destination):
             if file.is_file():
                 with file.open("rb") as stream:
                     hashes[str(file.relative_to(package))] = hashlib.file_digest(stream, "sha256").hexdigest()
-        manifest["models"][name] = {"files": hashes, "inputs": list(INPUTS[name]), "outputs": list(NAMES[name])}
+        manifest["models"][name] = {"files": hashes, "inputs": list(INPUTS[name]), "outputs": list(NAMES[name]),
+                                    "operationsExcludedFromFP16Transform": retained_ops}
         write_json(destination / "manifest.json", manifest)
     return manifest
 
@@ -302,6 +323,7 @@ def main():
     if not args.reference_only:
         versions["coremltools"] = importlib.metadata.version("coremltools")
     status = {"contract": owned.CONTRACT, "upstream": owned.UPSTREAM_REVISION,
+              "precisionPolicy": COREML_PRECISION_POLICY, "tensorInterface": "float32",
               "checkpointSHA256": owned.CHECKPOINT_SHA256, "python": sys.version,
               "versions": versions, "pointNormalizedTopLeft": args.point,
               "referencePassed": False, "coremlPassed": False, "readyForDeviceValidation": False}

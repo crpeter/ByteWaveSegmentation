@@ -18,6 +18,10 @@ import torch
 import owned
 from validate_export import INPUTS, cosine, video_frames, write_json
 
+# This diagnostic deliberately reads the original failing export, including its
+# FP16 interfaces. New v2 packages are validated by the full temporal command.
+SOURCE_CONTRACT = "bytewave.edgetam-temporal-owned.v1"
+
 
 def summarize(outputs, reference=None):
     checks = {}
@@ -90,7 +94,7 @@ def main():
     if not all(np.isfinite(v) and 0 <= v <= 1 for v in args.point):
         parser.error("Point coordinates must be finite and in [0,1].")
     args.output.mkdir(parents=True, exist_ok=False)
-    report = {"contract": owned.CONTRACT, "readyForDeviceValidation": False,
+    report = {"contract": SOURCE_CONTRACT, "readyForDeviceValidation": False,
               "scope": "One-frame initializer precision diagnostic; FP32 computation and interfaces, identical numerical inputs",
               "upstream": owned.UPSTREAM_REVISION, "checkpointSHA256": owned.CHECKPOINT_SHA256,
               "pointNormalizedTopLeft": args.point}
@@ -101,7 +105,7 @@ def main():
         for name in ("ImageEncoder", "Initializer"):
             model = ct.models.MLModel(str(args.models / f"BWTemporal{name}.mlpackage"),
                                      compute_units=ct.ComputeUnit.CPU_ONLY)
-            for key, expected in (("bytewave.contract", owned.CONTRACT),
+            for key, expected in (("bytewave.contract", SOURCE_CONTRACT),
                                   ("bytewave.upstream", owned.UPSTREAM_REVISION),
                                   ("bytewave.checkpoint.sha256", owned.CHECKPOINT_SHA256)):
                 if model.user_defined_metadata.get(key) != expected:
