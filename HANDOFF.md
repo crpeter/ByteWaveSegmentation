@@ -191,13 +191,34 @@ statistically significant regression or any iPhone effect. Selected supplied
 fields are in `Audit/mac-propagator-paired-gpu-summary.json`. Keep the original
 normal export and device fixture; do not promote conv2 for GPU performance.
 
-Next: use the existing paired benchmark with CPU_AND_NE requested to determine
-whether the rewrite helps that execution path. This uses the already validated
-candidate and unchanged accuracy gates, without conversion or new code. A Mac
-GPU tie does not resolve the NE hypothesis. If NE also shows no useful benefit,
-close this two-linear rewrite experiment rather than repeat GPU runs. Assistant
-runs no benchmarks/tests/inference. Commands and report-reading steps remain in
-chat, never README.
+The paired Mac CPU_AND_NE run also completed with all 76 pairs passing accuracy.
+Original median 176.5897 ms, conv2 177.0624 ms: no useful latency reduction
+(-0.2677%). Both call-order strata remain close. Two ANE compiler failure messages
+appeared after the Summary line in the pasted console output; they do not identify
+a model or partition, and log ordering does not establish when the failures
+occurred. Do not infer successful Neural Engine execution or specific CPU
+fallback from numerical success. Selected report fields and exact messages are
+in `Audit/mac-propagator-paired-ne-summary.json`.
+
+Close the two-linear convolution experiment: no useful Mac GPU or CPU_AND_NE
+benefit demonstrated. Retain the original normal export/dog-09 device fixture.
+Do not promote conv2, repeat the same benchmark, or infer device outcomes from
+Mac results. Compiler relative-cost estimates did not predict a useful benefit
+from this operator substitution; there is no proof of which kernels were used.
+
+Next is an Instruments capture of the ORIGINAL model on physical iPhone 17 Pro,
+Release, CPU + GPU. Use the Core ML template and GPU instrument, run the existing
+20-frame temporal comparison, then inspect a warm Propagator prediction's Activity,
+Data and Compute tracks against GPU activity. Core ML compute requests can be
+asynchronous; request intervals alone are not actual GPU occupancy. This is
+runtime profiling of the known fixture, not another correctness rerun or a
+sustained video benchmark. Native Core ML tracks already identify model calls,
+so no app/model/signpost changes are needed for this first capture. Ask for the
+model-level aggregation and an expanded warm Propagator timeline screenshot;
+keep a saved trace for deeper follow-up. Workflow verified against Apple's
+https://developer.apple.com/videos/play/wwdc2022/10027/ .
+Assistant runs no builds, benchmarks/tests/inference. Commands and report-reading
+steps remain in chat, never README.
 
 ## User goal and decisions
 
