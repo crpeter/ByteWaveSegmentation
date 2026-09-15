@@ -1,5 +1,31 @@
 # ByteWave segmentation: continuation handoff
 
+## Latest profiling: iPhone 17 Pro GPU attention hotspot
+
+The user supplied a second Instruments run with Shader Timeline enabled. Offline
+XML analysis is archived in `Audit/iphone17pro-instruments-shader-summary.json`,
+including source/export hashes, per-prediction timings and interval methodology.
+All 41 prediction calls are present (20 encoder, 19 propagator, two initialization).
+Excluding each model's first call, median Propagator prediction is 67.497 ms and
+app GPU Active interval union is 62.119 ms. Encoder medians are 22.406/20.941 ms.
+Two shaders, `sdpa_tile_fwd_8x8x8_noEdgeCheck (230)` and
+`sdpa_tile_fwd_8x8x8_doEdgeCheck (234)`, each appear twice per warm Propagator call.
+Their combined observed interval median is 43.616 ms; across 18 warm calls,
+757.914 ms of 926.212 ms observed shader interval union belongs to this pair.
+Shader samples do not cover all 1119.562 ms of GPU Active time. These are sampled
+interval observations, not exact MIL-operation timings or additive CPU/GPU costs.
+
+The four expensive attention occurrences are consistent with the source's two
+memory-attention layers, each using self-attention and cross-attention. The XML
+provides shader identities but no exact mapping to those four MIL operation names.
+This redirects the next optimization toward memory attention; the unsuccessful
+two-linear convolution rewrite stays closed. Preserve FP32 attention and existing
+PyTorch gates until a specific equivalent attention candidate is validated. No
+model/fixture changes, tests, builds, conversion or inference were performed by
+the assistant. Next work is an isolated attention implementation experiment,
+not more generic GPU placement estimates. The trace itself does not embed model
+or fixture hashes, so dog-09 association is from the user's capture workflow.
+
 ## Latest result: encoder fanout temporal comparison
 
 The user passed both 20-frame runs in `encoder-temporal-01` against original
