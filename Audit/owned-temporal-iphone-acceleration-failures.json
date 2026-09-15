@@ -1,0 +1,36 @@
+{
+  "source": "User-pasted physical iPhone reports and console logs, 2026-09-15",
+  "hardware": "iPhone15,2",
+  "isIOSAppOnMac": false,
+  "operatingSystem": "Version 26.5.2 (Build 23F84)",
+  "contract": "bytewave.edgetam-temporal-owned.v2",
+  "precisionPolicy": "mixed-encoder-late-conv33-and-fp32-attention-iou.v1",
+  "fixtureSHA256": "27bbdc854536a5d33153250bc4bac44940692c0bea76fd8e6e6b9c91fb1792e9",
+  "sourceModelsManifestSHA256": "b8d7f80fd31cc9ae75128379e18a228753254e0a9431d04d3e4fd86914d3b754",
+  "runs": [
+    {
+      "mode": "CPU + Neural Engine",
+      "generatedAt": "2026-09-15T14:38:20Z",
+      "completed": true,
+      "passed": false,
+      "activeFrameIndex": 0,
+      "activeComponent": "ImageEncoder",
+      "acceptedComparisonFrames": 0,
+      "error": "Non-finite output: raw_vision_features.",
+      "console": "MILCompilerForANE error: failed to compile ANE model using ANEF. Error=_ANECompiler : ANECCompile() FAILED (11)"
+    },
+    {
+      "mode": "CPU + GPU",
+      "generatedAt": "2026-09-15T14:40:59Z",
+      "completed": false,
+      "passed": false,
+      "activeFrameIndex": 0,
+      "activeComponent": "Initializer",
+      "acceptedComparisonFrames": 0,
+      "lastCheckpoint": "Before prediction: frame 1, Initializer",
+      "console": "-[MTLDebugComputeCommandEncoder dispatchThreadgroups:threadsPerThreadgroup:]:1377: failed assertion '(threadgroupsPerGrid.width(8) * threadgroupsPerGrid.y(0) * threadgroupsPerGrid.depth(1))(0) must not be 0.'"
+    }
+  ],
+  "interpretation": "GPU encoder returned finite outputs before initializer native abort; numerical encoder parity was not separately measured. NE failure precedes temporal state. No exact failing MIL operation identified.",
+  "nextDiagnostic": "Read existing serialized graphs for zero/unknown dimensions, non_zero and indexed operations; no conversion or inference."
+}
