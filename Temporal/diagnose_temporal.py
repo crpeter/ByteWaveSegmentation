@@ -39,18 +39,32 @@ def capture_torch_head(model, prediction):
     return result, heads
 
 
-def export_encoder_control(module, directory, fp16_conv=False):
+def export_encoder_control(module, directory, fp16_conv=False, fp32_conv_range=None,
+                           expected_convs=None):
     import coremltools as ct
+    from coremltools.converters.mil.mil.scope import ScopeSource
     policy = "fp32-with-fp16-conv.v1" if fp16_conv else "float32"
+    if fp32_conv_range is not None:
+        policy = "fp32-with-selective-fp16-conv.v1"
     print(f"Exporting diagnostic Core ML image encoder ({policy})...", flush=True)
     converted_convs = []
+    retained_convs = []
+    conv_count = 0
 
     def select_conv(op):
+        nonlocal conv_count
         # Start from the successful FP32 baseline and lower only convolution
         # operations (including their inputs/weights). Other arithmetic stays
         # FP32. This tests a group; it does not identify a particular layer.
         if op.op_type == "conv":
-            converted_convs.append({"name": op.name, "type": op.op_type})
+            index = conv_count
+            conv_count += 1
+            entry = {"index": index, "name": op.name, "type": op.op_type,
+                     "moduleScopes": op.scopes.get(ScopeSource.TORCHSCRIPT_MODULE_NAME, [])}
+            if fp32_conv_range is not None and fp32_conv_range[0] <= index < fp32_conv_range[1]:
+                retained_convs.append(entry)
+                return False
+            converted_convs.append(entry)
             return True
         return False
 
@@ -68,6 +82,10 @@ def export_encoder_control(module, directory, fp16_conv=False):
         skip_model_load=True)
     if fp16_conv and not converted_convs:
         raise ValueError("No encoder convolutions matched; precision control was not applied.")
+    if expected_convs is not None and conv_count != expected_convs:
+        raise ValueError(f"Expected {expected_convs} encoder convolutions, found {conv_count}; review graph ordering.")
+    if fp32_conv_range is not None and len(retained_convs) != fp32_conv_range[1] - fp32_conv_range[0]:
+        raise ValueError("Requested FP32 convolution range was not fully matched.")
     converted.user_defined_metadata["bytewave.diagnostic"] = f"image-encoder-{policy}-control"
     converted.user_defined_metadata["bytewave.upstream"] = owned.UPSTREAM_REVISION
     converted.user_defined_metadata["bytewave.checkpoint.sha256"] = owned.CHECKPOINT_SHA256
@@ -81,7 +99,10 @@ def export_encoder_control(module, directory, fp16_conv=False):
             with file.open("rb") as stream:
                 hashes[str(file.relative_to(package))] = hashlib.file_digest(stream, "sha256").hexdigest()
     details = {"computePrecision": policy, "tensorOutputs": "float32", "files": hashes,
-               "convolutionsSelectedForFP16Transform": converted_convs}
+               "convolutionsSelectedForFP16Transform": converted_convs,
+               "convolutionsRetainedInFP32": retained_convs,
+               "fp32ConvolutionRangeStartInclusiveEndExclusive": fp32_conv_range,
+               "expectedConvolutionCount": expected_convs}
     return ct.models.MLModel(str(package), compute_units=ct.ComputeUnit.CPU_ONLY), details
 
 
@@ -99,6 +120,10 @@ def main():
                                  help="Export one diagnostic FP32 Core ML encoder and retain the existing tracker models")
     encoder_control.add_argument("--fp16-conv-image-encoder", action="store_true",
                                  help="Control: FP16 encoder convolutions with other operations in FP32; reuse the tracker")
+    parser.add_argument("--fp32-conv-range", type=int, nargs=2, metavar=("START", "END"),
+                        help="With --fp16-conv-image-encoder, retain this zero-based convolution range in FP32; END is exclusive")
+    parser.add_argument("--expect-encoder-convs", type=int,
+                        help="Require this convolution count before accepting an encoder precision control")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     if platform.system() != "Darwin":
@@ -107,6 +132,15 @@ def main():
         parser.error(f"Choose between 1 and {v.COUNT} frames.")
     if not all(np.isfinite(x) and 0 <= x <= 1 for x in args.point):
         parser.error("Point must be finite and in [0,1].")
+    if args.fp32_conv_range is not None:
+        if not args.fp16_conv_image_encoder or args.expect_encoder_convs is None:
+            parser.error("--fp32-conv-range requires --fp16-conv-image-encoder and --expect-encoder-convs.")
+        start, end = args.fp32_conv_range
+        if not 0 <= start < end <= args.expect_encoder_convs:
+            parser.error("Convolution range must satisfy 0 <= START < END <= expected count.")
+    if args.expect_encoder_convs is not None:
+        if not args.fp16_conv_image_encoder or args.expect_encoder_convs <= 0:
+            parser.error("--expect-encoder-convs requires the FP16 convolution control and a positive count.")
     # Diagnostic workaround for a native PyEval_SaveThread abort observed in
     # PyTorch CPU GELU while interleaving Core ML and PyTorch predictions on Mac.
     # Configure before any model work; the exact native root cause is unconfirmed.
@@ -136,7 +170,9 @@ def main():
         backend = v.CoreMLBackend(args.models)
         if args.fp32_image_encoder or args.fp16_conv_image_encoder:
             encoder, details = export_encoder_control(reference_backend.modules["ImageEncoder"], args.output,
-                                                      fp16_conv=args.fp16_conv_image_encoder)
+                                                      fp16_conv=args.fp16_conv_image_encoder,
+                                                      fp32_conv_range=args.fp32_conv_range,
+                                                      expected_convs=args.expect_encoder_convs)
             # Deliberate diagnostic override after validating the original set.
             # All other components continue using the supplied model packages.
             backend.models["ImageEncoder"] = encoder
