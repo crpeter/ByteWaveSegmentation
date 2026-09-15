@@ -10,16 +10,31 @@ import Darwin
 enum OwnedDeviceMode: String, CaseIterable, Identifiable, Sendable {
     case cpu = "CPU only"
     case neuralEngine = "CPU + Neural Engine"
+    case encoderNeuralEngine = "Encoder NE + CPU tracker"
     case gpu = "CPU + GPU"
     case automatic = "Automatic"
     var id: String { rawValue }
-    var units: MLComputeUnits {
+    func units(for component: String) -> MLComputeUnits {
         switch self {
         case .cpu: return .cpuOnly
         case .neuralEngine: return .cpuAndNeuralEngine
+        case .encoderNeuralEngine: return component == "ImageEncoder" ? .cpuAndNeuralEngine : .cpuOnly
         case .gpu: return .cpuAndGPU
         case .automatic: return .all
         }
+    }
+    var requestedUnitsByComponent: [String: String] {
+        Dictionary(uniqueKeysWithValues: OwnedTemporalContract.components.map { component in
+            let name: String
+            switch units(for: component) {
+            case .cpuOnly: name = "CPU_ONLY"
+            case .cpuAndNeuralEngine: name = "CPU_AND_NE"
+            case .cpuAndGPU: name = "CPU_AND_GPU"
+            case .all: name = "ALL"
+            @unknown default: name = "UNKNOWN"
+            }
+            return (component, name)
+        })
     }
 }
 
@@ -84,6 +99,7 @@ struct OwnedDeviceReport: Encodable, Sendable {
     let operatingSystem = ProcessInfo.processInfo.operatingSystemVersionString
     let isIOSAppOnMac = ProcessInfo.processInfo.isiOSAppOnMac
     let mode: String
+    var requestedComputeUnitsByComponent: [String: String] = [:]
     let reference = "Mac Core ML CPU replay of the passed original-PyTorch comparison fixture"
     let scope = "20 exact-input sequential predictions with bounded Swift state. Low mask, pointer and memory cosine >= 0.99; low-mask IoU >= 0.95; matching object presence; all model outputs finite. High mask is checked for shape/finiteness, not compared numerically. No video decoding, sustained playback FPS, or measured hardware utilization."
     let timingScope = "Model-call wall time excludes input copies, tensor checks, state assembly, reference comparison, checkpoint file I/O and display. Prediction-and-state time includes input copies/checks/state and pre-prediction checkpoint writes. First frame is cold; compile/load is separate. Debug-build timings are diagnostic."
@@ -118,6 +134,7 @@ actor OwnedTemporalProbeRunner {
     func run(root: URL, mode: OwnedDeviceMode, hardware: String,
              progress: @Sendable (OwnedProbeUpdate) async -> Void) async -> OwnedDeviceReport {
         var report = OwnedDeviceReport(hardware: hardware, mode: mode.rawValue, thermalStateAtStart: thermal())
+        report.requestedComputeUnitsByComponent = mode.requestedUnitsByComponent
         guard !running else {
             report.error = "A temporal comparison is already running."
             return report
@@ -175,7 +192,7 @@ actor OwnedTemporalProbeRunner {
                 let compiled = try await MLModel.compileModel(at: package)
                 compiledURLs.append(compiled)
                 let configuration = MLModelConfiguration()
-                configuration.computeUnits = mode.units
+                configuration.computeUnits = mode.units(for: component)
                 let model = try await MLModel.load(contentsOf: compiled, configuration: configuration)
                 try OwnedTemporalContract.validate(model, component: component)
                 models[component] = model

@@ -1,5 +1,32 @@
 # ByteWave segmentation: continuation handoff
 
+## Latest result: encoder fanout temporal comparison
+
+The user passed both 20-frame runs in `encoder-temporal-01` against original
+PyTorch, using the 39-edge `encoder-fanout-01` candidate with the tracker on CPU.
+CPU encoder minima: mask IoU 0.995740, pointer cosine 0.999027, memory cosine
+0.996570. CPU_AND_NE encoder minima: 0.998153, 0.999490, 0.998537. Both retained
+seven spatial entries and sixteen pointers. See
+`Audit/mac-encoder-fanout-temporal-summary.json`. This is a Mac diagnostic pass,
+not physical-device NE validation or observed hardware utilization.
+
+The normal exporter now reproduces the exact 39 shared-activation replacements
+(36 residuals and three saved-feature consumers), verifies their identities and
+preserves convolution precision and the RGB image interface. Graph revision is
+`dense-points-encoder-fanout.v1`; precision policy is
+`mixed-encoder-late-conv33-fanout-and-fp32-attention-iou.v1`. Swift requires these
+new identifiers and adds **Encoder NE + CPU tracker**, requesting CPU_AND_NE only
+for ImageEncoder and recording each component's requested units. Original PyTorch
+reference, learned weights, bounded state and comparison gates remain unchanged.
+Historical diagnostics explicitly accept the previous dog-08 policy where needed.
+
+Next: the user runs normal `validate_export.py` into fresh `dog-09`. Only after
+both normal gates pass should they prepare a new device fixture, rebuild the app,
+and run physical-phone CPU followed by Encoder NE + CPU tracker. The old bundled
+dog-08 fixture does not match the new Swift revision. Commands and report cat/open
+instructions belong in chat, not README. Assistant verification is static only;
+no tests, inference, tracing, conversion or builds were run.
+
 ## User goal and decisions
 
 Cody Peter is building ByteWave, a local video editor. The goal is general-subject segmentation and temporal tracking as video frames are requested, eventually enabling woven text (text behind selected subjects). Avoid full-video mask precomputation. There is no rush: choose a sound architecture instead of minimizing implementation effort. Neural Engine acceleration is a hypothesis to evaluate, not an established outcome. Keep explanations short. Do not ask for the Metal renderer at this stage. Do not run iOS builds/tests/servers on Cody's behalf; Cody validates on his Mac and physical iPhone 17 Pro.
@@ -118,7 +145,7 @@ Cody supplied `BackgroundRemovalSource.swift` as a pasted attachment. That app s
 
 ## Next work
 
-1. Physical-iPhone CPU-only passed all 20 frames; NE fails in ImageEncoder and GPU crashes in Initializer. The dense-point initializer passed the reproduced Mac GPU failure with Metal validation enabled; dog-08 CPU-only and CPU + GPU now passed all 20 frames on physical iPhone. The isolated encoder control reproduced NE corruption and an FP32 pass; compute plans confirm FP32 is CPU-only. Next inspect sampled intermediate tensors in the mixed encoder while checking for instrumentation effects. Preserve current models and parity gates. Include cat/open with filesystem report requests. Do not run tests/inference/builds on the user's behalf.
+1. The 39-edge encoder candidate passed 20 Mac frames with CPU and CPU_AND_NE encoder, tracker CPU. Validate the new normal export in dog-09 before preparing a fresh fixture and testing physical-phone CPU and Encoder NE + CPU tracker. Preserve old models and parity gates. Include cat/open with report requests. Do not run tests/inference/builds on the user's behalf.
 2. Resolve concrete parity/export failures without relaxing thresholds to hide a defect. Current gates are explicit engineering policies, not previously measured results. Obtain representative visual review and retain the fixture results. The community contract remains unknown; the owned implementation does not claim to reconstruct it.
 3. The Swift fixed-fixture temporal runner has built and passed CPU-only on both Mac and physical iPhone; accelerated-mode validation remains. Resolve concrete compiler/device failures, then extend to requested-video-frame operation and profile on iPhone. Keep the community packages and existing diagnostic usable until a validated replacement exists. The new export has different input names and no application-supplied rotary tensor; it is not a drop-in replacement.
 4. Evaluate mask edges, hair, occlusion/reappearance, fast motion, tracking drift, latency, and sustained performance before integrating woven text.

@@ -33,10 +33,13 @@ def verify(args):
     source = json.loads((args.run / 'coreml/report.json').read_text())
     diagnostic_path = args.candidate / 'report.json'
     diagnostic = json.loads(diagnostic_path.read_text())
+    supported = {(owned.GRAPH_REVISION, v.COREML_PRECISION_POLICY),
+                 (owned.PREVIOUS_GRAPH_REVISION, v.PREVIOUS_COREML_PRECISION_POLICY)}
     for item in (manifest, status):
-        if (item.get('contract') != owned.CONTRACT or item.get('graphRevision') != owned.GRAPH_REVISION
-                or item.get('precisionPolicy') != v.COREML_PRECISION_POLICY):
-            raise ValueError('Source models must match current graph and precision policy')
+        if item.get('contract') != owned.CONTRACT or (item.get('graphRevision'), item.get('precisionPolicy')) not in supported:
+            raise ValueError('Source models must match a supported graph and precision policy')
+    if (manifest['graphRevision'], manifest['precisionPolicy']) != (status['graphRevision'], status['precisionPolicy']):
+        raise ValueError('Source status and manifest policy differ')
     if not all(status.get(key) is True for key in ('referencePassed', 'coremlPassed', 'readyForDeviceValidation')):
         raise ValueError('Source run must have passed normal validation')
     if source.get('passed') is not True or len(source['frames']) != v.COUNT:
@@ -60,7 +63,9 @@ def verify(args):
 class CandidateBackend(v.CoreMLBackend):
     def __init__(self, args, report, report_path):
         import coremltools as ct
-        super().__init__(args.run / 'models', graph_revision=owned.GRAPH_REVISION)
+        manifest = json.loads((args.run / 'models/manifest.json').read_text())
+        super().__init__(args.run / 'models', graph_revision=manifest['graphRevision'],
+                         precision_policy=manifest['precisionPolicy'])
         self.models['ImageEncoder'] = ct.models.MLModel(str(args.candidate / f'{args.variant}.mlpackage'),
                                                        compute_units=getattr(ct.ComputeUnit, args.encoder_units))
         model = self.models['ImageEncoder']

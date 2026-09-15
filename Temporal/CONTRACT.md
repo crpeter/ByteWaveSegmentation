@@ -1,9 +1,11 @@
 # Owned temporal contract v2
 
-Status: the user passed both normal 20-frame comparisons in dog-07 on Mac,
-including the selected encoder precision policy. The source-matched Swift
-fixed-fixture device probe is implemented but has not been built/run yet.
-These results concern one clip on CPU_ONLY, not device performance.
+Status: dog-08 passed the normal Mac comparisons and physical-iPhone CPU/GPU
+20-frame fixtures. A diagnostic encoder with 39 shared-activation rewrites now
+passes 20 frames on Mac with either CPU_ONLY or CPU_AND_NE for the encoder,
+with the tracker on CPU_ONLY. The normal exporter now incorporates that rewrite;
+its new full-set validation and physical-iPhone encoder-NE comparison are pending.
+These results concern one clip and do not establish sustained performance.
 
 Contract ID: `bytewave.edgetam-temporal-owned.v2`.
 
@@ -54,20 +56,29 @@ uses sigmoid probabilities. The original 20× scale and −10 bias remain in the
 
 Floating tensor inputs and outputs use float32 in Core ML; labels remain int32.
 This interface change distinguishes v2 from the initial, unvalidated v1 export.
-Policy `mixed-encoder-late-conv33-and-fp32-attention-iou.v1` uses component-specific
+Policy `mixed-encoder-late-conv33-fanout-and-fp32-attention-iou.v1` uses component-specific
 precision. In the image encoder, 99 convolutions use FP16; 33 named convolution
 module paths and all non-convolution operations retain FP32. The protected paths
 are in `encoder_precision.py`, taken from the passing [99,132) diagnostic control.
 Export checks the expected 132 convolutions, all protected paths, and exactly 33
 FP32 matches. The manifest records per-convolution precision and excluded ops.
 
+The encoder then reconstructs exactly 39 later FP32 consumer operands from their
+existing FP16 convolution-input activations: 36 residual operands and three saved
+feature-map consumers. Arithmetic remains FP32 after this activation rounding.
+`encoder_fanout.py` checks all 39 edge identities and preserves convolution
+precision. It reloads the serialized graph as in the passing diagnostic and
+restores the original RGB interface without adding a second image scale. The
+manifest records every replacement. Learned weights remain unchanged.
+
 The other three components use FP16 except `matmul`, `softmax`,
 `scaled_dot_product_attention`, the IoU prediction MLP, and its floating score
 path through mask selection. Export fails if the initializer/propagator IoU MLP
 or argmax path cannot be identified. This retains the earlier tracker policy.
 
-The chosen encoder control passed all 20 frames: minimum mask IoU 0.997046,
-pointer cosine 0.998431, memory cosine 0.994446. These diagnostic results do not
+The fanout encoder control passed all 20 frames: CPU minimum mask IoU 0.995740,
+pointer cosine 0.999027, memory cosine 0.996570; CPU_AND_NE encoder with CPU tracker
+gave 0.998153, 0.999490 and 0.998537 respectively. These diagnostic results do not
 replace the normal full-set gate, visual review, or device profiling. No checkpoint
 weights or comparison thresholds are changed.
 Exact names/shapes are in
@@ -159,9 +170,18 @@ those Mac Core ML references. High masks are shape/finiteness checked only. The
 same cosine 0.99 and low-mask IoU 0.95 gates apply relative to this stated reference.
 The report separates compilation/loading, model calls and state/copy overhead.
 It does not establish sustained frame rate or runtime Neural Engine utilization.
+The "Encoder NE + CPU tracker" mode requests CPU_AND_NE only for ImageEncoder
+and CPU_ONLY for the other three components. Reports record requested units per
+component; these settings do not measure actual hardware execution.
 Only one current input/result and bounded memory are retained; the 20 reference
 frames on disk are a correctness fixture, not a production mask cache.
 
-## Initializer graph revision
+## Graph revision
 
-`dense-initializer-points.v1` replaces boolean-index prompt updates with fixed-size broadcast selects, preserving point offsets, padding and learned embeddings. The independent upstream reference and propagator prompt path remain unchanged. Export rejects initializer `non_zero` operations. The revision is recorded separately from tensor contract v2 and the unchanged precision policy; normal validation, device preparation and Swift model/fixture loading require matching revision metadata. The Mac one-frame GPU control passed with Metal API validation enabled while the original aborted; full temporal and physical-device validation of this revision remain pending.
+`dense-points-encoder-fanout.v1` retains the prior dense-point initializer and
+adds the encoder rewrite above. Dense point embedding replaces boolean-index
+updates with fixed-size broadcast selects, preserving point offsets, padding and
+learned embeddings. The independent upstream reference and propagator prompt path
+remain unchanged. Export rejects initializer `non_zero` operations. Normal
+validation, device preparation and Swift loading require matching graph and
+precision metadata; dog-08 fixtures cannot validate the new revision.

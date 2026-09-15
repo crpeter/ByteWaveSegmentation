@@ -73,10 +73,13 @@ def main():
     status = json.loads((args.run / 'status.json').read_text())
     manifest_path = args.run / 'models/manifest.json'
     manifest = json.loads(manifest_path.read_text())
+    supported = {(owned.GRAPH_REVISION, v.COREML_PRECISION_POLICY),
+                 (owned.PREVIOUS_GRAPH_REVISION, v.PREVIOUS_COREML_PRECISION_POLICY)}
     for item in (status, manifest):
-        if (item.get('contract') != owned.CONTRACT or item.get('graphRevision') != owned.GRAPH_REVISION
-                or item.get('precisionPolicy') != v.COREML_PRECISION_POLICY):
-            raise ValueError('Expected current graph/precision revision')
+        if item.get('contract') != owned.CONTRACT or (item.get('graphRevision'), item.get('precisionPolicy')) not in supported:
+            raise ValueError('Expected supported graph/precision revision')
+    if (manifest['graphRevision'], manifest['precisionPolicy']) != (status['graphRevision'], status['precisionPolicy']):
+        raise ValueError('Source status and manifest policy differ')
     if not all(status.get(k) is True for k in ('referencePassed', 'coremlPassed', 'readyForDeviceValidation')):
         raise ValueError('Source run must have passed normal validation')
     original = args.run / 'models/BWTemporalImageEncoder.mlpackage'

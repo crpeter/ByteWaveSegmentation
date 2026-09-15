@@ -27,7 +27,8 @@ from state import TemporalState
 
 COUNT = 20  # Includes startup, seven spatial slots, sixteen pointers, and eviction.
 TRACKER_PRECISION_POLICY = "fp16-with-fp32-attention-and-iou.v1"
-COREML_PRECISION_POLICY = "mixed-encoder-late-conv33-and-fp32-attention-iou.v1"
+PREVIOUS_COREML_PRECISION_POLICY = "mixed-encoder-late-conv33-and-fp32-attention-iou.v1"
+COREML_PRECISION_POLICY = "mixed-encoder-late-conv33-fanout-and-fp32-attention-iou.v1"
 ATTENTION_FP32_OPS = frozenset(("matmul", "softmax", "scaled_dot_product_attention"))
 IOU_SCORE_PATH_OPS = frozenset(("identity", "cast", "reshape", "transpose", "expand_dims", "squeeze",
                                "slice_by_index", "slice_by_size", "gather", "gather_along_axis",
@@ -335,6 +336,8 @@ def export_models(modules, destination, *, diagnostic_name=None):
                     or encoder_retained_scopes != ENCODER_FP32_CONV_SCOPES
                     or sum(op["computePrecision"] == "float32" for op in encoder_convolutions) != 33):
                 raise ValueError("Encoder convolution scopes/count changed; review the precision policy before export.")
+            from encoder_fanout import apply_encoder_fanout
+            converted, fanout_details = apply_encoder_fanout(converted, owned.IMAGE_OUTPUTS)
         if name in ("Initializer", "Propagator"):
             if not any(op["reason"] == "iou-head" and op["type"] in ("linear", "matmul") for op in retained_ops):
                 raise ValueError(f"{name}: IoU head scope was not found; precision policy was not applied.")
@@ -371,6 +374,7 @@ def export_models(modules, destination, *, diagnostic_name=None):
                                     "operationsExcludedFromFP16Transform": retained_ops}
         if name == "ImageEncoder":
             manifest["models"][name]["convolutionPrecision"] = encoder_convolutions
+            manifest["models"][name]["fanoutRewrite"] = fanout_details
         write_json(destination / "manifest.json", manifest)
     return manifest
 

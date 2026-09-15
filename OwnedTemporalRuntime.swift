@@ -12,8 +12,8 @@ enum OwnedTemporalError: LocalizedError {
 
 enum OwnedTemporalContract {
     static let id = "bytewave.edgetam-temporal-owned.v2"
-    static let precision = "mixed-encoder-late-conv33-and-fp32-attention-iou.v1"
-    static let graphRevision = "dense-initializer-points.v1"
+    static let precision = "mixed-encoder-late-conv33-fanout-and-fp32-attention-iou.v1"
+    static let graphRevision = "dense-points-encoder-fanout.v1"
     static let upstream = "7711e012a30a2402c4eaab637bdb00a521302c91"
     static let checkpoint = "ed2d4850b8792c239689b043c47046ec239b6e808a3d9b6ae676c803fd8780df"
     static let components = ["ImageEncoder", "Initializer", "InitialMemoryEncoder", "Propagator"]

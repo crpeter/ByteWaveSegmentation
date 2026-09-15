@@ -89,10 +89,12 @@ def main():
     import coremltools as ct
     status = json.loads((args.run / 'status.json').read_text())
     manifest = json.loads((args.run / 'models/manifest.json').read_text())
-    if (status.get('contract') != owned.CONTRACT or status.get('precisionPolicy') != v.COREML_PRECISION_POLICY
+    if (status.get('contract') != owned.CONTRACT
+            or status.get('precisionPolicy') not in (v.PREVIOUS_COREML_PRECISION_POLICY, v.COREML_PRECISION_POLICY)
             or not all(status.get(k) is True for k in ('referencePassed', 'coremlPassed', 'readyForDeviceValidation'))
-            or manifest.get('contract') != owned.CONTRACT or manifest.get('precisionPolicy') != v.COREML_PRECISION_POLICY):
-        raise ValueError('Expected a passed current-policy source run')
+            or manifest.get('contract') != owned.CONTRACT
+            or manifest.get('precisionPolicy') != status.get('precisionPolicy')):
+        raise ValueError('Expected a passed supported-policy source run')
     packages = {n: args.run / 'models' / f'BWTemporal{n}.mlpackage' for n in ('ImageEncoder', 'Initializer')}
     for name, package in packages.items():
         if {str(p.relative_to(package)): sha(p) for p in package.rglob('*') if p.is_file()} != manifest['models'][name]['files']:

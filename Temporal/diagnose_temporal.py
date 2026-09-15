@@ -167,7 +167,7 @@ def main():
         manifest = args.models / "manifest.json"
         report["modelsManifestSHA256"] = hashlib.sha256(manifest.read_bytes()).hexdigest()
         source_policy = json.loads(manifest.read_text())["precisionPolicy"]
-        if source_policy not in (v.TRACKER_PRECISION_POLICY, v.COREML_PRECISION_POLICY):
+        if source_policy not in (v.TRACKER_PRECISION_POLICY, v.PREVIOUS_COREML_PRECISION_POLICY, v.COREML_PRECISION_POLICY):
             raise ValueError("Unsupported source model precision policy for this diagnostic.")
         report["precisionPolicy"] = source_policy
         model = owned.load_reference(args.upstream)

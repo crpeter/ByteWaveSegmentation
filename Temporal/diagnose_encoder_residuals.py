@@ -17,6 +17,7 @@ import numpy as np
 from PIL import Image
 
 from diagnose_encoder_prefix import file_hashes
+from encoder_fanout import fanout_edges, replace_operand
 from diagnose_encoder_taps import FINAL, predict
 from diagnose_initializer import summarize
 from inspect_encoder_placement import inspect, sha, write_json
@@ -71,51 +72,6 @@ def describe(edge):
     op, operand, skip, half = edge
     return {'output': op.outputs[0].name, 'operand': operand,
             'oldSource': skip.name, 'roundedThrough': half.name}
-
-
-def fanout_edges(function):
-    """Find later consumers of an FP32 activation also cast for convolution.
-
-    Includes saved feature maps and non-add consumers. Preserve the original
-    convolution casts and consumers before the chosen cast. Follow identities
-    and graph order rather than guessing tensor names or module names.
-    """
-    from coremltools.converters.mil.mil import types
-    operations = list(function.operations)
-    sources = {}
-    for index, op in enumerate(operations):
-        if (op.op_type != 'cast' or op.x.dtype != types.fp32
-                or op.outputs[0].dtype != types.fp16):
-            continue
-        half = op.outputs[0]
-        if not any(child.op_type == 'conv' and child.x is half for child in operations[index + 1:]):
-            continue
-        # Repeated casts have identical rounding; use the earliest eligible one.
-        sources.setdefault(id(op.x), (index, op.x, half))
-    edges = []
-    for index, source, half in sources.values():
-        if any(source is output for output in function.outputs):
-            raise ValueError('Fanout control does not rewrite a source that is also a model output')
-        for consumer in operations[index + 1:]:
-            if (consumer.op_type == 'cast' and consumer.x is source
-                    and consumer.outputs[0].dtype == types.fp16):
-                continue
-            for operand, value in consumer.inputs.items():
-                values = value if isinstance(value, (list, tuple)) else (value,)
-                if any(item is source for item in values):
-                    edges.append((consumer, operand, source, half))
-    return edges
-
-
-def replace_operand(op, operand, source, replacement):
-    value = op.inputs[operand]
-    if isinstance(value, (list, tuple)):
-        value = type(value)(replacement if item is source else item for item in value)
-    elif value is source:
-        value = replacement
-    else:
-        raise ValueError('Selected operand no longer contains the expected source')
-    op.set_inputs(**{operand: value})
 
 
 def main():

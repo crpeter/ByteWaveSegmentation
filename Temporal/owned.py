@@ -19,7 +19,8 @@ from torch.nn import functional as F
 UPSTREAM_REVISION = "7711e012a30a2402c4eaab637bdb00a521302c91"
 CHECKPOINT_SHA256 = "ed2d4850b8792c239689b043c47046ec239b6e808a3d9b6ae676c803fd8780df"
 CONTRACT = "bytewave.edgetam-temporal-owned.v2"
-GRAPH_REVISION = "dense-initializer-points.v1"
+PREVIOUS_GRAPH_REVISION = "dense-initializer-points.v1"
+GRAPH_REVISION = "dense-points-encoder-fanout.v1"
 MEAN = (0.485, 0.456, 0.406)
 STD = (0.229, 0.224, 0.225)
 IMAGE_OUTPUTS = ("raw_vision_features", "initial_vision_features", "high_res_feature_0", "high_res_feature_1")
