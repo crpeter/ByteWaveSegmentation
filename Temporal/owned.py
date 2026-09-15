@@ -118,7 +118,9 @@ class FixedAttention(nn.Module):
             kcos = torch.cat((kcos, torch.ones(64, 128)))
             ksin = torch.cat((ksin, torch.zeros(64, 128)))
         else:
-            kcos, ksin = qcos, qsin
+            # TorchScript requires separately registered buffers to be distinct
+            # tensor objects, even when self-attention uses identical tables.
+            kcos, ksin = qcos.clone(), qsin.clone()
         self.register_buffer("qcos", qcos)
         self.register_buffer("qsin", qsin)
         self.register_buffer("kcos", kcos)
