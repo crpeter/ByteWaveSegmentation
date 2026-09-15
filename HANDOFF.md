@@ -20,10 +20,18 @@ for ImageEncoder and recording each component's requested units. Original PyTorc
 reference, learned weights, bounded state and comparison gates remain unchanged.
 Historical diagnostics explicitly accept the previous dog-08 policy where needed.
 
-Next: the user runs normal `validate_export.py` into fresh `dog-09`. Only after
-both normal gates pass should they prepare a new device fixture, rebuild the app,
-and run physical-phone CPU followed by Encoder NE + CPU tracker. The old bundled
-dog-08 fixture does not match the new Swift revision. Commands and report cat/open
+Dog-09 has now passed the normal complete export comparison: referencePassed,
+coremlPassed and readyForDeviceValidation are true, with the new graph/precision
+identifiers. All 20 CPU frames passed; minimum mask IoU 0.995740, pointer cosine
+0.999027, memory cosine 0.996570, final banks 7/16. The RGB-interface export
+reproduces the diagnostic's CPU minima. Full supplied status/report and attachment
+hash are in `Audit/mac-fanout-normal-validation-report.json`.
+
+Next: prepare a fresh device fixture from dog-09 into device-dog-09, preserve the
+old bundled dog-08 baseline outside DeviceValidationData, and install the completed
+fixture at DeviceValidationData/baseline. Rebuild on physical iPhone and run CPU
+only followed by Encoder NE + CPU tracker; share each temporal report. The old
+fixture does not match the new Swift revision. Commands and report cat/open
 instructions belong in chat, not README. Assistant verification is static only;
 no tests, inference, tracing, conversion or builds were run.
 
@@ -119,7 +127,7 @@ Encoder-residuals-01 completed (`Audit/mac-full-encoder-residual-controls-report
 
 Encoder-fanout-01 passes the full one-frame CPU and CPU_AND_NE comparison (`Audit/mac-encoder-fanout-report.json`). All outputs finite; minimum NE cosine vs original CPU 0.999308546 and vs candidate CPU 0.999305822. There are 39 edits: 36 residuals plus later consumers of input_49, input_121, input_383 (outputs x, x_97, var_1561). Plan: 406 CPU/83 NE-preferred operations, with all 83 NE preferences still convolutions. No physical-device NE or temporal validation yet. Next validate_encoder_candidate.py reuses the verified fanout package and all 20 saved dog-08 frame PNGs/PTS/prompt, running candidate encoder CPU_ONLY and CPU_AND_NE in separate workers with original tracker packages CPU_ONLY. It uses canonical v.reference_step/v.compare, independent pinned PyTorch history and bounded candidate state, strict frame hashes and original mask/pointer/memory/presence gates. Checks full 7/16 banks, saves masks/per-mode reports/logs and a compact root summary; checkpoints before model calls and uses Torch threads=1. No re-export or readiness promotion. Assistant ran AST/data/diff checks only. User supplies --upstream .upstream-edgetam --run .temporal-runs/dog-08 --candidate .temporal-runs/encoder-fanout-01 --output .temporal-runs/encoder-temporal-01, then cat root report.json. Candidate encoder image interface may be raw NCHW pixels; helper preserves existing 1/255 preprocessing. Current bundled phone models remain dog-08.
 
-The current fixture is `assets/IMG_2771.mov`, point 0.4912/0.4706; current validated models are under `.temporal-runs/dog-08/models`; dog-07 preserves the earlier initializer; dog-06 and dog-05 retain earlier diagnostic policies. Include `cat` or `open` commands whenever asking for reports (new explicit user preference). Give all setup/rerun commands directly in chat; the user explicitly rejected being sent to a branch README for commands. Keep `diagnose_initializer.py` targeted at the original v1 packages for reproducible diagnostics. Do not integrate the owned models into iPhone until the complete comparison passes.
+The current fixture is `assets/IMG_2771.mov`, point 0.4912/0.4706; current validated Mac models are under `.temporal-runs/dog-09/models`; the prior physical-phone CPU/GPU fixture uses dog-08; dog-07 preserves the earlier initializer; dog-06 and dog-05 retain earlier diagnostic policies. Include `cat` or `open` commands whenever asking for reports (new explicit user preference). Give all setup/rerun commands directly in chat; the user explicitly rejected being sent to a branch README for commands. Keep `diagnose_initializer.py` targeted at the original v1 packages for reproducible diagnostics. Do not integrate the owned models into iPhone until the complete comparison passes.
 
 `Models/` and `ModelParts/` contain all model bytes. Two weight files exceeded the chat connector's upload-request limit and were split. Run `python3 restore_models.py` after cloning; it reconstructs them atomically and verifies all upstream file hashes. It makes no network requests. Then open `ByteWaveSegmentationProbe.xcodeproj`, choose a signing team, and run on a physical phone. Run CPU + Neural Engine and CPU + GPU separately; share both JSON reports for analysis. See README.md.
 
@@ -145,7 +153,7 @@ Cody supplied `BackgroundRemovalSource.swift` as a pasted attachment. That app s
 
 ## Next work
 
-1. The 39-edge encoder candidate passed 20 Mac frames with CPU and CPU_AND_NE encoder, tracker CPU. Validate the new normal export in dog-09 before preparing a fresh fixture and testing physical-phone CPU and Encoder NE + CPU tracker. Preserve old models and parity gates. Include cat/open with report requests. Do not run tests/inference/builds on the user's behalf.
+1. The 39-edge encoder candidate passed 20 Mac frames with CPU and CPU_AND_NE encoder, tracker CPU. The new normal dog-09 export also passed; prepare its fresh fixture and test physical-phone CPU and Encoder NE + CPU tracker. Preserve old models and parity gates. Include cat/open with report requests. Do not run tests/inference/builds on the user's behalf.
 2. Resolve concrete parity/export failures without relaxing thresholds to hide a defect. Current gates are explicit engineering policies, not previously measured results. Obtain representative visual review and retain the fixture results. The community contract remains unknown; the owned implementation does not claim to reconstruct it.
 3. The Swift fixed-fixture temporal runner has built and passed CPU-only on both Mac and physical iPhone; accelerated-mode validation remains. Resolve concrete compiler/device failures, then extend to requested-video-frame operation and profile on iPhone. Keep the community packages and existing diagnostic usable until a validated replacement exists. The new export has different input names and no application-supplied rotary tensor; it is not a drop-in replacement.
 4. Evaluate mask edges, hair, occlusion/reappearance, fast motion, tracking drift, latency, and sustained performance before integrating woven text.

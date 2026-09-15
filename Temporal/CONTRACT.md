@@ -4,7 +4,8 @@ Status: dog-08 passed the normal Mac comparisons and physical-iPhone CPU/GPU
 20-frame fixtures. A diagnostic encoder with 39 shared-activation rewrites now
 passes 20 frames on Mac with either CPU_ONLY or CPU_AND_NE for the encoder,
 with the tracker on CPU_ONLY. The normal exporter now incorporates that rewrite;
-its new full-set validation and physical-iPhone encoder-NE comparison are pending.
+its new dog-09 full-set Mac validation passed all 20 frames. Physical-iPhone
+validation of this revision remains pending.
 These results concern one clip and do not establish sustained performance.
 
 Contract ID: `bytewave.edgetam-temporal-owned.v2`.
