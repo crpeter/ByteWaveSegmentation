@@ -134,15 +134,36 @@ brings this to 57.65%. Propagator CPU_AND_NE prefers 489 NE / 181 CPU / 52
 unreported, but supplies NO cost estimates. Counts and estimates do not measure
 runtime hardware usage or establish an optimization speedup.
 
-Next: run `Temporal/inspect_propagator_linears.py` against dog-09 to map those
-four outputs to exact serialized tensor/weight shapes and neighboring operations.
-The inspector verifies the source manifest and propagator package hashes against
-the phone plan. It only reads protobuf; no compilation, conversion or prediction.
-Full context goes to report.json, compact operation details to summary.json.
-Confirm the shapes before considering an equivalent 1x1-convolution experiment;
-no source role is inferred solely from an operation's generated name. Models,
-precision policies and correctness gates are unchanged. Commands/report
-instructions remain in chat, not README. Assistant runs static checks only.
+The user completed the static shape inspection; the parsed terminal summary and
+attachment hash are in `Audit/mac-propagator-linear-inspection-summary.json`.
+The two largest operations are memory-attention layers 0/1 linear2: FP16 input
+[1,4096,2048], weights [256,2048], bias [256], output [1,4096,256]. Each has
+2,147,483,648 dense multiply-accumulates. The next two are memory-encoder fuser
+layers 0/1 pwconv2, with channels-last input [1,64,64,1024]; they are not spatial
+perceiver layers. Their CPU_AND_NE plan prefers CPU.
+
+Next experiment: `Temporal/diagnose_propagator_convs.py` reads the inspected
+serialized propagator and creates an unchanged conversion control plus `conv2`.
+Only the two memory-attention linear2 operations become FP16 1x1 convolutions:
+transpose/reshape to [1,2048,64,64], identical flattened weight bytes and bias,
+then restore [1,4096,256]. `propagator_convs.py` guards exact source parameter
+names, shapes and precision, unchanged unrelated operation signatures/constants,
+replacement weight hashes and external interfaces. No normal exporter, app,
+precision policy, reference or correctness gate changes. Different accumulation
+and placement can still change numerical outputs or performance.
+
+The user-run diagnostic checks an unchanged reconversion on CPU against the
+original CPU propagator on identical inputs (all outputs allclose 1e-3), then
+validates unchanged CPU and candidate CPU/GPU/NE runs against the independent
+original PyTorch reference for all 20 saved frames. Non-propagator components
+stay CPU_ONLY; state is committed only after parity passes, with final banks 7/16.
+CPU failure stops accelerated runs. Workers have separate logs, timeouts and
+pre-call checkpoints. Mac call times exclude cold propagation and are diagnostic;
+no paired GPU/NE performance comparison or iPhone speedup is established.
+Packages have a diagnostic contract and readyForDeviceValidation stays false.
+Assistant review is AST/JSON parsing, static API/source review and diff checks
+only. User has not run this new experiment. Commands and report-reading steps
+remain in chat, never README.
 
 ## User goal and decisions
 

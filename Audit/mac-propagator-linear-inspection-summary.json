@@ -1,0 +1,347 @@
+{
+  "scope": "Map the phone plan's expensive linear outputs to serialized tensor shapes.\n\nReads protobuf and package hashes only. No compilation, conversion or prediction.\n",
+  "completed": true,
+  "readyForDeviceValidation": false,
+  "sourceManifestSHA256": "47b7b85eef755ff7a440c0017f232a82ac7213af622d15d30a04f3487e07dd67",
+  "sourcePlanSummarySHA256": "2ba20edb965947f10c09e09da10fb2f4b9b899167216ba2f7aff4c73b7bd39c8",
+  "sourceAttachmentSHA256": "ffa24547702d894b7a9b1da14a24a01061721bac6b8c8cb6ea60980953e0f6e9",
+  "metadata": {
+    "com.github.apple.coremltools.conversion_date": "2026-09-15",
+    "com.github.apple.coremltools.version": "9.0",
+    "bytewave.checkpoint.sha256": "ed2d4850b8792c239689b043c47046ec239b6e808a3d9b6ae676c803fd8780df",
+    "bytewave.upstream": "7711e012a30a2402c4eaab637bdb00a521302c91",
+    "bytewave.contract": "bytewave.edgetam-temporal-owned.v2",
+    "com.github.apple.coremltools.source": "torch==2.7.0",
+    "bytewave.precision": "mixed-encoder-late-conv33-fanout-and-fp32-attention-iou.v1",
+    "com.github.apple.coremltools.source_dialect": "TorchScript",
+    "bytewave.graph": "dense-points-encoder-fanout.v1"
+  },
+  "files": {
+    "Manifest.json": "77b729300bef878ed530b22c9efaedeb854d470076d4e6d4e54362682ccc06ce",
+    "Data/com.apple.CoreML/model.mlmodel": "0dfdd2bcde6d7289dfa186515090757ef4d25bbd3147e673f912f805f2c4f990",
+    "Data/com.apple.CoreML/weights/weight.bin": "3e679bfdc49fc43e895434b8c8bb6e75bad20a2cad37fd0aa2d5019cd186386e"
+  },
+  "operations": [
+    {
+      "location": "main/CoreML8/239",
+      "type": "linear",
+      "inputs": {
+        "x": [
+          {
+            "name": "input_21_cast_fp16",
+            "dtype": "FLOAT16",
+            "shape": [
+              1,
+              4096,
+              2048
+            ]
+          }
+        ],
+        "bias": [
+          {
+            "name": "model_memory_attention_layers_0_linear2_bias_to_fp16",
+            "dtype": "FLOAT16",
+            "shape": [
+              256
+            ]
+          }
+        ],
+        "weight": [
+          {
+            "name": "model_memory_attention_layers_0_linear2_weight_to_fp16",
+            "dtype": "FLOAT16",
+            "shape": [
+              256,
+              2048
+            ]
+          }
+        ]
+      },
+      "outputs": [
+        {
+          "name": "linear_9_cast_fp16",
+          "dtype": "FLOAT16",
+          "shape": [
+            1,
+            4096,
+            256
+          ]
+        }
+      ],
+      "selectedOutput": "linear_9_cast_fp16",
+      "denseMultiplyAccumulateCount": 2147483648,
+      "phonePlans": [
+        {
+          "requestedComputeUnits": "CPU_AND_GPU",
+          "estimatedRelativeCost": 0.23060443074755904,
+          "operation": "ios18.linear",
+          "outputs": [
+            "linear_9_cast_fp16"
+          ],
+          "path": "main/239",
+          "preferredDevice": "GPU",
+          "supportedDevices": [
+            "CPU",
+            "GPU"
+          ]
+        },
+        {
+          "requestedComputeUnits": "CPU_AND_NE",
+          "operation": "ios18.linear",
+          "outputs": [
+            "linear_9_cast_fp16"
+          ],
+          "path": "main/239",
+          "preferredDevice": "Neural Engine",
+          "supportedDevices": [
+            "CPU",
+            "GPU",
+            "Neural Engine"
+          ]
+        }
+      ]
+    },
+    {
+      "location": "main/CoreML8/407",
+      "type": "linear",
+      "inputs": {
+        "x": [
+          {
+            "name": "input_43_cast_fp16",
+            "dtype": "FLOAT16",
+            "shape": [
+              1,
+              4096,
+              2048
+            ]
+          }
+        ],
+        "bias": [
+          {
+            "name": "model_memory_attention_layers_1_linear2_bias_to_fp16",
+            "dtype": "FLOAT16",
+            "shape": [
+              256
+            ]
+          }
+        ],
+        "weight": [
+          {
+            "name": "model_memory_attention_layers_1_linear2_weight_to_fp16",
+            "dtype": "FLOAT16",
+            "shape": [
+              256,
+              2048
+            ]
+          }
+        ]
+      },
+      "outputs": [
+        {
+          "name": "linear_19_cast_fp16",
+          "dtype": "FLOAT16",
+          "shape": [
+            1,
+            4096,
+            256
+          ]
+        }
+      ],
+      "selectedOutput": "linear_19_cast_fp16",
+      "denseMultiplyAccumulateCount": 2147483648,
+      "phonePlans": [
+        {
+          "requestedComputeUnits": "CPU_AND_GPU",
+          "estimatedRelativeCost": 0.23060443074755904,
+          "operation": "ios18.linear",
+          "outputs": [
+            "linear_19_cast_fp16"
+          ],
+          "path": "main/407",
+          "preferredDevice": "GPU",
+          "supportedDevices": [
+            "CPU",
+            "GPU"
+          ]
+        },
+        {
+          "requestedComputeUnits": "CPU_AND_NE",
+          "operation": "ios18.linear",
+          "outputs": [
+            "linear_19_cast_fp16"
+          ],
+          "path": "main/407",
+          "preferredDevice": "Neural Engine",
+          "supportedDevices": [
+            "CPU",
+            "GPU",
+            "Neural Engine"
+          ]
+        }
+      ]
+    },
+    {
+      "location": "main/CoreML8/1181",
+      "type": "linear",
+      "inputs": {
+        "x": [
+          {
+            "name": "input_221_cast_fp16",
+            "dtype": "FLOAT16",
+            "shape": [
+              1,
+              64,
+              64,
+              1024
+            ]
+          }
+        ],
+        "bias": [
+          {
+            "name": "model_memory_encoder_fuser_layers_0_pwconv2_bias_to_fp16",
+            "dtype": "FLOAT16",
+            "shape": [
+              256
+            ]
+          }
+        ],
+        "weight": [
+          {
+            "name": "model_memory_encoder_fuser_layers_0_pwconv2_weight_to_fp16",
+            "dtype": "FLOAT16",
+            "shape": [
+              256,
+              1024
+            ]
+          }
+        ]
+      },
+      "outputs": [
+        {
+          "name": "linear_74_cast_fp16",
+          "dtype": "FLOAT16",
+          "shape": [
+            1,
+            64,
+            64,
+            256
+          ]
+        }
+      ],
+      "selectedOutput": "linear_74_cast_fp16",
+      "denseMultiplyAccumulateCount": 1073741824,
+      "phonePlans": [
+        {
+          "requestedComputeUnits": "CPU_AND_GPU",
+          "estimatedRelativeCost": 0.05765110897549242,
+          "operation": "ios18.linear",
+          "outputs": [
+            "linear_74_cast_fp16"
+          ],
+          "path": "main/1181",
+          "preferredDevice": "GPU",
+          "supportedDevices": [
+            "CPU",
+            "GPU"
+          ]
+        },
+        {
+          "requestedComputeUnits": "CPU_AND_NE",
+          "operation": "ios18.linear",
+          "outputs": [
+            "linear_74_cast_fp16"
+          ],
+          "path": "main/1181",
+          "preferredDevice": "CPU",
+          "supportedDevices": [
+            "CPU",
+            "GPU"
+          ]
+        }
+      ]
+    },
+    {
+      "location": "main/CoreML8/1221",
+      "type": "linear",
+      "inputs": {
+        "x": [
+          {
+            "name": "input_229_cast_fp16",
+            "dtype": "FLOAT16",
+            "shape": [
+              1,
+              64,
+              64,
+              1024
+            ]
+          }
+        ],
+        "bias": [
+          {
+            "name": "model_memory_encoder_fuser_layers_1_pwconv2_bias_to_fp16",
+            "dtype": "FLOAT16",
+            "shape": [
+              256
+            ]
+          }
+        ],
+        "weight": [
+          {
+            "name": "model_memory_encoder_fuser_layers_1_pwconv2_weight_to_fp16",
+            "dtype": "FLOAT16",
+            "shape": [
+              256,
+              1024
+            ]
+          }
+        ]
+      },
+      "outputs": [
+        {
+          "name": "linear_76_cast_fp16",
+          "dtype": "FLOAT16",
+          "shape": [
+            1,
+            64,
+            64,
+            256
+          ]
+        }
+      ],
+      "selectedOutput": "linear_76_cast_fp16",
+      "denseMultiplyAccumulateCount": 1073741824,
+      "phonePlans": [
+        {
+          "requestedComputeUnits": "CPU_AND_GPU",
+          "estimatedRelativeCost": 0.05765110897549242,
+          "operation": "ios18.linear",
+          "outputs": [
+            "linear_76_cast_fp16"
+          ],
+          "path": "main/1221",
+          "preferredDevice": "GPU",
+          "supportedDevices": [
+            "CPU",
+            "GPU"
+          ]
+        },
+        {
+          "requestedComputeUnits": "CPU_AND_NE",
+          "operation": "ios18.linear",
+          "outputs": [
+            "linear_76_cast_fp16"
+          ],
+          "path": "main/1221",
+          "preferredDevice": "CPU",
+          "supportedDevices": [
+            "CPU",
+            "GPU"
+          ]
+        }
+      ]
+    }
+  ],
+  "suppliedAttachment": "Pasted text(20260915-213433).txt",
+  "suppliedAttachmentSHA256": "71eb30d43cd5af96131f4fd9052e656b4c42e74ae1acd38f4ef09c390bd2a48d",
+  "transcription": "JSON extracted from terminal paste; nonbreaking spaces normalized."
+}
