@@ -1,5 +1,39 @@
 # ByteWave segmentation: continuation handoff
 
+## Pending experiment: explicit FP32 memory attention
+
+`Temporal/diagnose_propagator_attention.py` prepares an unchanged reconversion
+control and a diagnostic `chunk256` propagator. The rewrite selects exactly four
+FP32 SDPA operations with query [1,1,4096,256]: two self-attentions with 4096 keys
+and no mask, and two cross-attentions with 3648 keys and the original broadcast
+FP32 validity bias. Each becomes 16 query chunks of 256 rows, using FP32 QK^T,
+scale 1/16, unchanged bias, softmax over ALL original keys, and FP32 weighted
+values before concatenating queries. No key pruning, head change, learned-weight
+change or precision reduction. This tests a different GPU implementation of the
+same attention equation; floating-point accumulation can still differ.
+
+The helper verifies unrelated operation signatures/constants, new operation
+signatures/precision and external interfaces after conversion. The unchanged
+control and candidate CPU/GPU each replay all 20 saved frames against independent
+original PyTorch with existing thresholds and bounded state. The unchanged CPU
+control also requires same-input allclose against the normal CPU model. Failures
+stop remaining modes; subprocess logs and checkpoints are retained. Candidate
+contract is `bytewave.propagator-attention.diagnostic.v1`, never device-ready.
+
+The existing paired benchmark accepts `--variant chunk256` and requires its
+passing CPU/GPU temporal evidence, verified source/package hashes, GPU compute
+units, and no linear-inspection report. It compares original versus candidate
+on identical CPU-generated state, four balanced-order pairs per propagated frame,
+with checked warm-up and every output gated. Existing conv2 CLI defaults and its
+legacy summary keys remain available. Shared replay helpers accept an explicit
+contract/script; the old convolution diagnostic retains its required inspection.
+
+Status: assistant static AST/source review and diff checks only. No tests,
+conversion, compilation, model execution or performance result yet. Normal
+exporter, README, installed dog-09 model set and Swift app are unchanged. Chunk
+score tensors are 4 MiB (self) or 3.5625 MiB (cross), but this is not a guarantee
+of peak allocation: scheduling and buffer lifetimes remain backend-dependent.
+
 ## Latest profiling: iPhone 17 Pro GPU attention hotspot
 
 The user supplied a second Instruments run with Shader Timeline enabled. Offline

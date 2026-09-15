@@ -38,7 +38,8 @@ def verify(args):
     manifest = json.loads(manifest_path.read_text())
     status = json.loads((args.run / 'status.json').read_text())
     source = json.loads((args.run / 'coreml/report.json').read_text())
-    inspection = json.loads((args.inspection / 'report.json').read_text())
+    inspection = (json.loads((args.inspection / 'report.json').read_text())
+                  if args.inspection is not None else None)
     for item in (status, manifest):
         if (item.get('contract') != owned.CONTRACT or item.get('graphRevision') != owned.GRAPH_REVISION
                 or item.get('precisionPolicy') != v.COREML_PRECISION_POLICY):
@@ -53,7 +54,8 @@ def verify(args):
     for component, entry in manifest['models'].items():
         if file_hashes(args.run / f'models/BWTemporal{component}.mlpackage') != entry['files']:
             raise ValueError(f'{component} package bytes changed')
-    if (inspection.get('completed') is not True or inspection.get('sourceManifestSHA256') != sha(manifest_path)
+    if inspection is not None and (
+            inspection.get('completed') is not True or inspection.get('sourceManifestSHA256') != sha(manifest_path)
             or inspection.get('files') != manifest['models']['Propagator']['files']):
         raise ValueError('Inspection does not match the source propagator')
     point = status['pointNormalizedTopLeft']
@@ -63,7 +65,7 @@ def verify(args):
 
 
 class Backend(v.CoreMLBackend):
-    def __init__(self, args, report, report_path):
+    def __init__(self, args, report, report_path, contract=CONTRACT):
         import coremltools as ct
         super().__init__(args.run / 'models', graph_revision=owned.GRAPH_REVISION)
         self.original_propagator = self.models['Propagator'] if args.variant == 'unchanged' else None
@@ -75,7 +77,7 @@ class Backend(v.CoreMLBackend):
             raise ValueError('Diagnostic model bytes changed')
         model = ct.models.MLModel(str(package), compute_units=getattr(ct.ComputeUnit, args.units))
         metadata = model.user_defined_metadata
-        if metadata.get('bytewave.contract') != CONTRACT or metadata.get('bytewave.diagnostic.variant') != args.variant:
+        if metadata.get('bytewave.contract') != contract or metadata.get('bytewave.diagnostic.variant') != args.variant:
             raise ValueError('Unexpected diagnostic contract/variant')
         self.models['Propagator'] = model
         self.report, self.path = report, report_path
@@ -110,11 +112,11 @@ class Backend(v.CoreMLBackend):
         return result
 
 
-def worker(args, status, source):
+def worker(args, status, source, contract=CONTRACT, scope=__doc__):
     args.output.mkdir(parents=True, exist_ok=False)
     path = args.output / 'report.json'
-    report = {'scope': __doc__, 'passed': False, 'completed': False, 'readyForDeviceValidation': False,
-              'contract': CONTRACT, 'variant': args.variant, 'propagatorComputeUnits': args.units,
+    report = {'scope': scope, 'passed': False, 'completed': False, 'readyForDeviceValidation': False,
+              'contract': contract, 'variant': args.variant, 'propagatorComputeUnits': args.units,
               'otherComponentsComputeUnits': 'CPU_ONLY', 'reference': 'Pinned original PyTorch; independent history',
               'sourceManifestSHA256': sha(args.run / 'models/manifest.json'),
               'variantsSHA256': sha(args.candidate / 'variants.json'),
@@ -129,7 +131,7 @@ def worker(args, status, source):
         report['activeComponent'] = 'LoadModels'
         write_json(path, report)
         model = owned.load_reference(args.upstream)
-        backend = Backend(args, report, path)
+        backend = Backend(args, report, path, contract=contract)
         state = TemporalState()
         history = {'cond_frame_outputs': {}, 'non_cond_frame_outputs': {}}
         point = [min(max(float(n) * 1024, 0), 1023) for n in status['pointNormalizedTopLeft']]
@@ -189,12 +191,14 @@ def worker(args, status, source):
         write_json(path, report)
 
 
-def run_worker(args, label, variant, units):
+def run_worker(args, label, variant, units, script_path=None):
     log = args.output / f'{label}.log'
-    command = [sys.executable, str(Path(__file__).resolve()), '--upstream', str(args.upstream.resolve()),
-               '--run', str(args.run.resolve()), '--inspection', str(args.inspection.resolve()),
+    command = [sys.executable, str(Path(script_path or __file__).resolve()), '--upstream', str(args.upstream.resolve()),
+               '--run', str(args.run.resolve()),
                '--output', str((args.output / label).resolve()), '--candidate', str(args.output.resolve()),
                '--variant', variant, '--units', units]
+    if args.inspection is not None:
+        command.extend(['--inspection', str(args.inspection.resolve())])
     print(f'Comparing {label}: 20 frames against original PyTorch...', flush=True)
     with log.open('w') as stream:
         try:
