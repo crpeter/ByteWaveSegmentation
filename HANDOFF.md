@@ -43,13 +43,29 @@ versus 104.04 ms CPU; median propagator is 208.88 versus 207.45 ms. This establi
 fixture correctness, not a speed improvement or observed hardware utilization.
 Debug diagnostic timings exclude several pipeline costs and are not playback FPS.
 
-Next: use the already installed dog-09 fixture and existing **CPU + Neural Engine**
-mode to test all four components with CPU_AND_NE. No code change, export or rebuild
-is needed for that step. Share the temporal report (or pre-prediction checkpoint if
-it aborts). Full-tracker CPU_AND_NE remains unvalidated. Commands and filesystem
-report cat/open instructions belong in chat, not README. Assistant verification
-is static source/JSON review only; no tests, inference, tracing, conversion or
-builds were run.
+Full **CPU + Neural Engine** also passed all 20 frames on the same physical phone
+and dog-09 fixture. `Audit/owned-temporal-fanout-iphone-all-ne-report.json` preserves
+the report. All four components requested CPU_AND_NE. Minimum mask IoU 0.996804,
+pointer cosine 0.998240, memory cosine 0.992768; final state 7/16, nominal thermal
+state. Source/fixture/frame/timestamp identities match the CPU and encoder-only
+NE reports. Full NE-permitted correctness is now established for this fixture;
+actual device execution and general segmentation quality remain unmeasured.
+
+Excluding cold frame 0, median encoder call was 168.04 ms and propagator 392.50 ms;
+median summed model-call time 564.02 ms versus 310.61 ms CPU only and 367.24 ms
+encoder-NE/CPU-tracker. Propagator compile/load was 20.14 seconds. These debug
+correctness-probe measurements establish no speed benefit or sustained FPS.
+
+Next: run existing **CPU + GPU** and **Automatic** modes on the same installed
+dog-09 fixture, sharing each temporal report before starting the next mode. This
+checks the rewritten graph on the remaining backend settings and supplies a
+comparison before performance work. No code change, export or rebuild is needed.
+Dog-08 GPU passed but does not validate dog-09's changed encoder. Continue toward
+requested-frame playback and meaningful release profiling after backend correctness;
+do not infer hardware utilization from requested settings or operation counts.
+Commands and filesystem report cat/open instructions belong in chat, not README.
+Assistant verification is static source/JSON review only; no tests, inference,
+tracing, conversion or builds were run.
 
 ## User goal and decisions
 
@@ -169,7 +185,7 @@ Cody supplied `BackgroundRemovalSource.swift` as a pasted attachment. That app s
 
 ## Next work
 
-1. The 39-edge encoder candidate passed 20 Mac frames with CPU and CPU_AND_NE encoder, tracker CPU. The normal dog-09 export and physical-phone CPU/Encoder NE + CPU tracker modes now passed. Next run existing CPU + Neural Engine mode with all four components permitted CPU_AND_NE. Preserve old models and parity gates. Include cat/open with report requests. Do not run tests/inference/builds on the user's behalf.
+1. The 39-edge encoder candidate passed 20 Mac frames with CPU and CPU_AND_NE encoder, tracker CPU. The normal dog-09 export and physical-phone CPU/Encoder NE + CPU tracker modes now passed. Full CPU + Neural Engine also passed; next compare CPU + GPU and Automatic on the same dog-09 fixture before performance work. Preserve old models and parity gates. Include cat/open with report requests. Do not run tests/inference/builds on the user's behalf.
 2. Resolve concrete parity/export failures without relaxing thresholds to hide a defect. Current gates are explicit engineering policies, not previously measured results. Obtain representative visual review and retain the fixture results. The community contract remains unknown; the owned implementation does not claim to reconstruct it.
 3. The Swift fixed-fixture temporal runner has built and passed CPU-only on both Mac and physical iPhone; accelerated-mode validation remains. Resolve concrete compiler/device failures, then extend to requested-video-frame operation and profile on iPhone. Keep the community packages and existing diagnostic usable until a validated replacement exists. The new export has different input names and no application-supplied rotary tensor; it is not a drop-in replacement.
 4. Evaluate mask edges, hair, occlusion/reappearance, fast motion, tracking drift, latency, and sustained performance before integrating woven text.
