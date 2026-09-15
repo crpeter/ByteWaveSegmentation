@@ -127,7 +127,7 @@ def main():
                   for name in INPUTS["Initializer"][:3]}
         inputs.update(point_coords=np.asarray([[point]], dtype=np.float16),
                       point_labels=np.ones((1, 1), dtype=np.int32))
-        module = owned.Initializer(owned.load_reference(args.upstream)).eval()
+        module = owned.Initializer(owned.load_reference(args.upstream), dense_points=False).eval()
         # Preserve the exact rounded FP16 input values in the FP32 reference.
         fp32_inputs = {name: value.astype(np.int32 if name == "point_labels" else np.float32)
                        for name, value in inputs.items()}

@@ -13,43 +13,13 @@ import sys
 import numpy as np
 from PIL import Image
 import torch
-from torch import nn
 
 import owned
 import validate_export as v
 from diagnose_initializer import summarize
 
 
-class DensePointPromptEncoder(nn.Module):
-    """Same point arithmetic/weights as upstream, using broadcast selects.
-
-    This diagnostic supports the owned point-only/no-mask prompt contract.
-    It also removes the upstream concatenation with a [B,0,C] empty tensor.
-    """
-    def __init__(self, source):
-        super().__init__()
-        self.source = source
-
-    def get_dense_pe(self):
-        return self.source.get_dense_pe()
-
-    def forward(self, points, boxes=None, masks=None):
-        if points is None or boxes is not None or masks is not None:
-            raise ValueError('Diagnostic supports points only')
-        coords, labels = points
-        shifted = coords + 0.5
-        coords = torch.cat((shifted, torch.zeros_like(coords[:, :1, :])), dim=1)
-        labels = torch.cat((labels, -torch.ones_like(labels[:, :1])), dim=1)
-        value = self.source.pe_layer.forward_with_coords(coords, self.source.input_image_size)
-        missing = (labels == -1).unsqueeze(-1)
-        value = torch.where(missing, torch.zeros_like(value), value)
-        value = torch.where(missing, value + self.source.not_a_point_embed.weight, value)
-        for index in range(4):
-            value = torch.where((labels == index).unsqueeze(-1),
-                                value + self.source.point_embeddings[index].weight, value)
-        dense = self.source.no_mask_embed.weight.reshape(1, -1, 1, 1).expand(
-            coords.shape[0], -1, *self.source.image_embedding_size)
-        return value, dense
+DensePointPromptEncoder = owned.DensePointPromptEncoder
 
 
 def sha(path):
@@ -164,11 +134,11 @@ def main():
                     report['promptChecks'].append({'label': label, 'point': xy, 'passed': close})
                     if not close:
                         raise ValueError('Point embedding differs from original')
-            expected = dict(zip(owned.MASK_OUTPUTS, (x.numpy() for x in owned.Initializer(model)(*examples)), strict=True))
+            expected = dict(zip(owned.MASK_OUTPUTS, (x.numpy() for x in owned.Initializer(model, dense_points=False)(*examples)), strict=True))
             if any(not np.isfinite(x).all() for x in expected.values()):
                 raise ValueError('Original PyTorch initializer is non-finite')
             model.sam_prompt_encoder = candidate_prompt
-            candidate_module = owned.Initializer(model).eval()
+            candidate_module = owned.Initializer(model, dense_points=False).eval()
             candidate = dict(zip(owned.MASK_OUTPUTS, (x.numpy() for x in candidate_module(*examples)), strict=True))
             report['sameInputTorch'] = summarize(candidate, expected)
             if not all(np.allclose(candidate[n], expected[n], atol=.001, rtol=.001) for n in expected):

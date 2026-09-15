@@ -45,6 +45,7 @@ def main():
     manifest = json.loads(manifest_path.read_text())
     if (status.get("contract") != owned.CONTRACT
             or status.get("precisionPolicy") != v.COREML_PRECISION_POLICY
+            or status.get("graphRevision") != owned.GRAPH_REVISION
             or status.get("upstream") != owned.UPSTREAM_REVISION
             or status.get("checkpointSHA256") != owned.CHECKPOINT_SHA256
             or not all(status.get(key) is True for key in
@@ -54,7 +55,8 @@ def main():
         if (item.get("passed") is not True or len(item.get("frames", [])) != v.COUNT
                 or not all(row.get("passed") is True for row in item["frames"])):
             raise ValueError("Both complete 20-frame comparison reports must pass.")
-    if manifest.get("contract") != owned.CONTRACT or manifest.get("precisionPolicy") != v.COREML_PRECISION_POLICY:
+    if (manifest.get("contract") != owned.CONTRACT or manifest.get("precisionPolicy") != v.COREML_PRECISION_POLICY
+            or manifest.get("graphRevision") != owned.GRAPH_REVISION):
         raise ValueError("Model manifest does not match the passed policy.")
     model_files = {}
     for component in v.INPUTS:
@@ -72,7 +74,7 @@ def main():
                    "scope": "20 saved frames replayed with Core ML CPU; references for a device diagnostic only."}
     v.write_json(args.output / "preparation-report.json", preparation)
     try:
-        backend = v.CoreMLBackend(args.run / "models")
+        backend = v.CoreMLBackend(args.run / "models", graph_revision=owned.GRAPH_REVISION)
         state = TemporalState()
         point = [min(float(x) * 1024, 1023) for x in status["pointNormalizedTopLeft"]]
         fixtures = []
@@ -134,7 +136,8 @@ def main():
         if any(sha(args.output / path) != digest for path, digest in model_files.items()):
             raise ValueError("Copied model verification failed.")
         fixture = {"schema": "bytewave.temporal-device-fixture.v1", "contract": owned.CONTRACT,
-                   "precisionPolicy": v.COREML_PRECISION_POLICY, "upstream": owned.UPSTREAM_REVISION,
+                   "precisionPolicy": v.COREML_PRECISION_POLICY, "graphRevision": owned.GRAPH_REVISION,
+                   "upstream": owned.UPSTREAM_REVISION,
                    "checkpointSHA256": owned.CHECKPOINT_SHA256,
                    "sourceModelsManifestSHA256": sha(manifest_path),
                    "sourceReportSHA256": sha(args.run / "coreml/report.json"),

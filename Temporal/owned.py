@@ -6,6 +6,7 @@ The original model remains unmodified for independent reference comparisons.
 """
 from __future__ import annotations
 
+import copy
 import hashlib
 from pathlib import Path
 import subprocess
@@ -18,6 +19,7 @@ from torch.nn import functional as F
 UPSTREAM_REVISION = "7711e012a30a2402c4eaab637bdb00a521302c91"
 CHECKPOINT_SHA256 = "ed2d4850b8792c239689b043c47046ec239b6e808a3d9b6ae676c803fd8780df"
 CONTRACT = "bytewave.edgetam-temporal-owned.v2"
+GRAPH_REVISION = "dense-initializer-points.v1"
 MEAN = (0.485, 0.456, 0.406)
 STD = (0.229, 0.224, 0.225)
 IMAGE_OUTPUTS = ("raw_vision_features", "initial_vision_features", "high_res_feature_0", "high_res_feature_1")
@@ -197,10 +199,50 @@ class ImageEncoder(nn.Module):
         return raw, initial, features[0], features[1]
 
 
-class Initializer(nn.Module):
-    def __init__(self, model):
+class DensePointPromptEncoder(nn.Module):
+    """Same point arithmetic/weights as upstream, using broadcast selects.
+
+    Supports the owned point-only/no-mask prompt contract.
+    It also removes the upstream concatenation with a [B,0,C] empty tensor.
+    """
+    def __init__(self, source):
         super().__init__()
-        self.model = model
+        self.source = source
+
+    def get_dense_pe(self):
+        return self.source.get_dense_pe()
+
+    def forward(self, points, boxes=None, masks=None):
+        if points is None or boxes is not None or masks is not None:
+            raise ValueError('Owned prompt encoder supports points only')
+        coords, labels = points
+        shifted = coords + 0.5
+        coords = torch.cat((shifted, torch.zeros_like(coords[:, :1, :])), dim=1)
+        labels = torch.cat((labels, -torch.ones_like(labels[:, :1])), dim=1)
+        value = self.source.pe_layer.forward_with_coords(coords, self.source.input_image_size)
+        missing = (labels == -1).unsqueeze(-1)
+        value = torch.where(missing, torch.zeros_like(value), value)
+        value = torch.where(missing, value + self.source.not_a_point_embed.weight, value)
+        for index in range(4):
+            value = torch.where((labels == index).unsqueeze(-1),
+                                value + self.source.point_embeddings[index].weight, value)
+        dense = self.source.no_mask_embed.weight.reshape(1, -1, 1, 1).expand(
+            coords.shape[0], -1, *self.source.image_embedding_size)
+        return value, dense
+
+
+class Initializer(nn.Module):
+    def __init__(self, model, *, dense_points=True):
+        super().__init__()
+        if dense_points:
+            # Copy the module registry before replacing a child. Learned modules
+            # are shared read-only; the independent upstream reference is untouched.
+            self.model = copy.copy(model)
+            self.model._modules = model._modules.copy()
+            self.model.sam_prompt_encoder = DensePointPromptEncoder(model.sam_prompt_encoder).eval()
+        else:
+            # Retain the original graph for historical controlled diagnostics.
+            self.model = model
 
     def forward(self, initial, high0, high1, coords, labels):
         return selected_masks(self.model, initial, high0, high1,

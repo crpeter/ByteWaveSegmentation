@@ -161,3 +161,7 @@ The report separates compilation/loading, model calls and state/copy overhead.
 It does not establish sustained frame rate or runtime Neural Engine utilization.
 Only one current input/result and bounded memory are retained; the 20 reference
 frames on disk are a correctness fixture, not a production mask cache.
+
+## Initializer graph revision
+
+`dense-initializer-points.v1` replaces boolean-index prompt updates with fixed-size broadcast selects, preserving point offsets, padding and learned embeddings. The independent upstream reference and propagator prompt path remain unchanged. Export rejects initializer `non_zero` operations. The revision is recorded separately from tensor contract v2 and the unchanged precision policy; normal validation, device preparation and Swift model/fixture loading require matching revision metadata. The Mac one-frame GPU control passed with Metal API validation enabled while the original aborted; full temporal and physical-device validation of this revision remain pending.

@@ -104,11 +104,13 @@ class TorchBackend:
 
 
 class CoreMLBackend:
-    def __init__(self, directory, *, precision_policy=COREML_PRECISION_POLICY):
+    def __init__(self, directory, *, precision_policy=COREML_PRECISION_POLICY, graph_revision=None):
         import coremltools as ct
         self.models = {name: ct.models.MLModel(str(directory / f"BWTemporal{name}.mlpackage"),
                                              compute_units=ct.ComputeUnit.CPU_ONLY) for name in INPUTS}
         for name, model in self.models.items():
+            if graph_revision is not None and model.user_defined_metadata.get("bytewave.graph") != graph_revision:
+                raise ValueError(f"Unexpected {name} graph revision; regenerate the complete model set.")
             if model.user_defined_metadata.get("bytewave.contract") != owned.CONTRACT:
                 raise ValueError(f"Unexpected {name} contract; regenerate the complete model set.")
             if model.user_defined_metadata.get("bytewave.precision") != precision_policy:
@@ -198,7 +200,7 @@ def run_comparison(model, backend, args, root, coreml, expected_frames=None):
     stage = "coreml" if coreml else "pytorch"
     directory = root / stage
     directory.mkdir()
-    report = {"passed": False, "contract": owned.CONTRACT, "frames": [],
+    report = {"passed": False, "contract": owned.CONTRACT, "graphRevision": owned.GRAPH_REVISION, "frames": [],
               "scope": "20 consecutive frames; correctness fixture, not a speed or general-quality benchmark",
               "policy": {"maskIoUMinimum": 0.95 if coreml else 0.999,
                          "cosineMinimumCoreML": 0.99, "float32Atol": 0.001, "float32Rtol": 0.001},
@@ -259,6 +261,8 @@ def export_models(modules, destination, *, diagnostic_name=None):
     export_contract = owned.CONTRACT if diagnostic_name is None else owned.CONTRACT + ".diagnostic"
     manifest = {"contract": export_contract, "precisionPolicy": COREML_PRECISION_POLICY,
                 "tensorInterface": "float32", "models": {}}
+    if diagnostic_name is None:
+        manifest["graphRevision"] = owned.GRAPH_REVISION
     if diagnostic_name is not None:
         manifest.update(diagnostic=diagnostic_name, readyForDeviceValidation=False)
     for name, module in modules.items():
@@ -336,7 +340,20 @@ def export_models(modules, destination, *, diagnostic_name=None):
                 raise ValueError(f"{name}: IoU head scope was not found; precision policy was not applied.")
             if not any(op["reason"] == "iou-score-path" and op["type"] == "reduce_argmax" for op in retained_ops):
                 raise ValueError(f"{name}: FP32 IoU score path did not reach mask selection.")
+        if name == "Initializer" and diagnostic_name is None:
+            # Reject regressions that reintroduce dynamic empty label selections.
+            def check_block(block):
+                for op in block.operations:
+                    if op.type == "non_zero":
+                        raise ValueError("Initializer still contains dynamic non_zero indexing.")
+                    for child in op.blocks:
+                        check_block(child)
+            for function in converted.get_spec().mlProgram.functions.values():
+                for block in function.block_specializations.values():
+                    check_block(block)
         converted.user_defined_metadata["bytewave.contract"] = export_contract
+        if diagnostic_name is None:
+            converted.user_defined_metadata["bytewave.graph"] = owned.GRAPH_REVISION
         if diagnostic_name is not None:
             converted.user_defined_metadata["bytewave.diagnostic"] = diagnostic_name
         converted.user_defined_metadata["bytewave.upstream"] = owned.UPSTREAM_REVISION
@@ -382,7 +399,8 @@ def main():
     if not args.reference_only:
         versions["coremltools"] = importlib.metadata.version("coremltools")
     status = {"contract": owned.CONTRACT, "upstream": owned.UPSTREAM_REVISION,
-              "precisionPolicy": COREML_PRECISION_POLICY, "tensorInterface": "float32",
+              "precisionPolicy": COREML_PRECISION_POLICY, "graphRevision": owned.GRAPH_REVISION,
+              "tensorInterface": "float32",
               "torchThreads": {"intraOp": torch.get_num_threads(), "interOp": torch.get_num_interop_threads()},
               "checkpointSHA256": owned.CHECKPOINT_SHA256, "python": sys.version,
               "versions": versions, "pointNormalizedTopLeft": args.point,
@@ -396,7 +414,7 @@ def main():
         write_json(args.output / "status.json", status)
         if not args.reference_only:
             export_models(modules, args.output / "models")
-            run_comparison(model, CoreMLBackend(args.output / "models"), args, args.output, coreml=True,
+            run_comparison(model, CoreMLBackend(args.output / "models", graph_revision=owned.GRAPH_REVISION), args, args.output, coreml=True,
                            expected_frames=frames)
             status["coremlPassed"] = True
             status["readyForDeviceValidation"] = True

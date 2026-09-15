@@ -42,6 +42,7 @@ private struct OwnedFixture: Decodable {
     let schema: String
     let contract: String
     let precisionPolicy: String
+    let graphRevision: String?
     let upstream: String
     let checkpointSHA256: String
     let sourceModelsManifestSHA256: String
@@ -77,6 +78,7 @@ struct OwnedDeviceReport: Encodable, Sendable {
     let schema = "bytewave.temporal-device-comparison.v1"
     let contract = OwnedTemporalContract.id
     let precisionPolicy = OwnedTemporalContract.precision
+    let graphRevision = OwnedTemporalContract.graphRevision
     let generatedAt = Date()
     let hardware: String
     let operatingSystem = ProcessInfo.processInfo.operatingSystemVersionString
@@ -146,6 +148,7 @@ actor OwnedTemporalProbeRunner {
             guard fixture.schema == "bytewave.temporal-device-fixture.v1",
                   fixture.contract == OwnedTemporalContract.id,
                   fixture.precisionPolicy == OwnedTemporalContract.precision,
+                  fixture.graphRevision == OwnedTemporalContract.graphRevision,
                   fixture.upstream == OwnedTemporalContract.upstream,
                   fixture.checkpointSHA256 == OwnedTemporalContract.checkpoint,
                   fixture.referenceComputeUnits == "CPU_ONLY", fixture.frames.count == 20,
