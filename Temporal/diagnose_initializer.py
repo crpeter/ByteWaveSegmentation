@@ -3,6 +3,8 @@
 
 The diagnostic uses FP32 computation and interfaces with the same numerical
 input values as the FP16 model. It never establishes device readiness.
+The optional sweep separates tensor-interface precision from computation and
+checks normalization and attention precision on the same traced graph.
 """
 from __future__ import annotations
 
@@ -40,6 +42,39 @@ def summarize(outputs, reference=None):
     return checks
 
 
+def convert_variant(ct, traced, examples, inputs, expected, directory, name, dtype,
+                    compute_precision, preserve_types=()):
+    print(f"Exporting {name}...", flush=True)
+    retained_ops = []
+    if preserve_types:
+        def select(op):
+            if op.op_type in preserve_types:
+                retained_ops.append({"name": op.name, "type": op.op_type})
+                return False
+            return True
+        compute_precision = ct.transform.FP16ComputePrecision(op_selector=select)
+    converted = ct.convert(
+        traced, source="pytorch", convert_to="mlprogram",
+        inputs=[ct.TensorType(name=key, shape=tuple(value.shape),
+                              dtype=np.int32 if key == "point_labels" else dtype)
+                for key, value in zip(INPUTS["Initializer"], examples, strict=True)],
+        outputs=[ct.TensorType(name=key, dtype=dtype) for key in owned.MASK_OUTPUTS],
+        compute_precision=compute_precision, minimum_deployment_target=ct.target.iOS18,
+        skip_model_load=True)
+    converted.user_defined_metadata["bytewave.diagnostic"] = name
+    package = directory / f"{name}.mlpackage"
+    converted.save(str(package))
+    del converted
+    diagnostic = ct.models.MLModel(str(package), compute_units=ct.ComputeUnit.CPU_ONLY)
+    values = {key: value.astype(np.int32 if key == "point_labels" else dtype)
+              for key, value in inputs.items()}
+    outputs = summarize(diagnostic.predict(values), expected)
+    print(name, {key: row["nonfinite"] for key, row in outputs.items()}, flush=True)
+    return outputs, {"tensorInterface": np.dtype(dtype).name,
+                     "requestedFP32OperationTypes": sorted(preserve_types),
+                     "operationsExcludedFromFP16Transform": retained_ops}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--upstream", type=Path, required=True)
@@ -47,6 +82,8 @@ def main():
     parser.add_argument("--video", type=Path, required=True)
     parser.add_argument("--point", type=float, nargs=2, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--precision-sweep", action="store_true",
+                        help="Compare interface, normalization and attention precision using one trace")
     args = parser.parse_args()
     if platform.system() != "Darwin":
         parser.error("Core ML prediction requires macOS.")
@@ -99,24 +136,44 @@ def main():
             raise ValueError("Same-input PyTorch output is non-finite.")
         report["existingFP16"] = summarize(models["Initializer"].predict(inputs), expected)
         write_json(args.output / "report.json", report)
-        print("Exporting diagnostic initializer with FP32 computation and interfaces...", flush=True)
+        # Match the production export's zero-valued examples with positive labels.
+        # Predict on the real inputs afterward to check trace specialization.
+        trace_examples = tuple(torch.ones_like(value) if name == "point_labels" else torch.zeros_like(value)
+                               for name, value in zip(INPUTS["Initializer"], examples, strict=True))
         with torch.inference_mode():
-            traced = torch.jit.trace(module, examples, strict=True, check_trace=False)
-        converted = ct.convert(
-            traced, source="pytorch", convert_to="mlprogram",
-            inputs=[ct.TensorType(name=name, shape=tuple(value.shape),
-                                  dtype=np.int32 if name == "point_labels" else np.float32)
-                    for name, value in zip(INPUTS["Initializer"], examples, strict=True)],
-            outputs=[ct.TensorType(name=name, dtype=np.float32) for name in owned.MASK_OUTPUTS],
-            compute_precision=ct.precision.FLOAT32, minimum_deployment_target=ct.target.iOS18,
-            skip_model_load=True)
-        converted.user_defined_metadata["bytewave.diagnostic"] = "initializer-fp32-compute-and-io"
-        package = args.output / "DiagnosticInitializerFP32.mlpackage"
-        converted.save(str(package))
-        diagnostic = ct.models.MLModel(str(package), compute_units=ct.ComputeUnit.CPU_ONLY)
-        report["diagnosticFP32"] = summarize(diagnostic.predict(fp32_inputs), expected)
-        for variant in ("sameInputTorch", "existingFP16", "diagnosticFP32"):
-            print(variant, {name: row["nonfinite"] for name, row in report[variant].items()}, flush=True)
+            traced = torch.jit.trace(module, trace_examples, strict=True, check_trace=False)
+            traced_outputs = dict(zip(owned.MASK_OUTPUTS,
+                                      (v.detach().cpu().numpy() for v in traced(*examples)), strict=True))
+        report["sameInputTracedTorch"] = summarize(traced_outputs, expected)
+        report["traceExamples"] = "Zeros, except point_labels=1; same trace used for every precision variant"
+        if any(not np.allclose(traced_outputs[name], expected[name], atol=0.001, rtol=0.001)
+               for name in owned.MASK_OUTPUTS):
+            raise ValueError("Traced PyTorch differs from eager PyTorch on the real inputs.")
+        variants = [("diagnosticFP32", np.float32, ct.precision.FLOAT32, ())]
+        if args.precision_sweep:
+            norm_types = ("layer_norm", "instance_norm", "batch_norm", "l2_norm",
+                          "reduce_mean", "reduce_sum", "square", "pow", "sqrt", "rsqrt", "real_div")
+            attention_types = ("matmul", "softmax", "scaled_dot_product_attention")
+            variants += [("sameTraceFP16", np.float16, ct.precision.FLOAT16, ()),
+                         ("fp16ComputeFP32IO", np.float32, ct.precision.FLOAT16, ()),
+                         ("fp32Normalization", np.float32, None, norm_types),
+                         ("fp32Attention", np.float32, None, attention_types)]
+        report["precisionPolicies"] = {}
+        for name, dtype, precision, preserve in variants:
+            try:
+                outputs, policy = convert_variant(ct, traced, examples, fp32_inputs, expected,
+                                                  args.output, name, dtype, precision, preserve)
+                report[name] = outputs
+                report["precisionPolicies"][name] = {"compute": "mixed" if preserve else
+                                                    ("float32" if precision == ct.precision.FLOAT32 else "float16"),
+                                                    **policy}
+            except Exception as error:
+                report[name] = {"error": f"{type(error).__name__}: {error}"}
+                print(f"{name}: {report[name]['error']}", flush=True)
+                if not args.precision_sweep:
+                    raise
+            finally:
+                write_json(args.output / "report.json", report)
     except Exception as error:
         report["error"] = f"{type(error).__name__}: {error}"
         raise
