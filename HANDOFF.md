@@ -162,8 +162,29 @@ pre-call checkpoints. Mac call times exclude cold propagation and are diagnostic
 no paired GPU/NE performance comparison or iPhone speedup is established.
 Packages have a diagnostic contract and readyForDeviceValidation stays false.
 Assistant review is AST/JSON parsing, static API/source review and diff checks
-only. User has not run this new experiment. Commands and report-reading steps
-remain in chat, never README.
+only. The user has now passed all four 20-frame comparisons in
+propagator-convs-01. Selected supplied fields are archived in
+`Audit/mac-propagator-convs-summary.json`. Minimum mask/pointer/memory metrics:
+conv2 CPU 0.996448/0.998902/0.996327; GPU 0.996804/0.999025/0.996556;
+NE 0.995736/0.998918/0.994489. All final banks 7/16. Unchanged CPU also passes,
+and its latest identical-input control has zero absolute error for every output.
+Unpaired warm Mac propagator medians: unchanged CPU 96.99 ms, conv2 CPU 101.32 ms,
+conv2 GPU 27.49 ms, conv2 NE 179.95 ms. There is no original GPU/NE timing in this
+experiment; do not compare the Mac candidate to iPhone baseline timings.
+
+Next: `Temporal/benchmark_propagator_convs.py` reuses the passed packages without
+conversion. It verifies source/package/report hashes, drives the saved frames
+with the original CPU state, and gives original and conv2 propagators identical
+inputs under the same requested compute units (GPU by default). One warm-up per
+model is checked and excluded; four pairs at each of 19 propagated frames use
+balanced alternating order. All timed outputs pass the unchanged Core ML parity
+gates against same-input original CPU. Input hashes are checked after each frame;
+state commits only after checks pass. Report includes raw timings/checks, order
+strata and a compact summary. This is a co-resident repeated-input Mac benchmark,
+not a new temporal-feedback validation, device pass, hardware-utilization reading
+or sustained playback benchmark. No model promotion or installed fixture change.
+Assistant static review only; user has not run this paired comparison yet.
+Commands and report-reading steps remain in chat, never README.
 
 ## User goal and decisions
 
