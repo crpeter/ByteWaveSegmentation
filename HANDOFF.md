@@ -56,16 +56,36 @@ median summed model-call time 564.02 ms versus 310.61 ms CPU only and 367.24 ms
 encoder-NE/CPU-tracker. Propagator compile/load was 20.14 seconds. These debug
 correctness-probe measurements establish no speed benefit or sustained FPS.
 
-Next: run existing **CPU + GPU** and **Automatic** modes on the same installed
-dog-09 fixture, sharing each temporal report before starting the next mode. This
-checks the rewritten graph on the remaining backend settings and supplies a
-comparison before performance work. No code change, export or rebuild is needed.
-Dog-08 GPU passed but does not validate dog-09's changed encoder. Continue toward
-requested-frame playback and meaningful release profiling after backend correctness;
-do not infer hardware utilization from requested settings or operation counts.
+Both remaining dog-09 modes passed all 20 physical-phone frames. GPU minimum
+mask IoU/pointer cosine/memory cosine: 0.996449/0.998735/0.996238; Automatic:
+0.996802/0.996997/0.992943. Complete reports are the fanout iphone gpu/automatic
+files in Audit. All five modes use identical model/fixture/frame/timestamp hashes
+and bounded state; all finish nominal thermally. The modes-summary JSON records
+metrics and timings, excluding cold frame zero. Median summed model-call times:
+CPU 311 ms, encoder-NE 367 ms, full NE 564 ms, GPU 265 ms, Automatic 581 ms.
+GPU is fastest in these supplied diagnostic runs, but prediction/state takes
+1137 ms versus 265 ms model calls. Do not treat these as playback FPS or measured
+NE utilization. Earlier reports do not record build configuration or Metal
+validation settings, so repeatable Release measurement is the next concrete need.
+
+Added additive report instrumentation `session-stages.v1`: per-component input
+preparation, output copy/validation, pre-prediction checkpoint/logging hook, plus
+state pack and commit times. Model timings retain their existing boundaries;
+stages exclude model calls and do not claim to cover all session overhead.
+`swiftDebugCompilation` records the DEBUG compilation condition; the checked-in
+project uses -Onone for Debug and -O for Release. Report decoding keeps the new
+frame stage field optional for old reports. No model, state, output-copy logic,
+correctness gate or checkpoint behavior is changed. Assistant static review only;
+no builds/tests/model execution.
+
+Next: pull and rebuild the app using Run configuration Release, no debugger and
+Metal API validation disabled for timing, retaining the same dog-09 fixture.
+Run CPU + GPU and CPU + Neural Engine and share both temporal reports. This
+separates Swift diagnostic overhead from model execution before optimizing or
+changing model precision again. No export or fixture preparation is needed.
 Commands and filesystem report cat/open instructions belong in chat, not README.
-Assistant verification is static source/JSON review only; no tests, inference,
-tracing, conversion or builds were run.
+After profiling, continue toward requested-frame playback, representative visual
+quality, sustained latency and actual hardware placement measurements.
 
 ## User goal and decisions
 
@@ -185,7 +205,7 @@ Cody supplied `BackgroundRemovalSource.swift` as a pasted attachment. That app s
 
 ## Next work
 
-1. The 39-edge encoder candidate passed 20 Mac frames with CPU and CPU_AND_NE encoder, tracker CPU. The normal dog-09 export and physical-phone CPU/Encoder NE + CPU tracker modes now passed. Full CPU + Neural Engine also passed; next compare CPU + GPU and Automatic on the same dog-09 fixture before performance work. Preserve old models and parity gates. Include cat/open with report requests. Do not run tests/inference/builds on the user's behalf.
+1. The 39-edge encoder candidate passed 20 Mac frames with CPU and CPU_AND_NE encoder, tracker CPU. The normal dog-09 export and physical-phone CPU/Encoder NE + CPU tracker modes now passed. All five physical-phone modes now passed; next obtain Release GPU/NE reports with session-stage timing to identify performance costs. Preserve old models and parity gates. Include cat/open with report requests. Do not run tests/inference/builds on the user's behalf.
 2. Resolve concrete parity/export failures without relaxing thresholds to hide a defect. Current gates are explicit engineering policies, not previously measured results. Obtain representative visual review and retain the fixture results. The community contract remains unknown; the owned implementation does not claim to reconstruct it.
 3. The Swift fixed-fixture temporal runner has built and passed CPU-only on both Mac and physical iPhone; accelerated-mode validation remains. Resolve concrete compiler/device failures, then extend to requested-video-frame operation and profile on iPhone. Keep the community packages and existing diagnostic usable until a validated replacement exists. The new export has different input names and no application-supplied rotary tensor; it is not a drop-in replacement.
 4. Evaluate mask edges, hair, occlusion/reappearance, fast motion, tracking drift, latency, and sustained performance before integrating woven text.

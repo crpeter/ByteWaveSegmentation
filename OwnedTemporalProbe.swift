@@ -80,6 +80,7 @@ struct OwnedFrameComparison: Codable, Sendable {
     let sourceImageSHA256: String
     let inputBGRASHA256: String
     let modelMilliseconds: [String: Double]
+    var sessionStageMilliseconds: [String: Double]? = nil
     let predictionAndStateMillisecondsDiagnosticOnly: Double
     let maskIoUAgainstMacCoreML: Double
     let sameObjectPresence: Bool
@@ -94,6 +95,12 @@ struct OwnedDeviceReport: Encodable, Sendable {
     let contract = OwnedTemporalContract.id
     let precisionPolicy = OwnedTemporalContract.precision
     let graphRevision = OwnedTemporalContract.graphRevision
+    let timingInstrumentation = "session-stages.v1"
+    #if DEBUG
+    let swiftDebugCompilation = true
+    #else
+    let swiftDebugCompilation = false
+    #endif
     let generatedAt = Date()
     let hardware: String
     let operatingSystem = ProcessInfo.processInfo.operatingSystemVersionString
@@ -102,7 +109,7 @@ struct OwnedDeviceReport: Encodable, Sendable {
     var requestedComputeUnitsByComponent: [String: String] = [:]
     let reference = "Mac Core ML CPU replay of the passed original-PyTorch comparison fixture"
     let scope = "20 exact-input sequential predictions with bounded Swift state. Low mask, pointer and memory cosine >= 0.99; low-mask IoU >= 0.95; matching object presence; all model outputs finite. High mask is checked for shape/finiteness, not compared numerically. No video decoding, sustained playback FPS, or measured hardware utilization."
-    let timingScope = "Model-call wall time excludes input copies, tensor checks, state assembly, reference comparison, checkpoint file I/O and display. Prediction-and-state time includes input copies/checks/state and pre-prediction checkpoint writes. First frame is cold; compile/load is separate. Debug-build timings are diagnostic."
+    let timingScope = "Model-call wall time excludes input copies, tensor checks, state assembly, reference comparison, checkpoint file I/O and display. Prediction-and-state time includes input copies/checks/state and pre-prediction checkpoint writes. Session stages separately time input preparation, output copy/validation, state pack/commit and the before-prediction hook (checkpoint write plus console logging). Stages exclude model calls and need not sum to the full session time; orchestration/allocation overhead remains. First frame is cold; compile/load is separate. Neither Debug nor Release fixture timings establish sustained playback FPS or measured hardware utilization."
     var fixtureSHA256: String?
     var sourceModelsManifestSHA256: String?
     var sourceReportSHA256: String?
@@ -269,12 +276,13 @@ actor OwnedTemporalProbeRunner {
                     let state = prediction.state
                     let statePassed = state.acceptedFrames == index + 1 && state.spatialEntries == min(index + 1, 7)
                         && state.pointerEntries == min(index + 1, 16)
-                    let row = OwnedFrameComparison(index: index, ptsNumerator: frame.ptsNumerator,
+                    var row = OwnedFrameComparison(index: index, ptsNumerator: frame.ptsNumerator,
                         ptsDenominator: frame.ptsDenominator, sourceImageSHA256: frame.imageSHA256,
                         inputBGRASHA256: frame.inputSHA256, modelMilliseconds: prediction.modelMilliseconds,
                         predictionAndStateMillisecondsDiagnosticOnly: elapsed, maskIoUAgainstMacCoreML: iou,
                         sameObjectPresence: presence, foregroundFraction: Double(foreground) / Double(actualMask.values.count),
                         outputs: comparisons, state: state, passed: iou >= 0.95 && presence && cosinePassed && statePassed)
+                    row.sessionStageMilliseconds = prediction.sessionStageMilliseconds
                     let preview = try Data(contentsOf: safeURL(root, frame.previewPath))
                     return (row, preview, try maskPNG(actualMask.values))
                 }

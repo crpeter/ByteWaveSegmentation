@@ -272,6 +272,7 @@ final class OwnedTemporalState {
 struct OwnedPrediction {
     let tensors: [String: OwnedTensor]
     let modelMilliseconds: [String: Double]
+    let sessionStageMilliseconds: [String: Double]
     let state: OwnedStateSummary
 }
 
@@ -288,8 +289,10 @@ final class OwnedTemporalSession {
         try state.validateTime(time)
         let token = state.token
         var timings: [String: Double] = [:]
+        var stages: [String: Double] = [:]
         func call(_ component: String, _ tensors: [String: OwnedTensor]) throws -> [String: OwnedTensor] {
             guard let model = models[component] else { throw OwnedTemporalError.invalid("Missing model \(component).") }
+            let inputStart = ProcessInfo.processInfo.systemUptime
             var values: [String: MLFeatureValue] = [:]
             for name in OwnedTemporalContract.inputs[component] ?? [] {
                 if name == "image" {
@@ -304,12 +307,16 @@ final class OwnedTemporalSession {
                 }
             }
             let input = try MLDictionaryFeatureProvider(dictionary: values)
+            stages["\(component).inputPreparation"] = (ProcessInfo.processInfo.systemUptime - inputStart) * 1000
             // Persist the impending component outside the prediction timing.
             // A native Metal assertion terminates the process without throwing.
+            let checkpointStart = ProcessInfo.processInfo.systemUptime
             try beforePrediction(component)
+            stages["\(component).beforePredictionHook"] = (ProcessInfo.processInfo.systemUptime - checkpointStart) * 1000
             let start = ProcessInfo.processInfo.systemUptime
             let prediction = try model.prediction(from: input)
             timings[component] = (ProcessInfo.processInfo.systemUptime - start) * 1000
+            let outputStart = ProcessInfo.processInfo.systemUptime
             try Task.checkCancellation()
             var result: [String: OwnedTensor] = [:]
             for name in OwnedTemporalContract.outputs(component) {
@@ -318,6 +325,7 @@ final class OwnedTemporalSession {
                 }
                 result[name] = try OwnedTensor(array, name: name)
             }
+            stages["\(component).outputCopyAndValidation"] = (ProcessInfo.processInfo.systemUptime - outputStart) * 1000
             return result
         }
         var features = try call("ImageEncoder", [:])
@@ -332,11 +340,16 @@ final class OwnedTemporalSession {
             let memory = try call("InitialMemoryEncoder", features.merging(output, uniquingKeysWith: { _, new in new }))
             output.merge(memory, uniquingKeysWith: { _, new in new })
         } else {
+            let packStart = ProcessInfo.processInfo.systemUptime
             let bank = try state.pack(at: time)
+            stages["state.pack"] = (ProcessInfo.processInfo.systemUptime - packStart) * 1000
             output = try call("Propagator", features.merging(bank, uniquingKeysWith: { _, new in new }))
         }
         try Task.checkCancellation()
+        let commitStart = ProcessInfo.processInfo.systemUptime
         try state.commit(output, at: time, token: token)
-        return OwnedPrediction(tensors: output, modelMilliseconds: timings, state: state.summary)
+        stages["state.commit"] = (ProcessInfo.processInfo.systemUptime - commitStart) * 1000
+        return OwnedPrediction(tensors: output, modelMilliseconds: timings,
+                               sessionStageMilliseconds: stages, state: state.summary)
     }
 }

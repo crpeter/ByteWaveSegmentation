@@ -6,7 +6,7 @@ passes 20 frames on Mac with either CPU_ONLY or CPU_AND_NE for the encoder,
 with the tracker on CPU_ONLY. The normal exporter now incorporates that rewrite;
 its new dog-09 full-set Mac validation passed all 20 frames. Physical-iPhone CPU,
 encoder-NE/CPU-tracker and full CPU_AND_NE fixtures also passed all 20 frames.
-GPU/Automatic validation of this encoder revision remains pending.
+GPU and Automatic also passed; all five phone modes meet this fixture gate.
 These results concern one clip and do not establish sustained performance.
 
 Contract ID: `bytewave.edgetam-temporal-owned.v2`.
@@ -170,7 +170,11 @@ hashes and model metadata/schema before inference, checks all output tensors for
 finite values, and compares low masks, pointers, memories and presence against
 those Mac Core ML references. High masks are shape/finiteness checked only. The
 same cosine 0.99 and low-mask IoU 0.95 gates apply relative to this stated reference.
-The report separates compilation/loading, model calls and state/copy overhead.
+The report separates compilation/loading and model calls from prediction/state
+time. Session-stage instrumentation additionally times input preparation, output
+copy/validation, checkpoint/logging hooks, bank assembly and state commit. It
+records the DEBUG compilation condition; these stages are partial timing regions,
+not an exhaustive accounting of all overhead.
 It does not establish sustained frame rate or runtime Neural Engine utilization.
 The "Encoder NE + CPU tracker" mode requests CPU_AND_NE only for ImageEncoder
 and CPU_ONLY for the other three components. Reports record requested units per
