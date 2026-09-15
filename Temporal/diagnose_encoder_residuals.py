@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Full-encoder controls: unchanged reserialization, one rounded skip, matching skips.
+"""Full-encoder controls for residual and other shared FP32/FP16 activation paths.
 
 One saved frame, CPU and CPU_AND_NE; no temporal/device readiness or speed claim.
-Skip rounding changes numerical precision and may change placement and lifetimes.
+Activation rounding changes numerical precision and may change placement and lifetimes.
 """
 from __future__ import annotations
 
@@ -73,11 +73,58 @@ def describe(edge):
             'oldSource': skip.name, 'roundedThrough': half.name}
 
 
+def fanout_edges(function):
+    """Find later consumers of an FP32 activation also cast for convolution.
+
+    Includes saved feature maps and non-add consumers. Preserve the original
+    convolution casts and consumers before the chosen cast. Follow identities
+    and graph order rather than guessing tensor names or module names.
+    """
+    from coremltools.converters.mil.mil import types
+    operations = list(function.operations)
+    sources = {}
+    for index, op in enumerate(operations):
+        if (op.op_type != 'cast' or op.x.dtype != types.fp32
+                or op.outputs[0].dtype != types.fp16):
+            continue
+        half = op.outputs[0]
+        if not any(child.op_type == 'conv' and child.x is half for child in operations[index + 1:]):
+            continue
+        # Repeated casts have identical rounding; use the earliest eligible one.
+        sources.setdefault(id(op.x), (index, op.x, half))
+    edges = []
+    for index, source, half in sources.values():
+        if any(source is output for output in function.outputs):
+            raise ValueError('Fanout control does not rewrite a source that is also a model output')
+        for consumer in operations[index + 1:]:
+            if (consumer.op_type == 'cast' and consumer.x is source
+                    and consumer.outputs[0].dtype == types.fp16):
+                continue
+            for operand, value in consumer.inputs.items():
+                values = value if isinstance(value, (list, tuple)) else (value,)
+                if any(item is source for item in values):
+                    edges.append((consumer, operand, source, half))
+    return edges
+
+
+def replace_operand(op, operand, source, replacement):
+    value = op.inputs[operand]
+    if isinstance(value, (list, tuple)):
+        value = type(value)(replacement if item is source else item for item in value)
+    elif value is source:
+        value = replacement
+    else:
+        raise ValueError('Selected operand no longer contains the expected source')
+    op.set_inputs(**{operand: value})
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--run', type=Path, required=True)
     parser.add_argument('--prefix-control', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--variants', nargs='+', choices=('unchanged', 'single', 'matching', 'fanout'),
+                        default=['unchanged', 'single', 'matching'], help='Choose only new controls when earlier variants are already recorded')
     args = parser.parse_args()
     if platform.system() != 'Darwin':
         parser.error('Run on Mac')
@@ -124,7 +171,7 @@ def main():
             raise ValueError('Invalid original CPU baseline')
         report['cpuReference'] = summarize(reference)
         report['cpuReferenceFileSHA256'] = sha(args.output / 'original-cpu.npz')
-        for variant in ('unchanged', 'single', 'matching'):
+        for variant in dict.fromkeys(args.variants):
             row = report['variants'][variant] = {}
             report['stage'] = f'{variant}: extraction'
             write_json(report_path, report)
@@ -145,12 +192,17 @@ def main():
                     raise ValueError('Known successful residual pattern was not found exactly once')
                 selected = [] if variant == 'unchanged' else known if variant == 'single' else edges
                 row['matchedEdges'] = [describe(edge) for edge in edges]
+                if variant == 'fanout':
+                    selected = fanout_edges(function)
+                    if len(selected) <= len(edges) or describe(known[0]) not in [describe(edge) for edge in selected]:
+                        raise ValueError('Fanout control must include the known residual and additional consumers')
+                    row['matchedFanoutEdges'] = [describe(edge) for edge in selected]
                 row['modifiedEdges'] = []
                 with function:
                     for index, edge in enumerate(selected):
                         op, operand, skip, half = edge
                         restored = mb.cast(x=half, dtype='fp32', name=f'diagnostic_rounded_skip_{index}', before_op=op)
-                        op.set_inputs(**{operand: restored})
+                        replace_operand(op, operand, skip, restored)
                         row['modifiedEdges'].append({**describe(edge), 'newSource': restored.name})
                 program.validate()
                 program.skip_all_passes = True
