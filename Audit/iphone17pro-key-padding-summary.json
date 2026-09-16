@@ -1,0 +1,90 @@
+{
+  "scope": "Two separate 20-frame physical iPhone17Pro Release CPU_AND_GPU runs, current memoryfp16 first. Warm model medians exclude the first call per component. No measured sustained playback, energy, actual device utilization or statistical significance. Debugger/Metal validation settings are not captured by these reports.",
+  "hardware": "iPhone18,1",
+  "operatingSystem": "Version 27.0 (Build 24A435)",
+  "matchingMetadata": {
+    "hardware": true,
+    "operatingSystem": true,
+    "sourceModelsManifestSHA256": true,
+    "sourceReportSHA256": true,
+    "pointNormalizedTopLeft": true,
+    "graphRevision": true,
+    "tensorCopyImplementation": true,
+    "timingInstrumentation": true
+  },
+  "sameInputFrameIdentities": true,
+  "sameReportedQualityAndStateFields": true,
+  "reportedEqualityMeaning": "Equality of report metrics does not prove raw prediction tensor identity.",
+  "runs": {
+    "memoryfp16": {
+      "sourceReport": "iphone17pro-key-padding-memoryfp16-report.json",
+      "sourceSHA256": "fff5047ff3e6c3db9ee31396819282afd8b50e0858dd6777277b2dcfbb6bf8c2",
+      "generatedAt": "2026-09-16T13:16:49Z",
+      "fixtureSHA256": "f6b8e78c142538375ff6bf6fee5516975543f06e2f0780f959ffd3abc0dbbc9f",
+      "passed": true,
+      "frames": 20,
+      "swiftDebugCompilation": false,
+      "requestedComputeUnitsByComponent": {
+        "ImageEncoder": "CPU_AND_GPU",
+        "InitialMemoryEncoder": "CPU_AND_GPU",
+        "Initializer": "CPU_AND_GPU",
+        "Propagator": "CPU_AND_GPU"
+      },
+      "minimumMaskIoU": 0.9968039772727273,
+      "minimumPointerCosine": 0.9989310422512354,
+      "minimumMemoryCosine": 0.9961403122331987,
+      "medianWarmModelMilliseconds": {
+        "ImageEncoder": 21.853333339095116,
+        "Propagator": 32.50664583174512
+      },
+      "coldModelMilliseconds": {
+        "ImageEncoder": 88.89999998791609,
+        "Propagator": 152.3109999980079
+      },
+      "medianSessionMillisecondsExcludingFrameZero": 58.81341667554807,
+      "finalState": {
+        "acceptedFrames": 20,
+        "pointerEntries": 16,
+        "spatialEntries": 7
+      },
+      "thermalStateAtStart": "nominal",
+      "thermalStateAtEnd": "nominal"
+    },
+    "memoryfp16k4096": {
+      "sourceReport": "iphone17pro-key-padding-memoryfp16k4096-report.json",
+      "sourceSHA256": "a124981ff210b5167834fa5623a0159650a83fe7580a8debb5713621817c5c78",
+      "generatedAt": "2026-09-16T13:17:06Z",
+      "fixtureSHA256": "8a7483d398384885e4287b6358754a65289044e08084674b4942cce4ce77e1ed",
+      "passed": true,
+      "frames": 20,
+      "swiftDebugCompilation": false,
+      "requestedComputeUnitsByComponent": {
+        "ImageEncoder": "CPU_AND_GPU",
+        "InitialMemoryEncoder": "CPU_AND_GPU",
+        "Initializer": "CPU_AND_GPU",
+        "Propagator": "CPU_AND_GPU"
+      },
+      "minimumMaskIoU": 0.9968039772727273,
+      "minimumPointerCosine": 0.9989310422512354,
+      "minimumMemoryCosine": 0.9961403122331987,
+      "medianWarmModelMilliseconds": {
+        "ImageEncoder": 21.96770833688788,
+        "Propagator": 32.62031250051223
+      },
+      "coldModelMilliseconds": {
+        "ImageEncoder": 74.99558333074674,
+        "Propagator": 320.03420832916163
+      },
+      "medianSessionMillisecondsExcludingFrameZero": 59.4940416776808,
+      "finalState": {
+        "acceptedFrames": 20,
+        "pointerEntries": 16,
+        "spatialEntries": 7
+      },
+      "thermalStateAtStart": "nominal",
+      "thermalStateAtEnd": "nominal"
+    }
+  },
+  "descriptivePropagatorLatencyReductionPercent": -0.34967209276357547,
+  "decision": "No useful iPhone speed improvement demonstrated. Close key-padding experiment without promotion or another repeat. Keep current memoryfp16 CPU_AND_GPU in Track a video."
+}

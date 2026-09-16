@@ -1,6 +1,34 @@
 # ByteWave segmentation: continuation handoff
 
-## Current step: small Mac padding difference; isolated iPhone comparison prepared
+## Current decision: key-padding experiment closed; retain current FP16 GPU
+
+User supplied ed97737a-129c-4afd-b443-792d81723256.json (current memoryfp16,
+13:16:49Z) and a6727ff9-8b2d-43a9-97ec-72072b93a8f1.json (memoryfp16k4096,
+13:17:06Z). Raw reports archived as `Audit/iphone17pro-key-padding-{variant}-report.json`;
+derived comparison and source hashes in `Audit/iphone17pro-key-padding-summary.json`.
+Both are physical iPhone18,1 / iOS 27.0 (24A435), Release CPU_AND_GPU, all 20
+frames passed. Identical frame identities and original-reference provenance,
+matching copy implementation; thermal snapshots nominal, final banks 7/16.
+Every reported quality/state field matches between runs (not proof of raw tensor
+identity). Both minima: IoU 0.996804, pointer cosine 0.998931, memory cosine 0.996140.
+
+Warm Propagator medians excluding first call: current 32.5066 ms, padded 32.6203 ms.
+Warm encoder: 21.8533 / 21.9677 ms. Session medians excluding frame zero:
+58.8134 / 59.4940 ms. First Propagator call 152.311 / 320.034 ms; cold calls are
+excluded from warm summaries. Separate short runs, not paired, no statistical
+regression claim. Debugger/Metal validation settings are not recorded in JSON.
+
+The tiny Mac difference did not yield useful iPhone acceleration. Close padding
+without promotion or another repeat; no reverse-order run is needed for this
+non-winning candidate. Track a video stays on memoryfp16 CPU_AND_GPU. The
+diagnostic option remains available for reproducibility. Existing FP16, direct
+preview and bulk-copy improvements remain intact. Attention is still the largest
+measured shader group, but no new rewrite is selected; do not repeat closed
+query-chunking, key-padding, conv2 or simple NE-placement experiments.
+Evidence/handoff only; offline JSON arithmetic/identity checks and static diff
+review, no assistant tests/builds/inference/conversion/benchmarks.
+
+## Earlier: small Mac padding difference; isolated iPhone comparison prepared
 
 User's inline paired Mac summary reports all 76 pairs passing accuracy. Selected
 fields/provenance are archived as `Audit/mac-attention-key-padding-paired-summary.json`.
