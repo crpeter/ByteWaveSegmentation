@@ -1,6 +1,36 @@
 # ByteWave segmentation: continuation handoff
 
-## Current step: FP16 trace received; shader timing export empty
+## Current step: Instruments 27 shader capture analyzed; same-run report pending
+
+The user identified mixed tool versions: recording with Xcode/Instruments 26.6,
+Terminal using Xcode 27 beta. The 26.6 UI warning was “GPU Service reported
+error: Selected counter profile is not supported on target device.” User then
+recorded again through Xcode 27 beta. New Run 1 uses Instruments 27.0 (27A5228h),
+iPhone 17 Pro / iOS 27.0 (24A435), PID 7849, 08:09:59.951–08:10:26.533 -04:00.
+Shader Timeline enabled, 6,934 exported shader rows now present. This supports
+a tooling compatibility explanation but does not prove the exact original cause.
+
+Archive `Audit/iphone17pro-instruments-memoryfp16-shader-summary.json` contains
+source ZIP/export hashes, per-model warm spans and sampled shader breakdowns.
+The 20 encoder / 19 propagator / 1 initializer / 1 initial-memory calls match the
+fixture workflow. Warm medians excluding first call of each model:
+encoder prediction/GPU-active union 22.791/21.212 ms; propagation 33.824/28.414 ms.
+Propagator SDPA shader union median 15.932 ms is the largest measured shader
+group. GEMM family median 4.844 ms, identity family 1.676 ms. These are overlapping
+sampled intervals, not additive complete accounting or exact MIL attribution.
+Encoder's largest sampled family is mmul_kernel_a16_float_float_float (4.627 ms);
+its name is insufficient to identify safe precision changes.
+
+No matching temporal report supplied for this new run yet. Request Share temporal
+report from the existing run; no new recording or model experiment needed for
+that request. The earlier 07:49 report belongs to the prior trace and must not be
+reused as this run's accuracy/provenance evidence. Current memoryfp16 identity
+is based on instructed/user workflow until the matching report is received.
+Next model work should target the demonstrated remaining attention cost while
+preserving all quality checks; closed query-batching rewrite stays unpromoted.
+No runtime/model changes. Only offline XML parsing and static checks executed.
+
+## Earlier FP16 capture: shader timing export empty
 
 User recorded current memoryfp16 on iPhone 17 Pro, Release CPU + GPU. Device
 report completes/passes all 20 frames with bounded 7/16 banks, nominal thermal

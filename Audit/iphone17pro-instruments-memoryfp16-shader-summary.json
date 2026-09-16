@@ -1,0 +1,2705 @@
+{
+  "schema": "bytewave.instruments-memoryfp16-shader-summary.v1",
+  "scope": "Offline analysis of current-model workflow Instruments capture after switching to Instruments 27 beta. Shader samples identify expensive families, not exact MIL operations. Same-run device comparison report still requested.",
+  "sourceZIP": {
+    "name": "c3323650-dc92-483a-81dc-499bfe4042c7.zip",
+    "sha256": "3a103b6343a010463323fdb8cdfbec97371781e7de5476c4ea003d7073ee006c"
+  },
+  "exports": {
+    "coreml-os-signpost.xml": {
+      "sha256": "9f90aa09ce363555d98550e7f83c967adf7e9573ab428a0135f3223441bddacb",
+      "bytes": 107970,
+      "rows": 263
+    },
+    "metal-shader-profiler-shader-list.xml": {
+      "sha256": "7030cf4d04c8de7b4c1e6955f30d4d9e7e52b01de0821f118fa146fe570124cd",
+      "bytes": 1831639,
+      "rows": 4394
+    },
+    "toc.xml": {
+      "sha256": "fb90ff9355b7281967432aaf8584c76c15708e76ee61606f3c076e4ef71bc327",
+      "bytes": 25330,
+      "rows": 0
+    },
+    "metal-gpu-intervals.xml": {
+      "sha256": "233bbc9e1fb75d140b4b1135d081d9f09a58a105e50e2209e64bd53aca178908",
+      "bytes": 18142073,
+      "rows": 18752
+    },
+    "metal-shader-profiler-intervals.xml": {
+      "sha256": "38e163034c116aadfe4676aaa304779a7a47ead126ec55a3d3ac1edf9033890e",
+      "bytes": 3578966,
+      "rows": 6934
+    }
+  },
+  "runNumber": 1,
+  "targetPID": 7849,
+  "hardware": "iPhone 17 Pro",
+  "operatingSystem": "27.0 (24A435)",
+  "instrumentsVersion": "27.0 (27A5228h)",
+  "startDate": "2026-09-16T08:09:59.951-04:00",
+  "endDate": "2026-09-16T08:10:26.533-04:00",
+  "endReason": "User pressed Stop",
+  "processTermination": "exit(0)",
+  "shaderTimelineEnabled": true,
+  "modelVariantUserWorkflow": "memoryfp16",
+  "sameRunDeviceReportReceived": false,
+  "method": "Resolve XML id/ref independently per document. Match Core ML Prediction spans by model; filter GPU Active and shader rows to PID 7849. Clip to each prediction, union overlaps, and exclude the first prediction of each model. Family groups remove trailing numeric shader ID only. SDPA group is shader names containing sdpa. Shader/GPU/prediction intervals overlap and are not additive.",
+  "models": {
+    "BWTemporalImageEncoder": {
+      "predictionCount": 20,
+      "firstPredictionMilliseconds": 179.148875,
+      "warmCount": 19,
+      "warmFrames": [
+        {
+          "predictionIndex": 1,
+          "startNanoseconds": 9860307250,
+          "durationMilliseconds": 23.26775,
+          "gpuActiveUnionMilliseconds": 21.660917,
+          "shaderUnionMilliseconds": 12.854421,
+          "sdpaUnionMilliseconds": 0.0,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayIdentity": 0.673377,
+            "ndArrayConvolution2D_PreG13": 0.514583,
+            "conv2d_a18_float_half_half": 3.273294,
+            "depthwiseConv3d_cFirst": 1.172126,
+            "depthwiseConv_3x3": 2.166538,
+            "reduce_multiple_passes_axes_add": 0.31271,
+            "NDArrayVectorMatrixMultiply_1_4": 0.00875,
+            "mmul_kernel_a16_float_float_float": 4.616168,
+            "ndArrayIdentityTranspose": 0.116875
+          }
+        },
+        {
+          "predictionIndex": 2,
+          "startNanoseconds": 10055089375,
+          "durationMilliseconds": 22.65625,
+          "gpuActiveUnionMilliseconds": 21.216331,
+          "shaderUnionMilliseconds": 12.761704,
+          "sdpaUnionMilliseconds": 0.0,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayIdentity": 0.842415,
+            "ndArrayConvolution2D_PreG13": 0.462042,
+            "conv2d_a18_float_half_half": 3.129829,
+            "depthwiseConv3d_cFirst": 1.06454,
+            "depthwiseConv_3x3": 2.111959,
+            "reduce_multiple_passes_axes_add": 0.291335,
+            "NDArrayVectorMatrixMultiply_1_4": 0.008125,
+            "mmul_kernel_a16_float_float_float": 4.566334,
+            "ndArrayResample": 0.161625,
+            "ndArrayIdentityTranspose": 0.1235
+          }
+        },
+        {
+          "predictionIndex": 3,
+          "startNanoseconds": 10131823375,
+          "durationMilliseconds": 22.790833,
+          "gpuActiveUnionMilliseconds": 21.273957,
+          "shaderUnionMilliseconds": 12.94633,
+          "sdpaUnionMilliseconds": 0.0,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayIdentity": 0.800084,
+            "ndArrayConvolution2D_PreG13": 0.463875,
+            "conv2d_a18_float_half_half": 3.109875,
+            "depthwiseConv3d_cFirst": 0.99004,
+            "depthwiseConv_3x3": 2.087874,
+            "reduce_multiple_passes_axes_add": 0.297166,
+            "NDArrayVectorMatrixMultiply_1_4": 0.009751,
+            "mmul_kernel_a16_float_float_float": 4.892332,
+            "ndArrayResample": 0.158833,
+            "ndArrayIdentityTranspose": 0.1365
+          }
+        },
+        {
+          "predictionIndex": 4,
+          "startNanoseconds": 10205731333,
+          "durationMilliseconds": 22.83875,
+          "gpuActiveUnionMilliseconds": 21.345919,
+          "shaderUnionMilliseconds": 12.790879,
+          "sdpaUnionMilliseconds": 0.0,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayIdentity": 0.662794,
+            "ndArrayConvolution2D_PreG13": 0.480792,
+            "conv2d_a18_float_half_half": 3.157208,
+            "depthwiseConv3d_cFirst": 1.117375,
+            "depthwiseConv_3x3": 2.066624,
+            "reduce_multiple_passes_axes_add": 0.300627,
+            "NDArrayVectorMatrixMultiply_1_4": 0.007209,
+            "mmul_kernel_a16_float_float_float": 4.715791,
+            "ndArrayResample": 0.158959,
+            "ndArrayIdentityTranspose": 0.1235
+          }
+        },
+        {
+          "predictionIndex": 5,
+          "startNanoseconds": 10277976416,
+          "durationMilliseconds": 22.411709,
+          "gpuActiveUnionMilliseconds": 20.911583,
+          "shaderUnionMilliseconds": 12.184418,
+          "sdpaUnionMilliseconds": 0.0,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayConvolution2D_PreG13": 0.472833,
+            "conv2d_a18_float_half_half": 3.003247,
+            "depthwiseConv3d_cFirst": 1.062665,
+            "depthwiseConv_3x3": 1.958294,
+            "reduce_multiple_passes_axes_add": 0.29542,
+            "ndArrayIdentity": 0.477168,
+            "NDArrayVectorMatrixMultiply_1_4": 0.008708,
+            "mmul_kernel_a16_float_float_float": 4.638208,
+            "ndArrayResample": 0.157459,
+            "ndArrayIdentityTranspose": 0.110416
+          }
+        },
+        {
+          "predictionIndex": 6,
+          "startNanoseconds": 10349835083,
+          "durationMilliseconds": 22.52225,
+          "gpuActiveUnionMilliseconds": 21.042751,
+          "shaderUnionMilliseconds": 12.771204,
+          "sdpaUnionMilliseconds": 0.0,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayIdentity": 0.642459,
+            "ndArrayConvolution2D_PreG13": 0.476208,
+            "conv2d_a18_float_half_half": 3.017625,
+            "depthwiseConv3d_cFirst": 1.102833,
+            "depthwiseConv_3x3": 2.087125,
+            "reduce_multiple_passes_axes_add": 0.294873,
+            "NDArrayVectorMatrixMultiply_1_4": 0.008833,
+            "mmul_kernel_a16_float_float_float": 4.857749,
+            "ndArrayResample": 0.156041,
+            "ndArrayIdentityTranspose": 0.127458
+          }
+        },
+        {
+          "predictionIndex": 7,
+          "startNanoseconds": 10421667791,
+          "durationMilliseconds": 22.704042,
+          "gpuActiveUnionMilliseconds": 21.318082,
+          "shaderUnionMilliseconds": 12.599376,
+          "sdpaUnionMilliseconds": 0.0,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayIdentity": 0.798625,
+            "ndArrayConvolution2D_PreG13": 0.467958,
+            "conv2d_a18_float_half_half": 3.190877,
+            "depthwiseConv3d_cFirst": 1.053874,
+            "depthwiseConv_3x3": 2.028918,
+            "reduce_multiple_passes_axes_add": 0.296333,
+            "NDArrayVectorMatrixMultiply_1_4": 0.009875,
+            "mmul_kernel_a16_float_float_float": 4.627375,
+            "ndArrayIdentityTranspose": 0.125541
+          }
+        },
+        {
+          "predictionIndex": 8,
+          "startNanoseconds": 10496030708,
+          "durationMilliseconds": 22.842833,
+          "gpuActiveUnionMilliseconds": 21.128583,
+          "shaderUnionMilliseconds": 12.328753,
+          "sdpaUnionMilliseconds": 0.0,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayIdentity": 0.691501,
+            "ndArrayConvolution2D_PreG13": 0.474917,
+            "conv2d_a18_float_half_half": 3.103956,
+            "depthwiseConv3d_cFirst": 1.062457,
+            "depthwiseConv_3x3": 1.982167,
+            "reduce_multiple_passes_axes_add": 0.311919,
+            "NDArrayVectorMatrixMultiply_1_4": 0.007084,
+            "mmul_kernel_a16_float_float_float": 4.567293,
+            "ndArrayIdentityTranspose": 0.127459
+          }
+        },
+        {
+          "predictionIndex": 9,
+          "startNanoseconds": 10576322666,
+          "durationMilliseconds": 22.642834,
+          "gpuActiveUnionMilliseconds": 20.934749,
+          "shaderUnionMilliseconds": 12.445832,
+          "sdpaUnionMilliseconds": 0.0,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayIdentity": 0.664456,
+            "ndArrayConvolution2D_PreG13": 0.465083,
+            "conv2d_a18_float_half_half": 3.010166,
+            "depthwiseConv3d_cFirst": 1.065834,
+            "depthwiseConv_3x3": 2.028958,
+            "reduce_multiple_passes_axes_add": 0.299167,
+            "NDArrayVectorMatrixMultiply_1_4": 0.008543,
+            "mmul_kernel_a16_float_float_float": 4.776667,
+            "ndArrayIdentityTranspose": 0.126958
+          }
+        },
+        {
+          "predictionIndex": 10,
+          "startNanoseconds": 10656399416,
+          "durationMilliseconds": 23.134917,
+          "gpuActiveUnionMilliseconds": 21.532292,
+          "shaderUnionMilliseconds": 12.60354,
+          "sdpaUnionMilliseconds": 0.0,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayIdentity": 0.674585,
+            "ndArrayConvolution2D_PreG13": 0.477708,
+            "conv2d_a18_float_half_half": 3.0205,
+            "depthwiseConv3d_cFirst": 1.078542,
+            "depthwiseConv_3x3": 2.027956,
+            "reduce_multiple_passes_axes_add": 0.300124,
+            "NDArrayVectorMatrixMultiply_1_4": 0.010583,
+            "mmul_kernel_a16_float_float_float": 4.723042,
+            "ndArrayResample": 0.161667,
+            "ndArrayIdentityTranspose": 0.128833
+          }
+        },
+        {
+          "predictionIndex": 11,
+          "startNanoseconds": 10737212458,
+          "durationMilliseconds": 23.207375,
+          "gpuActiveUnionMilliseconds": 21.35004,
+          "shaderUnionMilliseconds": 12.445958,
+          "sdpaUnionMilliseconds": 0.0,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayIdentity": 0.725917,
+            "ndArrayConvolution2D_PreG13": 0.484334,
+            "conv2d_a18_float_half_half": 3.067085,
+            "depthwiseConv3d_cFirst": 1.062167,
+            "depthwiseConv_3x3": 1.920791,
+            "reduce_multiple_passes_axes_add": 0.294708,
+            "NDArrayVectorMatrixMultiply_1_4": 0.011416,
+            "mmul_kernel_a16_float_float_float": 4.684541,
+            "ndArrayResample": 0.068291,
+            "ndArrayIdentityTranspose": 0.126708
+          }
+        },
+        {
+          "predictionIndex": 12,
+          "startNanoseconds": 10817385000,
+          "durationMilliseconds": 23.354375,
+          "gpuActiveUnionMilliseconds": 21.156916,
+          "shaderUnionMilliseconds": 13.156378,
+          "sdpaUnionMilliseconds": 0.0,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayIdentity": 0.710124,
+            "ndArrayConvolution2D_PreG13": 0.478292,
+            "conv2d_a18_float_half_half": 3.105665,
+            "depthwiseConv3d_cFirst": 1.060417,
+            "depthwiseConv_3x3": 1.986378,
+            "reduce_multiple_passes_axes_add": 0.29775,
+            "NDArrayVectorMatrixMultiply_1_4": 0.008125,
+            "mmul_kernel_a16_float_float_float": 5.368044,
+            "ndArrayIdentityTranspose": 0.141583
+          }
+        },
+        {
+          "predictionIndex": 13,
+          "startNanoseconds": 10896846416,
+          "durationMilliseconds": 22.688959,
+          "gpuActiveUnionMilliseconds": 20.954294,
+          "shaderUnionMilliseconds": 12.303329,
+          "sdpaUnionMilliseconds": 0.0,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayIdentity": 0.624583,
+            "ndArrayConvolution2D_PreG13": 0.495333,
+            "conv2d_a18_float_half_half": 3.044084,
+            "depthwiseConv3d_cFirst": 1.055416,
+            "depthwiseConv_3x3": 2.041457,
+            "reduce_multiple_passes_axes_add": 0.300917,
+            "NDArrayVectorMatrixMultiply_1_4": 0.008583,
+            "mmul_kernel_a16_float_float_float": 4.462582,
+            "ndArrayResample": 0.157458,
+            "ndArrayIdentityTranspose": 0.112916
+          }
+        },
+        {
+          "predictionIndex": 14,
+          "startNanoseconds": 10973877666,
+          "durationMilliseconds": 22.897875,
+          "gpuActiveUnionMilliseconds": 21.212415,
+          "shaderUnionMilliseconds": 12.579418,
+          "sdpaUnionMilliseconds": 0.0,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayIdentity": 0.657207,
+            "ndArrayConvolution2D_PreG13": 0.491125,
+            "conv2d_a18_float_half_half": 3.112002,
+            "depthwiseConv3d_cFirst": 1.052372,
+            "depthwiseConv_3x3": 2.050836,
+            "reduce_multiple_passes_axes_add": 0.292375,
+            "NDArrayVectorMatrixMultiply_1_4": 0.009334,
+            "mmul_kernel_a16_float_float_float": 4.786209,
+            "ndArrayIdentityTranspose": 0.127958
+          }
+        },
+        {
+          "predictionIndex": 15,
+          "startNanoseconds": 11049305166,
+          "durationMilliseconds": 22.967375,
+          "gpuActiveUnionMilliseconds": 21.242957,
+          "shaderUnionMilliseconds": 12.801625,
+          "sdpaUnionMilliseconds": 0.0,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayIdentity": 0.782295,
+            "ndArrayConvolution2D_PreG13": 0.474666,
+            "conv2d_a18_float_half_half": 3.254205,
+            "depthwiseConv3d_cFirst": 1.058708,
+            "depthwiseConv_3x3": 2.096667,
+            "reduce_multiple_passes_axes_add": 0.291959,
+            "NDArrayVectorMatrixMultiply_1_4": 0.006791,
+            "mmul_kernel_a16_float_float_float": 4.556709,
+            "ndArrayResample": 0.158875,
+            "ndArrayIdentityTranspose": 0.12075
+          }
+        },
+        {
+          "predictionIndex": 16,
+          "startNanoseconds": 11128920625,
+          "durationMilliseconds": 22.521291,
+          "gpuActiveUnionMilliseconds": 20.884335,
+          "shaderUnionMilliseconds": 12.392496,
+          "sdpaUnionMilliseconds": 0.0,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayIdentity": 0.715206,
+            "ndArrayConvolution2D_PreG13": 0.4775,
+            "conv2d_a18_float_half_half": 3.090252,
+            "depthwiseConv3d_cFirst": 1.061375,
+            "depthwiseConv_3x3": 2.011914,
+            "reduce_multiple_passes_axes_add": 0.288375,
+            "NDArrayVectorMatrixMultiply_1_4": 0.007084,
+            "mmul_kernel_a16_float_float_float": 4.470374,
+            "ndArrayResample": 0.160208,
+            "ndArrayIdentityTranspose": 0.110208
+          }
+        },
+        {
+          "predictionIndex": 17,
+          "startNanoseconds": 11203885250,
+          "durationMilliseconds": 22.928625,
+          "gpuActiveUnionMilliseconds": 21.308249,
+          "shaderUnionMilliseconds": 12.405205,
+          "sdpaUnionMilliseconds": 0.0,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayIdentity": 0.793166,
+            "ndArrayConvolution2D_PreG13": 0.463667,
+            "conv2d_a18_float_half_half": 3.115041,
+            "depthwiseConv3d_cFirst": 1.094667,
+            "depthwiseConv_3x3": 2.072917,
+            "reduce_multiple_passes_axes_add": 0.295081,
+            "NDArrayVectorMatrixMultiply_1_4": 0.01,
+            "mmul_kernel_a16_float_float_float": 4.442458,
+            "ndArrayIdentityTranspose": 0.118208
+          }
+        },
+        {
+          "predictionIndex": 18,
+          "startNanoseconds": 11279020375,
+          "durationMilliseconds": 22.4875,
+          "gpuActiveUnionMilliseconds": 20.846793,
+          "shaderUnionMilliseconds": 12.178287,
+          "sdpaUnionMilliseconds": 0.0,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayConvolution2D_PreG13": 0.48525,
+            "conv2d_a18_float_half_half": 3.123997,
+            "depthwiseConv3d_cFirst": 1.051206,
+            "depthwiseConv_3x3": 1.93958,
+            "reduce_multiple_passes_axes_add": 0.297668,
+            "ndArrayIdentity": 0.488126,
+            "NDArrayVectorMatrixMultiply_1_4": 0.008917,
+            "mmul_kernel_a16_float_float_float": 4.510501,
+            "ndArrayResample": 0.157458,
+            "ndArrayIdentityTranspose": 0.115584
+          }
+        },
+        {
+          "predictionIndex": 19,
+          "startNanoseconds": 11353899791,
+          "durationMilliseconds": 22.714084,
+          "gpuActiveUnionMilliseconds": 21.116253,
+          "shaderUnionMilliseconds": 12.364791,
+          "sdpaUnionMilliseconds": 0.0,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayIdentity": 0.748252,
+            "ndArrayConvolution2D_PreG13": 0.4575,
+            "conv2d_a18_float_half_half": 3.191663,
+            "depthwiseConv3d_cFirst": 1.058584,
+            "depthwiseConv_3x3": 2.0495,
+            "reduce_multiple_passes_axes_add": 0.310959,
+            "NDArrayVectorMatrixMultiply_1_4": 0.009916,
+            "mmul_kernel_a16_float_float_float": 4.255959,
+            "ndArrayResample": 0.163,
+            "ndArrayIdentityTranspose": 0.119458
+          }
+        }
+      ],
+      "medianWarmPredictionMilliseconds": 22.790833,
+      "medianWarmGPUActiveMilliseconds": 21.212415,
+      "medianWarmShaderUnionMilliseconds": 12.579418,
+      "medianWarmSDPAUnionMilliseconds": 0.0,
+      "shaderFamilies": [
+        {
+          "name": "mmul_kernel_a16_float_float_float",
+          "warmUnionMilliseconds": 88.518336,
+          "medianPerWarmPredictionMilliseconds": 4.627375
+        },
+        {
+          "name": "conv2d_a18_float_half_half",
+          "warmUnionMilliseconds": 59.120571,
+          "medianPerWarmPredictionMilliseconds": 3.109875
+        },
+        {
+          "name": "depthwiseConv_3x3",
+          "warmUnionMilliseconds": 38.716453,
+          "medianPerWarmPredictionMilliseconds": 2.041457
+        },
+        {
+          "name": "depthwiseConv3d_cFirst",
+          "warmUnionMilliseconds": 20.325198,
+          "medianPerWarmPredictionMilliseconds": 1.062167
+        },
+        {
+          "name": "ndArrayIdentity",
+          "warmUnionMilliseconds": 13.17234,
+          "medianPerWarmPredictionMilliseconds": 0.691501
+        },
+        {
+          "name": "ndArrayConvolution2D_PreG13",
+          "warmUnionMilliseconds": 9.063666,
+          "medianPerWarmPredictionMilliseconds": 0.476208
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add",
+          "warmUnionMilliseconds": 5.669466,
+          "medianPerWarmPredictionMilliseconds": 0.297166
+        },
+        {
+          "name": "ndArrayIdentityTranspose",
+          "warmUnionMilliseconds": 2.340413,
+          "medianPerWarmPredictionMilliseconds": 0.1235
+        },
+        {
+          "name": "ndArrayResample",
+          "warmUnionMilliseconds": 1.819874,
+          "medianPerWarmPredictionMilliseconds": 0.157458
+        },
+        {
+          "name": "NDArrayVectorMatrixMultiply_1_4",
+          "warmUnionMilliseconds": 0.167627,
+          "medianPerWarmPredictionMilliseconds": 0.00875
+        }
+      ],
+      "shaderNames": [
+        {
+          "name": "mmul_kernel_a16_float_float_float (67)",
+          "intervalCount": 12,
+          "warmUnionMilliseconds": 22.075165
+        },
+        {
+          "name": "mmul_kernel_a16_float_float_float (68)",
+          "intervalCount": 12,
+          "warmUnionMilliseconds": 15.133334
+        },
+        {
+          "name": "conv2d_a18_float_half_half (19)",
+          "intervalCount": 73,
+          "warmUnionMilliseconds": 12.808754
+        },
+        {
+          "name": "mmul_kernel_a16_float_float_float (60)",
+          "intervalCount": 7,
+          "warmUnionMilliseconds": 11.764126
+        },
+        {
+          "name": "conv2d_a18_float_half_half (26)",
+          "intervalCount": 91,
+          "warmUnionMilliseconds": 9.763917
+        },
+        {
+          "name": "depthwiseConv3d_cFirst (10)",
+          "intervalCount": 108,
+          "warmUnionMilliseconds": 9.256951
+        },
+        {
+          "name": "depthwiseConv_3x3 (21)",
+          "intervalCount": 84,
+          "warmUnionMilliseconds": 8.576583
+        },
+        {
+          "name": "depthwiseConv_3x3 (11)",
+          "intervalCount": 79,
+          "warmUnionMilliseconds": 8.471828
+        },
+        {
+          "name": "mmul_kernel_a16_float_float_float (61)",
+          "intervalCount": 7,
+          "warmUnionMilliseconds": 8.352834
+        },
+        {
+          "name": "mmul_kernel_a16_float_float_float (58)",
+          "intervalCount": 36,
+          "warmUnionMilliseconds": 6.922167
+        },
+        {
+          "name": "conv2d_a18_float_half_half (9)",
+          "intervalCount": 19,
+          "warmUnionMilliseconds": 6.864666
+        },
+        {
+          "name": "mmul_kernel_a16_float_float_float (53)",
+          "intervalCount": 24,
+          "warmUnionMilliseconds": 6.521541
+        },
+        {
+          "name": "ndArrayConvolution2D_PreG13 (8)",
+          "intervalCount": 12,
+          "warmUnionMilliseconds": 5.718625
+        },
+        {
+          "name": "conv2d_a18_float_half_half (20)",
+          "intervalCount": 31,
+          "warmUnionMilliseconds": 5.645957
+        },
+        {
+          "name": "depthwiseConv3d_cFirst (3)",
+          "intervalCount": 63,
+          "warmUnionMilliseconds": 5.327995
+        },
+        {
+          "name": "depthwiseConv_3x3 (23)",
+          "intervalCount": 24,
+          "warmUnionMilliseconds": 5.32121
+        },
+        {
+          "name": "depthwiseConv_3x3 (4)",
+          "intervalCount": 49,
+          "warmUnionMilliseconds": 5.104625
+        },
+        {
+          "name": "depthwiseConv_3x3 (14)",
+          "intervalCount": 49,
+          "warmUnionMilliseconds": 4.981789
+        },
+        {
+          "name": "mmul_kernel_a16_float_float_float (51)",
+          "intervalCount": 22,
+          "warmUnionMilliseconds": 4.421336
+        },
+        {
+          "name": "mmul_kernel_a16_float_float_float (54)",
+          "intervalCount": 24,
+          "warmUnionMilliseconds": 4.396002
+        },
+        {
+          "name": "conv2d_a18_float_half_half (43)",
+          "intervalCount": 60,
+          "warmUnionMilliseconds": 4.386038
+        },
+        {
+          "name": "conv2d_a18_float_half_half (12)",
+          "intervalCount": 14,
+          "warmUnionMilliseconds": 4.200668
+        },
+        {
+          "name": "conv2d_a18_float_half_half (2)",
+          "intervalCount": 7,
+          "warmUnionMilliseconds": 3.972416
+        },
+        {
+          "name": "mmul_kernel_a16_float_float_float (46)",
+          "intervalCount": 14,
+          "warmUnionMilliseconds": 3.908207
+        },
+        {
+          "name": "ndArrayConvolution2D_PreG13 (1)",
+          "intervalCount": 7,
+          "warmUnionMilliseconds": 3.345041
+        },
+        {
+          "name": "conv2d_a18_float_half_half (36)",
+          "intervalCount": 47,
+          "warmUnionMilliseconds": 3.272169
+        },
+        {
+          "name": "depthwiseConv_3x3 (16)",
+          "intervalCount": 14,
+          "warmUnionMilliseconds": 3.077456
+        },
+        {
+          "name": "mmul_kernel_a16_float_float_float (47)",
+          "intervalCount": 14,
+          "warmUnionMilliseconds": 3.064581
+        },
+        {
+          "name": "ndArrayIdentity (18)",
+          "intervalCount": 84,
+          "warmUnionMilliseconds": 2.93542
+        },
+        {
+          "name": "conv2d_a18_float_half_half (13)",
+          "intervalCount": 14,
+          "warmUnionMilliseconds": 2.766372
+        },
+        {
+          "name": "depthwiseConv3d_cFirst (24)",
+          "intervalCount": 24,
+          "warmUnionMilliseconds": 2.224876
+        },
+        {
+          "name": "ndArrayIdentity (7)",
+          "intervalCount": 11,
+          "warmUnionMilliseconds": 2.112209
+        },
+        {
+          "name": "conv2d_a18_float_half_half (27)",
+          "intervalCount": 19,
+          "warmUnionMilliseconds": 1.916248
+        },
+        {
+          "name": "ndArrayIdentity (11)",
+          "intervalCount": 49,
+          "warmUnionMilliseconds": 1.789001
+        },
+        {
+          "name": "mmul_kernel_a16_float_float_float (59)",
+          "intervalCount": 9,
+          "warmUnionMilliseconds": 1.648668
+        },
+        {
+          "name": "ndArrayIdentity (70)",
+          "intervalCount": 11,
+          "warmUnionMilliseconds": 1.472124
+        },
+        {
+          "name": "ndArrayIdentityTranspose (69)",
+          "intervalCount": 11,
+          "warmUnionMilliseconds": 1.373748
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (38)",
+          "intervalCount": 60,
+          "warmUnionMilliseconds": 1.329046
+        },
+        {
+          "name": "depthwiseConv3d_cFirst (17)",
+          "intervalCount": 14,
+          "warmUnionMilliseconds": 1.292916
+        },
+        {
+          "name": "conv2d_a18_float_half_half (34)",
+          "intervalCount": 47,
+          "warmUnionMilliseconds": 1.287791
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (13)",
+          "intervalCount": 12,
+          "warmUnionMilliseconds": 1.118876
+        },
+        {
+          "name": "ndArrayIdentity (0)",
+          "intervalCount": 6,
+          "warmUnionMilliseconds": 1.089959
+        },
+        {
+          "name": "ndArrayIdentity (63)",
+          "intervalCount": 8,
+          "warmUnionMilliseconds": 1.046042
+        },
+        {
+          "name": "ndArrayResample (65)",
+          "intervalCount": 7,
+          "warmUnionMilliseconds": 1.022875
+        },
+        {
+          "name": "depthwiseConv_3x3 (56)",
+          "intervalCount": 24,
+          "warmUnionMilliseconds": 0.99646
+        },
+        {
+          "name": "ndArrayIdentityTranspose (62)",
+          "intervalCount": 8,
+          "warmUnionMilliseconds": 0.966665
+        },
+        {
+          "name": "depthwiseConv_3x3 (45)",
+          "intervalCount": 12,
+          "warmUnionMilliseconds": 0.911249
+        },
+        {
+          "name": "ndArrayIdentity (22)",
+          "intervalCount": 15,
+          "warmUnionMilliseconds": 0.870334
+        },
+        {
+          "name": "depthwiseConv3d_cFirst (55)",
+          "intervalCount": 24,
+          "warmUnionMilliseconds": 0.818501
+        },
+        {
+          "name": "ndArrayResample (58)",
+          "intervalCount": 5,
+          "warmUnionMilliseconds": 0.796999
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (31)",
+          "intervalCount": 47,
+          "warmUnionMilliseconds": 0.794669
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (6)",
+          "intervalCount": 7,
+          "warmUnionMilliseconds": 0.64929
+        },
+        {
+          "name": "depthwiseConv3d_cFirst (44)",
+          "intervalCount": 12,
+          "warmUnionMilliseconds": 0.592542
+        },
+        {
+          "name": "ndArrayIdentity (15)",
+          "intervalCount": 9,
+          "warmUnionMilliseconds": 0.560668
+        },
+        {
+          "name": "depthwiseConv_3x3 (49)",
+          "intervalCount": 14,
+          "warmUnionMilliseconds": 0.541708
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (29)",
+          "intervalCount": 12,
+          "warmUnionMilliseconds": 0.522794
+        },
+        {
+          "name": "conv2d_a18_float_half_half (29)",
+          "intervalCount": 7,
+          "warmUnionMilliseconds": 0.501043
+        },
+        {
+          "name": "conv2d_a18_float_half_half (25)",
+          "intervalCount": 19,
+          "warmUnionMilliseconds": 0.47429
+        },
+        {
+          "name": "depthwiseConv3d_cFirst (48)",
+          "intervalCount": 14,
+          "warmUnionMilliseconds": 0.471167
+        },
+        {
+          "name": "depthwiseConv_3x3 (38)",
+          "intervalCount": 7,
+          "warmUnionMilliseconds": 0.459419
+        },
+        {
+          "name": "ndArrayIdentity (52)",
+          "intervalCount": 24,
+          "warmUnionMilliseconds": 0.414628
+        },
+        {
+          "name": "ndArrayIdentity (66)",
+          "intervalCount": 12,
+          "warmUnionMilliseconds": 0.405873
+        },
+        {
+          "name": "depthwiseConv3d_cFirst (37)",
+          "intervalCount": 7,
+          "warmUnionMilliseconds": 0.34025
+        },
+        {
+          "name": "conv2d_a18_float_half_half (35)",
+          "intervalCount": 47,
+          "warmUnionMilliseconds": 0.331998
+        },
+        {
+          "name": "mmul_kernel_a16_float_float_float (52)",
+          "intervalCount": 5,
+          "warmUnionMilliseconds": 0.310375
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (22)",
+          "intervalCount": 7,
+          "warmUnionMilliseconds": 0.30575
+        },
+        {
+          "name": "conv2d_a18_float_half_half (18)",
+          "intervalCount": 7,
+          "warmUnionMilliseconds": 0.280377
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (40)",
+          "intervalCount": 67,
+          "warmUnionMilliseconds": 0.269917
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (47)",
+          "intervalCount": 12,
+          "warmUnionMilliseconds": 0.268624
+        },
+        {
+          "name": "ndArrayIdentity (45)",
+          "intervalCount": 14,
+          "warmUnionMilliseconds": 0.239166
+        },
+        {
+          "name": "ndArrayIdentity (59)",
+          "intervalCount": 7,
+          "warmUnionMilliseconds": 0.236916
+        },
+        {
+          "name": "conv2d_a18_float_half_half (41)",
+          "intervalCount": 60,
+          "warmUnionMilliseconds": 0.203463
+        },
+        {
+          "name": "conv2d_a18_float_half_half (42)",
+          "intervalCount": 60,
+          "warmUnionMilliseconds": 0.181114
+        },
+        {
+          "name": "depthwiseConv_3x3 (57)",
+          "intervalCount": 12,
+          "warmUnionMilliseconds": 0.176252
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (60)",
+          "intervalCount": 12,
+          "warmUnionMilliseconds": 0.148125
+        },
+        {
+          "name": "conv2d_a18_float_half_half (28)",
+          "intervalCount": 7,
+          "warmUnionMilliseconds": 0.137207
+        },
+        {
+          "name": "depthwiseConv_3x3 (50)",
+          "intervalCount": 7,
+          "warmUnionMilliseconds": 0.097874
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (53)",
+          "intervalCount": 7,
+          "warmUnionMilliseconds": 0.08325
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (33)",
+          "intervalCount": 35,
+          "warmUnionMilliseconds": 0.063291
+        },
+        {
+          "name": "NDArrayVectorMatrixMultiply_1_4 (51)",
+          "intervalCount": 19,
+          "warmUnionMilliseconds": 0.049709
+        },
+        {
+          "name": "NDArrayVectorMatrixMultiply_1_4 (64)",
+          "intervalCount": 12,
+          "warmUnionMilliseconds": 0.037167
+        },
+        {
+          "name": "conv2d_a18_float_half_half (33)",
+          "intervalCount": 12,
+          "warmUnionMilliseconds": 0.036915
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (15)",
+          "intervalCount": 12,
+          "warmUnionMilliseconds": 0.034417
+        },
+        {
+          "name": "conv2d_a18_float_half_half (32)",
+          "intervalCount": 12,
+          "warmUnionMilliseconds": 0.03125
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (49)",
+          "intervalCount": 12,
+          "warmUnionMilliseconds": 0.027376
+        },
+        {
+          "name": "NDArrayVectorMatrixMultiply_1_4 (44)",
+          "intervalCount": 10,
+          "warmUnionMilliseconds": 0.026792
+        },
+        {
+          "name": "NDArrayVectorMatrixMultiply_1_4 (57)",
+          "intervalCount": 7,
+          "warmUnionMilliseconds": 0.022917
+        },
+        {
+          "name": "conv2d_a18_float_half_half (17)",
+          "intervalCount": 9,
+          "warmUnionMilliseconds": 0.022875
+        },
+        {
+          "name": "conv2d_a18_float_half_half (16)",
+          "intervalCount": 12,
+          "warmUnionMilliseconds": 0.02275
+        },
+        {
+          "name": "NDArrayVectorMatrixMultiply_1_4 (50)",
+          "intervalCount": 12,
+          "warmUnionMilliseconds": 0.020126
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (8)",
+          "intervalCount": 7,
+          "warmUnionMilliseconds": 0.019417
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (24)",
+          "intervalCount": 7,
+          "warmUnionMilliseconds": 0.018583
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (42)",
+          "intervalCount": 7,
+          "warmUnionMilliseconds": 0.016041
+        },
+        {
+          "name": "conv2d_a18_float_half_half (10)",
+          "intervalCount": 5,
+          "warmUnionMilliseconds": 0.012293
+        },
+        {
+          "name": "NDArrayVectorMatrixMultiply_1_4 (43)",
+          "intervalCount": 7,
+          "warmUnionMilliseconds": 0.010916
+        }
+      ]
+    },
+    "BWTemporalInitializer": {
+      "predictionCount": 1,
+      "firstPredictionMilliseconds": 75.294458,
+      "warmCount": 0,
+      "warmFrames": []
+    },
+    "BWTemporalInitialMemoryEncoder": {
+      "predictionCount": 1,
+      "firstPredictionMilliseconds": 60.00375,
+      "warmCount": 0,
+      "warmFrames": []
+    },
+    "BWTemporalPropagator": {
+      "predictionCount": 19,
+      "firstPredictionMilliseconds": 151.845209,
+      "warmCount": 18,
+      "warmFrames": [
+        {
+          "predictionIndex": 1,
+          "startNanoseconds": 10081012416,
+          "durationMilliseconds": 32.912167,
+          "gpuActiveUnionMilliseconds": 27.818247,
+          "shaderUnionMilliseconds": 22.852083,
+          "sdpaUnionMilliseconds": 14.280455,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayIdentity": 1.729873,
+            "reduce_multiple_passes_axes_add": 0.536752,
+            "gemm_a18": 4.720795,
+            "sdpa_tile_fwd_16x16x16_noEdgeCheck": 7.829124,
+            "sdpa_tile_fwd_16x16x16_doEdgeCheck": 6.126291,
+            "scatterND_base": 0.0015,
+            "gatherND_base": 0.044791,
+            "ndArrayIdentityTranspose": 0.117708,
+            "sdpa_fwdNew": 0.034875,
+            "NDArrayVectorMatrixMultiply_5_8": 0.007167,
+            "sdpa_tile_fwd_8x8x8_noEdgeCheck": 0.283915,
+            "sdpa_tile_fwd_reduction": 0.00625,
+            "NDArrayVectorMatrixMultiply_1_4": 0.074874,
+            "ndArrayResample": 0.113542,
+            "reduce_argmax": 0.001292,
+            "ndArrayIdentityInt": 0.00125,
+            "ndArrayConvolution2D_PreG13": 0.196709,
+            "reduce_stitched": 0.332458,
+            "conv2d_a18_float_half_half": 0.416167,
+            "depthwiseConv3d_TGM": 0.27675
+          }
+        },
+        {
+          "predictionIndex": 2,
+          "startNanoseconds": 10159266750,
+          "durationMilliseconds": 33.361541,
+          "gpuActiveUnionMilliseconds": 28.023416,
+          "shaderUnionMilliseconds": 24.277547,
+          "sdpaUnionMilliseconds": 15.873623,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayIdentity": 1.730334,
+            "reduce_multiple_passes_axes_add": 0.528,
+            "gemm_a18": 4.609588,
+            "sdpa_tile_fwd_16x16x16_noEdgeCheck": 7.784458,
+            "sdpa_tile_fwd_16x16x16_doEdgeCheck": 7.769792,
+            "scatterND_base": 0.0015,
+            "gatherND_base": 0.044792,
+            "ndArrayIdentityTranspose": 0.118501,
+            "sdpa_fwdNew": 0.028207,
+            "NDArrayVectorMatrixMultiply_5_8": 0.007543,
+            "sdpa_tile_fwd_8x8x8_noEdgeCheck": 0.285082,
+            "sdpa_tile_fwd_reduction": 0.006084,
+            "NDArrayVectorMatrixMultiply_1_4": 0.092541,
+            "ndArrayResample": 0.113875,
+            "ndArrayIdentityInt": 0.00125,
+            "ndArrayConvolution2D_PreG13": 0.190334,
+            "reduce_stitched": 0.28125,
+            "conv2d_a18_float_half_half": 0.413416,
+            "depthwiseConv3d_TGM": 0.271
+          }
+        },
+        {
+          "predictionIndex": 3,
+          "startNanoseconds": 10232182208,
+          "durationMilliseconds": 33.364333,
+          "gpuActiveUnionMilliseconds": 28.360292,
+          "shaderUnionMilliseconds": 24.594779,
+          "sdpaUnionMilliseconds": 16.132249,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayIdentity": 1.701577,
+            "reduce_multiple_passes_axes_add": 0.51008,
+            "gemm_a18": 4.641163,
+            "sdpa_tile_fwd_16x16x16_noEdgeCheck": 7.782625,
+            "sdpa_tile_fwd_16x16x16_doEdgeCheck": 7.972457,
+            "gatherND_base": 0.047,
+            "scatterND_base": 0.001458,
+            "ndArrayIdentityTranspose": 0.12025,
+            "sdpa_fwdNew": 0.026958,
+            "NDArrayVectorMatrixMultiply_5_8": 0.007584,
+            "sdpa_tile_fwd_8x8x8_noEdgeCheck": 0.344667,
+            "sdpa_tile_fwd_reduction": 0.005542,
+            "NDArrayVectorMatrixMultiply_1_4": 0.098709,
+            "ndArrayResample": 0.114875,
+            "reduce_argmax": 0.00125,
+            "reduce_multiple_passes_axes_max": 0.00125,
+            "ndArrayConvolution2D_PreG13": 0.196917,
+            "reduce_stitched": 0.299792,
+            "conv2d_a18_float_half_half": 0.467167,
+            "depthwiseConv3d_TGM": 0.266
+          }
+        },
+        {
+          "predictionIndex": 4,
+          "startNanoseconds": 10303844291,
+          "durationMilliseconds": 33.035209,
+          "gpuActiveUnionMilliseconds": 28.202958,
+          "shaderUnionMilliseconds": 24.624328,
+          "sdpaUnionMilliseconds": 15.903545,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayIdentity": 1.698708,
+            "reduce_multiple_passes_axes_add": 0.542416,
+            "gemm_a18": 4.921244,
+            "sdpa_tile_fwd_16x16x16_noEdgeCheck": 7.733833,
+            "sdpa_tile_fwd_16x16x16_doEdgeCheck": 7.840917,
+            "scatterND_base": 0.0015,
+            "gatherND_base": 0.045458,
+            "ndArrayIdentityTranspose": 0.113208,
+            "sdpa_fwdNew": 0.032125,
+            "NDArrayVectorMatrixMultiply_5_8": 0.005583,
+            "sdpa_tile_fwd_8x8x8_noEdgeCheck": 0.289211,
+            "sdpa_tile_fwd_reduction": 0.007459,
+            "NDArrayVectorMatrixMultiply_1_4": 0.094166,
+            "ndArrayResample": 0.113834,
+            "reduce_argmax": 0.001333,
+            "reduce_multiple_passes_axes_max": 0.001292,
+            "ndArrayConvolution2D_PreG13": 0.193832,
+            "reduce_stitched": 0.317542,
+            "conv2d_a18_float_half_half": 0.438125,
+            "depthwiseConv3d_TGM": 0.253417
+          }
+        },
+        {
+          "predictionIndex": 5,
+          "startNanoseconds": 10375999291,
+          "durationMilliseconds": 33.08225,
+          "gpuActiveUnionMilliseconds": 28.446128,
+          "shaderUnionMilliseconds": 24.499998,
+          "sdpaUnionMilliseconds": 16.208499,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayIdentity": 1.449755,
+            "reduce_multiple_passes_axes_add": 0.503455,
+            "gemm_a18": 4.768831,
+            "sdpa_tile_fwd_16x16x16_noEdgeCheck": 7.925875,
+            "sdpa_tile_fwd_16x16x16_doEdgeCheck": 7.95525,
+            "scatterND_base": 0.001625,
+            "gatherND_base": 0.047542,
+            "ndArrayIdentityTranspose": 0.116708,
+            "sdpa_fwdNew": 0.031581,
+            "NDArrayVectorMatrixMultiply_5_8": 0.007208,
+            "sdpa_tile_fwd_8x8x8_noEdgeCheck": 0.289919,
+            "sdpa_tile_fwd_reduction": 0.005874,
+            "NDArrayVectorMatrixMultiply_1_4": 0.090124,
+            "ndArrayResample": 0.11425,
+            "reduce_multiple_passes_axes_max": 0.001292,
+            "ndArrayConvolution2D_PreG13": 0.194084,
+            "reduce_stitched": 0.310042,
+            "conv2d_a18_float_half_half": 0.4405,
+            "depthwiseConv3d_TGM": 0.247458
+          }
+        },
+        {
+          "predictionIndex": 6,
+          "startNanoseconds": 10448339041,
+          "durationMilliseconds": 33.296084,
+          "gpuActiveUnionMilliseconds": 28.381834,
+          "shaderUnionMilliseconds": 24.586555,
+          "sdpaUnionMilliseconds": 15.910876,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayIdentity": 1.82563,
+            "reduce_multiple_passes_axes_add": 0.511587,
+            "gemm_a18": 4.778755,
+            "sdpa_tile_fwd_16x16x16_noEdgeCheck": 7.831042,
+            "sdpa_tile_fwd_16x16x16_doEdgeCheck": 7.753,
+            "gatherND_base": 0.047207,
+            "scatterND_base": 0.001375,
+            "ndArrayIdentityTranspose": 0.116209,
+            "sdpa_fwdNew": 0.031249,
+            "NDArrayVectorMatrixMultiply_5_8": 0.005667,
+            "sdpa_tile_fwd_8x8x8_noEdgeCheck": 0.291042,
+            "sdpa_tile_fwd_reduction": 0.004543,
+            "NDArrayVectorMatrixMultiply_1_4": 0.090624,
+            "ndArrayResample": 0.114583,
+            "reduce_argmax": 0.001291,
+            "reduce_multiple_passes_axes_max": 0.001291,
+            "ndArrayConvolution2D_PreG13": 0.192792,
+            "reduce_stitched": 0.314417,
+            "conv2d_a18_float_half_half": 0.437918,
+            "depthwiseConv3d_TGM": 0.253375
+          }
+        },
+        {
+          "predictionIndex": 7,
+          "startNanoseconds": 10522961500,
+          "durationMilliseconds": 34.899166,
+          "gpuActiveUnionMilliseconds": 28.892836,
+          "shaderUnionMilliseconds": 21.398085,
+          "sdpaUnionMilliseconds": 12.862583,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayIdentity": 1.62042,
+            "reduce_multiple_passes_axes_add": 0.530706,
+            "gemm_a18": 4.957917,
+            "sdpa_tile_fwd_16x16x16_noEdgeCheck": 4.500375,
+            "sdpa_tile_fwd_16x16x16_doEdgeCheck": 7.90875,
+            "gatherND_base": 0.045833,
+            "scatterND_base": 0.001583,
+            "ndArrayIdentityTranspose": 0.155042,
+            "sdpa_fwdNew": 0.032584,
+            "NDArrayVectorMatrixMultiply_5_8": 0.008291,
+            "sdpa_tile_fwd_8x8x8_noEdgeCheck": 0.416291,
+            "sdpa_tile_fwd_reduction": 0.004583,
+            "NDArrayVectorMatrixMultiply_1_4": 0.1,
+            "ndArrayResample": 0.114334,
+            "reduce_argmax": 0.00125,
+            "ndArrayConvolution2D_PreG13": 0.196375,
+            "reduce_stitched": 0.338833,
+            "conv2d_a18_float_half_half": 0.433376,
+            "depthwiseConv3d_TGM": 0.259125
+          }
+        },
+        {
+          "predictionIndex": 8,
+          "startNanoseconds": 10604302125,
+          "durationMilliseconds": 34.77075,
+          "gpuActiveUnionMilliseconds": 28.267124,
+          "shaderUnionMilliseconds": 24.398717,
+          "sdpaUnionMilliseconds": 15.953708,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayIdentity": 1.339214,
+            "reduce_multiple_passes_axes_add": 0.523623,
+            "gemm_a18": 4.918254,
+            "sdpa_tile_fwd_16x16x16_noEdgeCheck": 7.867708,
+            "sdpa_tile_fwd_16x16x16_doEdgeCheck": 7.767001,
+            "scatterND_base": 0.001583,
+            "gatherND_base": 0.042501,
+            "ndArrayIdentityTranspose": 0.113793,
+            "sdpa_fwdNew": 0.02629,
+            "NDArrayVectorMatrixMultiply_5_8": 0.006832,
+            "sdpa_tile_fwd_8x8x8_noEdgeCheck": 0.286668,
+            "sdpa_tile_fwd_reduction": 0.006041,
+            "NDArrayVectorMatrixMultiply_1_4": 0.129459,
+            "ndArrayResample": 0.114459,
+            "reduce_argmax": 0.00125,
+            "reduce_multiple_passes_axes_max": 0.001625,
+            "ndArrayConvolution2D_PreG13": 0.198542,
+            "reduce_stitched": 0.341541,
+            "conv2d_a18_float_half_half": 0.455708,
+            "depthwiseConv3d_TGM": 0.2585
+          }
+        },
+        {
+          "predictionIndex": 9,
+          "startNanoseconds": 10684513958,
+          "durationMilliseconds": 35.122792,
+          "gpuActiveUnionMilliseconds": 28.466961,
+          "shaderUnionMilliseconds": 23.174619,
+          "sdpaUnionMilliseconds": 14.642499,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayIdentity": 1.678457,
+            "reduce_multiple_passes_axes_add": 0.508415,
+            "gemm_a18": 4.737205,
+            "sdpa_tile_fwd_16x16x16_noEdgeCheck": 6.386501,
+            "sdpa_tile_fwd_16x16x16_doEdgeCheck": 7.798541,
+            "gatherND_base": 0.044625,
+            "scatterND_base": 0.0005,
+            "ndArrayIdentityTranspose": 0.112041,
+            "sdpa_fwdNew": 0.03529,
+            "NDArrayVectorMatrixMultiply_5_8": 0.006834,
+            "sdpa_tile_fwd_8x8x8_noEdgeCheck": 0.417834,
+            "sdpa_tile_fwd_reduction": 0.004333,
+            "NDArrayVectorMatrixMultiply_1_4": 0.092916,
+            "ndArrayResample": 0.115584,
+            "reduce_multiple_passes_axes_max": 0.001291,
+            "ndArrayConvolution2D_PreG13": 0.191916,
+            "reduce_stitched": 0.357793,
+            "conv2d_a18_float_half_half": 0.440709,
+            "depthwiseConv3d_TGM": 0.250334
+          }
+        },
+        {
+          "predictionIndex": 10,
+          "startNanoseconds": 10765040541,
+          "durationMilliseconds": 34.60275,
+          "gpuActiveUnionMilliseconds": 28.738293,
+          "shaderUnionMilliseconds": 24.942295,
+          "sdpaUnionMilliseconds": 16.228751,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayIdentity": 1.718833,
+            "reduce_multiple_passes_axes_add": 0.53275,
+            "gemm_a18": 4.858334,
+            "sdpa_tile_fwd_16x16x16_noEdgeCheck": 8.053667,
+            "sdpa_tile_fwd_16x16x16_doEdgeCheck": 7.8545,
+            "gatherND_base": 0.043458,
+            "scatterND_base": 0.0015,
+            "ndArrayIdentityTranspose": 0.1235,
+            "sdpa_fwdNew": 0.036668,
+            "NDArrayVectorMatrixMultiply_5_8": 0.00725,
+            "sdpa_tile_fwd_8x8x8_noEdgeCheck": 0.280249,
+            "sdpa_tile_fwd_reduction": 0.003667,
+            "NDArrayVectorMatrixMultiply_1_4": 0.090959,
+            "ndArrayResample": 0.11425,
+            "reduce_multiple_passes_axes_max": 0.001292,
+            "ndArrayConvolution2D_PreG13": 0.196667,
+            "reduce_stitched": 0.363417,
+            "conv2d_a18_float_half_half": 0.418,
+            "depthwiseConv3d_TGM": 0.264459
+          }
+        },
+        {
+          "predictionIndex": 11,
+          "startNanoseconds": 10845568208,
+          "durationMilliseconds": 34.746375,
+          "gpuActiveUnionMilliseconds": 28.634203,
+          "shaderUnionMilliseconds": 25.286542,
+          "sdpaUnionMilliseconds": 16.552082,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayIdentity": 1.650417,
+            "reduce_multiple_passes_axes_add": 0.534999,
+            "gemm_a18": 4.97021,
+            "sdpa_tile_fwd_16x16x16_noEdgeCheck": 7.981333,
+            "sdpa_tile_fwd_16x16x16_doEdgeCheck": 7.985459,
+            "gatherND_base": 0.045626,
+            "scatterND_base": 0.00125,
+            "ndArrayIdentityTranspose": 0.117583,
+            "sdpa_fwdNew": 0.02775,
+            "NDArrayVectorMatrixMultiply_5_8": 0.005875,
+            "sdpa_tile_fwd_8x8x8_noEdgeCheck": 0.552082,
+            "sdpa_tile_fwd_reduction": 0.005458,
+            "NDArrayVectorMatrixMultiply_1_4": 0.091251,
+            "ndArrayResample": 0.114291,
+            "ndArrayIdentityInt": 0.00125,
+            "reduce_multiple_passes_axes_max": 0.000833,
+            "ndArrayConvolution2D_PreG13": 0.195167,
+            "reduce_stitched": 0.31725,
+            "conv2d_a18_float_half_half": 0.438,
+            "depthwiseConv3d_TGM": 0.250458
+          }
+        },
+        {
+          "predictionIndex": 12,
+          "startNanoseconds": 10923939875,
+          "durationMilliseconds": 34.100708,
+          "gpuActiveUnionMilliseconds": 28.741414,
+          "shaderUnionMilliseconds": 22.329833,
+          "sdpaUnionMilliseconds": 13.557043,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayIdentity": 1.673417,
+            "reduce_multiple_passes_axes_add": 0.535665,
+            "gemm_a18": 4.952582,
+            "sdpa_tile_fwd_16x16x16_noEdgeCheck": 5.279625,
+            "sdpa_tile_fwd_16x16x16_doEdgeCheck": 7.962124,
+            "gatherND_base": 0.042042,
+            "scatterND_base": 0.001625,
+            "ndArrayIdentityTranspose": 0.123001,
+            "sdpa_fwdNew": 0.031876,
+            "NDArrayVectorMatrixMultiply_5_8": 0.008959,
+            "sdpa_tile_fwd_8x8x8_noEdgeCheck": 0.279251,
+            "sdpa_tile_fwd_reduction": 0.004167,
+            "NDArrayVectorMatrixMultiply_1_4": 0.100624,
+            "ndArrayResample": 0.114125,
+            "reduce_argmax": 0.00125,
+            "ndArrayConvolution2D_PreG13": 0.198166,
+            "reduce_stitched": 0.31775,
+            "conv2d_a18_float_half_half": 0.435001,
+            "depthwiseConv3d_TGM": 0.268583
+          }
+        },
+        {
+          "predictionIndex": 13,
+          "startNanoseconds": 11000371625,
+          "durationMilliseconds": 33.7335,
+          "gpuActiveUnionMilliseconds": 28.270874,
+          "shaderUnionMilliseconds": 24.700875,
+          "sdpaUnionMilliseconds": 15.979291,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayIdentity": 1.757793,
+            "reduce_multiple_passes_axes_add": 0.540708,
+            "gemm_a18": 4.814168,
+            "sdpa_tile_fwd_16x16x16_noEdgeCheck": 7.841708,
+            "sdpa_tile_fwd_16x16x16_doEdgeCheck": 7.817876,
+            "scatterND_base": 0.001583,
+            "gatherND_base": 0.043751,
+            "ndArrayIdentityTranspose": 0.117041,
+            "sdpa_fwdNew": 0.031499,
+            "NDArrayVectorMatrixMultiply_5_8": 0.00775,
+            "sdpa_tile_fwd_8x8x8_noEdgeCheck": 0.282124,
+            "sdpa_tile_fwd_reduction": 0.006084,
+            "NDArrayVectorMatrixMultiply_1_4": 0.090459,
+            "ndArrayResample": 0.114333,
+            "ndArrayConvolution2D_PreG13": 0.195459,
+            "reduce_stitched": 0.311624,
+            "conv2d_a18_float_half_half": 0.48054,
+            "depthwiseConv3d_TGM": 0.26075
+          }
+        },
+        {
+          "predictionIndex": 14,
+          "startNanoseconds": 11076266625,
+          "durationMilliseconds": 34.232041,
+          "gpuActiveUnionMilliseconds": 28.603502,
+          "shaderUnionMilliseconds": 25.028876,
+          "sdpaUnionMilliseconds": 16.270083,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayIdentity": 1.674077,
+            "reduce_multiple_passes_axes_add": 0.493588,
+            "gemm_a18": 5.032504,
+            "sdpa_tile_fwd_16x16x16_noEdgeCheck": 8.006958,
+            "sdpa_tile_fwd_16x16x16_doEdgeCheck": 7.939125,
+            "gatherND_base": 0.041792,
+            "scatterND_base": 0.0015,
+            "ndArrayIdentityTranspose": 0.11175,
+            "sdpa_fwdNew": 0.033208,
+            "NDArrayVectorMatrixMultiply_5_8": 0.010249,
+            "sdpa_tile_fwd_8x8x8_noEdgeCheck": 0.286165,
+            "sdpa_tile_fwd_reduction": 0.004627,
+            "NDArrayVectorMatrixMultiply_1_4": 0.092876,
+            "ndArrayResample": 0.114334,
+            "reduce_multiple_passes_axes_max": 0.001291,
+            "ndArrayConvolution2D_PreG13": 0.193083,
+            "reduce_stitched": 0.308582,
+            "conv2d_a18_float_half_half": 0.428417,
+            "depthwiseConv3d_TGM": 0.25475
+          }
+        },
+        {
+          "predictionIndex": 15,
+          "startNanoseconds": 11155183625,
+          "durationMilliseconds": 33.878875,
+          "gpuActiveUnionMilliseconds": 28.278707,
+          "shaderUnionMilliseconds": 24.775994,
+          "sdpaUnionMilliseconds": 16.219794,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayIdentity": 1.676956,
+            "reduce_multiple_passes_axes_add": 0.543663,
+            "gemm_a18": 4.791292,
+            "sdpa_tile_fwd_16x16x16_noEdgeCheck": 7.956833,
+            "sdpa_tile_fwd_16x16x16_doEdgeCheck": 7.819959,
+            "gatherND_base": 0.0475,
+            "scatterND_base": 0.001583,
+            "ndArrayIdentityTranspose": 0.110416,
+            "sdpa_fwdNew": 0.029418,
+            "NDArrayVectorMatrixMultiply_5_8": 0.005291,
+            "sdpa_tile_fwd_8x8x8_noEdgeCheck": 0.409251,
+            "sdpa_tile_fwd_reduction": 0.004333,
+            "NDArrayVectorMatrixMultiply_1_4": 0.09175,
+            "ndArrayResample": 0.11425,
+            "ndArrayIdentityInt": 0.001333,
+            "ndArrayConvolution2D_PreG13": 0.194416,
+            "reduce_stitched": 0.3275,
+            "conv2d_a18_float_half_half": 0.402541,
+            "depthwiseConv3d_TGM": 0.268542
+          }
+        },
+        {
+          "predictionIndex": 16,
+          "startNanoseconds": 11230490333,
+          "durationMilliseconds": 34.165375,
+          "gpuActiveUnionMilliseconds": 28.660373,
+          "shaderUnionMilliseconds": 23.058666,
+          "sdpaUnionMilliseconds": 14.490251,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayIdentity": 1.513789,
+            "reduce_multiple_passes_axes_add": 0.567751,
+            "gemm_a18": 4.912791,
+            "sdpa_tile_fwd_16x16x16_noEdgeCheck": 8.039416,
+            "sdpa_tile_fwd_16x16x16_doEdgeCheck": 6.119876,
+            "scatterND_base": 0.002167,
+            "gatherND_base": 0.041833,
+            "ndArrayIdentityTranspose": 0.118583,
+            "sdpa_fwdNew": 0.032749,
+            "NDArrayVectorMatrixMultiply_5_8": 0.008083,
+            "sdpa_tile_fwd_8x8x8_noEdgeCheck": 0.292084,
+            "sdpa_tile_fwd_reduction": 0.006126,
+            "NDArrayVectorMatrixMultiply_1_4": 0.091625,
+            "ndArrayResample": 0.11475,
+            "reduce_argmax": 0.001292,
+            "reduce_multiple_passes_axes_max": 0.001292,
+            "ndArrayConvolution2D_PreG13": 0.1955,
+            "reduce_stitched": 0.307126,
+            "conv2d_a18_float_half_half": 0.439958,
+            "depthwiseConv3d_TGM": 0.251875
+          }
+        },
+        {
+          "predictionIndex": 17,
+          "startNanoseconds": 11305482541,
+          "durationMilliseconds": 33.390709,
+          "gpuActiveUnionMilliseconds": 28.309666,
+          "shaderUnionMilliseconds": 24.726915,
+          "sdpaUnionMilliseconds": 16.076124,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayIdentity": 1.602584,
+            "reduce_multiple_passes_axes_add": 0.506083,
+            "gemm_a18": 4.971081,
+            "sdpa_tile_fwd_16x16x16_noEdgeCheck": 7.788792,
+            "sdpa_tile_fwd_16x16x16_doEdgeCheck": 7.808667,
+            "gatherND_base": 0.043667,
+            "scatterND_base": 0.0005,
+            "ndArrayIdentityTranspose": 0.113334,
+            "sdpa_fwdNew": 0.028041,
+            "NDArrayVectorMatrixMultiply_5_8": 0.008332,
+            "sdpa_tile_fwd_8x8x8_noEdgeCheck": 0.447083,
+            "NDArrayVectorMatrixMultiply_1_4": 0.092125,
+            "ndArrayResample": 0.114375,
+            "reduce_argmax": 0.001292,
+            "reduce_multiple_passes_axes_max": 0.00125,
+            "ndArrayConvolution2D_PreG13": 0.193458,
+            "reduce_stitched": 0.295667,
+            "conv2d_a18_float_half_half": 0.474043,
+            "depthwiseConv3d_TGM": 0.267625,
+            "sdpa_tile_fwd_reduction": 0.003541
+          }
+        },
+        {
+          "predictionIndex": 18,
+          "startNanoseconds": 11380302625,
+          "durationMilliseconds": 33.768875,
+          "gpuActiveUnionMilliseconds": 28.51179,
+          "shaderUnionMilliseconds": 22.797331,
+          "sdpaUnionMilliseconds": 14.326876,
+          "shaderFamiliesMilliseconds": {
+            "ndArrayIdentity": 1.507253,
+            "reduce_multiple_passes_axes_add": 0.545041,
+            "gemm_a18": 4.829079,
+            "sdpa_tile_fwd_16x16x16_noEdgeCheck": 7.911917,
+            "sdpa_tile_fwd_16x16x16_doEdgeCheck": 6.022666,
+            "gatherND_base": 0.043374,
+            "scatterND_base": 0.001584,
+            "ndArrayIdentityTranspose": 0.120166,
+            "sdpa_fwdNew": 0.033209,
+            "NDArrayVectorMatrixMultiply_5_8": 0.00875,
+            "sdpa_tile_fwd_8x8x8_noEdgeCheck": 0.351375,
+            "sdpa_tile_fwd_reduction": 0.007709,
+            "NDArrayVectorMatrixMultiply_1_4": 0.090834,
+            "ndArrayResample": 0.114542,
+            "reduce_argmax": 0.001292,
+            "reduce_multiple_passes_axes_max": 0.00125,
+            "ndArrayConvolution2D_PreG13": 0.197791,
+            "reduce_stitched": 0.310249,
+            "conv2d_a18_float_half_half": 0.455125,
+            "depthwiseConv3d_TGM": 0.268667
+          }
+        }
+      ],
+      "medianWarmPredictionMilliseconds": 33.823875,
+      "medianWarmGPUActiveMilliseconds": 28.413981,
+      "medianWarmShaderUnionMilliseconds": 24.5432765,
+      "medianWarmSDPAUnionMilliseconds": 15.932292,
+      "shaderFamilies": [
+        {
+          "name": "sdpa_tile_fwd_16x16x16_doEdgeCheck",
+          "warmUnionMilliseconds": 136.222251,
+          "medianPerWarmPredictionMilliseconds": 7.8189174999999995
+        },
+        {
+          "name": "sdpa_tile_fwd_16x16x16_noEdgeCheck",
+          "warmUnionMilliseconds": 134.50179,
+          "medianPerWarmPredictionMilliseconds": 7.836375
+        },
+        {
+          "name": "gemm_a18",
+          "warmUnionMilliseconds": 87.185793,
+          "medianPerWarmPredictionMilliseconds": 4.8437065
+        },
+        {
+          "name": "ndArrayIdentity",
+          "warmUnionMilliseconds": 29.549087,
+          "medianPerWarmPredictionMilliseconds": 1.6755165
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add",
+          "warmUnionMilliseconds": 9.495282,
+          "medianPerWarmPredictionMilliseconds": 0.531728
+        },
+        {
+          "name": "conv2d_a18_float_half_half",
+          "warmUnionMilliseconds": 7.914711,
+          "medianPerWarmPredictionMilliseconds": 0.4380625
+        },
+        {
+          "name": "sdpa_tile_fwd_8x8x8_noEdgeCheck",
+          "warmUnionMilliseconds": 6.084293,
+          "medianPerWarmPredictionMilliseconds": 0.29048050000000003
+        },
+        {
+          "name": "reduce_stitched",
+          "warmUnionMilliseconds": 5.752833,
+          "medianPerWarmPredictionMilliseconds": 0.3158335
+        },
+        {
+          "name": "depthwiseConv3d_TGM",
+          "warmUnionMilliseconds": 4.691668,
+          "medianPerWarmPredictionMilliseconds": 0.2599375
+        },
+        {
+          "name": "ndArrayConvolution2D_PreG13",
+          "warmUnionMilliseconds": 3.511208,
+          "medianPerWarmPredictionMilliseconds": 0.19531300000000001
+        },
+        {
+          "name": "ndArrayIdentityTranspose",
+          "warmUnionMilliseconds": 2.138834,
+          "medianPerWarmPredictionMilliseconds": 0.117312
+        },
+        {
+          "name": "ndArrayResample",
+          "warmUnionMilliseconds": 2.058586,
+          "medianPerWarmPredictionMilliseconds": 0.1143335
+        },
+        {
+          "name": "NDArrayVectorMatrixMultiply_1_4",
+          "warmUnionMilliseconds": 1.695916,
+          "medianPerWarmPredictionMilliseconds": 0.0919375
+        },
+        {
+          "name": "gatherND_base",
+          "warmUnionMilliseconds": 0.802792,
+          "medianPerWarmPredictionMilliseconds": 0.044708
+        },
+        {
+          "name": "sdpa_fwdNew",
+          "warmUnionMilliseconds": 0.563577,
+          "medianPerWarmPredictionMilliseconds": 0.0317285
+        },
+        {
+          "name": "NDArrayVectorMatrixMultiply_5_8",
+          "warmUnionMilliseconds": 0.133248,
+          "medianPerWarmPredictionMilliseconds": 0.0073965
+        },
+        {
+          "name": "sdpa_tile_fwd_reduction",
+          "warmUnionMilliseconds": 0.096421,
+          "medianPerWarmPredictionMilliseconds": 0.0055
+        },
+        {
+          "name": "scatterND_base",
+          "warmUnionMilliseconds": 0.025916,
+          "medianPerWarmPredictionMilliseconds": 0.0015
+        },
+        {
+          "name": "reduce_multiple_passes_axes_max",
+          "warmUnionMilliseconds": 0.015249,
+          "medianPerWarmPredictionMilliseconds": 0.00125
+        },
+        {
+          "name": "reduce_argmax",
+          "warmUnionMilliseconds": 0.012792,
+          "medianPerWarmPredictionMilliseconds": 0.00125
+        },
+        {
+          "name": "ndArrayIdentityInt",
+          "warmUnionMilliseconds": 0.005083,
+          "medianPerWarmPredictionMilliseconds": 0.0
+        }
+      ],
+      "shaderNames": [
+        {
+          "name": "sdpa_tile_fwd_16x16x16_doEdgeCheck (245)",
+          "intervalCount": 20,
+          "warmUnionMilliseconds": 76.746499
+        },
+        {
+          "name": "sdpa_tile_fwd_16x16x16_noEdgeCheck (241)",
+          "intervalCount": 20,
+          "warmUnionMilliseconds": 73.695208
+        },
+        {
+          "name": "sdpa_tile_fwd_16x16x16_noEdgeCheck (0)",
+          "intervalCount": 16,
+          "warmUnionMilliseconds": 60.806582
+        },
+        {
+          "name": "sdpa_tile_fwd_16x16x16_doEdgeCheck (1)",
+          "intervalCount": 16,
+          "warmUnionMilliseconds": 59.475752
+        },
+        {
+          "name": "gemm_a18 (247)",
+          "intervalCount": 20,
+          "warmUnionMilliseconds": 11.321252
+        },
+        {
+          "name": "gemm_a18 (246)",
+          "intervalCount": 20,
+          "warmUnionMilliseconds": 10.91979
+        },
+        {
+          "name": "gemm_a18 (236)",
+          "intervalCount": 16,
+          "warmUnionMilliseconds": 9.034459
+        },
+        {
+          "name": "gemm_a18 (235)",
+          "intervalCount": 16,
+          "warmUnionMilliseconds": 8.889207
+        },
+        {
+          "name": "gemm_a18 (199)",
+          "intervalCount": 20,
+          "warmUnionMilliseconds": 7.181082
+        },
+        {
+          "name": "gemm_a18 (104)",
+          "intervalCount": 86,
+          "warmUnionMilliseconds": 6.816959
+        },
+        {
+          "name": "gemm_a18 (177)",
+          "intervalCount": 16,
+          "warmUnionMilliseconds": 6.610085
+        },
+        {
+          "name": "gemm_a18 (200)",
+          "intervalCount": 20,
+          "warmUnionMilliseconds": 5.681959
+        },
+        {
+          "name": "gemm_a18 (97)",
+          "intervalCount": 56,
+          "warmUnionMilliseconds": 5.010166
+        },
+        {
+          "name": "gemm_a18 (178)",
+          "intervalCount": 16,
+          "warmUnionMilliseconds": 4.545668
+        },
+        {
+          "name": "depthwiseConv3d_TGM (193)",
+          "intervalCount": 10,
+          "warmUnionMilliseconds": 2.600418
+        },
+        {
+          "name": "ndArrayIdentity (102)",
+          "intervalCount": 93,
+          "warmUnionMilliseconds": 2.519122
+        },
+        {
+          "name": "ndArrayIdentity (109)",
+          "intervalCount": 112,
+          "warmUnionMilliseconds": 2.304086
+        },
+        {
+          "name": "ndArrayIdentity (121)",
+          "intervalCount": 58,
+          "warmUnionMilliseconds": 2.223998
+        },
+        {
+          "name": "depthwiseConv3d_TGM (171)",
+          "intervalCount": 8,
+          "warmUnionMilliseconds": 2.09125
+        },
+        {
+          "name": "ndArrayIdentity (113)",
+          "intervalCount": 87,
+          "warmUnionMilliseconds": 2.007839
+        },
+        {
+          "name": "conv2d_a18_float_half_half (181)",
+          "intervalCount": 10,
+          "warmUnionMilliseconds": 1.866916
+        },
+        {
+          "name": "reduce_stitched (162)",
+          "intervalCount": 20,
+          "warmUnionMilliseconds": 1.800375
+        },
+        {
+          "name": "ndArrayIdentity (118)",
+          "intervalCount": 7,
+          "warmUnionMilliseconds": 1.773
+        },
+        {
+          "name": "gemm_a18 (116)",
+          "intervalCount": 40,
+          "warmUnionMilliseconds": 1.611417
+        },
+        {
+          "name": "conv2d_a18_float_half_half (163)",
+          "intervalCount": 8,
+          "warmUnionMilliseconds": 1.591959
+        },
+        {
+          "name": "sdpa_tile_fwd_8x8x8_noEdgeCheck (180)",
+          "intervalCount": 16,
+          "warmUnionMilliseconds": 1.546916
+        },
+        {
+          "name": "ndArrayConvolution2D_PreG13 (163)",
+          "intervalCount": 10,
+          "warmUnionMilliseconds": 1.541542
+        },
+        {
+          "name": "gemm_a18 (107)",
+          "intervalCount": 40,
+          "warmUnionMilliseconds": 1.529504
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (97)",
+          "intervalCount": 107,
+          "warmUnionMilliseconds": 1.519624
+        },
+        {
+          "name": "ndArrayIdentity (110)",
+          "intervalCount": 6,
+          "warmUnionMilliseconds": 1.507749
+        },
+        {
+          "name": "sdpa_tile_fwd_8x8x8_noEdgeCheck (202)",
+          "intervalCount": 20,
+          "warmUnionMilliseconds": 1.491543
+        },
+        {
+          "name": "ndArrayIdentity (238)",
+          "intervalCount": 40,
+          "warmUnionMilliseconds": 1.462125
+        },
+        {
+          "name": "reduce_stitched (152)",
+          "intervalCount": 16,
+          "warmUnionMilliseconds": 1.448
+        },
+        {
+          "name": "ndArrayIdentity (239)",
+          "intervalCount": 48,
+          "warmUnionMilliseconds": 1.305789
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (90)",
+          "intervalCount": 88,
+          "warmUnionMilliseconds": 1.278129
+        },
+        {
+          "name": "ndArrayConvolution2D_PreG13 (153)",
+          "intervalCount": 8,
+          "warmUnionMilliseconds": 1.235456
+        },
+        {
+          "name": "ndArrayIdentity (227)",
+          "intervalCount": 36,
+          "warmUnionMilliseconds": 1.223663
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (93)",
+          "intervalCount": 97,
+          "warmUnionMilliseconds": 1.220831
+        },
+        {
+          "name": "ndArrayIdentity (91)",
+          "intervalCount": 47,
+          "warmUnionMilliseconds": 1.16729
+        },
+        {
+          "name": "gemm_a18 (111)",
+          "intervalCount": 44,
+          "warmUnionMilliseconds": 1.159541
+        },
+        {
+          "name": "ndArrayResample (129)",
+          "intervalCount": 10,
+          "warmUnionMilliseconds": 1.143586
+        },
+        {
+          "name": "ndArrayIdentity (76)",
+          "intervalCount": 71,
+          "warmUnionMilliseconds": 1.142379
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (86)",
+          "intervalCount": 78,
+          "warmUnionMilliseconds": 0.997544
+        },
+        {
+          "name": "ndArrayIdentity (84)",
+          "intervalCount": 41,
+          "warmUnionMilliseconds": 0.964625
+        },
+        {
+          "name": "ndArrayResample (121)",
+          "intervalCount": 8,
+          "warmUnionMilliseconds": 0.915
+        },
+        {
+          "name": "ndArrayIdentity (69)",
+          "intervalCount": 56,
+          "warmUnionMilliseconds": 0.909164
+        },
+        {
+          "name": "gemm_a18 (242)",
+          "intervalCount": 10,
+          "warmUnionMilliseconds": 0.860916
+        },
+        {
+          "name": "conv2d_a18_float_half_half (171)",
+          "intervalCount": 10,
+          "warmUnionMilliseconds": 0.842834
+        },
+        {
+          "name": "ndArrayIdentity (228)",
+          "intervalCount": 32,
+          "warmUnionMilliseconds": 0.842209
+        },
+        {
+          "name": "NDArrayVectorMatrixMultiply_1_4 (122)",
+          "intervalCount": 10,
+          "warmUnionMilliseconds": 0.822041
+        },
+        {
+          "name": "reduce_stitched (198)",
+          "intervalCount": 20,
+          "warmUnionMilliseconds": 0.815084
+        },
+        {
+          "name": "sdpa_tile_fwd_8x8x8_noEdgeCheck (106)",
+          "intervalCount": 30,
+          "warmUnionMilliseconds": 0.812665
+        },
+        {
+          "name": "conv2d_a18_float_half_half (191)",
+          "intervalCount": 10,
+          "warmUnionMilliseconds": 0.775043
+        },
+        {
+          "name": "ndArrayIdentity (22)",
+          "intervalCount": 48,
+          "warmUnionMilliseconds": 0.766838
+        },
+        {
+          "name": "conv2d_a18_float_half_half (192)",
+          "intervalCount": 10,
+          "warmUnionMilliseconds": 0.743293
+        },
+        {
+          "name": "ndArrayIdentityTranspose (228)",
+          "intervalCount": 10,
+          "warmUnionMilliseconds": 0.738502
+        },
+        {
+          "name": "ndArrayIdentity (101)",
+          "intervalCount": 25,
+          "warmUnionMilliseconds": 0.682626
+        },
+        {
+          "name": "conv2d_a18_float_half_half (158)",
+          "intervalCount": 8,
+          "warmUnionMilliseconds": 0.680291
+        },
+        {
+          "name": "NDArrayVectorMatrixMultiply_1_4 (114)",
+          "intervalCount": 8,
+          "warmUnionMilliseconds": 0.643791
+        },
+        {
+          "name": "reduce_stitched (190)",
+          "intervalCount": 10,
+          "warmUnionMilliseconds": 0.641626
+        },
+        {
+          "name": "sdpa_tile_fwd_8x8x8_noEdgeCheck (99)",
+          "intervalCount": 24,
+          "warmUnionMilliseconds": 0.639793
+        },
+        {
+          "name": "conv2d_a18_float_half_half (169)",
+          "intervalCount": 8,
+          "warmUnionMilliseconds": 0.60929
+        },
+        {
+          "name": "gemm_a18 (110)",
+          "intervalCount": 20,
+          "warmUnionMilliseconds": 0.593459
+        },
+        {
+          "name": "ndArrayIdentity (94)",
+          "intervalCount": 21,
+          "warmUnionMilliseconds": 0.586377
+        },
+        {
+          "name": "conv2d_a18_float_half_half (170)",
+          "intervalCount": 8,
+          "warmUnionMilliseconds": 0.567043
+        },
+        {
+          "name": "reduce_stitched (168)",
+          "intervalCount": 8,
+          "warmUnionMilliseconds": 0.549667
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (229)",
+          "intervalCount": 10,
+          "warmUnionMilliseconds": 0.54579
+        },
+        {
+          "name": "ndArrayIdentityTranspose (221)",
+          "intervalCount": 8,
+          "warmUnionMilliseconds": 0.545667
+        },
+        {
+          "name": "ndArrayIdentity (15)",
+          "intervalCount": 38,
+          "warmUnionMilliseconds": 0.542666
+        },
+        {
+          "name": "ndArrayIdentity (95)",
+          "intervalCount": 8,
+          "warmUnionMilliseconds": 0.519709
+        },
+        {
+          "name": "reduce_stitched (176)",
+          "intervalCount": 16,
+          "warmUnionMilliseconds": 0.498081
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (154)",
+          "intervalCount": 18,
+          "warmUnionMilliseconds": 0.487289
+        },
+        {
+          "name": "gemm_a18 (103)",
+          "intervalCount": 16,
+          "warmUnionMilliseconds": 0.471541
+        },
+        {
+          "name": "sdpa_tile_fwd_8x8x8_noEdgeCheck (160)",
+          "intervalCount": 20,
+          "warmUnionMilliseconds": 0.469711
+        },
+        {
+          "name": "ndArrayIdentityTranspose (117)",
+          "intervalCount": 10,
+          "warmUnionMilliseconds": 0.468458
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (216)",
+          "intervalCount": 8,
+          "warmUnionMilliseconds": 0.458792
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (233)",
+          "intervalCount": 10,
+          "warmUnionMilliseconds": 0.436502
+        },
+        {
+          "name": "ndArrayIdentity (237)",
+          "intervalCount": 11,
+          "warmUnionMilliseconds": 0.435166
+        },
+        {
+          "name": "ndArrayIdentity (240)",
+          "intervalCount": 40,
+          "warmUnionMilliseconds": 0.434291
+        },
+        {
+          "name": "gemm_a18 (231)",
+          "intervalCount": 8,
+          "warmUnionMilliseconds": 0.423083
+        },
+        {
+          "name": "ndArrayIdentity (106)",
+          "intervalCount": 32,
+          "warmUnionMilliseconds": 0.412708
+        },
+        {
+          "name": "sdpa_tile_fwd_8x8x8_noEdgeCheck (112)",
+          "intervalCount": 20,
+          "warmUnionMilliseconds": 0.410959
+        },
+        {
+          "name": "ndArrayConvolution2D_PreG13 (150)",
+          "intervalCount": 10,
+          "warmUnionMilliseconds": 0.406626
+        },
+        {
+          "name": "gatherND_base (135)",
+          "intervalCount": 10,
+          "warmUnionMilliseconds": 0.392958
+        },
+        {
+          "name": "ndArrayIdentityTranspose (109)",
+          "intervalCount": 8,
+          "warmUnionMilliseconds": 0.386207
+        },
+        {
+          "name": "sdpa_tile_fwd_8x8x8_noEdgeCheck (185)",
+          "intervalCount": 16,
+          "warmUnionMilliseconds": 0.374126
+        },
+        {
+          "name": "ndArrayIdentity (226)",
+          "intervalCount": 9,
+          "warmUnionMilliseconds": 0.372584
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (222)",
+          "intervalCount": 8,
+          "warmUnionMilliseconds": 0.354542
+        },
+        {
+          "name": "ndArrayIdentity (229)",
+          "intervalCount": 32,
+          "warmUnionMilliseconds": 0.351709
+        },
+        {
+          "name": "sdpa_tile_fwd_8x8x8_noEdgeCheck (105)",
+          "intervalCount": 16,
+          "warmUnionMilliseconds": 0.33858
+        },
+        {
+          "name": "ndArrayConvolution2D_PreG13 (142)",
+          "intervalCount": 8,
+          "warmUnionMilliseconds": 0.327584
+        },
+        {
+          "name": "gemm_a18 (217)",
+          "intervalCount": 30,
+          "warmUnionMilliseconds": 0.315163
+        },
+        {
+          "name": "gatherND_base (127)",
+          "intervalCount": 8,
+          "warmUnionMilliseconds": 0.307499
+        },
+        {
+          "name": "ndArrayIdentity (250)",
+          "intervalCount": 10,
+          "warmUnionMilliseconds": 0.294582
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (147)",
+          "intervalCount": 8,
+          "warmUnionMilliseconds": 0.289543
+        },
+        {
+          "name": "gemm_a18 (119)",
+          "intervalCount": 30,
+          "warmUnionMilliseconds": 0.286463
+        },
+        {
+          "name": "gemm_a18 (244)",
+          "intervalCount": 20,
+          "warmUnionMilliseconds": 0.283251
+        },
+        {
+          "name": "gemm_a18 (105)",
+          "intervalCount": 10,
+          "warmUnionMilliseconds": 0.269501
+        },
+        {
+          "name": "ndArrayIdentity (201)",
+          "intervalCount": 20,
+          "warmUnionMilliseconds": 0.266791
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (194)",
+          "intervalCount": 17,
+          "warmUnionMilliseconds": 0.263416
+        },
+        {
+          "name": "ndArrayIdentity (243)",
+          "intervalCount": 10,
+          "warmUnionMilliseconds": 0.253792
+        },
+        {
+          "name": "gemm_a18 (206)",
+          "intervalCount": 24,
+          "warmUnionMilliseconds": 0.253207
+        },
+        {
+          "name": "gemm_a18 (207)",
+          "intervalCount": 54,
+          "warmUnionMilliseconds": 0.252875
+        },
+        {
+          "name": "ndArrayIdentity (221)",
+          "intervalCount": 10,
+          "warmUnionMilliseconds": 0.250582
+        },
+        {
+          "name": "gemm_a18 (114)",
+          "intervalCount": 10,
+          "warmUnionMilliseconds": 0.24525
+        },
+        {
+          "name": "gemm_a18 (98)",
+          "intervalCount": 8,
+          "warmUnionMilliseconds": 0.226749
+        },
+        {
+          "name": "sdpa_fwdNew (205)",
+          "intervalCount": 20,
+          "warmUnionMilliseconds": 0.22158
+        },
+        {
+          "name": "ndArrayIdentity (232)",
+          "intervalCount": 8,
+          "warmUnionMilliseconds": 0.216457
+        },
+        {
+          "name": "ndArrayIdentity (204)",
+          "intervalCount": 23,
+          "warmUnionMilliseconds": 0.216212
+        },
+        {
+          "name": "gemm_a18 (108)",
+          "intervalCount": 36,
+          "warmUnionMilliseconds": 0.215457
+        },
+        {
+          "name": "ndArrayIdentity (193)",
+          "intervalCount": 20,
+          "warmUnionMilliseconds": 0.20729
+        },
+        {
+          "name": "ndArrayIdentity (210)",
+          "intervalCount": 8,
+          "warmUnionMilliseconds": 0.199668
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (174)",
+          "intervalCount": 20,
+          "warmUnionMilliseconds": 0.189997
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (184)",
+          "intervalCount": 10,
+          "warmUnionMilliseconds": 0.187335
+        },
+        {
+          "name": "ndArrayIdentity (179)",
+          "intervalCount": 16,
+          "warmUnionMilliseconds": 0.186416
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (172)",
+          "intervalCount": 12,
+          "warmUnionMilliseconds": 0.183209
+        },
+        {
+          "name": "gemm_a18 (233)",
+          "intervalCount": 16,
+          "warmUnionMilliseconds": 0.182626
+        },
+        {
+          "name": "gemm_a18 (159)",
+          "intervalCount": 30,
+          "warmUnionMilliseconds": 0.179167
+        },
+        {
+          "name": "sdpa_fwdNew (194)",
+          "intervalCount": 16,
+          "warmUnionMilliseconds": 0.178957
+        },
+        {
+          "name": "gemm_a18 (169)",
+          "intervalCount": 20,
+          "warmUnionMilliseconds": 0.176415
+        },
+        {
+          "name": "gemm_a18 (151)",
+          "intervalCount": 24,
+          "warmUnionMilliseconds": 0.175877
+        },
+        {
+          "name": "gemm_a18 (189)",
+          "intervalCount": 20,
+          "warmUnionMilliseconds": 0.169124
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (165)",
+          "intervalCount": 10,
+          "warmUnionMilliseconds": 0.165876
+        },
+        {
+          "name": "ndArrayIdentity (188)",
+          "intervalCount": 20,
+          "warmUnionMilliseconds": 0.164749
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (159)",
+          "intervalCount": 16,
+          "warmUnionMilliseconds": 0.162126
+        },
+        {
+          "name": "gemm_a18 (192)",
+          "intervalCount": 16,
+          "warmUnionMilliseconds": 0.152041
+        },
+        {
+          "name": "gemm_a18 (196)",
+          "intervalCount": 24,
+          "warmUnionMilliseconds": 0.151287
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (164)",
+          "intervalCount": 8,
+          "warmUnionMilliseconds": 0.14329
+        },
+        {
+          "name": "gemm_a18 (184)",
+          "intervalCount": 16,
+          "warmUnionMilliseconds": 0.139873
+        },
+        {
+          "name": "gemm_a18 (89)",
+          "intervalCount": 20,
+          "warmUnionMilliseconds": 0.13392
+        },
+        {
+          "name": "conv2d_a18_float_half_half (35)",
+          "intervalCount": 10,
+          "warmUnionMilliseconds": 0.133
+        },
+        {
+          "name": "ndArrayIdentity (191)",
+          "intervalCount": 16,
+          "warmUnionMilliseconds": 0.131166
+        },
+        {
+          "name": "ndArrayIdentity (128)",
+          "intervalCount": 10,
+          "warmUnionMilliseconds": 0.120085
+        },
+        {
+          "name": "gemm_a18 (115)",
+          "intervalCount": 20,
+          "warmUnionMilliseconds": 0.114709
+        },
+        {
+          "name": "gemm_a18 (164)",
+          "intervalCount": 20,
+          "warmUnionMilliseconds": 0.110792
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (151)",
+          "intervalCount": 40,
+          "warmUnionMilliseconds": 0.107957
+        },
+        {
+          "name": "conv2d_a18_float_half_half (28)",
+          "intervalCount": 8,
+          "warmUnionMilliseconds": 0.105042
+        },
+        {
+          "name": "gemm_a18 (82)",
+          "intervalCount": 16,
+          "warmUnionMilliseconds": 0.104125
+        },
+        {
+          "name": "ndArrayIdentity (120)",
+          "intervalCount": 8,
+          "warmUnionMilliseconds": 0.09304
+        },
+        {
+          "name": "gemm_a18 (101)",
+          "intervalCount": 16,
+          "warmUnionMilliseconds": 0.089956
+        },
+        {
+          "name": "gemm_a18 (183)",
+          "intervalCount": 16,
+          "warmUnionMilliseconds": 0.086002
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (143)",
+          "intervalCount": 32,
+          "warmUnionMilliseconds": 0.084872
+        },
+        {
+          "name": "gemm_a18 (218)",
+          "intervalCount": 30,
+          "warmUnionMilliseconds": 0.08475
+        },
+        {
+          "name": "NDArrayVectorMatrixMultiply_1_4 (124)",
+          "intervalCount": 10,
+          "warmUnionMilliseconds": 0.081374
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (145)",
+          "intervalCount": 40,
+          "warmUnionMilliseconds": 0.078624
+        },
+        {
+          "name": "ndArrayIdentity (186)",
+          "intervalCount": 8,
+          "warmUnionMilliseconds": 0.075791
+        },
+        {
+          "name": "ndArrayIdentity (170)",
+          "intervalCount": 10,
+          "warmUnionMilliseconds": 0.07325
+        },
+        {
+          "name": "NDArrayVectorMatrixMultiply_5_8 (103)",
+          "intervalCount": 40,
+          "warmUnionMilliseconds": 0.069959
+        },
+        {
+          "name": "gemm_a18 (142)",
+          "intervalCount": 10,
+          "warmUnionMilliseconds": 0.067207
+        },
+        {
+          "name": "NDArrayVectorMatrixMultiply_5_8 (96)",
+          "intervalCount": 32,
+          "warmUnionMilliseconds": 0.063289
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (137)",
+          "intervalCount": 32,
+          "warmUnionMilliseconds": 0.063039
+        },
+        {
+          "name": "NDArrayVectorMatrixMultiply_1_4 (116)",
+          "intervalCount": 8,
+          "warmUnionMilliseconds": 0.061543
+        },
+        {
+          "name": "gemm_a18 (134)",
+          "intervalCount": 8,
+          "warmUnionMilliseconds": 0.059918
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (212)",
+          "intervalCount": 30,
+          "warmUnionMilliseconds": 0.051874
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (179)",
+          "intervalCount": 10,
+          "warmUnionMilliseconds": 0.051044
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (208)",
+          "intervalCount": 30,
+          "warmUnionMilliseconds": 0.049498
+        },
+        {
+          "name": "sdpa_fwdNew (90)",
+          "intervalCount": 17,
+          "warmUnionMilliseconds": 0.048581
+        },
+        {
+          "name": "sdpa_fwdNew (220)",
+          "intervalCount": 20,
+          "warmUnionMilliseconds": 0.045666
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (187)",
+          "intervalCount": 8,
+          "warmUnionMilliseconds": 0.041874
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (197)",
+          "intervalCount": 24,
+          "warmUnionMilliseconds": 0.041414
+        },
+        {
+          "name": "reduce_multiple_passes_axes_add (201)",
+          "intervalCount": 24,
+          "warmUnionMilliseconds": 0.041251
+        },
+        {
+          "name": "ndArrayIdentity (144)",
+          "intervalCount": 8,
+          "warmUnionMilliseconds": 0.039417
+        },
+        {
+          "name": "ndArrayIdentity (216)",
+          "intervalCount": 27,
+          "warmUnionMilliseconds": 0.036293
+        },
+        {
+          "name": "sdpa_fwdNew (209)",
+          "intervalCount": 16,
+          "warmUnionMilliseconds": 0.03596
+        },
+        {
+          "name": "sdpa_fwdNew (83)",
+          "intervalCount": 11,
+          "warmUnionMilliseconds": 0.032833
+        },
+        {
+          "name": "gatherND_base (136)",
+          "intervalCount": 10,
+          "warmUnionMilliseconds": 0.03154
+        },
+        {
+          "name": "sdpa_tile_fwd_reduction (107)",
+          "intervalCount": 22,
+          "warmUnionMilliseconds": 0.030083
+        },
+        {
+          "name": "gatherND_base (225)",
+          "intervalCount": 10,
+          "warmUnionMilliseconds": 0.028709
+        },
+        {
+          "name": "ndArrayIdentity (219)",
+          "intervalCount": 16,
+          "warmUnionMilliseconds": 0.027333
+        },
+        {
+          "name": "ndArrayIdentity (92)",
+          "intervalCount": 20,
+          "warmUnionMilliseconds": 0.026586
+        },
+        {
+          "name": "ndArrayIdentity (205)",
+          "intervalCount": 21,
+          "warmUnionMilliseconds": 0.025625
+        },
+        {
+          "name": "NDArrayVectorMatrixMultiply_1_4 (120)",
+          "intervalCount": 20,
+          "warmUnionMilliseconds": 0.024543
+        },
+        {
+          "name": "sdpa_tile_fwd_reduction (203)",
+          "intervalCount": 16,
+          "warmUnionMilliseconds": 0.024293
+        },
+        {
+          "name": "ndArrayIdentity (208)",
+          "intervalCount": 16,
+          "warmUnionMilliseconds": 0.022668
+        },
+        {
+          "name": "ndArrayIdentity (85)",
+          "intervalCount": 17,
+          "warmUnionMilliseconds": 0.022503
+        },
+        {
+          "name": "gatherND_base (128)",
+          "intervalCount": 8,
+          "warmUnionMilliseconds": 0.022084
+        },
+        {
+          "name": "sdpa_tile_fwd_reduction (100)",
+          "intervalCount": 16,
+          "warmUnionMilliseconds": 0.021252
+        },
+        {
+          "name": "sdpa_tile_fwd_reduction (181)",
+          "intervalCount": 14,
+          "warmUnionMilliseconds": 0.020793
+        },
+        {
+          "name": "gatherND_base (215)",
+          "intervalCount": 8,
+          "warmUnionMilliseconds": 0.020002
+        },
+        {
+          "name": "NDArrayVectorMatrixMultiply_1_4 (112)",
+          "intervalCount": 16,
+          "warmUnionMilliseconds": 0.019376
+        },
+        {
+          "name": "ndArrayIdentity (206)",
+          "intervalCount": 15,
+          "warmUnionMilliseconds": 0.018748
+        },
+        {
+          "name": "ndArrayIdentity (136)",
+          "intervalCount": 5,
+          "warmUnionMilliseconds": 0.017709
+        },
+        {
+          "name": "ndArrayIdentity (182)",
+          "intervalCount": 12,
+          "warmUnionMilliseconds": 0.016542
+        },
+        {
+          "name": "ndArrayIdentity (161)",
+          "intervalCount": 11,
+          "warmUnionMilliseconds": 0.016375
+        },
+        {
+          "name": "NDArrayVectorMatrixMultiply_1_4 (125)",
+          "intervalCount": 10,
+          "warmUnionMilliseconds": 0.015667
+        },
+        {
+          "name": "scatterND_base (222)",
+          "intervalCount": 10,
+          "warmUnionMilliseconds": 0.014124
+        },
+        {
+          "name": "ndArrayIdentity (195)",
+          "intervalCount": 10,
+          "warmUnionMilliseconds": 0.012916
+        },
+        {
+          "name": "NDArrayVectorMatrixMultiply_1_4 (117)",
+          "intervalCount": 8,
+          "warmUnionMilliseconds": 0.012624
+        },
+        {
+          "name": "scatterND_base (213)",
+          "intervalCount": 8,
+          "warmUnionMilliseconds": 0.011792
+        },
+        {
+          "name": "NDArrayVectorMatrixMultiply_1_4 (126)",
+          "intervalCount": 8,
+          "warmUnionMilliseconds": 0.010747
+        },
+        {
+          "name": "ndArrayIdentity (65)",
+          "intervalCount": 10,
+          "warmUnionMilliseconds": 0.010374
+        },
+        {
+          "name": "reduce_multiple_passes_axes_max (137)",
+          "intervalCount": 7,
+          "warmUnionMilliseconds": 0.009333
+        },
+        {
+          "name": "reduce_argmax (130)",
+          "intervalCount": 6,
+          "warmUnionMilliseconds": 0.007666
+        },
+        {
+          "name": "ndArrayIdentity (72)",
+          "intervalCount": 5,
+          "warmUnionMilliseconds": 0.007208
+        },
+        {
+          "name": "reduce_multiple_passes_axes_max (129)",
+          "intervalCount": 5,
+          "warmUnionMilliseconds": 0.005916
+        },
+        {
+          "name": "ndArrayIdentity (123)",
+          "intervalCount": 5,
+          "warmUnionMilliseconds": 0.005291
+        },
+        {
+          "name": "reduce_argmax (122)",
+          "intervalCount": 4,
+          "warmUnionMilliseconds": 0.005126
+        },
+        {
+          "name": "ndArrayIdentity (115)",
+          "intervalCount": 4,
+          "warmUnionMilliseconds": 0.005042
+        },
+        {
+          "name": "ndArrayIdentity (135)",
+          "intervalCount": 1,
+          "warmUnionMilliseconds": 0.004791
+        },
+        {
+          "name": "ndArrayIdentity (218)",
+          "intervalCount": 4,
+          "warmUnionMilliseconds": 0.004625
+        },
+        {
+          "name": "ndArrayIdentity (224)",
+          "intervalCount": 4,
+          "warmUnionMilliseconds": 0.004416
+        },
+        {
+          "name": "NDArrayVectorMatrixMultiply_1_4 (118)",
+          "intervalCount": 4,
+          "warmUnionMilliseconds": 0.00421
+        },
+        {
+          "name": "ndArrayIdentity (248)",
+          "intervalCount": 3,
+          "warmUnionMilliseconds": 0.00375
+        },
+        {
+          "name": "ndArrayIdentityInt (123)",
+          "intervalCount": 2,
+          "warmUnionMilliseconds": 0.002583
+        },
+        {
+          "name": "ndArrayIdentity (212)",
+          "intervalCount": 2,
+          "warmUnionMilliseconds": 0.002542
+        },
+        {
+          "name": "ndArrayIdentity (223)",
+          "intervalCount": 2,
+          "warmUnionMilliseconds": 0.002541
+        },
+        {
+          "name": "ndArrayIdentityInt (131)",
+          "intervalCount": 2,
+          "warmUnionMilliseconds": 0.0025
+        },
+        {
+          "name": "ndArrayIdentity (126)",
+          "intervalCount": 2,
+          "warmUnionMilliseconds": 0.001959
+        },
+        {
+          "name": "ndArrayIdentity (214)",
+          "intervalCount": 2,
+          "warmUnionMilliseconds": 0.001875
+        },
+        {
+          "name": "ndArrayIdentity (134)",
+          "intervalCount": 1,
+          "warmUnionMilliseconds": 0.00125
+        },
+        {
+          "name": "ndArrayIdentity (141)",
+          "intervalCount": 1,
+          "warmUnionMilliseconds": 0.00125
+        },
+        {
+          "name": "ndArrayIdentity (211)",
+          "intervalCount": 1,
+          "warmUnionMilliseconds": 0.00125
+        },
+        {
+          "name": "ndArrayIdentity (249)",
+          "intervalCount": 1,
+          "warmUnionMilliseconds": 0.000625
+        }
+      ]
+    }
+  },
+  "targetGPUActiveRows": 716,
+  "targetShaderRows": 6917,
+  "interpretation": [
+    "Warm propagation median 33.824 ms; GPU Active union median 28.414 ms; all sampled SDPA intervals union median 15.932 ms. Attention is the largest observed shader family group.",
+    "Encoder median 22.791 ms; GPU Active union 21.212 ms. Largest sampled encoder family is mmul_kernel_a16_float_float_float, 4.627 ms median; shader name alone cannot establish exact MIL operation or safe precision change.",
+    "Shader intervals returned with Instruments 27.0; previous 26.6 capture warned that counter profile was unsupported. This is consistent with tooling compatibility, not a controlled root-cause proof.",
+    "Retain working FP16 model and previous host improvements. The failed query-batching candidate remains closed."
+  ],
+  "limitations": [
+    "Shader samples cover part of GPU-active time; gaps are not necessarily idle time. Family medians need not sum to group medians.",
+    "No ground-truth accuracy, model package hashes or shared fixture run ID in timing exports. The earlier 07:49 device report does not validate this 08:10 capture.",
+    "Not sustained playback FPS or a paired speed comparison; profiler version/configuration affects comparability.",
+    "No demonstrated precise shader-to-MIL mapping; no claim that a particular next rewrite will improve latency."
+  ],
+  "nextStep": "Receive Share temporal report from this existing run to link the workflow to model/fixture provenance and reported numerical checks; no new recording requested. Then choose a bounded attention-focused diagnostic distinct from closed query batching, preserving all reference gates."
+}
