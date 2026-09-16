@@ -37,7 +37,8 @@ registration and diff checks only. No Swift compiler/Apple SDK is available here
 no tests, builds, decoding, inference or conversion were run by the assistant.
 The user has now built and run this path on a new portrait video of the same dog
 and reports that tracking looked good. See the result immediately below.
-Seek/reset still needs device validation; the supplied run has zero seeks.
+The subsequent seek/reselection run also completed without reported errors;
+see the seek result below.
 Setup and report-sharing instructions belong in chat, not README.
 
 API references checked: Apple [decoded sample ordering and EOF status](https://developer.apple.com/documentation/avfoundation/avassetreaderoutput/copynextsamplebuffer%28%29),
@@ -68,10 +69,36 @@ processing measurements, not sustained playback FPS.
 User says this NEW video looked good. In the supplied portrait screenshot, the
 blue mask broadly covers the dog and excludes most grass; edges are stepped in
 the nearest-neighbor low-resolution diagnostic overlay. Do not claim fine-edge
-quality or all-frame accuracy from one screenshot. Next device check: pause,
-seek backward, select the subject anew, run briefly and share the video report.
-Then investigate preparation/display overhead and broader visual tracking quality.
+quality or all-frame accuracy from one screenshot. The subsequent seek check is
+recorded below. Next investigate preparation/display overhead and broader visual
+tracking quality.
 No inference implementation or model bytes changed while recording this result.
+
+## Seek/reselection device check completed
+
+`Audit/iphone17pro-video-seek-report.json` preserves the next user run; its
+summary records validation of the retained tail. Same iPhone18,1 / iOS 27.0,
+Release CPU + GPU, validated memoryfp16 fixture. User explicitly reports forward
+and backward seeks. Report counters: 4 seeks, 5 initialized tracking segments,
+181 predictions, zero empty masks and no reported errors. Start/snapshot thermal
+states are nominal. The report ends during tracking at 8.937 s, not at EOF.
+
+The last 120 records cover parts of segments 4 and 5. A retained backward jump
+from 18.605 s to 6.617383 s starts an initializer prediction with state 1/1/1
+(accepted/spatial/pointer). Tracking then advances to 71 accepted frames, banks
+7/16. Every retained within-segment timestamp and accepted-frame count advances;
+all retained banks stay bounded. Earlier transitions have rolled off, so do not
+claim the JSON retains exact direction/timestamps for all four seeks.
+
+Across 176 propagated frames, means are encoder 22.624 ms, propagator 33.454 ms,
+prediction/state 65.584 ms and total request 95.150 ms. The remaining grouped
+preparation/render/other work averages 29.566 ms. This is not a controlled speed
+comparison against the previous run and excludes UI presentation. Seek/reset
+functional testing is sufficient for this stage; do not ask for more repeats.
+Next work: isolate decode, orientation/resize, preview encoding/display costs,
+then remove demonstrated overhead while preserving matching frame/mask timestamps
+and bounded state. Broader subject/edge/occlusion quality remains to be reviewed.
+No runtime/model changes were made while recording this evidence.
 
 ## iPhone 17 Pro comparison passed: original versus memoryfp16
 
