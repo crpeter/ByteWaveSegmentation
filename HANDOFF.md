@@ -1,6 +1,32 @@
 # ByteWave segmentation: continuation handoff
 
-## Current step: isolated FP16 cross-attention key-padding experiment
+## Current step: key-padding accuracy passed; paired GPU timing pending
+
+User supplied Pasted text(20260916-125744).txt containing the complete parent
+report, source paste SHA256
+45354040dfc441bf02e87c7756c207eace5fd47e92611ac333e9cf2e154553ee.
+JSON normalized from terminal whitespace is archived as
+`Audit/mac-attention-key-padding-report.json`; these are not original report bytes
+and must not replace the Mac report for benchmark hash checks.
+
+All five runs pass all 20 frames: unchanged CPU, memoryfp16 CPU/GPU, and
+memoryfp16k4096 CPU/GPU. The unchanged same-input control reports zero output
+error. All final states are 20 accepted / 7 spatial / 16 pointers. Candidate GPU
+minimum mask IoU 0.996804, pointer cosine 0.999033, memory cosine 0.996588.
+Candidate modification records confirm only cross-attentions receive 448 extra
+excluded keys each, with native SDPA, original key order and interfaces preserved.
+The candidate weights file hash differs because the diagnostic adds padding
+constants; no learned-weight change is claimed or intended.
+
+Unpaired GPU medians: memoryfp16 25.996 ms, padded 25.399 ms. These sequential
+accuracy runs do not establish a speed improvement. Next is the existing paired
+GPU benchmark, variant memoryfp16k4096, candidate attention-key-padding-01, source
+dog-09, output attention-key-padding-paired-01. It validates all child reports
+and package hashes locally before timing the rebuilt FP16 baseline and candidate
+with identical CPU-owned inputs. No code/threshold/installed-model changes for
+this evidence update. Offline JSON parsing and static diff review only.
+
+## Earlier: isolated FP16 cross-attention key-padding experiment
 
 User asked to continue optimization after the NE placement result. New diagnostic
 variant `memoryfp16k4096` extends only the two 3648-key memory cross-attentions
