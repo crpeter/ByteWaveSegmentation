@@ -16,6 +16,8 @@ enum OwnedTemporalContract {
     static let graphRevision = "dense-points-encoder-fanout.v1"
     static let upstream = "7711e012a30a2402c4eaab637bdb00a521302c91"
     static let checkpoint = "ed2d4850b8792c239689b043c47046ec239b6e808a3d9b6ae676c803fd8780df"
+    static let attentionDiagnosticContract = "bytewave.propagator-attention.diagnostic.v1"
+    static let memoryFP16Precision = "memory-sdpa-fp16-only.diagnostic.v1"
     static let components = ["ImageEncoder", "Initializer", "InitialMemoryEncoder", "Propagator"]
     static let imageOutputs = ["raw_vision_features", "initial_vision_features", "high_res_feature_0", "high_res_feature_1"]
     static let maskOutputs = ["low_res_mask", "high_res_mask", "best_iou", "object_pointer", "object_score"]
@@ -47,10 +49,17 @@ enum OwnedTemporalContract {
         }
     }
 
-    static func validate(_ model: MLModel, component: String) throws {
+    static func validate(_ model: MLModel, component: String, propagatorVariant: String? = nil) throws {
         let description = model.modelDescription
         let metadata = description.metadata[.creatorDefinedKey] as? [String: String] ?? [:]
-        guard metadata["bytewave.contract"] == id,
+        guard propagatorVariant == nil || propagatorVariant == "memoryfp16" else {
+            throw OwnedTemporalError.invalid("Unknown diagnostic propagator variant.")
+        }
+        let diagnostic = component == "Propagator" && propagatorVariant == "memoryfp16"
+        // Diagnostic packages retain source precision metadata; the explicit
+        // contract/variant identifies the four attention operations overridden.
+        guard metadata["bytewave.contract"] == (diagnostic ? attentionDiagnosticContract : id),
+              (!diagnostic || metadata["bytewave.diagnostic.variant"] == "memoryfp16"),
               metadata["bytewave.precision"] == precision,
               metadata["bytewave.graph"] == graphRevision,
               metadata["bytewave.upstream"] == upstream,

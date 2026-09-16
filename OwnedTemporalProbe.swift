@@ -38,6 +38,32 @@ enum OwnedDeviceMode: String, CaseIterable, Identifiable, Sendable {
     }
 }
 
+enum OwnedFixtureChoice: String, CaseIterable, Identifiable {
+    case original = "Original"
+    case memoryFP16 = "Memory FP16 candidate"
+    var id: String { rawValue }
+    var folder: String { self == .original ? "baseline" : "memoryfp16" }
+    var propagatorVariant: String? { self == .original ? nil : "memoryfp16" }
+}
+
+struct OwnedDiagnosticPropagator: Codable, Sendable {
+    let variant: String
+    let contract: String
+    let precisionPolicy: String
+    let baselineFixtureSHA256: String
+    let candidateReportSHA256: String
+    let pairedReportSHA256: String
+
+    func validate() throws {
+        let hashes = [baselineFixtureSHA256, candidateReportSHA256, pairedReportSHA256]
+        guard variant == "memoryfp16", contract == OwnedTemporalContract.attentionDiagnosticContract,
+              precisionPolicy == OwnedTemporalContract.memoryFP16Precision,
+              hashes.allSatisfy({ $0.count == 64 && $0.allSatisfy({ "0123456789abcdef".contains($0) }) }) else {
+            throw OwnedTemporalError.invalid("Incompatible diagnostic propagator provenance.")
+        }
+    }
+}
+
 private struct OwnedFixture: Decodable {
     struct TensorFile: Decodable {
         let path: String
@@ -66,6 +92,7 @@ private struct OwnedFixture: Decodable {
     let referenceComputeUnits: String
     let modelFiles: [String: String]
     let frames: [Frame]
+    let diagnosticPropagator: OwnedDiagnosticPropagator?
 }
 
 struct OwnedTensorComparison: Codable, Sendable {
@@ -93,7 +120,9 @@ struct OwnedFrameComparison: Codable, Sendable {
 struct OwnedDeviceReport: Encodable, Sendable {
     let schema = "bytewave.temporal-device-comparison.v1"
     let contract = OwnedTemporalContract.id
-    let precisionPolicy = OwnedTemporalContract.precision
+    var precisionPolicy = OwnedTemporalContract.precision
+    var modelVariant = "original"
+    var diagnosticPropagator: OwnedDiagnosticPropagator?
     let graphRevision = OwnedTemporalContract.graphRevision
     let timingInstrumentation = "session-stages.v1"
     #if DEBUG
@@ -179,7 +208,7 @@ struct OwnedPlanReport: Encodable, Sendable {
 actor OwnedTemporalProbeRunner {
     private var running = false
 
-    func run(root: URL, mode: OwnedDeviceMode, hardware: String,
+    func run(root: URL, mode: OwnedDeviceMode, hardware: String, expectedPropagatorVariant: String? = nil,
              progress: @Sendable (OwnedProbeUpdate) async -> Void) async -> OwnedDeviceReport {
         var report = OwnedDeviceReport(hardware: hardware, mode: mode.rawValue, thermalStateAtStart: thermal())
         report.requestedComputeUnitsByComponent = mode.requestedUnitsByComponent
@@ -206,13 +235,24 @@ actor OwnedTemporalProbeRunner {
             try saveCheckpoint(report, to: checkpoint)
             let data = try Data(contentsOf: root.appendingPathComponent("fixture.json"))
             let fixture = try JSONDecoder().decode(OwnedFixture.self, from: data)
+            try fixture.diagnosticPropagator?.validate()
+            guard fixture.diagnosticPropagator?.variant == expectedPropagatorVariant else {
+                throw OwnedTemporalError.invalid("Prepared fixture does not match the selected model variant.")
+            }
+            if fixture.diagnosticPropagator != nil && mode != .cpu && mode != .gpu {
+                throw OwnedTemporalError.invalid("This candidate supports CPU only or CPU + GPU diagnostics.")
+            }
+            let expectedPrecision = fixture.diagnosticPropagator?.precisionPolicy ?? OwnedTemporalContract.precision
+            report.precisionPolicy = expectedPrecision
+            report.modelVariant = fixture.diagnosticPropagator?.variant ?? "original"
+            report.diagnosticPropagator = fixture.diagnosticPropagator
             report.fixtureSHA256 = digest(data)
             report.sourceModelsManifestSHA256 = fixture.sourceModelsManifestSHA256
             report.sourceReportSHA256 = fixture.sourceReportSHA256
             report.pointNormalizedTopLeft = fixture.pointNormalizedTopLeft
             guard fixture.schema == "bytewave.temporal-device-fixture.v1",
                   fixture.contract == OwnedTemporalContract.id,
-                  fixture.precisionPolicy == OwnedTemporalContract.precision,
+                  fixture.precisionPolicy == expectedPrecision,
                   fixture.graphRevision == OwnedTemporalContract.graphRevision,
                   fixture.upstream == OwnedTemporalContract.upstream,
                   fixture.checkpointSHA256 == OwnedTemporalContract.checkpoint,
@@ -242,7 +282,8 @@ actor OwnedTemporalProbeRunner {
                 let configuration = MLModelConfiguration()
                 configuration.computeUnits = mode.units(for: component)
                 let model = try await MLModel.load(contentsOf: compiled, configuration: configuration)
-                try OwnedTemporalContract.validate(model, component: component)
+                try OwnedTemporalContract.validate(model, component: component,
+                                                   propagatorVariant: fixture.diagnosticPropagator?.variant)
                 models[component] = model
                 report.compileAndLoadMilliseconds[component] = (ProcessInfo.processInfo.systemUptime - start) * 1000
             }
@@ -373,6 +414,7 @@ actor OwnedTemporalProbeRunner {
             let data = try Data(contentsOf: root.appendingPathComponent("fixture.json"))
             let fixture = try JSONDecoder().decode(OwnedFixture.self, from: data)
             guard fixture.schema == "bytewave.temporal-device-fixture.v1",
+                  fixture.diagnosticPropagator == nil,
                   fixture.contract == OwnedTemporalContract.id,
                   fixture.graphRevision == OwnedTemporalContract.graphRevision,
                   fixture.precisionPolicy == OwnedTemporalContract.precision,
@@ -585,6 +627,7 @@ actor OwnedTemporalProbeRunner {
 @MainActor
 struct OwnedTemporalProbeView: View {
     @State private var mode: OwnedDeviceMode = .cpu
+    @State private var fixtureChoice: OwnedFixtureChoice = .original
     @State private var running = false
     @State private var status = "Run the prepared 20-frame subject-tracking comparison."
     @State private var preview: UIImage?
@@ -598,13 +641,18 @@ struct OwnedTemporalProbeView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
+                Picker("Model", selection: $fixtureChoice) {
+                    ForEach(OwnedFixtureChoice.allCases) { Text($0.rawValue).tag($0) }
+                }.disabled(running)
                 Picker("Compute devices", selection: $mode) {
-                    ForEach(OwnedDeviceMode.allCases) { Text($0.rawValue).tag($0) }
+                    ForEach(fixtureChoice == .original ? OwnedDeviceMode.allCases : [.cpu, .gpu]) {
+                        Text($0.rawValue).tag($0)
+                    }
                 }.disabled(running)
                 Button("Run 20-frame comparison", action: start)
                     .buttonStyle(.borderedProminent).disabled(running)
                 Button("Inspect GPU/NE plans", action: startPlans)
-                    .buttonStyle(.bordered).disabled(running)
+                    .buttonStyle(.bordered).disabled(running || fixtureChoice != .original)
                 if running { ProgressView() }
                 Text(status).textSelection(.enabled).accessibilityAddTraits(.updatesFrequently)
                 if let preview {
@@ -643,6 +691,14 @@ struct OwnedTemporalProbeView: View {
             preview = nil
             overlay = nil
             status = "Run the comparison in this mode."
+        }
+        .onChange(of: fixtureChoice) { _, _ in
+            if fixtureChoice != .original && mode != .cpu && mode != .gpu { mode = .gpu }
+            reportURL = nil
+            planReportURL = nil
+            preview = nil
+            overlay = nil
+            status = "Run the comparison with \(fixtureChoice.rawValue)."
         }
         .onDisappear { job?.cancel() }
     }
@@ -690,7 +746,7 @@ struct OwnedTemporalProbeView: View {
         status = "Run the temporal comparison on your physical iPhone."
         return
         #else
-        guard !running, let root = Bundle.main.resourceURL?.appendingPathComponent("DeviceValidationData/baseline") else { return }
+        guard !running, let root = Bundle.main.resourceURL?.appendingPathComponent("DeviceValidationData/\(fixtureChoice.folder)") else { return }
         guard FileManager.default.fileExists(atPath: root.appendingPathComponent("fixture.json").path) else {
             status = "The device fixture is missing. Run the Mac preparation command, then rebuild."
             return
@@ -700,10 +756,12 @@ struct OwnedTemporalProbeView: View {
         preview = nil
         overlay = nil
         let selectedMode = mode
+        let selectedVariant = fixtureChoice.propagatorVariant
         let hardware = hardwareIdentifier()
         job = Task {
             defer { running = false }
-            let report = await runner.run(root: root, mode: selectedMode, hardware: hardware) { update in
+            let report = await runner.run(root: root, mode: selectedMode, hardware: hardware,
+                                          expectedPropagatorVariant: selectedVariant) { update in
                 await MainActor.run {
                     guard !Task.isCancelled else { return }
                     status = update.message

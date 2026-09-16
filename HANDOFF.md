@@ -1,6 +1,33 @@
 # ByteWave segmentation: continuation handoff
 
-## Pending experiment: isolate memory-attention precision
+## Next device comparison: original versus memoryfp16
+
+Added `Temporal/prepare_attention_device.py`: read-only verification and copying,
+no conversion or inference. Requires matching passed source run, CPU/GPU temporal
+candidate evidence, full 76-pair GPU report and existing prepared original device
+fixture. Verifies package/input/reference bytes, shapes/finiteness and source RGB
+hashes, copies original reference tensors and BGRA inputs unchanged, and substitutes
+only the diagnostic Propagator in a NEW folder. The original baseline stays intact.
+Publishes fixture.json last with explicit diagnostic contract/variant, effective
+precision policy and hashes of baseline fixture, temporal report and paired report.
+
+Swift adds an Original / Memory FP16 candidate picker in the temporal probe.
+The candidate folder is DeviceValidationData/memoryfp16; original is still baseline.
+Only CPU-only and CPU+GPU are offered for the candidate; plan inspection stays on
+the original. Fixture choice must match its diagnostic metadata. Only Propagator
+may use the exact memoryfp16 diagnostic contract; all other component metadata,
+interfaces, references and numerical gates retain existing validation. Reports
+identify the variant, effective diagnostic precision policy and source provenance.
+The serialized candidate inherited the original package's source precision field;
+its diagnostic contract plus variant describes the explicit override. The normal
+exporter and installed baseline remain unchanged. These Swift/preparation changes
+have only static source/AST and diff review, no assistant tests or builds.
+
+Next user action: prepare the separate candidate folder, build the probe in Release
+on iPhone 17 Pro and run Original CPU+GPU and Memory FP16 candidate CPU+GPU with the
+same bundled reference. Request both reports; no phone speedup is established yet.
+
+## Mac pass: isolated memory-attention precision
 
 The chunk256 rewrite is slower on Mac despite passing correctness, so the
 original normal export remains selected. The next diagnostic `memoryfp16`
@@ -18,9 +45,12 @@ comparisons. Exact unrelated/new operation signature checks cover the casts,
 mask source and attention dtypes. Nonfinite outputs or parity failure stop the
 run. The paired benchmark accepts `--variant memoryfp16` only with matching
 passed temporal evidence and package hashes. Device readiness stays false;
-there is no normal model/fixture or Swift app change. Assistant AST/source review
-and diff checks only; this new candidate has not been executed. User commands
-remain in chat, not README.
+the user now passed all three 20-frame comparisons and 76 paired GPU checks.
+Median Mac latency is 14.3839 ms original versus 13.7715 ms memoryfp16 (4.257%
+lower); both order strata agree. GPU mask/pointer/memory minima are
+0.996804/0.999023/0.996592, final banks 7/16. See
+`Audit/mac-attention-memoryfp16-summary.json`. No iPhone candidate result yet.
+User commands remain in chat, not README.
 
 ## Completed Mac experiment: explicit FP32 memory attention
 
