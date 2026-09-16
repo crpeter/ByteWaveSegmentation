@@ -1,6 +1,34 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: encoder projection passed Mac; isolated iPhone comparison prepared
+## Current work: encoder projection improves first iPhone pair; reverse order pending
+
+User supplied 8c9cdd2e-e246-4e24-b397-421802359eb7.json (memoryfp16,
+2026-09-16T18:13:52Z) and 33740519-efec-4e3a-aae3-ae3ed481cf70.json
+(memoryfp16projection, 18:14:13Z). Original bytes archived in
+Audit/iphone17pro-encoder-projection-{variant}-report.json and derived summary in
+Audit/iphone17pro-encoder-projection-summary.json, including upload/report hashes.
+Both physical iPhone18,1 iOS27.0(24A435), Release, CPU_AND_GPU for all components;
+same input/PTS/reference identities, propagator provenance and tensor-copy version.
+Candidate encoder provenance points to the exact baseline fixture hash and Mac
+paired report. Both all 20 frames passed, final 7/16 banks, nominal thermal snapshots.
+
+Warm median encoder (exclude frame 0): 21.84558 -> 18.69225 ms, 14.43465% lower.
+Warm propagator (exclude first call at frame 1): 32.41435 -> 32.51163 ms, essentially
+unchanged in these short runs. Prediction/state median (exclude frames 0 and 1):
+58.76642 -> 55.67450 ms, 5.26137% lower (~3.09 ms saved). These are fixture/model
+timings, not sustained video playback FPS. Minimum mask IoU both 0.996804; pointer
+cosine 0.998931/0.998924, memory cosine 0.996140/0.996127. Small numerical differences
+remain; no bitwise-mask identity claim. Per-frame IoU-against-reference metrics
+differ by at most 0.000370. Validation/debugger settings are not captured in JSON.
+
+Next user action needs NO code/model preparation or rebuild: same 17 Pro/Release
+build, let phone cool if warm, run Memory FP16 + fused encoder CPU + GPU FIRST,
+then Memory FP16 candidate CPU + GPU SECOND; share both temporal reports. This
+checks run-order sensitivity before adopting in Track a video. No Instruments or
+plan report needed. Current working video model stays memoryfp16. Evidence/handoff
+only in this commit; offline JSON identity/arithmetic checks, no execution/tests.
+
+## Earlier: encoder projection passed Mac; isolated iPhone comparison prepared
 
 User pasted encoder-projection-01/report.json: unchanged CPU, composed CPU and
 composed GPU all pass all 20 frames with banks 7/16. GPU minima IoU 0.998153,
