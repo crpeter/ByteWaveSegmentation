@@ -1,6 +1,31 @@
 # ByteWave segmentation: continuation handoff
 
-## Current step: native FP16 attention query-batching diagnostic
+## Current step: paired timing after native query-batching accuracy passed
+
+User supplied the Mac diagnostic report for `memoryfp16q1024`; normalized JSON is
+archived in `Audit/mac-attention-native-query-report.json`. Source terminal paste:
+`Pasted text(20260916-014450).txt`, SHA256 `edfd1fde8b8e45ddea8bdd3afad9a4c60e398cb861a8f05a70618d35ae6690f9`.
+Normalization removes terminal whitespace; archive bytes are not original report
+bytes and must not replace the original report for benchmark provenance checks.
+
+All five runs pass all 20 frames: unchanged CPU, memoryfp16 CPU/GPU, and
+memoryfp16q1024 CPU/GPU. Unchanged reconversion has zero same-input output error.
+Candidate GPU minimum mask IoU/pointer cosine/memory cosine are
+0.996804/0.999023/0.996592, matching the baseline GPU's reported minima.
+This is equality of summary metrics, not proof of tensor identity. All final
+states have 20 accepted frames and bounded 7/16 banks.
+
+Unpaired GPU median propagation is 26.244 ms baseline versus 28.658 ms candidate;
+no improvement is established. Next is the already-implemented paired GPU
+benchmark against memoryfp16 using `.temporal-runs/attention-native-query-01`,
+with proposed output `.temporal-runs/attention-native-query-paired-01`.
+Both packages in that diagnostic are newly reconverted and validated; their
+hashes differ from the previously installed FP16 package. Preserve all recorded
+package identities. No candidate device preparation or runtime change yet.
+Assistant parsed the supplied report and reviewed source/diffs only; no tests,
+builds, conversions, inference or benchmarks executed. Commands stay in chat.
+
+## Native FP16 attention query-batching diagnostic implementation
 
 User authorized further model-speed work. Prepared `memoryfp16q1024` in the
 existing attention diagnostic, keeping the current working memoryfp16 model and
