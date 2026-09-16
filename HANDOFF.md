@@ -1,6 +1,35 @@
 # ByteWave segmentation: continuation handoff
 
-## Current step: FP16 NE propagator passed Debug; Release timing pending
+## Current decision: retain FP16 GPU; NE placement experiment closed
+
+The user's Release rerun (5298e4db-6f91-44b3-b261-1ef869654aed.json) passes all
+20 frames on iPhone18,1 / iOS 27.0 (24A435). Raw bytes archived as
+`Audit/iphone17pro-memoryfp16-ne-propagator-release-report.json`; derived evidence
+and hashes in `Audit/iphone17pro-memoryfp16-ne-propagator-summary.json`.
+swiftDebugCompilation=false. CPU_AND_NE is requested only for Propagator;
+other components remain CPU_AND_GPU. Minimum IoU/pointer cosine/memory cosine
+0.996092/0.996693/0.993702; final accepted/spatial/pointer counts 20/7/16.
+Thermal snapshots nominal. Fixture inputs, model provenance and copy implementation
+match the archived Release GPU bulk-copy baseline exactly.
+
+Warm model medians excluding first call per component: Propagator 225.618 ms,
+encoder 32.326 ms. Prior Release GPU baseline: 32.497/21.922 ms respectively.
+Session medians excluding frame zero: 265.378 versus 58.950 ms. Propagator
+compile/load 18.336 seconds. Separate runs, not paired; do not claim an exact
+causal slowdown ratio. Current report does not record Metal validation/debugger
+settings or actual NE execution. User was instructed to disable Metal API and
+Shader Validation for this timing run; the JSON cannot confirm those settings.
+
+No useful performance benefit is demonstrated. Close this compute-placement
+experiment without promotion or another repeat. Retain working memoryfp16
+CPU_AND_GPU in Track a video. Original on-demand/local/bounded-state goal remains
+intact; no claim that other models cannot benefit from Neural Engine. Current
+profile still points to attention as the largest measured propagator shader
+group. No new graph rewrite selected; query batching and conv2 remain closed.
+Evidence/handoff only; offline JSON arithmetic and static diff review, no assistant
+tests, builds, inference, conversion or benchmarks.
+
+## Earlier: FP16 NE propagator passed Debug; Release timing pending
 
 User report f9ac2a27-378a-42c2-9ab7-4c79bc5b22bc.json is archived byte-for-byte
 as `Audit/iphone17pro-memoryfp16-ne-propagator-debug-report.json`; SHA256

@@ -1,0 +1,85 @@
+{
+  "scope": "Separate short Release device runs using identical fixture inputs and model provenance. Model warm medians exclude the first call of each component. Not a paired benchmark, sustained FPS, energy measurement or proof of actual Neural Engine execution. Metal validation/debugger settings are not recorded by these reports.",
+  "sourceReport": "iphone17pro-memoryfp16-ne-propagator-release-report.json",
+  "sourceReportSHA256": "2c10f50893b875ea940b518e5d476ffdbbd4a986ab944fd7d62c083728ba8c67",
+  "baselineReport": "iphone17pro-chunk-copy-memoryfp16-report.json",
+  "baselineReportSHA256": "7334630940ccb15f5bea20c4ef8a0cf5ff35df730404af154e4c9b29131142ca",
+  "matchingMetadata": {
+    "hardware": true,
+    "operatingSystem": true,
+    "modelVariant": true,
+    "fixtureSHA256": true,
+    "sourceModelsManifestSHA256": true,
+    "sourceReportSHA256": true,
+    "precisionPolicy": true,
+    "graphRevision": true,
+    "tensorCopyImplementation": true,
+    "timingInstrumentation": true,
+    "diagnosticPropagator": true
+  },
+  "sameFrameIdentities": true,
+  "requestedComputeUnitsByComponent": {
+    "ImageEncoder": "CPU_AND_GPU",
+    "InitialMemoryEncoder": "CPU_AND_GPU",
+    "Initializer": "CPU_AND_GPU",
+    "Propagator": "CPU_AND_NE"
+  },
+  "gpuBaseline": {
+    "mode": "CPU + GPU",
+    "swiftDebugCompilation": false,
+    "passed": true,
+    "frames": 20,
+    "allFramesPassed": true,
+    "minimumMaskIoU": 0.9968039772727273,
+    "minimumPointerCosine": 0.9989310422512354,
+    "minimumMemoryCosine": 0.9961403122331987,
+    "medianWarmModelMilliseconds": {
+      "ImageEncoder": 21.922250001807697,
+      "Propagator": 32.49743749620393
+    },
+    "medianSessionMillisecondsExcludingFrameZero": 58.95016666909214,
+    "compileAndLoadMilliseconds": {
+      "ImageEncoder": 247.3581666708924,
+      "InitialMemoryEncoder": 105.1584999950137,
+      "Initializer": 133.08983332535718,
+      "Propagator": 294.22120832896326
+    },
+    "finalState": {
+      "acceptedFrames": 20,
+      "pointerEntries": 16,
+      "spatialEntries": 7
+    },
+    "thermalStateAtStart": "nominal",
+    "thermalStateAtEnd": "nominal"
+  },
+  "nePropagator": {
+    "mode": "GPU + NE propagator",
+    "swiftDebugCompilation": false,
+    "passed": true,
+    "frames": 20,
+    "allFramesPassed": true,
+    "minimumMaskIoU": 0.9960923623445825,
+    "minimumPointerCosine": 0.996693409734254,
+    "minimumMemoryCosine": 0.9937017435767164,
+    "medianWarmModelMilliseconds": {
+      "ImageEncoder": 32.32600000046659,
+      "Propagator": 225.6182708297274
+    },
+    "medianSessionMillisecondsExcludingFrameZero": 265.3777499945136,
+    "compileAndLoadMilliseconds": {
+      "ImageEncoder": 312.8749583265744,
+      "InitialMemoryEncoder": 104.60679166135378,
+      "Initializer": 134.53920833126176,
+      "Propagator": 18335.89750000101
+    },
+    "finalState": {
+      "acceptedFrames": 20,
+      "pointerEntries": 16,
+      "spatialEntries": 7
+    },
+    "thermalStateAtStart": "nominal",
+    "thermalStateAtEnd": "nominal"
+  },
+  "descriptivePropagatorMedianRatioNEOverGPU": 6.94264804282129,
+  "decision": "Retain CPU_AND_GPU memoryfp16. Close this placement experiment without promotion; no useful speed benefit demonstrated. No conclusion about other models or inherent Neural Engine performance."
+}
