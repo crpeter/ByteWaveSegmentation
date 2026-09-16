@@ -1,0 +1,74 @@
+{
+  "source": "User-pasted Mac encoder-taps-02, encoder-taps-03 and encoder-taps-04 reports, 2026-09-15",
+  "scope": "Selected facts from supplied reports; not a replacement for full reports on the user Mac.",
+  "sourceManifestSHA256": "8e3855c53deda132d4c378d3a93343ac3bc6a678b1a95a8cf5bb7c6bd99e61c1",
+  "sourcePlanSHA256": "2203bb48bfb12aa206d43de07effe8a080366e57169474bf128cf7756c2b02c3",
+  "imageSHA256": "df4fd26c6e7c6cce4cd9e6c04ace316788f125eb4f953f0aad96882e7b474dd9",
+  "runs": [
+    {
+      "name": "encoder-taps-02",
+      "indices": [
+        0,
+        20,
+        41,
+        62,
+        82
+      ]
+    },
+    {
+      "name": "encoder-taps-03",
+      "indices": [
+        0,
+        5,
+        10,
+        15,
+        20
+      ]
+    },
+    {
+      "name": "encoder-taps-04",
+      "indices": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ]
+    }
+  ],
+  "allRuns": {
+    "completed": true,
+    "cpuFinalMaximumAbsoluteError": 0.0,
+    "finalNonfiniteFailureReproduced": true,
+    "sampledConvolutionPreferencesPreserved": true,
+    "probePreferredCounts": {
+      "MLCPUComputeDevice": 367,
+      "MLNeuralEngineComputeDevice": 83
+    }
+  },
+  "encoderTaps04": {
+    "sharedInputOfConvolutions6And7": {
+      "name": "input_33_to_fp16",
+      "nonfinite": 0,
+      "cosineSimilarity": 0.9999879869657109
+    },
+    "convolution6Output": {
+      "name": "var_199_cast_fp16",
+      "nonfinite": 0,
+      "cosineSimilarity": 0.9999874312051605
+    },
+    "convolution7Output": {
+      "name": "var_212_cast_fp16",
+      "nonfinite": 0,
+      "cosineSimilarity": 0.9999742608617818
+    },
+    "convolution8Input": {
+      "name": "input_39_to_fp16",
+      "nonfinite": 32768,
+      "minimum": -8.8125,
+      "maximum": 7752.0
+    }
+  },
+  "interpretation": "The earliest bad sampled tensor in taps-04 is convolution 8 input. Convolutions 6 and 7 share a healthy input and produce closely agreeing outputs. Inspect actual dependencies feeding convolution 8 before assigning fault to a kernel, cast, transfer or precision choice. Exposed outputs can affect partitioning; plans are not measured execution."
+}

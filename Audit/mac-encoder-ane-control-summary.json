@@ -1,0 +1,348 @@
+{
+  "sourceAttachment": "Pasted text(20260915-183111).txt",
+  "sourceAttachmentSHA256": "43c53f8f35d73486452dbd8b6caa09840921bde474a6ce8237e1adc53b306887",
+  "report": {
+    "scope": "One exact-input encoder control. CPU_AND_NE permits CPU fallback; success does not prove ANE execution. FP32 changes both precision and eligible placement. No temporal/device readiness or performance claim.",
+    "readyForDeviceValidation": false,
+    "completed": true,
+    "sourceStatus": {
+      "contract": "bytewave.edgetam-temporal-owned.v2",
+      "upstream": "7711e012a30a2402c4eaab637bdb00a521302c91",
+      "precisionPolicy": "mixed-encoder-late-conv33-and-fp32-attention-iou.v1",
+      "graphRevision": "dense-initializer-points.v1",
+      "tensorInterface": "float32",
+      "torchThreads": {
+        "intraOp": 1,
+        "interOp": 1
+      },
+      "checkpointSHA256": "ed2d4850b8792c239689b043c47046ec239b6e808a3d9b6ae676c803fd8780df",
+      "python": "3.11.16 (main, Aug 12 2026, 23:03:19) [Clang 21.0.0 (clang-2100.1.1.101)]",
+      "versions": {
+        "torch": "2.7.0",
+        "torchvision": "0.22.0",
+        "numpy": "1.26.4",
+        "av": "15.0.0",
+        "timm": "1.0.15",
+        "coremltools": "9.0"
+      },
+      "pointNormalizedTopLeft": [
+        0.4912,
+        0.4706
+      ],
+      "referencePassed": true,
+      "coremlPassed": true,
+      "readyForDeviceValidation": true
+    },
+    "sourceManifestSHA256": "8e3855c53deda132d4c378d3a93343ac3bc6a678b1a95a8cf5bb7c6bd99e61c1",
+    "imageSHA256": "df4fd26c6e7c6cce4cd9e6c04ace316788f125eb4f953f0aad96882e7b474dd9",
+    "versions": {
+      "torch": "2.7.0",
+      "coremltools": "9.0"
+    },
+    "host": {
+      "machine": "arm64",
+      "macOS": "26.5.2"
+    },
+    "metalDebugLayerEnvironment": null,
+    "policy": {
+      "encoderCosineMinimum": 0.99,
+      "float32Atol": 0.001,
+      "float32Rtol": 0.001
+    },
+    "predictions": {
+      "existing-CPU_ONLY": {
+        "outputs": {
+          "high_res_feature_0": {
+            "shape": [
+              1,
+              32,
+              256,
+              256
+            ],
+            "nonfinite": 0,
+            "minimum": -1.1470611095428467,
+            "maximum": 0.5900925993919373,
+            "maximumAbsoluteError": 0.02361881732940674,
+            "cosineSimilarity": 0.9996988066937675
+          },
+          "raw_vision_features": {
+            "shape": [
+              1,
+              256,
+              64,
+              64
+            ],
+            "nonfinite": 0,
+            "minimum": -1.6145468950271606,
+            "maximum": 1.676185131072998,
+            "maximumAbsoluteError": 0.15820074081420898,
+            "cosineSimilarity": 0.9993565724794737
+          },
+          "initial_vision_features": {
+            "shape": [
+              1,
+              256,
+              64,
+              64
+            ],
+            "nonfinite": 0,
+            "minimum": -1.627772569656372,
+            "maximum": 1.6629594564437866,
+            "maximumAbsoluteError": 0.15820074081420898,
+            "cosineSimilarity": 0.9993422248928648
+          },
+          "high_res_feature_1": {
+            "shape": [
+              1,
+              64,
+              128,
+              128
+            ],
+            "nonfinite": 0,
+            "minimum": -3.2095017433166504,
+            "maximum": 2.695028305053711,
+            "maximumAbsoluteError": 0.10501120984554291,
+            "cosineSimilarity": 0.9992918249148189
+          }
+        },
+        "passed": true,
+        "float32Close": false,
+        "log": "existing-CPU_ONLY.log"
+      },
+      "fp32-CPU_ONLY": {
+        "outputs": {
+          "high_res_feature_0": {
+            "shape": [
+              1,
+              32,
+              256,
+              256
+            ],
+            "nonfinite": 0,
+            "minimum": -1.1507456302642822,
+            "maximum": 0.5885099768638611,
+            "maximumAbsoluteError": 3.430992364883423e-06,
+            "cosineSimilarity": 0.9999999999965535
+          },
+          "raw_vision_features": {
+            "shape": [
+              1,
+              256,
+              64,
+              64
+            ],
+            "nonfinite": 0,
+            "minimum": -1.6492881774902344,
+            "maximum": 1.665532112121582,
+            "maximumAbsoluteError": 1.3977289199829102e-05,
+            "cosineSimilarity": 0.9999999999704993
+          },
+          "initial_vision_features": {
+            "shape": [
+              1,
+              256,
+              64,
+              64
+            ],
+            "nonfinite": 0,
+            "minimum": -1.6625138521194458,
+            "maximum": 1.6523064374923706,
+            "maximumAbsoluteError": 1.3977289199829102e-05,
+            "cosineSimilarity": 0.9999999999698822
+          },
+          "high_res_feature_1": {
+            "shape": [
+              1,
+              64,
+              128,
+              128
+            ],
+            "nonfinite": 0,
+            "minimum": -3.168879747390747,
+            "maximum": 2.663940906524658,
+            "maximumAbsoluteError": 1.224130392074585e-05,
+            "cosineSimilarity": 0.9999999999859155
+          }
+        },
+        "passed": true,
+        "float32Close": true,
+        "log": "fp32-CPU_ONLY.log"
+      },
+      "existing-CPU_AND_NE": {
+        "outputs": {
+          "high_res_feature_0": {
+            "shape": [
+              1,
+              32,
+              256,
+              256
+            ],
+            "nonfinite": 0,
+            "minimum": -2.5803489392464093e+37,
+            "maximum": 1.09641597685422e+37,
+            "maximumAbsoluteError": 2.5803489392464093e+37,
+            "cosineSimilarity": -0.003235493781004356
+          },
+          "raw_vision_features": {
+            "shape": [
+              1,
+              256,
+              64,
+              64
+            ],
+            "nonfinite": 1048576,
+            "minimum": null,
+            "maximum": null
+          },
+          "initial_vision_features": {
+            "shape": [
+              1,
+              256,
+              64,
+              64
+            ],
+            "nonfinite": 1048576,
+            "minimum": null,
+            "maximum": null
+          },
+          "high_res_feature_1": {
+            "shape": [
+              1,
+              64,
+              128,
+              128
+            ],
+            "nonfinite": 0,
+            "minimum": -5.677003347941695e+37,
+            "maximum": 6.138602595147362e+37,
+            "maximumAbsoluteError": 6.138602595147362e+37,
+            "cosineSimilarity": -0.04640611965217044
+          }
+        },
+        "passed": false,
+        "float32Close": false,
+        "log": "existing-CPU_AND_NE.log"
+      },
+      "fp32-CPU_AND_NE": {
+        "outputs": {
+          "high_res_feature_0": {
+            "shape": [
+              1,
+              32,
+              256,
+              256
+            ],
+            "nonfinite": 0,
+            "minimum": -1.1507456302642822,
+            "maximum": 0.5885099768638611,
+            "maximumAbsoluteError": 3.430992364883423e-06,
+            "cosineSimilarity": 0.9999999999965535
+          },
+          "raw_vision_features": {
+            "shape": [
+              1,
+              256,
+              64,
+              64
+            ],
+            "nonfinite": 0,
+            "minimum": -1.6492881774902344,
+            "maximum": 1.665532112121582,
+            "maximumAbsoluteError": 1.3977289199829102e-05,
+            "cosineSimilarity": 0.9999999999704993
+          },
+          "initial_vision_features": {
+            "shape": [
+              1,
+              256,
+              64,
+              64
+            ],
+            "nonfinite": 0,
+            "minimum": -1.6625138521194458,
+            "maximum": 1.6523064374923706,
+            "maximumAbsoluteError": 1.3977289199829102e-05,
+            "cosineSimilarity": 0.9999999999698822
+          },
+          "high_res_feature_1": {
+            "shape": [
+              1,
+              64,
+              128,
+              128
+            ],
+            "nonfinite": 0,
+            "minimum": -3.168879747390747,
+            "maximum": 2.663940906524658,
+            "maximumAbsoluteError": 1.224130392074585e-05,
+            "cosineSimilarity": 0.9999999999859155
+          }
+        },
+        "passed": true,
+        "float32Close": true,
+        "log": "fp32-CPU_AND_NE.log"
+      }
+    },
+    "torchReference": {
+      "raw_vision_features": {
+        "shape": [
+          1,
+          256,
+          64,
+          64
+        ],
+        "nonfinite": 0,
+        "minimum": -1.6492877006530762,
+        "maximum": 1.6655267477035522
+      },
+      "initial_vision_features": {
+        "shape": [
+          1,
+          256,
+          64,
+          64
+        ],
+        "nonfinite": 0,
+        "minimum": -1.6625133752822876,
+        "maximum": 1.6523010730743408
+      },
+      "high_res_feature_0": {
+        "shape": [
+          1,
+          32,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -1.1507459878921509,
+        "maximum": 0.5885101556777954
+      },
+      "high_res_feature_1": {
+        "shape": [
+          1,
+          64,
+          128,
+          128
+        ],
+        "nonfinite": 0,
+        "minimum": -3.1688761711120605,
+        "maximum": 2.663940668106079
+      }
+    },
+    "fp32Encoder": {
+      "computePrecision": "float32",
+      "tensorOutputs": "float32",
+      "files": {
+        "Data/com.apple.CoreML/model.mlmodel": "a8ee6a7892856c2abd7e524ea51ab2d689895e7fe6ba4201ac022df0ba28341e",
+        "Data/com.apple.CoreML/weights/weight.bin": "feb6bc40f1a56a1082eade9748b370b1f4b4206adc7a67270ab73f9ccdbb92a4",
+        "Manifest.json": "dde4814f779bdf36a6afb33e665f86c19c0a2401203f9304f3a9959e0e0ed8f5"
+      },
+      "convolutionsSelectedForFP16Transform": [],
+      "convolutionsRetainedInFP32": [],
+      "fp32ConvolutionRangeStartInclusiveEndExclusive": null,
+      "expectedConvolutionCount": null
+    }
+  },
+  "trailingConsole": "Loading ImageEncoder with CPU_AND_NE\n\nBeginning ImageEncoder prediction\n\nPrediction returned\n\nLoading ImageEncoder with CPU_AND_NE\n\nBeginning ImageEncoder prediction\n\nPrediction returned\n\npetercody@MacBook-Pro ByteWaveSegmentation %",
+  "interpretation": "Existing mixed encoder fails on CPU_AND_NE: raw and initial features entirely non-finite and high-resolution features have magnitude about 1e37. FP32 control passes; its reported CPU_AND_NE metrics equal CPU_ONLY metrics, consistent with possible CPU fallback but not proof. Both CPU controls pass. No specific bad operation or actual ANE execution identified."
+}

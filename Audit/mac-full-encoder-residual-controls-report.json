@@ -1,0 +1,1606 @@
+{
+  "sourceAttachment": "Pasted text(20260915-192107).txt",
+  "sourceAttachmentSHA256": "99947f4091f632ecec3a3a5846141063e0bf7367adbd43f02384b2d841582679",
+  "interpretation": "All three CPU controls pass. Unchanged second conversion retains the NE failure. One residual edit is insufficient. All 36 matching residual edits remove non-finite output on this frame, but NE feature cosines remain approximately 0.0018, 0.548, 0.719 and 0.712. Thus neither edited encoder passes; there is no model promotion. Planned NE convolution count remains 83. Next test other later consumers of shared FP32 activations, including non-add feature consumers.",
+  "report": {
+    "scope": "Full-encoder controls: unchanged reserialization, one rounded skip, matching skips.\n\nOne saved frame, CPU and CPU_AND_NE; no temporal/device readiness or speed claim.\nSkip rounding changes numerical precision and may change placement and lifetimes.\n",
+    "completed": true,
+    "readyForDeviceValidation": false,
+    "sourceManifestSHA256": "8e3855c53deda132d4c378d3a93343ac3bc6a678b1a95a8cf5bb7c6bd99e61c1",
+    "sourcePrefixControlSHA256": "b0f30b183aa224021c8941c408444fa71bb97606de3a3c38f56d64f86b6ad5aa",
+    "imageSHA256": "df4fd26c6e7c6cce4cd9e6c04ace316788f125eb4f953f0aad96882e7b474dd9",
+    "coremltoolsVersion": "9.0",
+    "policy": {
+      "encoderCosineMinimum": 0.99,
+      "unchangedCPUAtol": 0.001,
+      "unchangedCPURtol": 0.001
+    },
+    "variants": {
+      "unchanged": {
+        "matchedEdges": [
+          {
+            "output": "input_33",
+            "operand": "x",
+            "oldSource": "input_23",
+            "roundedThrough": "input_23_to_fp16"
+          },
+          {
+            "output": "input_39",
+            "operand": "y",
+            "oldSource": "input_33",
+            "roundedThrough": "input_33_to_fp16"
+          },
+          {
+            "output": "input_49",
+            "operand": "x",
+            "oldSource": "input_39",
+            "roundedThrough": "input_39_to_fp16"
+          },
+          {
+            "output": "input_55",
+            "operand": "y",
+            "oldSource": "input_49",
+            "roundedThrough": "input_49_to_fp16"
+          },
+          {
+            "output": "input_65",
+            "operand": "x",
+            "oldSource": "input_55",
+            "roundedThrough": "input_55_to_fp16"
+          },
+          {
+            "output": "x_13",
+            "operand": "y",
+            "oldSource": "input_83",
+            "roundedThrough": "input_83_to_fp16"
+          },
+          {
+            "output": "input_105",
+            "operand": "x",
+            "oldSource": "input_95",
+            "roundedThrough": "input_95_to_fp16"
+          },
+          {
+            "output": "input_111",
+            "operand": "y",
+            "oldSource": "input_105",
+            "roundedThrough": "input_105_to_fp16"
+          },
+          {
+            "output": "input_121",
+            "operand": "x",
+            "oldSource": "input_111",
+            "roundedThrough": "input_111_to_fp16"
+          },
+          {
+            "output": "input_127",
+            "operand": "y",
+            "oldSource": "input_121",
+            "roundedThrough": "input_121_to_fp16"
+          },
+          {
+            "output": "input_137",
+            "operand": "x",
+            "oldSource": "input_127",
+            "roundedThrough": "input_127_to_fp16"
+          },
+          {
+            "output": "x_25",
+            "operand": "y",
+            "oldSource": "input_155",
+            "roundedThrough": "input_155_to_fp16"
+          },
+          {
+            "output": "input_177",
+            "operand": "x",
+            "oldSource": "input_167",
+            "roundedThrough": "input_167_to_fp16"
+          },
+          {
+            "output": "input_183",
+            "operand": "y",
+            "oldSource": "input_177",
+            "roundedThrough": "input_177_to_fp16"
+          },
+          {
+            "output": "input_193",
+            "operand": "x",
+            "oldSource": "input_183",
+            "roundedThrough": "input_183_to_fp16"
+          },
+          {
+            "output": "x_33",
+            "operand": "y",
+            "oldSource": "input_193",
+            "roundedThrough": "input_193_to_fp16"
+          },
+          {
+            "output": "input_215",
+            "operand": "x",
+            "oldSource": "input_205",
+            "roundedThrough": "input_205_to_fp16"
+          },
+          {
+            "output": "input_221",
+            "operand": "y",
+            "oldSource": "input_215",
+            "roundedThrough": "input_215_to_fp16"
+          },
+          {
+            "output": "input_231",
+            "operand": "x",
+            "oldSource": "input_221",
+            "roundedThrough": "input_221_to_fp16"
+          },
+          {
+            "output": "x_41",
+            "operand": "y",
+            "oldSource": "input_231",
+            "roundedThrough": "input_231_to_fp16"
+          },
+          {
+            "output": "input_253",
+            "operand": "x",
+            "oldSource": "input_243",
+            "roundedThrough": "input_243_to_fp16"
+          },
+          {
+            "output": "input_259",
+            "operand": "y",
+            "oldSource": "input_253",
+            "roundedThrough": "input_253_to_fp16"
+          },
+          {
+            "output": "input_269",
+            "operand": "x",
+            "oldSource": "input_259",
+            "roundedThrough": "input_259_to_fp16"
+          },
+          {
+            "output": "x_49",
+            "operand": "y",
+            "oldSource": "input_269",
+            "roundedThrough": "input_269_to_fp16"
+          },
+          {
+            "output": "input_291",
+            "operand": "x",
+            "oldSource": "input_281",
+            "roundedThrough": "input_281_to_fp16"
+          },
+          {
+            "output": "input_297",
+            "operand": "y",
+            "oldSource": "input_291",
+            "roundedThrough": "input_291_to_fp16"
+          },
+          {
+            "output": "input_307",
+            "operand": "x",
+            "oldSource": "input_297",
+            "roundedThrough": "input_297_to_fp16"
+          },
+          {
+            "output": "x_57",
+            "operand": "y",
+            "oldSource": "input_307",
+            "roundedThrough": "input_307_to_fp16"
+          },
+          {
+            "output": "input_329",
+            "operand": "x",
+            "oldSource": "input_319",
+            "roundedThrough": "input_319_to_fp16"
+          },
+          {
+            "output": "input_335",
+            "operand": "y",
+            "oldSource": "input_329",
+            "roundedThrough": "input_329_to_fp16"
+          },
+          {
+            "output": "input_345",
+            "operand": "x",
+            "oldSource": "input_335",
+            "roundedThrough": "input_335_to_fp16"
+          },
+          {
+            "output": "x_65",
+            "operand": "y",
+            "oldSource": "input_345",
+            "roundedThrough": "input_345_to_fp16"
+          },
+          {
+            "output": "input_367",
+            "operand": "x",
+            "oldSource": "input_357",
+            "roundedThrough": "input_357_to_fp16"
+          },
+          {
+            "output": "input_373",
+            "operand": "y",
+            "oldSource": "input_367",
+            "roundedThrough": "input_367_to_fp16"
+          },
+          {
+            "output": "input_383",
+            "operand": "x",
+            "oldSource": "input_373",
+            "roundedThrough": "input_373_to_fp16"
+          },
+          {
+            "output": "x_73",
+            "operand": "y",
+            "oldSource": "input_383",
+            "roundedThrough": "input_383_to_fp16"
+          }
+        ],
+        "modifiedEdges": [],
+        "files": {
+          "Manifest.json": "9124af898289f192d49b9dcd4fdea37ff05e6f4a68a97dd83e7a4e9bf1c12df6",
+          "Data/com.apple.CoreML/model.mlmodel": "97eabf01a874c703cc015a42c461861bbbe99582be11ecd2025d73232767bff4",
+          "Data/com.apple.CoreML/weights/weight.bin": "74c81dbff608d07039888a1d8b417714f0f83eac37d65e9722f85324e7966c7c"
+        },
+        "preferredCounts": {
+          "MLCPUComputeDevice": 367,
+          "MLNeuralEngineComputeDevice": 83
+        },
+        "preferredCountsByOperationType": {
+          "ios16.reduce_mean": {
+            "MLCPUComputeDevice": 10
+          },
+          "ios18.add": {
+            "MLCPUComputeDevice": 74
+          },
+          "ios18.cast": {
+            "MLCPUComputeDevice": 173
+          },
+          "ios18.conv": {
+            "MLNeuralEngineComputeDevice": 83,
+            "MLCPUComputeDevice": 49
+          },
+          "ios18.gelu": {
+            "MLCPUComputeDevice": 27
+          },
+          "ios18.mul": {
+            "MLCPUComputeDevice": 12
+          },
+          "ios18.relu": {
+            "MLCPUComputeDevice": 10
+          },
+          "ios18.sigmoid": {
+            "MLCPUComputeDevice": 10
+          },
+          "ios18.sub": {
+            "MLCPUComputeDevice": 1
+          },
+          "upsample_nearest_neighbor": {
+            "MLCPUComputeDevice": 1
+          }
+        },
+        "cpu": {
+          "passed": true,
+          "againstOriginalCPU": {
+            "high_res_feature_0": {
+              "shape": [
+                1,
+                32,
+                256,
+                256
+              ],
+              "nonfinite": 0,
+              "minimum": -1.1470611095428467,
+              "maximum": 0.5900925993919373,
+              "maximumAbsoluteError": 0.0,
+              "cosineSimilarity": 1.0
+            },
+            "raw_vision_features": {
+              "shape": [
+                1,
+                256,
+                64,
+                64
+              ],
+              "nonfinite": 0,
+              "minimum": -1.6145468950271606,
+              "maximum": 1.676185131072998,
+              "maximumAbsoluteError": 0.0,
+              "cosineSimilarity": 1.0000000000000002
+            },
+            "high_res_feature_1": {
+              "shape": [
+                1,
+                64,
+                128,
+                128
+              ],
+              "nonfinite": 0,
+              "minimum": -3.2095017433166504,
+              "maximum": 2.695028305053711,
+              "maximumAbsoluteError": 0.0,
+              "cosineSimilarity": 1.0
+            },
+            "initial_vision_features": {
+              "shape": [
+                1,
+                256,
+                64,
+                64
+              ],
+              "nonfinite": 0,
+              "minimum": -1.627772569656372,
+              "maximum": 1.6629594564437866,
+              "maximumAbsoluteError": 0.0,
+              "cosineSimilarity": 1.0
+            }
+          }
+        },
+        "ne": {
+          "passed": false,
+          "againstOriginalCPU": {
+            "high_res_feature_0": {
+              "shape": [
+                1,
+                32,
+                256,
+                256
+              ],
+              "nonfinite": 0,
+              "minimum": -2.5803489392464093e+37,
+              "maximum": 1.09641597685422e+37,
+              "maximumAbsoluteError": 2.5803489392464093e+37,
+              "cosineSimilarity": -0.003830172236382602
+            },
+            "raw_vision_features": {
+              "shape": [
+                1,
+                256,
+                64,
+                64
+              ],
+              "nonfinite": 1048576,
+              "minimum": null,
+              "maximum": null
+            },
+            "high_res_feature_1": {
+              "shape": [
+                1,
+                64,
+                128,
+                128
+              ],
+              "nonfinite": 0,
+              "minimum": -5.677003347941695e+37,
+              "maximum": 6.138602595147362e+37,
+              "maximumAbsoluteError": 6.138602595147362e+37,
+              "cosineSimilarity": -0.045709198800420736
+            },
+            "initial_vision_features": {
+              "shape": [
+                1,
+                256,
+                64,
+                64
+              ],
+              "nonfinite": 1048576,
+              "minimum": null,
+              "maximum": null
+            }
+          },
+          "againstVariantCPU": {
+            "high_res_feature_0": {
+              "shape": [
+                1,
+                32,
+                256,
+                256
+              ],
+              "nonfinite": 0,
+              "minimum": -2.5803489392464093e+37,
+              "maximum": 1.09641597685422e+37,
+              "maximumAbsoluteError": 2.5803489392464093e+37,
+              "cosineSimilarity": -0.003830172236382602
+            },
+            "raw_vision_features": {
+              "shape": [
+                1,
+                256,
+                64,
+                64
+              ],
+              "nonfinite": 1048576,
+              "minimum": null,
+              "maximum": null
+            },
+            "high_res_feature_1": {
+              "shape": [
+                1,
+                64,
+                128,
+                128
+              ],
+              "nonfinite": 0,
+              "minimum": -5.677003347941695e+37,
+              "maximum": 6.138602595147362e+37,
+              "maximumAbsoluteError": 6.138602595147362e+37,
+              "cosineSimilarity": -0.045709198800420736
+            },
+            "initial_vision_features": {
+              "shape": [
+                1,
+                256,
+                64,
+                64
+              ],
+              "nonfinite": 1048576,
+              "minimum": null,
+              "maximum": null
+            }
+          }
+        }
+      },
+      "single": {
+        "matchedEdges": [
+          {
+            "output": "input_33",
+            "operand": "x",
+            "oldSource": "input_23",
+            "roundedThrough": "input_23_to_fp16"
+          },
+          {
+            "output": "input_39",
+            "operand": "y",
+            "oldSource": "input_33",
+            "roundedThrough": "input_33_to_fp16"
+          },
+          {
+            "output": "input_49",
+            "operand": "x",
+            "oldSource": "input_39",
+            "roundedThrough": "input_39_to_fp16"
+          },
+          {
+            "output": "input_55",
+            "operand": "y",
+            "oldSource": "input_49",
+            "roundedThrough": "input_49_to_fp16"
+          },
+          {
+            "output": "input_65",
+            "operand": "x",
+            "oldSource": "input_55",
+            "roundedThrough": "input_55_to_fp16"
+          },
+          {
+            "output": "x_13",
+            "operand": "y",
+            "oldSource": "input_83",
+            "roundedThrough": "input_83_to_fp16"
+          },
+          {
+            "output": "input_105",
+            "operand": "x",
+            "oldSource": "input_95",
+            "roundedThrough": "input_95_to_fp16"
+          },
+          {
+            "output": "input_111",
+            "operand": "y",
+            "oldSource": "input_105",
+            "roundedThrough": "input_105_to_fp16"
+          },
+          {
+            "output": "input_121",
+            "operand": "x",
+            "oldSource": "input_111",
+            "roundedThrough": "input_111_to_fp16"
+          },
+          {
+            "output": "input_127",
+            "operand": "y",
+            "oldSource": "input_121",
+            "roundedThrough": "input_121_to_fp16"
+          },
+          {
+            "output": "input_137",
+            "operand": "x",
+            "oldSource": "input_127",
+            "roundedThrough": "input_127_to_fp16"
+          },
+          {
+            "output": "x_25",
+            "operand": "y",
+            "oldSource": "input_155",
+            "roundedThrough": "input_155_to_fp16"
+          },
+          {
+            "output": "input_177",
+            "operand": "x",
+            "oldSource": "input_167",
+            "roundedThrough": "input_167_to_fp16"
+          },
+          {
+            "output": "input_183",
+            "operand": "y",
+            "oldSource": "input_177",
+            "roundedThrough": "input_177_to_fp16"
+          },
+          {
+            "output": "input_193",
+            "operand": "x",
+            "oldSource": "input_183",
+            "roundedThrough": "input_183_to_fp16"
+          },
+          {
+            "output": "x_33",
+            "operand": "y",
+            "oldSource": "input_193",
+            "roundedThrough": "input_193_to_fp16"
+          },
+          {
+            "output": "input_215",
+            "operand": "x",
+            "oldSource": "input_205",
+            "roundedThrough": "input_205_to_fp16"
+          },
+          {
+            "output": "input_221",
+            "operand": "y",
+            "oldSource": "input_215",
+            "roundedThrough": "input_215_to_fp16"
+          },
+          {
+            "output": "input_231",
+            "operand": "x",
+            "oldSource": "input_221",
+            "roundedThrough": "input_221_to_fp16"
+          },
+          {
+            "output": "x_41",
+            "operand": "y",
+            "oldSource": "input_231",
+            "roundedThrough": "input_231_to_fp16"
+          },
+          {
+            "output": "input_253",
+            "operand": "x",
+            "oldSource": "input_243",
+            "roundedThrough": "input_243_to_fp16"
+          },
+          {
+            "output": "input_259",
+            "operand": "y",
+            "oldSource": "input_253",
+            "roundedThrough": "input_253_to_fp16"
+          },
+          {
+            "output": "input_269",
+            "operand": "x",
+            "oldSource": "input_259",
+            "roundedThrough": "input_259_to_fp16"
+          },
+          {
+            "output": "x_49",
+            "operand": "y",
+            "oldSource": "input_269",
+            "roundedThrough": "input_269_to_fp16"
+          },
+          {
+            "output": "input_291",
+            "operand": "x",
+            "oldSource": "input_281",
+            "roundedThrough": "input_281_to_fp16"
+          },
+          {
+            "output": "input_297",
+            "operand": "y",
+            "oldSource": "input_291",
+            "roundedThrough": "input_291_to_fp16"
+          },
+          {
+            "output": "input_307",
+            "operand": "x",
+            "oldSource": "input_297",
+            "roundedThrough": "input_297_to_fp16"
+          },
+          {
+            "output": "x_57",
+            "operand": "y",
+            "oldSource": "input_307",
+            "roundedThrough": "input_307_to_fp16"
+          },
+          {
+            "output": "input_329",
+            "operand": "x",
+            "oldSource": "input_319",
+            "roundedThrough": "input_319_to_fp16"
+          },
+          {
+            "output": "input_335",
+            "operand": "y",
+            "oldSource": "input_329",
+            "roundedThrough": "input_329_to_fp16"
+          },
+          {
+            "output": "input_345",
+            "operand": "x",
+            "oldSource": "input_335",
+            "roundedThrough": "input_335_to_fp16"
+          },
+          {
+            "output": "x_65",
+            "operand": "y",
+            "oldSource": "input_345",
+            "roundedThrough": "input_345_to_fp16"
+          },
+          {
+            "output": "input_367",
+            "operand": "x",
+            "oldSource": "input_357",
+            "roundedThrough": "input_357_to_fp16"
+          },
+          {
+            "output": "input_373",
+            "operand": "y",
+            "oldSource": "input_367",
+            "roundedThrough": "input_367_to_fp16"
+          },
+          {
+            "output": "input_383",
+            "operand": "x",
+            "oldSource": "input_373",
+            "roundedThrough": "input_373_to_fp16"
+          },
+          {
+            "output": "x_73",
+            "operand": "y",
+            "oldSource": "input_383",
+            "roundedThrough": "input_383_to_fp16"
+          }
+        ],
+        "modifiedEdges": [
+          {
+            "output": "input_39",
+            "operand": "y",
+            "oldSource": "input_33",
+            "roundedThrough": "input_33_to_fp16",
+            "newSource": "diagnostic_rounded_skip_0"
+          }
+        ],
+        "files": {
+          "Manifest.json": "7148adabad36b2847adc20a557a8cc846f85f13d17d2b40a9411bec36044cca4",
+          "Data/com.apple.CoreML/model.mlmodel": "c6d32abd888d62159dc4e4e04513bf6046195e77b14782cf2f0825e6631dad18",
+          "Data/com.apple.CoreML/weights/weight.bin": "74c81dbff608d07039888a1d8b417714f0f83eac37d65e9722f85324e7966c7c"
+        },
+        "preferredCounts": {
+          "MLCPUComputeDevice": 368,
+          "MLNeuralEngineComputeDevice": 83
+        },
+        "preferredCountsByOperationType": {
+          "ios16.reduce_mean": {
+            "MLCPUComputeDevice": 10
+          },
+          "ios18.add": {
+            "MLCPUComputeDevice": 74
+          },
+          "ios18.cast": {
+            "MLCPUComputeDevice": 174
+          },
+          "ios18.conv": {
+            "MLNeuralEngineComputeDevice": 83,
+            "MLCPUComputeDevice": 49
+          },
+          "ios18.gelu": {
+            "MLCPUComputeDevice": 27
+          },
+          "ios18.mul": {
+            "MLCPUComputeDevice": 12
+          },
+          "ios18.relu": {
+            "MLCPUComputeDevice": 10
+          },
+          "ios18.sigmoid": {
+            "MLCPUComputeDevice": 10
+          },
+          "ios18.sub": {
+            "MLCPUComputeDevice": 1
+          },
+          "upsample_nearest_neighbor": {
+            "MLCPUComputeDevice": 1
+          }
+        },
+        "cpu": {
+          "passed": true,
+          "againstOriginalCPU": {
+            "high_res_feature_0": {
+              "shape": [
+                1,
+                32,
+                256,
+                256
+              ],
+              "nonfinite": 0,
+              "minimum": -1.1470304727554321,
+              "maximum": 0.590828537940979,
+              "maximumAbsoluteError": 0.0029046833515167236,
+              "cosineSimilarity": 0.9999968572827203
+            },
+            "raw_vision_features": {
+              "shape": [
+                1,
+                256,
+                64,
+                64
+              ],
+              "nonfinite": 0,
+              "minimum": -1.6247013807296753,
+              "maximum": 1.6745779514312744,
+              "maximumAbsoluteError": 0.0821256935596466,
+              "cosineSimilarity": 0.9996548727400619
+            },
+            "high_res_feature_1": {
+              "shape": [
+                1,
+                64,
+                128,
+                128
+              ],
+              "nonfinite": 0,
+              "minimum": -3.205444097518921,
+              "maximum": 2.698270797729492,
+              "maximumAbsoluteError": 0.06671631336212158,
+              "cosineSimilarity": 0.9996565025029618
+            },
+            "initial_vision_features": {
+              "shape": [
+                1,
+                256,
+                64,
+                64
+              ],
+              "nonfinite": 0,
+              "minimum": -1.6379270553588867,
+              "maximum": 1.661352276802063,
+              "maximumAbsoluteError": 0.0821256935596466,
+              "cosineSimilarity": 0.9996471583522482
+            }
+          }
+        },
+        "ne": {
+          "passed": false,
+          "againstOriginalCPU": {
+            "high_res_feature_0": {
+              "shape": [
+                1,
+                32,
+                256,
+                256
+              ],
+              "nonfinite": 0,
+              "minimum": -48866.2421875,
+              "maximum": 53473.58984375,
+              "maximumAbsoluteError": 53473.57421875,
+              "cosineSimilarity": 0.0017791183849328659
+            },
+            "raw_vision_features": {
+              "shape": [
+                1,
+                256,
+                64,
+                64
+              ],
+              "nonfinite": 1048576,
+              "minimum": null,
+              "maximum": null
+            },
+            "high_res_feature_1": {
+              "shape": [
+                1,
+                64,
+                128,
+                128
+              ],
+              "nonfinite": 0,
+              "minimum": -5.69819288831487e+37,
+              "maximum": 6.794865817945756e+37,
+              "maximumAbsoluteError": 6.794865817945756e+37,
+              "cosineSimilarity": -0.04400366738315786
+            },
+            "initial_vision_features": {
+              "shape": [
+                1,
+                256,
+                64,
+                64
+              ],
+              "nonfinite": 1048576,
+              "minimum": null,
+              "maximum": null
+            }
+          },
+          "againstVariantCPU": {
+            "high_res_feature_0": {
+              "shape": [
+                1,
+                32,
+                256,
+                256
+              ],
+              "nonfinite": 0,
+              "minimum": -48866.2421875,
+              "maximum": 53473.58984375,
+              "maximumAbsoluteError": 53473.57421875,
+              "cosineSimilarity": 0.001777101071674172
+            },
+            "raw_vision_features": {
+              "shape": [
+                1,
+                256,
+                64,
+                64
+              ],
+              "nonfinite": 1048576,
+              "minimum": null,
+              "maximum": null
+            },
+            "high_res_feature_1": {
+              "shape": [
+                1,
+                64,
+                128,
+                128
+              ],
+              "nonfinite": 0,
+              "minimum": -5.69819288831487e+37,
+              "maximum": 6.794865817945756e+37,
+              "maximumAbsoluteError": 6.794865817945756e+37,
+              "cosineSimilarity": -0.044131113198878774
+            },
+            "initial_vision_features": {
+              "shape": [
+                1,
+                256,
+                64,
+                64
+              ],
+              "nonfinite": 1048576,
+              "minimum": null,
+              "maximum": null
+            }
+          }
+        }
+      },
+      "matching": {
+        "matchedEdges": [
+          {
+            "output": "input_33",
+            "operand": "x",
+            "oldSource": "input_23",
+            "roundedThrough": "input_23_to_fp16"
+          },
+          {
+            "output": "input_39",
+            "operand": "y",
+            "oldSource": "input_33",
+            "roundedThrough": "input_33_to_fp16"
+          },
+          {
+            "output": "input_49",
+            "operand": "x",
+            "oldSource": "input_39",
+            "roundedThrough": "input_39_to_fp16"
+          },
+          {
+            "output": "input_55",
+            "operand": "y",
+            "oldSource": "input_49",
+            "roundedThrough": "input_49_to_fp16"
+          },
+          {
+            "output": "input_65",
+            "operand": "x",
+            "oldSource": "input_55",
+            "roundedThrough": "input_55_to_fp16"
+          },
+          {
+            "output": "x_13",
+            "operand": "y",
+            "oldSource": "input_83",
+            "roundedThrough": "input_83_to_fp16"
+          },
+          {
+            "output": "input_105",
+            "operand": "x",
+            "oldSource": "input_95",
+            "roundedThrough": "input_95_to_fp16"
+          },
+          {
+            "output": "input_111",
+            "operand": "y",
+            "oldSource": "input_105",
+            "roundedThrough": "input_105_to_fp16"
+          },
+          {
+            "output": "input_121",
+            "operand": "x",
+            "oldSource": "input_111",
+            "roundedThrough": "input_111_to_fp16"
+          },
+          {
+            "output": "input_127",
+            "operand": "y",
+            "oldSource": "input_121",
+            "roundedThrough": "input_121_to_fp16"
+          },
+          {
+            "output": "input_137",
+            "operand": "x",
+            "oldSource": "input_127",
+            "roundedThrough": "input_127_to_fp16"
+          },
+          {
+            "output": "x_25",
+            "operand": "y",
+            "oldSource": "input_155",
+            "roundedThrough": "input_155_to_fp16"
+          },
+          {
+            "output": "input_177",
+            "operand": "x",
+            "oldSource": "input_167",
+            "roundedThrough": "input_167_to_fp16"
+          },
+          {
+            "output": "input_183",
+            "operand": "y",
+            "oldSource": "input_177",
+            "roundedThrough": "input_177_to_fp16"
+          },
+          {
+            "output": "input_193",
+            "operand": "x",
+            "oldSource": "input_183",
+            "roundedThrough": "input_183_to_fp16"
+          },
+          {
+            "output": "x_33",
+            "operand": "y",
+            "oldSource": "input_193",
+            "roundedThrough": "input_193_to_fp16"
+          },
+          {
+            "output": "input_215",
+            "operand": "x",
+            "oldSource": "input_205",
+            "roundedThrough": "input_205_to_fp16"
+          },
+          {
+            "output": "input_221",
+            "operand": "y",
+            "oldSource": "input_215",
+            "roundedThrough": "input_215_to_fp16"
+          },
+          {
+            "output": "input_231",
+            "operand": "x",
+            "oldSource": "input_221",
+            "roundedThrough": "input_221_to_fp16"
+          },
+          {
+            "output": "x_41",
+            "operand": "y",
+            "oldSource": "input_231",
+            "roundedThrough": "input_231_to_fp16"
+          },
+          {
+            "output": "input_253",
+            "operand": "x",
+            "oldSource": "input_243",
+            "roundedThrough": "input_243_to_fp16"
+          },
+          {
+            "output": "input_259",
+            "operand": "y",
+            "oldSource": "input_253",
+            "roundedThrough": "input_253_to_fp16"
+          },
+          {
+            "output": "input_269",
+            "operand": "x",
+            "oldSource": "input_259",
+            "roundedThrough": "input_259_to_fp16"
+          },
+          {
+            "output": "x_49",
+            "operand": "y",
+            "oldSource": "input_269",
+            "roundedThrough": "input_269_to_fp16"
+          },
+          {
+            "output": "input_291",
+            "operand": "x",
+            "oldSource": "input_281",
+            "roundedThrough": "input_281_to_fp16"
+          },
+          {
+            "output": "input_297",
+            "operand": "y",
+            "oldSource": "input_291",
+            "roundedThrough": "input_291_to_fp16"
+          },
+          {
+            "output": "input_307",
+            "operand": "x",
+            "oldSource": "input_297",
+            "roundedThrough": "input_297_to_fp16"
+          },
+          {
+            "output": "x_57",
+            "operand": "y",
+            "oldSource": "input_307",
+            "roundedThrough": "input_307_to_fp16"
+          },
+          {
+            "output": "input_329",
+            "operand": "x",
+            "oldSource": "input_319",
+            "roundedThrough": "input_319_to_fp16"
+          },
+          {
+            "output": "input_335",
+            "operand": "y",
+            "oldSource": "input_329",
+            "roundedThrough": "input_329_to_fp16"
+          },
+          {
+            "output": "input_345",
+            "operand": "x",
+            "oldSource": "input_335",
+            "roundedThrough": "input_335_to_fp16"
+          },
+          {
+            "output": "x_65",
+            "operand": "y",
+            "oldSource": "input_345",
+            "roundedThrough": "input_345_to_fp16"
+          },
+          {
+            "output": "input_367",
+            "operand": "x",
+            "oldSource": "input_357",
+            "roundedThrough": "input_357_to_fp16"
+          },
+          {
+            "output": "input_373",
+            "operand": "y",
+            "oldSource": "input_367",
+            "roundedThrough": "input_367_to_fp16"
+          },
+          {
+            "output": "input_383",
+            "operand": "x",
+            "oldSource": "input_373",
+            "roundedThrough": "input_373_to_fp16"
+          },
+          {
+            "output": "x_73",
+            "operand": "y",
+            "oldSource": "input_383",
+            "roundedThrough": "input_383_to_fp16"
+          }
+        ],
+        "modifiedEdges": [
+          {
+            "output": "input_33",
+            "operand": "x",
+            "oldSource": "input_23",
+            "roundedThrough": "input_23_to_fp16",
+            "newSource": "diagnostic_rounded_skip_0"
+          },
+          {
+            "output": "input_39",
+            "operand": "y",
+            "oldSource": "input_33",
+            "roundedThrough": "input_33_to_fp16",
+            "newSource": "diagnostic_rounded_skip_1"
+          },
+          {
+            "output": "input_49",
+            "operand": "x",
+            "oldSource": "input_39",
+            "roundedThrough": "input_39_to_fp16",
+            "newSource": "diagnostic_rounded_skip_2"
+          },
+          {
+            "output": "input_55",
+            "operand": "y",
+            "oldSource": "input_49",
+            "roundedThrough": "input_49_to_fp16",
+            "newSource": "diagnostic_rounded_skip_3"
+          },
+          {
+            "output": "input_65",
+            "operand": "x",
+            "oldSource": "input_55",
+            "roundedThrough": "input_55_to_fp16",
+            "newSource": "diagnostic_rounded_skip_4"
+          },
+          {
+            "output": "x_13",
+            "operand": "y",
+            "oldSource": "input_83",
+            "roundedThrough": "input_83_to_fp16",
+            "newSource": "diagnostic_rounded_skip_5"
+          },
+          {
+            "output": "input_105",
+            "operand": "x",
+            "oldSource": "input_95",
+            "roundedThrough": "input_95_to_fp16",
+            "newSource": "diagnostic_rounded_skip_6"
+          },
+          {
+            "output": "input_111",
+            "operand": "y",
+            "oldSource": "input_105",
+            "roundedThrough": "input_105_to_fp16",
+            "newSource": "diagnostic_rounded_skip_7"
+          },
+          {
+            "output": "input_121",
+            "operand": "x",
+            "oldSource": "input_111",
+            "roundedThrough": "input_111_to_fp16",
+            "newSource": "diagnostic_rounded_skip_8"
+          },
+          {
+            "output": "input_127",
+            "operand": "y",
+            "oldSource": "input_121",
+            "roundedThrough": "input_121_to_fp16",
+            "newSource": "diagnostic_rounded_skip_9"
+          },
+          {
+            "output": "input_137",
+            "operand": "x",
+            "oldSource": "input_127",
+            "roundedThrough": "input_127_to_fp16",
+            "newSource": "diagnostic_rounded_skip_10"
+          },
+          {
+            "output": "x_25",
+            "operand": "y",
+            "oldSource": "input_155",
+            "roundedThrough": "input_155_to_fp16",
+            "newSource": "diagnostic_rounded_skip_11"
+          },
+          {
+            "output": "input_177",
+            "operand": "x",
+            "oldSource": "input_167",
+            "roundedThrough": "input_167_to_fp16",
+            "newSource": "diagnostic_rounded_skip_12"
+          },
+          {
+            "output": "input_183",
+            "operand": "y",
+            "oldSource": "input_177",
+            "roundedThrough": "input_177_to_fp16",
+            "newSource": "diagnostic_rounded_skip_13"
+          },
+          {
+            "output": "input_193",
+            "operand": "x",
+            "oldSource": "input_183",
+            "roundedThrough": "input_183_to_fp16",
+            "newSource": "diagnostic_rounded_skip_14"
+          },
+          {
+            "output": "x_33",
+            "operand": "y",
+            "oldSource": "input_193",
+            "roundedThrough": "input_193_to_fp16",
+            "newSource": "diagnostic_rounded_skip_15"
+          },
+          {
+            "output": "input_215",
+            "operand": "x",
+            "oldSource": "input_205",
+            "roundedThrough": "input_205_to_fp16",
+            "newSource": "diagnostic_rounded_skip_16"
+          },
+          {
+            "output": "input_221",
+            "operand": "y",
+            "oldSource": "input_215",
+            "roundedThrough": "input_215_to_fp16",
+            "newSource": "diagnostic_rounded_skip_17"
+          },
+          {
+            "output": "input_231",
+            "operand": "x",
+            "oldSource": "input_221",
+            "roundedThrough": "input_221_to_fp16",
+            "newSource": "diagnostic_rounded_skip_18"
+          },
+          {
+            "output": "x_41",
+            "operand": "y",
+            "oldSource": "input_231",
+            "roundedThrough": "input_231_to_fp16",
+            "newSource": "diagnostic_rounded_skip_19"
+          },
+          {
+            "output": "input_253",
+            "operand": "x",
+            "oldSource": "input_243",
+            "roundedThrough": "input_243_to_fp16",
+            "newSource": "diagnostic_rounded_skip_20"
+          },
+          {
+            "output": "input_259",
+            "operand": "y",
+            "oldSource": "input_253",
+            "roundedThrough": "input_253_to_fp16",
+            "newSource": "diagnostic_rounded_skip_21"
+          },
+          {
+            "output": "input_269",
+            "operand": "x",
+            "oldSource": "input_259",
+            "roundedThrough": "input_259_to_fp16",
+            "newSource": "diagnostic_rounded_skip_22"
+          },
+          {
+            "output": "x_49",
+            "operand": "y",
+            "oldSource": "input_269",
+            "roundedThrough": "input_269_to_fp16",
+            "newSource": "diagnostic_rounded_skip_23"
+          },
+          {
+            "output": "input_291",
+            "operand": "x",
+            "oldSource": "input_281",
+            "roundedThrough": "input_281_to_fp16",
+            "newSource": "diagnostic_rounded_skip_24"
+          },
+          {
+            "output": "input_297",
+            "operand": "y",
+            "oldSource": "input_291",
+            "roundedThrough": "input_291_to_fp16",
+            "newSource": "diagnostic_rounded_skip_25"
+          },
+          {
+            "output": "input_307",
+            "operand": "x",
+            "oldSource": "input_297",
+            "roundedThrough": "input_297_to_fp16",
+            "newSource": "diagnostic_rounded_skip_26"
+          },
+          {
+            "output": "x_57",
+            "operand": "y",
+            "oldSource": "input_307",
+            "roundedThrough": "input_307_to_fp16",
+            "newSource": "diagnostic_rounded_skip_27"
+          },
+          {
+            "output": "input_329",
+            "operand": "x",
+            "oldSource": "input_319",
+            "roundedThrough": "input_319_to_fp16",
+            "newSource": "diagnostic_rounded_skip_28"
+          },
+          {
+            "output": "input_335",
+            "operand": "y",
+            "oldSource": "input_329",
+            "roundedThrough": "input_329_to_fp16",
+            "newSource": "diagnostic_rounded_skip_29"
+          },
+          {
+            "output": "input_345",
+            "operand": "x",
+            "oldSource": "input_335",
+            "roundedThrough": "input_335_to_fp16",
+            "newSource": "diagnostic_rounded_skip_30"
+          },
+          {
+            "output": "x_65",
+            "operand": "y",
+            "oldSource": "input_345",
+            "roundedThrough": "input_345_to_fp16",
+            "newSource": "diagnostic_rounded_skip_31"
+          },
+          {
+            "output": "input_367",
+            "operand": "x",
+            "oldSource": "input_357",
+            "roundedThrough": "input_357_to_fp16",
+            "newSource": "diagnostic_rounded_skip_32"
+          },
+          {
+            "output": "input_373",
+            "operand": "y",
+            "oldSource": "input_367",
+            "roundedThrough": "input_367_to_fp16",
+            "newSource": "diagnostic_rounded_skip_33"
+          },
+          {
+            "output": "input_383",
+            "operand": "x",
+            "oldSource": "input_373",
+            "roundedThrough": "input_373_to_fp16",
+            "newSource": "diagnostic_rounded_skip_34"
+          },
+          {
+            "output": "x_73",
+            "operand": "y",
+            "oldSource": "input_383",
+            "roundedThrough": "input_383_to_fp16",
+            "newSource": "diagnostic_rounded_skip_35"
+          }
+        ],
+        "files": {
+          "Manifest.json": "ed56bb12f86df0eba4cc40f1a1522f14067cccbd004d732dd0298829179cdb38",
+          "Data/com.apple.CoreML/model.mlmodel": "f20b736cc9e10c343e3673cca33acb050b250ffeaba21996efd01bcd807a082f",
+          "Data/com.apple.CoreML/weights/weight.bin": "74c81dbff608d07039888a1d8b417714f0f83eac37d65e9722f85324e7966c7c"
+        },
+        "preferredCounts": {
+          "MLCPUComputeDevice": 403,
+          "MLNeuralEngineComputeDevice": 83
+        },
+        "preferredCountsByOperationType": {
+          "ios16.reduce_mean": {
+            "MLCPUComputeDevice": 10
+          },
+          "ios18.add": {
+            "MLCPUComputeDevice": 74
+          },
+          "ios18.cast": {
+            "MLCPUComputeDevice": 209
+          },
+          "ios18.conv": {
+            "MLNeuralEngineComputeDevice": 83,
+            "MLCPUComputeDevice": 49
+          },
+          "ios18.gelu": {
+            "MLCPUComputeDevice": 27
+          },
+          "ios18.mul": {
+            "MLCPUComputeDevice": 12
+          },
+          "ios18.relu": {
+            "MLCPUComputeDevice": 10
+          },
+          "ios18.sigmoid": {
+            "MLCPUComputeDevice": 10
+          },
+          "ios18.sub": {
+            "MLCPUComputeDevice": 1
+          },
+          "upsample_nearest_neighbor": {
+            "MLCPUComputeDevice": 1
+          }
+        },
+        "cpu": {
+          "passed": true,
+          "againstOriginalCPU": {
+            "high_res_feature_0": {
+              "shape": [
+                1,
+                32,
+                256,
+                256
+              ],
+              "nonfinite": 0,
+              "minimum": -1.1478675603866577,
+              "maximum": 0.590727686882019,
+              "maximumAbsoluteError": 0.0032992735505104065,
+              "cosineSimilarity": 0.9999954769616055
+            },
+            "raw_vision_features": {
+              "shape": [
+                1,
+                256,
+                64,
+                64
+              ],
+              "nonfinite": 0,
+              "minimum": -1.628769040107727,
+              "maximum": 1.6819872856140137,
+              "maximumAbsoluteError": 0.08458632230758667,
+              "cosineSimilarity": 0.9996576232451583
+            },
+            "high_res_feature_1": {
+              "shape": [
+                1,
+                64,
+                128,
+                128
+              ],
+              "nonfinite": 0,
+              "minimum": -3.1611220836639404,
+              "maximum": 2.7084152698516846,
+              "maximumAbsoluteError": 0.06565099954605103,
+              "cosineSimilarity": 0.9996501764159395
+            },
+            "initial_vision_features": {
+              "shape": [
+                1,
+                256,
+                64,
+                64
+              ],
+              "nonfinite": 0,
+              "minimum": -1.6419947147369385,
+              "maximum": 1.6687616109848022,
+              "maximumAbsoluteError": 0.08458632230758667,
+              "cosineSimilarity": 0.999649975843353
+            }
+          }
+        },
+        "ne": {
+          "passed": false,
+          "againstOriginalCPU": {
+            "high_res_feature_0": {
+              "shape": [
+                1,
+                32,
+                256,
+                256
+              ],
+              "nonfinite": 0,
+              "minimum": -48866.1484375,
+              "maximum": 53473.671875,
+              "maximumAbsoluteError": 53473.65625,
+              "cosineSimilarity": 0.0017808979674861169
+            },
+            "raw_vision_features": {
+              "shape": [
+                1,
+                256,
+                64,
+                64
+              ],
+              "nonfinite": 0,
+              "minimum": -1.9059237241744995,
+              "maximum": 2.3886327743530273,
+              "maximumAbsoluteError": 1.3315668106079102,
+              "cosineSimilarity": 0.7194600591966298
+            },
+            "high_res_feature_1": {
+              "shape": [
+                1,
+                64,
+                128,
+                128
+              ],
+              "nonfinite": 0,
+              "minimum": -0.28675389289855957,
+              "maximum": 0.4884707033634186,
+              "maximumAbsoluteError": 3.113182783126831,
+              "cosineSimilarity": 0.5478006007375055
+            },
+            "initial_vision_features": {
+              "shape": [
+                1,
+                256,
+                64,
+                64
+              ],
+              "nonfinite": 0,
+              "minimum": -1.8754100799560547,
+              "maximum": 2.3636417388916016,
+              "maximumAbsoluteError": 1.3315668106079102,
+              "cosineSimilarity": 0.7120260600893701
+            }
+          },
+          "againstVariantCPU": {
+            "high_res_feature_0": {
+              "shape": [
+                1,
+                32,
+                256,
+                256
+              ],
+              "nonfinite": 0,
+              "minimum": -48866.1484375,
+              "maximum": 53473.671875,
+              "maximumAbsoluteError": 53473.65625,
+              "cosineSimilarity": 0.0017752563775168206
+            },
+            "raw_vision_features": {
+              "shape": [
+                1,
+                256,
+                64,
+                64
+              ],
+              "nonfinite": 0,
+              "minimum": -1.9059237241744995,
+              "maximum": 2.3886327743530273,
+              "maximumAbsoluteError": 1.3076053857803345,
+              "cosineSimilarity": 0.7195414589058713
+            },
+            "high_res_feature_1": {
+              "shape": [
+                1,
+                64,
+                128,
+                128
+              ],
+              "nonfinite": 0,
+              "minimum": -0.28675389289855957,
+              "maximum": 0.4884707033634186,
+              "maximumAbsoluteError": 3.064803123474121,
+              "cosineSimilarity": 0.5478059833478743
+            },
+            "initial_vision_features": {
+              "shape": [
+                1,
+                256,
+                64,
+                64
+              ],
+              "nonfinite": 0,
+              "minimum": -1.8754100799560547,
+              "maximum": 2.3636417388916016,
+              "maximumAbsoluteError": 1.307605266571045,
+              "cosineSimilarity": 0.7121126039461162
+            }
+          }
+        }
+      }
+    },
+    "cpuReference": {
+      "high_res_feature_0": {
+        "shape": [
+          1,
+          32,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -1.1470611095428467,
+        "maximum": 0.5900925993919373
+      },
+      "raw_vision_features": {
+        "shape": [
+          1,
+          256,
+          64,
+          64
+        ],
+        "nonfinite": 0,
+        "minimum": -1.6145468950271606,
+        "maximum": 1.676185131072998
+      },
+      "initial_vision_features": {
+        "shape": [
+          1,
+          256,
+          64,
+          64
+        ],
+        "nonfinite": 0,
+        "minimum": -1.627772569656372,
+        "maximum": 1.6629594564437866
+      },
+      "high_res_feature_1": {
+        "shape": [
+          1,
+          64,
+          128,
+          128
+        ],
+        "nonfinite": 0,
+        "minimum": -3.2095017433166504,
+        "maximum": 2.695028305053711
+      }
+    },
+    "cpuReferenceFileSHA256": "d5bebd0ea0070214eebb7b633aeb3f3bcf7d20e78ae446f8f87bc844e229df3d"
+  }
+}

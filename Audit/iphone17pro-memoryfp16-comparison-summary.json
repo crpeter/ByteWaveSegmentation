@@ -1,0 +1,111 @@
+{
+  "scope": "Four separate 20-frame iPhone runs in original/candidate then candidate/original order. Warm medians exclude frame zero. No sustained playback FPS, representative quality or statistical significance claim.",
+  "hardware": "iPhone18,1",
+  "operatingSystem": "Version 27.0 (Build 24A435)",
+  "mode": "CPU + GPU",
+  "swiftDebugCompilation": false,
+  "thermalStates": "Both nominal at start and end",
+  "sameInputFramesVerified": true,
+  "baselineReferenceProvenanceMatches": true,
+  "runs": {
+    "original": {
+      "report": "Audit/iphone17pro-memoryfp16-original-report.json",
+      "sha256": "31cb50e0d2048d926db6b9e792471269671e4d9d7c6ddfca93990560eecf2ffb",
+      "modelVariant": "original",
+      "fixtureSHA256": "80bfbde3da5d8d650a68d60a1f61e2da0050abbe576e0bc848da46d640298455",
+      "generatedAt": "2026-09-16T00:24:16Z",
+      "passed": true,
+      "frames": 20,
+      "minimumMaskIoU": 0.9968039772727273,
+      "minimumPointerCosine": 0.9989761542919103,
+      "minimumMemoryCosine": 0.9959750418467518,
+      "finalState": {
+        "acceptedFrames": 20,
+        "pointerEntries": 16,
+        "spatialEntries": 7
+      },
+      "medianWarmMilliseconds": {
+        "encoder": 21.710999993956648,
+        "propagator": 66.50929167517461,
+        "predictionAndState": 99.33695833024103
+      }
+    },
+    "memoryfp16": {
+      "report": "Audit/iphone17pro-memoryfp16-memoryfp16-report.json",
+      "sha256": "a56cc73693844abe4e880bc8584d3a10e1f6f0455941aed9a48db6baba611fa5",
+      "modelVariant": "memoryfp16",
+      "fixtureSHA256": "f6b8e78c142538375ff6bf6fee5516975543f06e2f0780f959ffd3abc0dbbc9f",
+      "generatedAt": "2026-09-16T00:25:26Z",
+      "passed": true,
+      "frames": 20,
+      "minimumMaskIoU": 0.9968039772727273,
+      "minimumPointerCosine": 0.9989310422512354,
+      "minimumMemoryCosine": 0.9961403122331987,
+      "finalState": {
+        "acceptedFrames": 20,
+        "pointerEntries": 16,
+        "spatialEntries": 7
+      },
+      "medianWarmMilliseconds": {
+        "encoder": 21.91149999271147,
+        "propagator": 32.32858332921751,
+        "predictionAndState": 65.2589166566031
+      }
+    }
+  },
+  "medianLatencyReductionPercent": {
+    "propagator": 51.392380650951154,
+    "predictionAndState": 34.305501443226284
+  },
+  "next": "Order check complete; carry memoryfp16 forward into requested-video-frame operation and broader visual/sustained validation. No additional repeat of this fixture is needed. Normal exporter remains unchanged pending deliberate integration.",
+  "normalExportPromoted": false,
+  "reverseOrderRepeat": {
+    "order": [
+      "memoryfp16",
+      "original"
+    ],
+    "runs": {
+      "original": {
+        "report": "Audit/iphone17pro-memoryfp16-repeat-original-report.json",
+        "sha256": "63d2106ff948fec8904653ac87e0e67908fbe5d28893d99acf3e99ea1bb6d7ab",
+        "generatedAt": "2026-09-16T00:32:10Z",
+        "passed": true,
+        "frames": 20,
+        "numericalMetricsExactlyMatchFirstRun": true,
+        "minimumMaskIoU": 0.9968039772727273,
+        "minimumPointerCosine": 0.9989761542919103,
+        "minimumMemoryCosine": 0.9959750418467518,
+        "thermalStateAtStart": "nominal",
+        "thermalStateAtEnd": "nominal",
+        "medianWarmMilliseconds": {
+          "encoder": 21.966708329273388,
+          "propagator": 66.76304167194758,
+          "predictionAndState": 99.99679165775888
+        }
+      },
+      "memoryfp16": {
+        "report": "Audit/iphone17pro-memoryfp16-repeat-memoryfp16-report.json",
+        "sha256": "73cb5ba892a730b827b9766c6e300723bd077fbfb76f46faa99c3fdc8e450b11",
+        "generatedAt": "2026-09-16T00:31:46Z",
+        "passed": true,
+        "frames": 20,
+        "numericalMetricsExactlyMatchFirstRun": true,
+        "minimumMaskIoU": 0.9968039772727273,
+        "minimumPointerCosine": 0.9989310422512354,
+        "minimumMemoryCosine": 0.9961403122331987,
+        "thermalStateAtStart": "nominal",
+        "thermalStateAtEnd": "nominal",
+        "medianWarmMilliseconds": {
+          "encoder": 21.792333340272307,
+          "propagator": 32.35129166569095,
+          "predictionAndState": 64.8945833381731
+        }
+      }
+    },
+    "medianLatencyReductionPercent": {
+      "propagator": 51.54311299258212,
+      "predictionAndState": 35.10333455469633
+    },
+    "fixtureAndInputIdentitiesMatchFirstRuns": true
+  }
+}

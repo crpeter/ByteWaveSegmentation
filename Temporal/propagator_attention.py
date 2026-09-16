@@ -1,0 +1,173 @@
+"""Isolated memory-attention diagnostics; no normal export changes.
+
+MIL SDPA semantics: softmax(Q K^T / sqrt(d) + mask) V. Each query chunk
+still attends to every key. Only the four 4096-query memory attentions change.
+https://apple.github.io/coremltools/source/coremltools.converters.mil.mil.ops.defs.html
+"""
+from __future__ import annotations
+
+from collections import Counter
+import sys
+
+import numpy as np
+
+from propagator_convs import signatures
+
+CONTRACT = 'bytewave.propagator-attention.diagnostic.v1'
+CHUNK = 256
+
+
+def make_variant(package, destination, variant):
+    import coremltools as ct
+    from coremltools.converters.mil.frontend.milproto.load import load
+    from coremltools.converters.mil.mil import Builder as mb, types
+
+    if variant not in ('unchanged', 'chunk256', 'memoryfp16') or ct.__version__ != '9.0':
+        raise ValueError('Requires Core ML Tools 9.0 and a known variant')
+    original = ct.models.MLModel(str(package), skip_model_load=True)
+    spec = original.get_spec()
+    previous = sys.getrecursionlimit()
+    try:
+        sys.setrecursionlimit(max(previous, 20_000))
+        program = load(model_spec=spec, specification_version=spec.specificationVersion,
+                       file_weights_dir=original.weights_dir)
+        function = program.functions['main']
+        before = signatures(function, {})
+        selected = [op for op in function.operations
+                    if op.op_type == 'scaled_dot_product_attention'
+                    and tuple(op.query.shape) == (1, 1, 4096, 256)]
+        if len(selected) != 4:
+            found = [(op.name, list(op.query.shape), list(op.key.shape))
+                     for op in function.operations if op.op_type == 'scaled_dot_product_attention']
+            raise ValueError(f'Expected exactly four 4096-query memory attentions; found {found}')
+        kinds = Counter()
+        descriptions = []
+        for op in selected:
+            key_count = op.key.shape[-2]
+            mask = op.attn_mask
+            tensors = (op.query, op.key, op.value, op.outputs[0])
+            if (key_count not in (4096, 3648)
+                    or tuple(op.key.shape) != (1, 1, key_count, 256)
+                    or tuple(op.value.shape) != (1, 1, key_count, 256)
+                    or tuple(op.outputs[0].shape) != (1, 1, 4096, 256)
+                    or any(v.dtype != types.fp32 for v in tensors)
+                    or set(op.inputs) - {'query', 'key', 'value', 'attn_mask'}):
+                raise ValueError(f'Unexpected attention shape, precision or semantics: {op.name}')
+            if key_count == 4096:
+                if mask is not None:
+                    raise ValueError('Self-attention unexpectedly has a mask')
+                kind = 'self'
+            else:
+                if mask is None or mask.dtype != types.fp32 or tuple(mask.shape) != (1, 1, 1, 3648):
+                    raise ValueError('Cross-attention validity mask changed')
+                kind = 'cross'
+            kinds[kind] += 1
+            descriptions.append({'output': op.outputs[0].name, 'kind': kind,
+                                 'queryShape': list(op.query.shape), 'keyShape': list(op.key.shape),
+                                 'valueShape': list(op.value.shape), 'dtype': 'fp32',
+                                 'maskSource': mask.name if mask is not None else None})
+        if kinds != {'self': 2, 'cross': 2}:
+            raise ValueError('Expected two self and two cross memory attentions')
+
+        changes, aliases, added_names = [], {}, set()
+        if variant == 'chunk256':
+            with function:
+                for index, op in enumerate(selected):
+                    old = op.outputs[0]
+                    key_count = int(op.key.shape[-2])
+                    prefix = f'bwattention_{index}'
+                    chunks = []
+                    for begin in range(0, 4096, CHUNK):
+                        name = f'{prefix}_{begin // CHUNK}'
+                        q = mb.slice_by_size(x=op.query, begin=[0, 0, begin, 0],
+                                             size=[1, 1, CHUNK, 256], name=name + '_query', before_op=op)
+                        scores = mb.matmul(x=q, y=op.key, transpose_y=True,
+                                           name=name + '_scores', before_op=op)
+                        scores = mb.mul(x=scores, y=np.float32(1.0 / 16.0),
+                                        name=name + '_scale', before_op=op)
+                        if op.attn_mask is not None:
+                            scores = mb.add(x=scores, y=op.attn_mask, name=name + '_mask', before_op=op)
+                        probabilities = mb.softmax(x=scores, axis=-1, name=name + '_softmax', before_op=op)
+                        chunk = mb.matmul(x=probabilities, y=op.value, name=name + '_weighted', before_op=op)
+                        chunks.append(chunk)
+                    replacement = mb.concat(values=chunks, axis=2, name=prefix + '_restore', before_op=op)
+                    if replacement.shape != old.shape or replacement.dtype != old.dtype:
+                        raise ValueError('Attention output interface changed')
+                    function.replace_uses_of_var_after_op(anchor_op=op, old_var=old, new_var=replacement)
+                    function.remove_ops([op])
+                    aliases[replacement.name] = old.name
+                    changes.append({'oldOutput': old.name, 'newOutput': replacement.name,
+                                    'queryChunkSize': CHUNK, 'chunks': 4096 // CHUNK,
+                                    'keysPerChunk': key_count,
+                                    'scoreTensorBytesPerChunk': CHUNK * key_count * 4})
+        elif variant == 'memoryfp16':
+            with function:
+                for index, op in enumerate(selected):
+                    old = op.outputs[0]
+                    prefix = f'bwmemoryfp16_{index}'
+                    inputs = {}
+                    for key in ('query', 'key', 'value', 'attn_mask'):
+                        value = getattr(op, key)
+                        if value is not None:
+                            inputs[key] = mb.cast(x=value, dtype='fp16', name=f'{prefix}_{key}', before_op=op)
+                    half = mb.scaled_dot_product_attention(**inputs, name=prefix + '_attention', before_op=op)
+                    replacement = mb.cast(x=half, dtype='fp32', name=prefix + '_restore', before_op=op)
+                    if replacement.shape != old.shape or replacement.dtype != old.dtype:
+                        raise ValueError('Attention output interface changed')
+                    function.replace_uses_of_var_after_op(anchor_op=op, old_var=old, new_var=replacement)
+                    function.remove_ops([op])
+                    aliases[replacement.name] = old.name
+                    changes.append({'oldOutput': old.name, 'newOutput': replacement.name,
+                                    'attentionPrecision': 'fp16', 'outputInterface': 'fp32',
+                                    'maskCast': 'fp16' if 'attn_mask' in inputs else None,
+                                    'allQueriesAndKeysRetained': True})
+        added_names = {op.outputs[0].name for op in function.operations
+                       if op.op_type != 'const' and op.outputs[0].name not in before}
+        # Freeze the intended graph for conversion: preserve every unrelated op,
+        # parameter, mask source and dtype; also compare the new operations exactly.
+        expected = signatures(function, {})
+        program.validate()
+        program.skip_all_passes = True
+        candidate = ct.convert(program, source='milinternal', convert_to='mlprogram',
+                               minimum_deployment_target=ct.target.iOS18,
+                               compute_precision=ct.precision.FLOAT32, skip_model_load=True)
+        after_function = candidate._mil_program.functions['main']
+        after = signatures(after_function, aliases)
+        raw_after = signatures(after_function, {})
+        replaced = {row['oldOutput'] for row in changes}
+        for name, signature in before.items():
+            if signature['type'] == 'const':
+                continue  # Constants checked at their consumers by signatures().
+            if name in replaced:
+                if name in after:
+                    raise ValueError('Original memory attention unexpectedly retained')
+            elif after.get(name) != signature:
+                raise ValueError(f'Unrelated operation changed: {name}')
+        actual_added = {name for name in set(after) - set(before) if after[name]['type'] != 'const'}
+        if actual_added != added_names:
+            raise ValueError('Conversion changed the replacement operation set')
+        for name in added_names:
+            if raw_after.get(name) != expected[name]:
+                raise ValueError(f'Diagnostic attention changed during conversion: {name}')
+        for op in after_function.operations:
+            name = op.outputs[0].name
+            if name in added_names:
+                expected_dtype = (types.fp16 if variant == 'memoryfp16' and not name.endswith('_restore')
+                                  else types.fp32)
+                if any(v.dtype != expected_dtype for v in op.outputs):
+                    raise ValueError(f'Replacement precision changed: {name}')
+        actual_spec = candidate.get_spec()
+        for direction in ('input', 'output'):
+            if ({f.name: f.type for f in getattr(spec.description, direction)} !=
+                    {f.name: f.type for f in getattr(actual_spec.description, direction)}):
+                raise ValueError(f'External {direction} interface changed')
+        candidate.user_defined_metadata.update(dict(spec.description.metadata.userDefined))
+        candidate.user_defined_metadata['bytewave.contract'] = CONTRACT
+        candidate.user_defined_metadata['bytewave.diagnostic.variant'] = variant
+        candidate.save(str(destination))
+        return {'variant': variant, 'inspectedAttentions': descriptions, 'modifications': changes,
+                'unrelatedOperationsPreserved': True, 'externalInterfacesPreserved': True,
+                'attentionPrecision': 'fp16' if variant == 'memoryfp16' else 'fp32',
+                'memoryNote': 'Score tensor size is per chunk, not a measured or guaranteed peak allocation.'}
+    finally:
+        sys.setrecursionlimit(previous)

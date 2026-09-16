@@ -1,0 +1,1309 @@
+{
+  "sourceAttachment": "Pasted text(20260915-185557).txt",
+  "sourceAttachmentSHA256": "d8b41e30521136036ddc9bcfd56158202ee678b6fd77abdd9391309646f9eb18",
+  "interpretation": "CPU finals remain exact and full NE failure is reproduced. FP32 residual outputs input_33 and input_39 are returned as zeros despite healthy operands. input_33_to_fp16 remains healthy, so the exposed FP32 tensor and its cast are inconsistent. Five exposed casts change preference from CPU to NE; convolution-only preservation is insufficient to claim unchanged placement. The observation motivates terminal-output prefix controls, not attribution to an add kernel or a precision promotion.",
+  "changedPreferredOperationCount": 5,
+  "report": {
+    "scope": "Sampled convolution inputs/outputs on CPU versus CPU_AND_NE. Exposed outputs may change partitioning. First failing sample is not necessarily the first failing operation. Planned devices are not observed execution.",
+    "readyForDeviceValidation": false,
+    "completed": true,
+    "sourceManifestSHA256": "8e3855c53deda132d4c378d3a93343ac3bc6a678b1a95a8cf5bb7c6bd99e61c1",
+    "sourcePlanSHA256": "2203bb48bfb12aa206d43de07effe8a080366e57169474bf128cf7756c2b02c3",
+    "imageSHA256": "df4fd26c6e7c6cce4cd9e6c04ace316788f125eb4f953f0aad96882e7b474dd9",
+    "coremltoolsVersion": "9.0",
+    "neConvolutionCount": 83,
+    "sampleIndices": [
+      6,
+      7,
+      8
+    ],
+    "inputPath": {
+      "neIndex": 8,
+      "target": "input_39_to_fp16",
+      "operations": [
+        {
+          "type": "conv",
+          "outputs": [
+            "input_11_cast_fp16"
+          ],
+          "inputs": {
+            "bias": [
+              "const_5_to_fp16"
+            ],
+            "groups": [
+              "input_9_groups_0"
+            ],
+            "pad": [
+              "input_9_pad_0"
+            ],
+            "pad_type": [
+              "input_9_pad_type_0"
+            ],
+            "x": [
+              "input_7_to_fp16"
+            ],
+            "weight": [
+              "const_4_to_fp16"
+            ],
+            "strides": [
+              "input_9_strides_0"
+            ],
+            "dilations": [
+              "input_9_dilations_0"
+            ]
+          },
+          "convolutionBoundary": true,
+          "originalPreferredDevices": {
+            "input_11_cast_fp16": "MLNeuralEngineComputeDevice"
+          },
+          "probePreferredDevices": {
+            "input_11_cast_fp16": "MLNeuralEngineComputeDevice"
+          }
+        },
+        {
+          "type": "conv",
+          "outputs": [
+            "var_116_cast_fp16"
+          ],
+          "inputs": {
+            "bias": [
+              "const_7_to_fp16"
+            ],
+            "groups": [
+              "input_13_groups_0"
+            ],
+            "pad": [
+              "input_13_pad_0"
+            ],
+            "pad_type": [
+              "input_13_pad_type_0"
+            ],
+            "x": [
+              "input_11_cast_fp16"
+            ],
+            "weight": [
+              "const_6_to_fp16"
+            ],
+            "strides": [
+              "input_13_strides_0"
+            ],
+            "dilations": [
+              "input_13_dilations_0"
+            ]
+          },
+          "convolutionBoundary": true,
+          "originalPreferredDevices": {
+            "var_116_cast_fp16": "MLNeuralEngineComputeDevice"
+          },
+          "probePreferredDevices": {
+            "var_116_cast_fp16": "MLNeuralEngineComputeDevice"
+          }
+        },
+        {
+          "type": "conv",
+          "outputs": [
+            "var_129_cast_fp16"
+          ],
+          "inputs": {
+            "bias": [
+              "const_9_to_fp16"
+            ],
+            "groups": [
+              "input_15_groups_0"
+            ],
+            "pad": [
+              "input_15_pad_0"
+            ],
+            "pad_type": [
+              "input_15_pad_type_0"
+            ],
+            "x": [
+              "input_11_cast_fp16"
+            ],
+            "weight": [
+              "const_8_to_fp16"
+            ],
+            "strides": [
+              "input_15_strides_0"
+            ],
+            "dilations": [
+              "input_15_dilations_0"
+            ]
+          },
+          "convolutionBoundary": true,
+          "originalPreferredDevices": {
+            "var_129_cast_fp16": "MLNeuralEngineComputeDevice"
+          },
+          "probePreferredDevices": {
+            "var_129_cast_fp16": "MLNeuralEngineComputeDevice"
+          }
+        },
+        {
+          "type": "cast",
+          "outputs": [
+            "var_129_cast_fp16_to_fp32"
+          ],
+          "inputs": {
+            "x": [
+              "var_129_cast_fp16"
+            ],
+            "dtype": [
+              "var_129_cast_fp16_to_fp32_dtype_0"
+            ]
+          },
+          "convolutionBoundary": false,
+          "originalPreferredDevices": {
+            "var_129_cast_fp16_to_fp32": "MLCPUComputeDevice"
+          },
+          "probePreferredDevices": {
+            "var_129_cast_fp16_to_fp32": "MLNeuralEngineComputeDevice"
+          }
+        },
+        {
+          "type": "cast",
+          "outputs": [
+            "var_116_cast_fp16_to_fp32"
+          ],
+          "inputs": {
+            "x": [
+              "var_116_cast_fp16"
+            ],
+            "dtype": [
+              "var_116_cast_fp16_to_fp32_dtype_0"
+            ]
+          },
+          "convolutionBoundary": false,
+          "originalPreferredDevices": {
+            "var_116_cast_fp16_to_fp32": "MLCPUComputeDevice"
+          },
+          "probePreferredDevices": {
+            "var_116_cast_fp16_to_fp32": "MLNeuralEngineComputeDevice"
+          }
+        },
+        {
+          "type": "add",
+          "outputs": [
+            "var_130"
+          ],
+          "inputs": {
+            "y": [
+              "var_129_cast_fp16_to_fp32"
+            ],
+            "x": [
+              "var_116_cast_fp16_to_fp32"
+            ]
+          },
+          "convolutionBoundary": false,
+          "originalPreferredDevices": {
+            "var_130": "MLCPUComputeDevice"
+          },
+          "probePreferredDevices": {
+            "var_130": "MLCPUComputeDevice"
+          }
+        },
+        {
+          "type": "cast",
+          "outputs": [
+            "input_11_cast_fp16_to_fp32"
+          ],
+          "inputs": {
+            "x": [
+              "input_11_cast_fp16"
+            ],
+            "dtype": [
+              "input_11_cast_fp16_to_fp32_dtype_0"
+            ]
+          },
+          "convolutionBoundary": false,
+          "originalPreferredDevices": {
+            "input_11_cast_fp16_to_fp32": "MLCPUComputeDevice"
+          },
+          "probePreferredDevices": {
+            "input_11_cast_fp16_to_fp32": "MLCPUComputeDevice"
+          }
+        },
+        {
+          "type": "add",
+          "outputs": [
+            "x_1"
+          ],
+          "inputs": {
+            "y": [
+              "input_11_cast_fp16_to_fp32"
+            ],
+            "x": [
+              "var_130"
+            ]
+          },
+          "convolutionBoundary": false,
+          "originalPreferredDevices": {
+            "x_1": "MLCPUComputeDevice"
+          },
+          "probePreferredDevices": {
+            "x_1": "MLCPUComputeDevice"
+          }
+        },
+        {
+          "type": "conv",
+          "outputs": [
+            "x_3_cast_fp16"
+          ],
+          "inputs": {
+            "bias": [
+              "model_image_encoder_trunk_body_stages_0_blocks_0_se_fc2_bias_to_fp16"
+            ],
+            "groups": [
+              "x_3_groups_0"
+            ],
+            "pad": [
+              "x_3_pad_0"
+            ],
+            "pad_type": [
+              "x_3_pad_type_0"
+            ],
+            "x": [
+              "input_21_to_fp16"
+            ],
+            "weight": [
+              "model_image_encoder_trunk_body_stages_0_blocks_0_se_fc2_weight_to_fp16"
+            ],
+            "strides": [
+              "x_3_strides_0"
+            ],
+            "dilations": [
+              "x_3_dilations_0"
+            ]
+          },
+          "convolutionBoundary": true,
+          "originalPreferredDevices": {
+            "x_3_cast_fp16": "MLCPUComputeDevice"
+          },
+          "probePreferredDevices": {
+            "x_3_cast_fp16": "MLCPUComputeDevice"
+          }
+        },
+        {
+          "type": "cast",
+          "outputs": [
+            "x_3_cast_fp16_to_fp32"
+          ],
+          "inputs": {
+            "x": [
+              "x_3_cast_fp16"
+            ],
+            "dtype": [
+              "x_3_cast_fp16_to_fp32_dtype_0"
+            ]
+          },
+          "convolutionBoundary": false,
+          "originalPreferredDevices": {
+            "x_3_cast_fp16_to_fp32": "MLCPUComputeDevice"
+          },
+          "probePreferredDevices": {
+            "x_3_cast_fp16_to_fp32": "MLCPUComputeDevice"
+          }
+        },
+        {
+          "type": "sigmoid",
+          "outputs": [
+            "var_151"
+          ],
+          "inputs": {
+            "x": [
+              "x_3_cast_fp16_to_fp32"
+            ]
+          },
+          "convolutionBoundary": false,
+          "originalPreferredDevices": {
+            "var_151": "MLCPUComputeDevice"
+          },
+          "probePreferredDevices": {
+            "var_151": "MLCPUComputeDevice"
+          }
+        },
+        {
+          "type": "mul",
+          "outputs": [
+            "input_23"
+          ],
+          "inputs": {
+            "y": [
+              "var_151"
+            ],
+            "x": [
+              "x_1"
+            ]
+          },
+          "convolutionBoundary": false,
+          "originalPreferredDevices": {
+            "input_23": "MLCPUComputeDevice"
+          },
+          "probePreferredDevices": {
+            "input_23": "MLCPUComputeDevice"
+          }
+        },
+        {
+          "type": "conv",
+          "outputs": [
+            "x_5_cast_fp16"
+          ],
+          "inputs": {
+            "bias": [
+              "const_13_to_fp16"
+            ],
+            "groups": [
+              "input_31_groups_0"
+            ],
+            "pad": [
+              "input_31_pad_0"
+            ],
+            "pad_type": [
+              "input_31_pad_type_0"
+            ],
+            "x": [
+              "input_29_to_fp16"
+            ],
+            "weight": [
+              "const_12_to_fp16"
+            ],
+            "strides": [
+              "input_31_strides_0"
+            ],
+            "dilations": [
+              "input_31_dilations_0"
+            ]
+          },
+          "convolutionBoundary": true,
+          "originalPreferredDevices": {
+            "x_5_cast_fp16": "MLNeuralEngineComputeDevice"
+          },
+          "probePreferredDevices": {
+            "x_5_cast_fp16": "MLNeuralEngineComputeDevice"
+          }
+        },
+        {
+          "type": "cast",
+          "outputs": [
+            "x_5_cast_fp16_to_fp32"
+          ],
+          "inputs": {
+            "x": [
+              "x_5_cast_fp16"
+            ],
+            "dtype": [
+              "x_5_cast_fp16_to_fp32_dtype_0"
+            ]
+          },
+          "convolutionBoundary": false,
+          "originalPreferredDevices": {
+            "x_5_cast_fp16_to_fp32": "MLCPUComputeDevice"
+          },
+          "probePreferredDevices": {
+            "x_5_cast_fp16_to_fp32": "MLNeuralEngineComputeDevice"
+          }
+        },
+        {
+          "type": "add",
+          "outputs": [
+            "input_33"
+          ],
+          "inputs": {
+            "y": [
+              "x_5_cast_fp16_to_fp32"
+            ],
+            "x": [
+              "input_23"
+            ]
+          },
+          "convolutionBoundary": false,
+          "originalPreferredDevices": {
+            "input_33": "MLCPUComputeDevice"
+          },
+          "probePreferredDevices": {
+            "input_33": "MLCPUComputeDevice"
+          }
+        },
+        {
+          "type": "conv",
+          "outputs": [
+            "var_199_cast_fp16"
+          ],
+          "inputs": {
+            "bias": [
+              "const_15_to_fp16"
+            ],
+            "groups": [
+              "input_35_groups_0"
+            ],
+            "pad": [
+              "input_35_pad_0"
+            ],
+            "pad_type": [
+              "input_35_pad_type_0"
+            ],
+            "x": [
+              "input_33_to_fp16"
+            ],
+            "weight": [
+              "const_14_to_fp16"
+            ],
+            "strides": [
+              "input_35_strides_0"
+            ],
+            "dilations": [
+              "input_35_dilations_0"
+            ]
+          },
+          "convolutionBoundary": true,
+          "originalPreferredDevices": {
+            "var_199_cast_fp16": "MLNeuralEngineComputeDevice"
+          },
+          "probePreferredDevices": {
+            "var_199_cast_fp16": "MLNeuralEngineComputeDevice"
+          }
+        },
+        {
+          "type": "conv",
+          "outputs": [
+            "var_212_cast_fp16"
+          ],
+          "inputs": {
+            "bias": [
+              "const_17_to_fp16"
+            ],
+            "groups": [
+              "input_37_groups_0"
+            ],
+            "pad": [
+              "input_37_pad_0"
+            ],
+            "pad_type": [
+              "input_37_pad_type_0"
+            ],
+            "x": [
+              "input_33_to_fp16"
+            ],
+            "weight": [
+              "const_16_to_fp16"
+            ],
+            "strides": [
+              "input_37_strides_0"
+            ],
+            "dilations": [
+              "input_37_dilations_0"
+            ]
+          },
+          "convolutionBoundary": true,
+          "originalPreferredDevices": {
+            "var_212_cast_fp16": "MLNeuralEngineComputeDevice"
+          },
+          "probePreferredDevices": {
+            "var_212_cast_fp16": "MLNeuralEngineComputeDevice"
+          }
+        },
+        {
+          "type": "cast",
+          "outputs": [
+            "var_212_cast_fp16_to_fp32"
+          ],
+          "inputs": {
+            "x": [
+              "var_212_cast_fp16"
+            ],
+            "dtype": [
+              "var_212_cast_fp16_to_fp32_dtype_0"
+            ]
+          },
+          "convolutionBoundary": false,
+          "originalPreferredDevices": {
+            "var_212_cast_fp16_to_fp32": "MLCPUComputeDevice"
+          },
+          "probePreferredDevices": {
+            "var_212_cast_fp16_to_fp32": "MLNeuralEngineComputeDevice"
+          }
+        },
+        {
+          "type": "cast",
+          "outputs": [
+            "var_199_cast_fp16_to_fp32"
+          ],
+          "inputs": {
+            "x": [
+              "var_199_cast_fp16"
+            ],
+            "dtype": [
+              "var_199_cast_fp16_to_fp32_dtype_0"
+            ]
+          },
+          "convolutionBoundary": false,
+          "originalPreferredDevices": {
+            "var_199_cast_fp16_to_fp32": "MLCPUComputeDevice"
+          },
+          "probePreferredDevices": {
+            "var_199_cast_fp16_to_fp32": "MLNeuralEngineComputeDevice"
+          }
+        },
+        {
+          "type": "add",
+          "outputs": [
+            "var_213"
+          ],
+          "inputs": {
+            "y": [
+              "var_212_cast_fp16_to_fp32"
+            ],
+            "x": [
+              "var_199_cast_fp16_to_fp32"
+            ]
+          },
+          "convolutionBoundary": false,
+          "originalPreferredDevices": {
+            "var_213": "MLCPUComputeDevice"
+          },
+          "probePreferredDevices": {
+            "var_213": "MLCPUComputeDevice"
+          }
+        },
+        {
+          "type": "add",
+          "outputs": [
+            "input_39"
+          ],
+          "inputs": {
+            "y": [
+              "input_33"
+            ],
+            "x": [
+              "var_213"
+            ]
+          },
+          "convolutionBoundary": false,
+          "originalPreferredDevices": {
+            "input_39": "MLCPUComputeDevice"
+          },
+          "probePreferredDevices": {
+            "input_39": "MLCPUComputeDevice"
+          }
+        },
+        {
+          "type": "cast",
+          "outputs": [
+            "input_39_to_fp16"
+          ],
+          "inputs": {
+            "x": [
+              "input_39"
+            ],
+            "dtype": [
+              "input_39_to_fp16_dtype_0"
+            ]
+          },
+          "convolutionBoundary": false,
+          "originalPreferredDevices": {
+            "input_39_to_fp16": "MLCPUComputeDevice"
+          },
+          "probePreferredDevices": {
+            "input_39_to_fp16": "MLCPUComputeDevice"
+          }
+        }
+      ]
+    },
+    "extractionRecursionLimit": {
+      "original": 1000,
+      "temporary": 20000
+    },
+    "samples": [
+      {
+        "neIndex": 6,
+        "input": "input_33_to_fp16",
+        "output": "var_199_cast_fp16",
+        "probePreferredDevice": "MLNeuralEngineComputeDevice"
+      },
+      {
+        "neIndex": 7,
+        "input": "input_33_to_fp16",
+        "output": "var_212_cast_fp16",
+        "probePreferredDevice": "MLNeuralEngineComputeDevice"
+      },
+      {
+        "neIndex": 8,
+        "input": "input_39_to_fp16",
+        "output": "input_43_cast_fp16",
+        "probePreferredDevice": "MLNeuralEngineComputeDevice"
+      }
+    ],
+    "probeFiles": {
+      "Manifest.json": "68b0bdb74fedbc6f65441dcf565990e2c9a8a909a6eb66cb902dc9e5e707e176",
+      "Data/com.apple.CoreML/model.mlmodel": "eb2ad71d07b1520a57956f2d72782d9cbf7ee6e340b79f55d56d4905e949ad37",
+      "Data/com.apple.CoreML/weights/weight.bin": "74c81dbff608d07039888a1d8b417714f0f83eac37d65e9722f85324e7966c7c"
+    },
+    "probePreferredCounts": {
+      "MLCPUComputeDevice": 362,
+      "MLNeuralEngineComputeDevice": 88
+    },
+    "cpuFinalAgreement": {
+      "raw_vision_features": {
+        "shape": [
+          1,
+          256,
+          64,
+          64
+        ],
+        "nonfinite": 0,
+        "minimum": -1.6145468950271606,
+        "maximum": 1.676185131072998,
+        "maximumAbsoluteError": 0.0,
+        "cosineSimilarity": 1.0000000000000002
+      },
+      "initial_vision_features": {
+        "shape": [
+          1,
+          256,
+          64,
+          64
+        ],
+        "nonfinite": 0,
+        "minimum": -1.627772569656372,
+        "maximum": 1.6629594564437866,
+        "maximumAbsoluteError": 0.0,
+        "cosineSimilarity": 1.0
+      },
+      "high_res_feature_0": {
+        "shape": [
+          1,
+          32,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -1.1470611095428467,
+        "maximum": 0.5900925993919373,
+        "maximumAbsoluteError": 0.0,
+        "cosineSimilarity": 1.0
+      },
+      "high_res_feature_1": {
+        "shape": [
+          1,
+          64,
+          128,
+          128
+        ],
+        "nonfinite": 0,
+        "minimum": -3.2095017433166504,
+        "maximum": 2.695028305053711,
+        "maximumAbsoluteError": 0.0,
+        "cosineSimilarity": 1.0
+      }
+    },
+    "cpuInputPathOutputs": {
+      "input_11_cast_fp16": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -4.75,
+        "maximum": 4.484375
+      },
+      "var_116_cast_fp16": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -4.9921875,
+        "maximum": 6.0078125
+      },
+      "var_129_cast_fp16": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -4.82421875,
+        "maximum": 4.390625
+      },
+      "var_129_cast_fp16_to_fp32": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -4.82421875,
+        "maximum": 4.390625
+      },
+      "var_116_cast_fp16_to_fp32": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -4.9921875,
+        "maximum": 6.0078125
+      },
+      "var_130": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -7.5859375,
+        "maximum": 7.365234375
+      },
+      "input_11_cast_fp16_to_fp32": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -4.75,
+        "maximum": 4.484375
+      },
+      "x_1": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -11.515625,
+        "maximum": 6.4140625
+      },
+      "x_3_cast_fp16": {
+        "shape": [
+          1,
+          48,
+          1,
+          1
+        ],
+        "nonfinite": 0,
+        "minimum": -3.82421875,
+        "maximum": -0.45166015625
+      },
+      "x_3_cast_fp16_to_fp32": {
+        "shape": [
+          1,
+          48,
+          1,
+          1
+        ],
+        "nonfinite": 0,
+        "minimum": -3.82421875,
+        "maximum": -0.45166015625
+      },
+      "var_151": {
+        "shape": [
+          1,
+          48,
+          1,
+          1
+        ],
+        "nonfinite": 0,
+        "minimum": 0.021368887275457382,
+        "maximum": 0.3889661133289337
+      },
+      "input_23": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -1.2992178201675415,
+        "maximum": 1.1873531341552734
+      },
+      "x_5_cast_fp16": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -3.625,
+        "maximum": 3.6484375
+      },
+      "x_5_cast_fp16_to_fp32": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -3.625,
+        "maximum": 3.6484375
+      },
+      "input_33": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -3.5433945655822754,
+        "maximum": 4.411049842834473
+      },
+      "var_199_cast_fp16": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -1.603515625,
+        "maximum": 2.041015625
+      },
+      "var_212_cast_fp16": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -2.3046875,
+        "maximum": 3.5625
+      },
+      "var_212_cast_fp16_to_fp32": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -2.3046875,
+        "maximum": 3.5625
+      },
+      "var_199_cast_fp16_to_fp32": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -1.603515625,
+        "maximum": 2.041015625
+      },
+      "var_213": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -2.796875,
+        "maximum": 5.392578125
+      },
+      "input_39": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -4.505957126617432,
+        "maximum": 4.178852558135986
+      },
+      "input_39_to_fp16": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -4.5078125,
+        "maximum": 4.1796875
+      }
+    },
+    "neFinalOutputs": {
+      "raw_vision_features": {
+        "shape": [
+          1,
+          256,
+          64,
+          64
+        ],
+        "nonfinite": 1048576,
+        "minimum": null,
+        "maximum": null
+      },
+      "initial_vision_features": {
+        "shape": [
+          1,
+          256,
+          64,
+          64
+        ],
+        "nonfinite": 1048576,
+        "minimum": null,
+        "maximum": null
+      },
+      "high_res_feature_0": {
+        "shape": [
+          1,
+          32,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -5130777.0,
+        "maximum": 2409890.5,
+        "maximumAbsoluteError": 5130777.0,
+        "cosineSimilarity": -0.009917350456577833
+      },
+      "high_res_feature_1": {
+        "shape": [
+          1,
+          64,
+          128,
+          128
+        ],
+        "nonfinite": 0,
+        "minimum": -5.963938596604555e+37,
+        "maximum": 6.076824403735599e+37,
+        "maximumAbsoluteError": 6.076824403735599e+37,
+        "cosineSimilarity": -0.030325659356872373
+      }
+    },
+    "neTapOutputs": {
+      "input_33_to_fp16": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -3.53515625,
+        "maximum": 4.41015625,
+        "maximumAbsoluteError": 0.0546875,
+        "cosineSimilarity": 0.9999879869657109
+      },
+      "var_199_cast_fp16": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -1.6044921875,
+        "maximum": 2.04296875,
+        "maximumAbsoluteError": 0.03369140625,
+        "cosineSimilarity": 0.9999874312051605
+      },
+      "var_212_cast_fp16": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -2.3046875,
+        "maximum": 3.552734375,
+        "maximumAbsoluteError": 0.0478515625,
+        "cosineSimilarity": 0.9999742608617818
+      },
+      "input_39_to_fp16": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -2.796875,
+        "maximum": 5.3828125,
+        "maximumAbsoluteError": 4.412109375,
+        "cosineSimilarity": 0.6465731151428626
+      },
+      "input_43_cast_fp16": {
+        "shape": [
+          1,
+          96,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -16.09375,
+        "maximum": 16.25,
+        "maximumAbsoluteError": 14.48046875,
+        "cosineSimilarity": 0.39283966808512866
+      },
+      "input_11_cast_fp16": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -4.75,
+        "maximum": 4.4765625,
+        "maximumAbsoluteError": 0.03955078125,
+        "cosineSimilarity": 0.9999956980278596
+      },
+      "var_116_cast_fp16": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -5.0,
+        "maximum": 6.0078125,
+        "maximumAbsoluteError": 0.05029296875,
+        "cosineSimilarity": 0.9999847557572669
+      },
+      "var_129_cast_fp16": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -4.83203125,
+        "maximum": 4.390625,
+        "maximumAbsoluteError": 0.0859375,
+        "cosineSimilarity": 0.9999687611123218
+      },
+      "var_129_cast_fp16_to_fp32": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -4.83203125,
+        "maximum": 4.390625,
+        "maximumAbsoluteError": 0.0859375,
+        "cosineSimilarity": 0.9999687611123218
+      },
+      "var_116_cast_fp16_to_fp32": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -5.0,
+        "maximum": 6.0078125,
+        "maximumAbsoluteError": 0.05029296875,
+        "cosineSimilarity": 0.9999847557572669
+      },
+      "var_130": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -7.59765625,
+        "maximum": 7.3642578125,
+        "maximumAbsoluteError": 0.1181640625,
+        "cosineSimilarity": 0.9999808400057367
+      },
+      "input_11_cast_fp16_to_fp32": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -4.75,
+        "maximum": 4.4765625,
+        "maximumAbsoluteError": 0.03955078125,
+        "cosineSimilarity": 0.9999956980278596
+      },
+      "x_1": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -11.53125,
+        "maximum": 6.4091796875,
+        "maximumAbsoluteError": 0.0869140625,
+        "cosineSimilarity": 0.9999849649784406
+      },
+      "x_3_cast_fp16": {
+        "shape": [
+          1,
+          48,
+          1,
+          1
+        ],
+        "nonfinite": 0,
+        "minimum": -3.82421875,
+        "maximum": -0.45166015625,
+        "maximumAbsoluteError": 0.001953125,
+        "cosineSimilarity": 0.9999999326706868
+      },
+      "x_3_cast_fp16_to_fp32": {
+        "shape": [
+          1,
+          48,
+          1,
+          1
+        ],
+        "nonfinite": 0,
+        "minimum": -3.82421875,
+        "maximum": -0.45166015625,
+        "maximumAbsoluteError": 0.001953125,
+        "cosineSimilarity": 0.9999999326706868
+      },
+      "var_151": {
+        "shape": [
+          1,
+          48,
+          1,
+          1
+        ],
+        "nonfinite": 0,
+        "minimum": 0.021368887275457382,
+        "maximum": 0.3889661133289337,
+        "maximumAbsoluteError": 0.00020003318786621094,
+        "cosineSimilarity": 0.9999999411145072
+      },
+      "input_23": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -1.3003438711166382,
+        "maximum": 1.1872916221618652,
+        "maximumAbsoluteError": 0.025404300540685654,
+        "cosineSimilarity": 0.9999864913943173
+      },
+      "x_5_cast_fp16": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -3.623046875,
+        "maximum": 3.6484375,
+        "maximumAbsoluteError": 0.05322265625,
+        "cosineSimilarity": 0.9999885308185312
+      },
+      "x_5_cast_fp16_to_fp32": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -3.623046875,
+        "maximum": 3.6484375,
+        "maximumAbsoluteError": 0.05322265625,
+        "cosineSimilarity": 0.9999885308185312
+      },
+      "input_33": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": 0.0,
+        "maximum": 0.0,
+        "maximumAbsoluteError": 4.411049842834473,
+        "cosineSimilarity": 0.0
+      },
+      "var_212_cast_fp16_to_fp32": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -2.3046875,
+        "maximum": 3.552734375,
+        "maximumAbsoluteError": 0.0478515625,
+        "cosineSimilarity": 0.9999742608617818
+      },
+      "var_199_cast_fp16_to_fp32": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -1.6044921875,
+        "maximum": 2.04296875,
+        "maximumAbsoluteError": 0.03369140625,
+        "cosineSimilarity": 0.9999874312051605
+      },
+      "var_213": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -2.796875,
+        "maximum": 5.384765625,
+        "maximumAbsoluteError": 0.053253173828125,
+        "cosineSimilarity": 0.9999887706565105
+      },
+      "input_39": {
+        "shape": [
+          1,
+          48,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": 0.0,
+        "maximum": 0.0,
+        "maximumAbsoluteError": 4.505957126617432,
+        "cosineSimilarity": 0.0
+      }
+    },
+    "finalNonfiniteFailureReproduced": true,
+    "sampledConvolutionPreferencesPreserved": true
+  }
+}

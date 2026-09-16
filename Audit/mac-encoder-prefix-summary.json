@@ -1,0 +1,34 @@
+{
+  "source": "User-pasted encoder-prefix-01 report, 2026-09-15",
+  "scope": "Selected supplied metrics; complete report remains on the user Mac.",
+  "sourceManifestSHA256": "8e3855c53deda132d4c378d3a93343ac3bc6a678b1a95a8cf5bb7c6bd99e61c1",
+  "sourceTapReportSHA256": "127ee7bfb4ced7599f17f61d56b7080a7269f5107b356d398841044d6fed18bf",
+  "sourceCPUTensorsSHA256": "361140709b6a2ac85ed9dc1bf206d7a45afd40609364834ef3ef338cbc66e84b",
+  "completed": true,
+  "readyForDeviceValidation": false,
+  "input_33": {
+    "preferredCounts": {
+      "MLCPUComputeDevice": 29,
+      "MLNeuralEngineComputeDevice": 6
+    },
+    "cpuMaximumAbsoluteError": 0.0,
+    "neFP32Cosine": 0.9999880292104413,
+    "neFP16Cosine": 0.9999879869657109,
+    "neFP32MaximumAbsoluteError": 0.05453157424926758,
+    "neAllFinite": true,
+    "neCastConsistencyExact": true
+  },
+  "input_39": {
+    "preferredCounts": {
+      "MLCPUComputeDevice": 34,
+      "MLNeuralEngineComputeDevice": 8
+    },
+    "cpuMaximumAbsoluteError": 0.0,
+    "neFP32Cosine": 0.5472457548700459,
+    "neFP16Cosine": 0.5472451872748059,
+    "neFP32MaximumAbsoluteError": 5.013820648193359,
+    "neAllFinite": true,
+    "neCastConsistencyExact": true
+  },
+  "interpretation": "First prefix agrees closely with CPU; extending through the next residual block fails even without later encoder consumers. FP32/FP16 casts are internally consistent in both prefixes, unlike earlier full-graph tap readouts. This narrows the failure to behavior introduced by the extended prefix, without proving a faulty kernel or memory-lifetime cause. Next isolate the residual block with shared versus separate FP32/FP16 input boundaries and identical saved CPU values."
+}

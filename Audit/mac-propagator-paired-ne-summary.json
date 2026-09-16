@@ -1,0 +1,55 @@
+{
+  "completed": true,
+  "passed": true,
+  "readyForDeviceValidation": false,
+  "scope": "76 paired original/conv2 propagator calls on identical original-CPU-state inputs across 19 propagated frames. Four balanced-order pairs per frame; one excluded warm-up per model. No sustained playback or iPhone timing claim.",
+  "computeUnits": "CPU_AND_NE",
+  "macOS": "26.5.2",
+  "machine": "arm64",
+  "coremltoolsVersion": "9.0",
+  "sourceManifestSHA256": "47b7b85eef755ff7a440c0017f232a82ac7213af622d15d30a04f3487e07dd67",
+  "candidateReportSHA256": "d8ec125e1b5524e6cdce23ab0a8fefc44a2b2615dd68d4d582e33725829c04fd",
+  "sourceFrameReportSHA256": "8768eab4331ad57994782ee244861b64f3c3eb27fa6c970cc881a843618af9a6",
+  "candidateFiles": {
+    "Manifest.json": "e5695a5b2b55bcebaa23fbd6040dc18f143e4d0c0906ec5876cf0f97eb622f54",
+    "Data/com.apple.CoreML/model.mlmodel": "d24ed7a12babc62a3a370a13ade0a308860ba851ef79995b7022fefaba6de5b2",
+    "Data/com.apple.CoreML/weights/weight.bin": "69db9b2de01d311a2644cf696f6b7875e5beb637f2c785a4002f605827d41615"
+  },
+  "pointNormalizedTopLeft": [
+    0.4912,
+    0.4706
+  ],
+  "source": "User-pasted propagator-paired-ne-01/summary.json and adjacent terminal compiler messages; selected fields transcribed.",
+  "loadMilliseconds": {
+    "original": 12647.67508301884,
+    "conv2": 12778.618750162423
+  },
+  "summary": {
+    "measuredPairs": 76,
+    "medianMilliseconds": {
+      "original": 176.5896868892014,
+      "conv2": 177.06239607650787
+    },
+    "ratioOfMediansOriginalOverConv2": 0.9973302677599472,
+    "medianPairedRatioOriginalOverConv2": 0.9981238004368219,
+    "medianLatencyReductionPercent": -0.2676878789660275,
+    "allMeasuredOutputsPassed": true,
+    "medianMillisecondsByFirstModel": {
+      "original": {
+        "original": 175.97168742213398,
+        "conv2": 177.72527085617185
+      },
+      "conv2": {
+        "original": 177.20554128754884,
+        "conv2": 176.73156247474253
+      }
+    }
+  },
+  "terminalDiagnostics": {
+    "message": "E5RT encountered an STL exception. msg = MILCompilerForANE error: failed to compile ANE model using ANEF. Error=_ANECompiler : ANECCompile() FAILED.",
+    "occurrencesInPaste": 2,
+    "positionInPaste": "After the Summary path, before the printed JSON.",
+    "attribution": "No model or partition identity provided. Buffered/asynchronous logging timing and actual fallback/execution are not established."
+  },
+  "assessment": "All numerical checks passed; no useful latency improvement under CPU_AND_NE. This does not establish successful ANE compilation/execution. Close the two-linear convolution experiment without promoting the candidate. Profile original GPU on physical iPhone next."
+}

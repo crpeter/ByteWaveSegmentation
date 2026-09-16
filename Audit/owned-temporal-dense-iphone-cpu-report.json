@@ -1,0 +1,992 @@
+{
+  "sourceAttachment": "4ed65ba1-fe66-405d-aac9-1b91920e1501.json",
+  "sourceAttachmentSHA256": "d5c0f9b312225e93f101b926afe29bdea366079636a29ed487712e74d0cb1e29",
+  "summary": {
+    "minimumMaskIoU": 0.9974647887323944,
+    "minimumPointerCosine": 0.999296460312439,
+    "minimumMemoryCosine": 0.9961830924087227,
+    "finalState": {
+      "acceptedFrames": 20,
+      "pointerEntries": 16,
+      "spatialEntries": 7
+    }
+  },
+  "report": {
+    "activeFrameIndex": 19,
+    "cancelled": false,
+    "compileAndLoadMilliseconds": {
+      "ImageEncoder": 463.6966666657827,
+      "InitialMemoryEncoder": 163.14495833466935,
+      "Initializer": 223.7610833326471,
+      "Propagator": 633.0847916669882
+    },
+    "completed": true,
+    "contract": "bytewave.edgetam-temporal-owned.v2",
+    "fixtureSHA256": "e0060f7bc8becb84b4ddac5ac425f119c9a4df62228e3afc1b34cbd78a5e6ccc",
+    "frames": [
+      {
+        "foregroundFraction": 0.038055419921875,
+        "index": 0,
+        "inputBGRASHA256": "58af78b22a89b99e8b39aac3aa50950136c5975ab68e186c3801366c329c5cf7",
+        "maskIoUAgainstMacCoreML": 0.9995990376904571,
+        "modelMilliseconds": {
+          "ImageEncoder": 130.0091249995603,
+          "InitialMemoryEncoder": 16.616458333373885,
+          "Initializer": 14.751208333109389
+        },
+        "outputs": {
+          "best_iou": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 0.0005058646202087402
+          },
+          "low_res_mask": {
+            "cosineSimilarity": 0.9999950246906227,
+            "maximumAbsoluteError": 0.5078125
+          },
+          "memory_features": {
+            "cosineSimilarity": 0.9991189055965141,
+            "maximumAbsoluteError": 0.845458984375
+          },
+          "memory_positions": {
+            "cosineSimilarity": 1.0000000000000002,
+            "maximumAbsoluteError": 0
+          },
+          "object_pointer": {
+            "cosineSimilarity": 0.9999704621421316,
+            "maximumAbsoluteError": 0.010009765625
+          },
+          "object_score": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 0.0625
+          }
+        },
+        "passed": true,
+        "predictionAndStateMillisecondsDiagnosticOnly": 967.4062916656112,
+        "ptsDenominator": 1,
+        "ptsNumerator": 0,
+        "sameObjectPresence": true,
+        "sourceImageSHA256": "df4fd26c6e7c6cce4cd9e6c04ace316788f125eb4f953f0aad96882e7b474dd9",
+        "state": {
+          "acceptedFrames": 1,
+          "pointerEntries": 1,
+          "spatialEntries": 1
+        }
+      },
+      {
+        "foregroundFraction": 0.0400848388671875,
+        "index": 1,
+        "inputBGRASHA256": "8e008f2d5fca0e7567956ad3929a07a86d2f3a664574fc09915cd9a05bbca145",
+        "maskIoUAgainstMacCoreML": 0.9992386752950133,
+        "modelMilliseconds": {
+          "ImageEncoder": 126.73133333373698,
+          "Propagator": 289.8736666666082
+        },
+        "outputs": {
+          "best_iou": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 0.00024044513702392578
+          },
+          "low_res_mask": {
+            "cosineSimilarity": 0.9999898984111897,
+            "maximumAbsoluteError": 0.78125
+          },
+          "memory_features": {
+            "cosineSimilarity": 0.9974523655049921,
+            "maximumAbsoluteError": 1.88134765625
+          },
+          "memory_positions": {
+            "cosineSimilarity": 1.0000000000000002,
+            "maximumAbsoluteError": 0
+          },
+          "object_pointer": {
+            "cosineSimilarity": 0.9996915695821222,
+            "maximumAbsoluteError": 0.07421875
+          },
+          "object_score": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 0.0078125
+          }
+        },
+        "passed": true,
+        "predictionAndStateMillisecondsDiagnosticOnly": 1261.9447500001115,
+        "ptsDenominator": 30,
+        "ptsNumerator": 1,
+        "sameObjectPresence": true,
+        "sourceImageSHA256": "8c59ab89ffc2586f78ef4ef021e62e9747201bc5ef42e32d8f6efa7854618b3f",
+        "state": {
+          "acceptedFrames": 2,
+          "pointerEntries": 2,
+          "spatialEntries": 2
+        }
+      },
+      {
+        "foregroundFraction": 0.04107666015625,
+        "index": 2,
+        "inputBGRASHA256": "1d709e93ecd9a6362bbb68acc70b7f4896392a96d68362362757982c4e4f8aed",
+        "maskIoUAgainstMacCoreML": 0.9988864142538976,
+        "modelMilliseconds": {
+          "ImageEncoder": 114.40508333180333,
+          "Propagator": 261.03933333251916
+        },
+        "outputs": {
+          "best_iou": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 0.00013631582260131836
+          },
+          "low_res_mask": {
+            "cosineSimilarity": 0.9999912389754656,
+            "maximumAbsoluteError": 0.734375
+          },
+          "memory_features": {
+            "cosineSimilarity": 0.9961830924087227,
+            "maximumAbsoluteError": 3.1279296875
+          },
+          "memory_positions": {
+            "cosineSimilarity": 1.0000000000000002,
+            "maximumAbsoluteError": 0
+          },
+          "object_pointer": {
+            "cosineSimilarity": 0.9995850414268443,
+            "maximumAbsoluteError": 0.045654296875
+          },
+          "object_score": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 0.0078125
+          }
+        },
+        "passed": true,
+        "predictionAndStateMillisecondsDiagnosticOnly": 1300.2503749994503,
+        "ptsDenominator": 15,
+        "ptsNumerator": 1,
+        "sameObjectPresence": true,
+        "sourceImageSHA256": "105621e87fbb3ffbd493d3256d4e672d453603a91bf2db14bfc36226a013f15f",
+        "state": {
+          "acceptedFrames": 3,
+          "pointerEntries": 3,
+          "spatialEntries": 3
+        }
+      },
+      {
+        "foregroundFraction": 0.042236328125,
+        "index": 3,
+        "inputBGRASHA256": "ab01d934adb0f3134494e7172c1244cdd4351f00f436e33d5afa0d5f4662f55a",
+        "maskIoUAgainstMacCoreML": 0.9996387283236994,
+        "modelMilliseconds": {
+          "ImageEncoder": 135.64945833422826,
+          "Propagator": 226.20216666655324
+        },
+        "outputs": {
+          "best_iou": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 0.0001823902130126953
+          },
+          "low_res_mask": {
+            "cosineSimilarity": 0.9999918051497418,
+            "maximumAbsoluteError": 0.6875
+          },
+          "memory_features": {
+            "cosineSimilarity": 0.997801769834402,
+            "maximumAbsoluteError": 2.5703125
+          },
+          "memory_positions": {
+            "cosineSimilarity": 1.0000000000000002,
+            "maximumAbsoluteError": 0
+          },
+          "object_pointer": {
+            "cosineSimilarity": 0.9993549809011893,
+            "maximumAbsoluteError": 0.06005859375
+          },
+          "object_score": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 0.046875
+          }
+        },
+        "passed": true,
+        "predictionAndStateMillisecondsDiagnosticOnly": 1207.9091666673776,
+        "ptsDenominator": 10,
+        "ptsNumerator": 1,
+        "sameObjectPresence": true,
+        "sourceImageSHA256": "a5ff112a614abf780a0ee0a275e0890599673f0cf03a84d4e7d0a65abb4a8767",
+        "state": {
+          "acceptedFrames": 4,
+          "pointerEntries": 4,
+          "spatialEntries": 4
+        }
+      },
+      {
+        "foregroundFraction": 0.043060302734375,
+        "index": 4,
+        "inputBGRASHA256": "50b4bfbae52d317e2fa6c0275aa1fdc69dc4cd6d4d39a9d50c074d3d6c3f012b",
+        "maskIoUAgainstMacCoreML": 0.9996456413890857,
+        "modelMilliseconds": {
+          "ImageEncoder": 115.33504166618513,
+          "Propagator": 247.01970833484665
+        },
+        "outputs": {
+          "best_iou": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 0.0002853870391845703
+          },
+          "low_res_mask": {
+            "cosineSimilarity": 0.9999919019431438,
+            "maximumAbsoluteError": 0.515625
+          },
+          "memory_features": {
+            "cosineSimilarity": 0.9987038386110324,
+            "maximumAbsoluteError": 1.6842041015625
+          },
+          "memory_positions": {
+            "cosineSimilarity": 1.0000000000000002,
+            "maximumAbsoluteError": 0
+          },
+          "object_pointer": {
+            "cosineSimilarity": 0.9997578868937875,
+            "maximumAbsoluteError": 0.03955078125
+          },
+          "object_score": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 0.03125
+          }
+        },
+        "passed": true,
+        "predictionAndStateMillisecondsDiagnosticOnly": 1202.5326666662295,
+        "ptsDenominator": 15,
+        "ptsNumerator": 2,
+        "sameObjectPresence": true,
+        "sourceImageSHA256": "62f93ffbadcdcf628dcc60349c18fa0a12df52ccbf0658b2f20312d3d1af018e",
+        "state": {
+          "acceptedFrames": 5,
+          "pointerEntries": 5,
+          "spatialEntries": 5
+        }
+      },
+      {
+        "foregroundFraction": 0.0424041748046875,
+        "index": 5,
+        "inputBGRASHA256": "b87ae417e2595a663f70583eb9f98fc0cb7b6a91d0d1bd9e896f7a75e3fe4696",
+        "maskIoUAgainstMacCoreML": 0.9996401583303347,
+        "modelMilliseconds": {
+          "ImageEncoder": 114.96579166669108,
+          "Propagator": 228.45666666762554
+        },
+        "outputs": {
+          "best_iou": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 0.0001957416534423828
+          },
+          "low_res_mask": {
+            "cosineSimilarity": 0.9999937734086994,
+            "maximumAbsoluteError": 0.71875
+          },
+          "memory_features": {
+            "cosineSimilarity": 0.9989011756993116,
+            "maximumAbsoluteError": 1.66796875
+          },
+          "memory_positions": {
+            "cosineSimilarity": 1.0000000000000002,
+            "maximumAbsoluteError": 0
+          },
+          "object_pointer": {
+            "cosineSimilarity": 0.9997101289543637,
+            "maximumAbsoluteError": 0.03857421875
+          },
+          "object_score": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 0
+          }
+        },
+        "passed": true,
+        "predictionAndStateMillisecondsDiagnosticOnly": 1206.0265000000072,
+        "ptsDenominator": 6,
+        "ptsNumerator": 1,
+        "sameObjectPresence": true,
+        "sourceImageSHA256": "f6a40decba22d155c87c3c1266d596fd2bd6196f17b8aa8a8e331ce6f5cd4e2d",
+        "state": {
+          "acceptedFrames": 6,
+          "pointerEntries": 6,
+          "spatialEntries": 6
+        }
+      },
+      {
+        "foregroundFraction": 0.0411834716796875,
+        "index": 6,
+        "inputBGRASHA256": "42fe63dfb236efdf052eb2a62713bafa51b5f38e137bb6ad86b9cb2fc2e56e3a",
+        "maskIoUAgainstMacCoreML": 0.9977777777777778,
+        "modelMilliseconds": {
+          "ImageEncoder": 112.8045416680834,
+          "Propagator": 220.1672499995766
+        },
+        "outputs": {
+          "best_iou": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 0.00025212764739990234
+          },
+          "low_res_mask": {
+            "cosineSimilarity": 0.9999925948288051,
+            "maximumAbsoluteError": 0.59375
+          },
+          "memory_features": {
+            "cosineSimilarity": 0.9970537646792762,
+            "maximumAbsoluteError": 2.6318359375
+          },
+          "memory_positions": {
+            "cosineSimilarity": 1.0000000000000002,
+            "maximumAbsoluteError": 0
+          },
+          "object_pointer": {
+            "cosineSimilarity": 0.9996871183447851,
+            "maximumAbsoluteError": 0.03759765625
+          },
+          "object_score": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 0.03125
+          }
+        },
+        "passed": true,
+        "predictionAndStateMillisecondsDiagnosticOnly": 1173.0146249992686,
+        "ptsDenominator": 5,
+        "ptsNumerator": 1,
+        "sameObjectPresence": true,
+        "sourceImageSHA256": "2ac9074fac47bc62545f8737795e6a64f267b59a0ad55d10b1a85150bcbaa59f",
+        "state": {
+          "acceptedFrames": 7,
+          "pointerEntries": 7,
+          "spatialEntries": 7
+        }
+      },
+      {
+        "foregroundFraction": 0.040374755859375,
+        "index": 7,
+        "inputBGRASHA256": "7b96b7bf64dbeada41915ad057931b60dad7b1932d465779bf9522cd2939d92a",
+        "maskIoUAgainstMacCoreML": 0.9988662131519275,
+        "modelMilliseconds": {
+          "ImageEncoder": 113.64116666663904,
+          "Propagator": 381.04637499964156
+        },
+        "outputs": {
+          "best_iou": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 0.0004609823226928711
+          },
+          "low_res_mask": {
+            "cosineSimilarity": 0.9999938228018468,
+            "maximumAbsoluteError": 0.625
+          },
+          "memory_features": {
+            "cosineSimilarity": 0.9983312020443769,
+            "maximumAbsoluteError": 2.08984375
+          },
+          "memory_positions": {
+            "cosineSimilarity": 1.0000000000000002,
+            "maximumAbsoluteError": 0
+          },
+          "object_pointer": {
+            "cosineSimilarity": 0.999296460312439,
+            "maximumAbsoluteError": 0.06201171875
+          },
+          "object_score": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 0
+          }
+        },
+        "passed": true,
+        "predictionAndStateMillisecondsDiagnosticOnly": 1363.1564166662429,
+        "ptsDenominator": 30,
+        "ptsNumerator": 7,
+        "sameObjectPresence": true,
+        "sourceImageSHA256": "bdc67ced61153a28b0569c2781bdb6aff68dd07dd278389e9ec387fe11e9dc9a",
+        "state": {
+          "acceptedFrames": 8,
+          "pointerEntries": 8,
+          "spatialEntries": 7
+        }
+      },
+      {
+        "foregroundFraction": 0.040252685546875,
+        "index": 8,
+        "inputBGRASHA256": "3457655e8d4863821b746069b63d24fac077c2380d8325af73947ec3e440ed5e",
+        "maskIoUAgainstMacCoreML": 0.9996209249431387,
+        "modelMilliseconds": {
+          "ImageEncoder": 115.3018749992043,
+          "Propagator": 221.34562500104948
+        },
+        "outputs": {
+          "best_iou": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 0.0003644227981567383
+          },
+          "low_res_mask": {
+            "cosineSimilarity": 0.9999946925439104,
+            "maximumAbsoluteError": 0.4375
+          },
+          "memory_features": {
+            "cosineSimilarity": 0.9987117615677694,
+            "maximumAbsoluteError": 1.07958984375
+          },
+          "memory_positions": {
+            "cosineSimilarity": 1.0000000000000002,
+            "maximumAbsoluteError": 0
+          },
+          "object_pointer": {
+            "cosineSimilarity": 0.9996063690011511,
+            "maximumAbsoluteError": 0.0440673828125
+          },
+          "object_score": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 0.0078125
+          }
+        },
+        "passed": true,
+        "predictionAndStateMillisecondsDiagnosticOnly": 1204.3014583323384,
+        "ptsDenominator": 15,
+        "ptsNumerator": 4,
+        "sameObjectPresence": true,
+        "sourceImageSHA256": "74ab3b24632b67dd4d82592166b5c02da84d02aa8a00d0aeff6724b6e98d9816",
+        "state": {
+          "acceptedFrames": 9,
+          "pointerEntries": 9,
+          "spatialEntries": 7
+        }
+      },
+      {
+        "foregroundFraction": 0.040283203125,
+        "index": 9,
+        "inputBGRASHA256": "3697fa0a91761fb6403bcdeb4ca1971571d745a123f8cc6df0d00ec9d30f6636",
+        "maskIoUAgainstMacCoreML": 0.9992427110942824,
+        "modelMilliseconds": {
+          "ImageEncoder": 114.25495833464083,
+          "Propagator": 209.8972916664934
+        },
+        "outputs": {
+          "best_iou": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 0.00045758485794067383
+          },
+          "low_res_mask": {
+            "cosineSimilarity": 0.9999959191091056,
+            "maximumAbsoluteError": 0.453125
+          },
+          "memory_features": {
+            "cosineSimilarity": 0.9987368042149252,
+            "maximumAbsoluteError": 1.46923828125
+          },
+          "memory_positions": {
+            "cosineSimilarity": 1.0000000000000002,
+            "maximumAbsoluteError": 0
+          },
+          "object_pointer": {
+            "cosineSimilarity": 0.9997038244593547,
+            "maximumAbsoluteError": 0.047607421875
+          },
+          "object_score": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 0.0234375
+          }
+        },
+        "passed": true,
+        "predictionAndStateMillisecondsDiagnosticOnly": 1174.7599999998783,
+        "ptsDenominator": 10,
+        "ptsNumerator": 3,
+        "sameObjectPresence": true,
+        "sourceImageSHA256": "0a7e27e0429e46facf8d23eb41c4ab25e8cebf9b579a9f5c679125bb06cdc782",
+        "state": {
+          "acceptedFrames": 10,
+          "pointerEntries": 10,
+          "spatialEntries": 7
+        }
+      },
+      {
+        "foregroundFraction": 0.04132080078125,
+        "index": 10,
+        "inputBGRASHA256": "1ff2aa7d665d1eb0d4e8d9bd4e1952dac297e4f39e14bd1486434c1a4c4a0777",
+        "maskIoUAgainstMacCoreML": 0.9985234403839055,
+        "modelMilliseconds": {
+          "ImageEncoder": 111.46708333217248,
+          "Propagator": 240.10212500070338
+        },
+        "outputs": {
+          "best_iou": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 0.00018203258514404297
+          },
+          "low_res_mask": {
+            "cosineSimilarity": 0.9999948835168477,
+            "maximumAbsoluteError": 0.453125
+          },
+          "memory_features": {
+            "cosineSimilarity": 0.9988669771555736,
+            "maximumAbsoluteError": 1.94140625
+          },
+          "memory_positions": {
+            "cosineSimilarity": 1.0000000000000002,
+            "maximumAbsoluteError": 0
+          },
+          "object_pointer": {
+            "cosineSimilarity": 0.9998308887026266,
+            "maximumAbsoluteError": 0.0287017822265625
+          },
+          "object_score": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 0
+          }
+        },
+        "passed": true,
+        "predictionAndStateMillisecondsDiagnosticOnly": 1204.6648749983433,
+        "ptsDenominator": 3,
+        "ptsNumerator": 1,
+        "sameObjectPresence": true,
+        "sourceImageSHA256": "e4257f051a23bb1524c2a20ae52414fa2791055db7e7a7dbb167f3f38af38eda",
+        "state": {
+          "acceptedFrames": 11,
+          "pointerEntries": 11,
+          "spatialEntries": 7
+        }
+      },
+      {
+        "foregroundFraction": 0.042877197265625,
+        "index": 11,
+        "inputBGRASHA256": "62a9901a46daf18ece1757e99d1618dae119ac3f0b64c241e04ab5d5600d344a",
+        "maskIoUAgainstMacCoreML": 0.9992885094272501,
+        "modelMilliseconds": {
+          "ImageEncoder": 113.61820833371894,
+          "Propagator": 222.54695833362348
+        },
+        "outputs": {
+          "best_iou": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 0.00016361474990844727
+          },
+          "low_res_mask": {
+            "cosineSimilarity": 0.9999947439540728,
+            "maximumAbsoluteError": 0.5390625
+          },
+          "memory_features": {
+            "cosineSimilarity": 0.9988752788555778,
+            "maximumAbsoluteError": 1.9501953125
+          },
+          "memory_positions": {
+            "cosineSimilarity": 1.0000000000000002,
+            "maximumAbsoluteError": 0
+          },
+          "object_pointer": {
+            "cosineSimilarity": 0.999878265143512,
+            "maximumAbsoluteError": 0.02880859375
+          },
+          "object_score": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 0.0234375
+          }
+        },
+        "passed": true,
+        "predictionAndStateMillisecondsDiagnosticOnly": 1196.0196666659613,
+        "ptsDenominator": 30,
+        "ptsNumerator": 11,
+        "sameObjectPresence": true,
+        "sourceImageSHA256": "399ed04cfbb7808f567feb7165eb91011183ef33b2974d8b0bda2d917c2561d5",
+        "state": {
+          "acceptedFrames": 12,
+          "pointerEntries": 12,
+          "spatialEntries": 7
+        }
+      },
+      {
+        "foregroundFraction": 0.0449676513671875,
+        "index": 12,
+        "inputBGRASHA256": "de0bfe6ffec896918bba9924222f6deeb315e830949b030a52a1b0f698cd5777",
+        "maskIoUAgainstMacCoreML": 0.9993215739484396,
+        "modelMilliseconds": {
+          "ImageEncoder": 112.1062083329889,
+          "Propagator": 242.06962499920337
+        },
+        "outputs": {
+          "best_iou": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 5.936622619628906e-05
+          },
+          "low_res_mask": {
+            "cosineSimilarity": 0.9999936096913005,
+            "maximumAbsoluteError": 0.421875
+          },
+          "memory_features": {
+            "cosineSimilarity": 0.9992067835717927,
+            "maximumAbsoluteError": 0.9423828125
+          },
+          "memory_positions": {
+            "cosineSimilarity": 1.0000000000000002,
+            "maximumAbsoluteError": 0
+          },
+          "object_pointer": {
+            "cosineSimilarity": 0.9999100538672866,
+            "maximumAbsoluteError": 0.02294921875
+          },
+          "object_score": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 0.0078125
+          }
+        },
+        "passed": true,
+        "predictionAndStateMillisecondsDiagnosticOnly": 1242.410958333494,
+        "ptsDenominator": 5,
+        "ptsNumerator": 2,
+        "sameObjectPresence": true,
+        "sourceImageSHA256": "ff7db0909555b0146117f02782d1239dee34abe6bb449a74ed55810aecd501b9",
+        "state": {
+          "acceptedFrames": 13,
+          "pointerEntries": 13,
+          "spatialEntries": 7
+        }
+      },
+      {
+        "foregroundFraction": 0.0473480224609375,
+        "index": 13,
+        "inputBGRASHA256": "f5d58f3a3738790c2aaf4b72ab67345c3efa244b377ba0c4bf00f42145162254",
+        "maskIoUAgainstMacCoreML": 0.999033193683532,
+        "modelMilliseconds": {
+          "ImageEncoder": 115.27941666645347,
+          "Propagator": 219.68350000133796
+        },
+        "outputs": {
+          "best_iou": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 0.00019305944442749023
+          },
+          "low_res_mask": {
+            "cosineSimilarity": 0.9999898111201801,
+            "maximumAbsoluteError": 0.5625
+          },
+          "memory_features": {
+            "cosineSimilarity": 0.9987941800993907,
+            "maximumAbsoluteError": 1.465087890625
+          },
+          "memory_positions": {
+            "cosineSimilarity": 1.0000000000000002,
+            "maximumAbsoluteError": 0
+          },
+          "object_pointer": {
+            "cosineSimilarity": 0.9995410978673441,
+            "maximumAbsoluteError": 0.04241943359375
+          },
+          "object_score": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 0.015625
+          }
+        },
+        "passed": true,
+        "predictionAndStateMillisecondsDiagnosticOnly": 1213.2986249998794,
+        "ptsDenominator": 30,
+        "ptsNumerator": 13,
+        "sameObjectPresence": true,
+        "sourceImageSHA256": "f38ef5b23bc0ab5ee6d09f4713dcaaa89cebee59b82ec68ce9f7a55f38a5fbe1",
+        "state": {
+          "acceptedFrames": 14,
+          "pointerEntries": 14,
+          "spatialEntries": 7
+        }
+      },
+      {
+        "foregroundFraction": 0.049774169921875,
+        "index": 14,
+        "inputBGRASHA256": "33d5ecea20b256d38675ed3a93530d2dabe264eecce84fbe84962988d9dbbeda",
+        "maskIoUAgainstMacCoreML": 0.9984671980380135,
+        "modelMilliseconds": {
+          "ImageEncoder": 144.34770833213406,
+          "Propagator": 235.80654166653403
+        },
+        "outputs": {
+          "best_iou": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 1.0192394256591797e-05
+          },
+          "low_res_mask": {
+            "cosineSimilarity": 0.999995530151303,
+            "maximumAbsoluteError": 0.5546875
+          },
+          "memory_features": {
+            "cosineSimilarity": 0.9989618091892778,
+            "maximumAbsoluteError": 1.076202392578125
+          },
+          "memory_positions": {
+            "cosineSimilarity": 1.0000000000000002,
+            "maximumAbsoluteError": 0
+          },
+          "object_pointer": {
+            "cosineSimilarity": 0.9998481230497709,
+            "maximumAbsoluteError": 0.03173828125
+          },
+          "object_score": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 0.015625
+          }
+        },
+        "passed": true,
+        "predictionAndStateMillisecondsDiagnosticOnly": 1267.067708333343,
+        "ptsDenominator": 15,
+        "ptsNumerator": 7,
+        "sameObjectPresence": true,
+        "sourceImageSHA256": "19ac8be183ee9a5566c9bad4c3b46cc2fde023da81f6ee81650fd7e3b87a54b1",
+        "state": {
+          "acceptedFrames": 15,
+          "pointerEntries": 15,
+          "spatialEntries": 7
+        }
+      },
+      {
+        "foregroundFraction": 0.0541534423828125,
+        "index": 15,
+        "inputBGRASHA256": "663b4f38566494757c4d9580e038166f90749fa57ce872ed6ee189a4935362d9",
+        "maskIoUAgainstMacCoreML": 0.9974647887323944,
+        "modelMilliseconds": {
+          "ImageEncoder": 117.16854166661506,
+          "Propagator": 221.47779166698456
+        },
+        "outputs": {
+          "best_iou": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 0.0001049041748046875
+          },
+          "low_res_mask": {
+            "cosineSimilarity": 0.9999951099165115,
+            "maximumAbsoluteError": 0.484375
+          },
+          "memory_features": {
+            "cosineSimilarity": 0.9987179049366582,
+            "maximumAbsoluteError": 1.880859375
+          },
+          "memory_positions": {
+            "cosineSimilarity": 1.0000000000000002,
+            "maximumAbsoluteError": 0
+          },
+          "object_pointer": {
+            "cosineSimilarity": 0.9997881592305049,
+            "maximumAbsoluteError": 0.0322265625
+          },
+          "object_score": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 0
+          }
+        },
+        "passed": true,
+        "predictionAndStateMillisecondsDiagnosticOnly": 1224.3431249989953,
+        "ptsDenominator": 2,
+        "ptsNumerator": 1,
+        "sameObjectPresence": true,
+        "sourceImageSHA256": "a1f6f364fc6b52333e04ce09c28846a3605aa2a56ba3ff3614dcdd52533b987d",
+        "state": {
+          "acceptedFrames": 16,
+          "pointerEntries": 16,
+          "spatialEntries": 7
+        }
+      },
+      {
+        "foregroundFraction": 0.0573577880859375,
+        "index": 16,
+        "inputBGRASHA256": "c84e01f27d2df4e28edfbe83a44a6985fc4d62b16800a86476804f2a78280435",
+        "maskIoUAgainstMacCoreML": 0.999468085106383,
+        "modelMilliseconds": {
+          "ImageEncoder": 113.49724999854516,
+          "Propagator": 209.82054166779562
+        },
+        "outputs": {
+          "best_iou": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 9.518861770629883e-05
+          },
+          "low_res_mask": {
+            "cosineSimilarity": 0.9999941371144837,
+            "maximumAbsoluteError": 0.5625
+          },
+          "memory_features": {
+            "cosineSimilarity": 0.9963583053423175,
+            "maximumAbsoluteError": 4.0439453125
+          },
+          "memory_positions": {
+            "cosineSimilarity": 1.0000000000000002,
+            "maximumAbsoluteError": 0
+          },
+          "object_pointer": {
+            "cosineSimilarity": 0.9998131157746255,
+            "maximumAbsoluteError": 0.03515625
+          },
+          "object_score": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 0.0078125
+          }
+        },
+        "passed": true,
+        "predictionAndStateMillisecondsDiagnosticOnly": 1206.1605833332578,
+        "ptsDenominator": 15,
+        "ptsNumerator": 8,
+        "sameObjectPresence": true,
+        "sourceImageSHA256": "9769759d13e3292cd9f6c52fda09ac76903c406362fe801c399c4fa7a1b05a53",
+        "state": {
+          "acceptedFrames": 17,
+          "pointerEntries": 16,
+          "spatialEntries": 7
+        }
+      },
+      {
+        "foregroundFraction": 0.059417724609375,
+        "index": 17,
+        "inputBGRASHA256": "5442ed0a1432b87aa5a922cd6ea24cf429df0f3c1a7678824e2961c76bada8f8",
+        "maskIoUAgainstMacCoreML": 0.9997432605905007,
+        "modelMilliseconds": {
+          "ImageEncoder": 109.99308333339286,
+          "Propagator": 213.92787500008126
+        },
+        "outputs": {
+          "best_iou": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 2.872943878173828e-05
+          },
+          "low_res_mask": {
+            "cosineSimilarity": 0.999995632704484,
+            "maximumAbsoluteError": 0.3984375
+          },
+          "memory_features": {
+            "cosineSimilarity": 0.9994099706690025,
+            "maximumAbsoluteError": 0.5615234375
+          },
+          "memory_positions": {
+            "cosineSimilarity": 1.0000000000000002,
+            "maximumAbsoluteError": 0
+          },
+          "object_pointer": {
+            "cosineSimilarity": 0.9996869575509714,
+            "maximumAbsoluteError": 0.04443359375
+          },
+          "object_score": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 0.03125
+          }
+        },
+        "passed": true,
+        "predictionAndStateMillisecondsDiagnosticOnly": 1204.515541667206,
+        "ptsDenominator": 30,
+        "ptsNumerator": 17,
+        "sameObjectPresence": true,
+        "sourceImageSHA256": "547d222bd5a2f255779e7afc5269080924c0b7d2475607e930cc59342c0f2a59",
+        "state": {
+          "acceptedFrames": 18,
+          "pointerEntries": 16,
+          "spatialEntries": 7
+        }
+      },
+      {
+        "foregroundFraction": 0.0603790283203125,
+        "index": 18,
+        "inputBGRASHA256": "1b4c8e707ca4374c9c95583c683c7c10dae8d8c5b21907ea6019387055f928ac",
+        "maskIoUAgainstMacCoreML": 1,
+        "modelMilliseconds": {
+          "ImageEncoder": 112.40862499835202,
+          "Propagator": 214.26116666771122
+        },
+        "outputs": {
+          "best_iou": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 2.390146255493164e-05
+          },
+          "low_res_mask": {
+            "cosineSimilarity": 0.9999955039756531,
+            "maximumAbsoluteError": 0.5078125
+          },
+          "memory_features": {
+            "cosineSimilarity": 0.9992229652053621,
+            "maximumAbsoluteError": 0.8876953125
+          },
+          "memory_positions": {
+            "cosineSimilarity": 1.0000000000000002,
+            "maximumAbsoluteError": 0
+          },
+          "object_pointer": {
+            "cosineSimilarity": 0.9999234594442032,
+            "maximumAbsoluteError": 0.0234375
+          },
+          "object_score": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 0.03125
+          }
+        },
+        "passed": true,
+        "predictionAndStateMillisecondsDiagnosticOnly": 1206.0801250008808,
+        "ptsDenominator": 5,
+        "ptsNumerator": 3,
+        "sameObjectPresence": true,
+        "sourceImageSHA256": "a29dd4d4ec155aef133fe670ff73065aa2558101d980f187e24752dd0976bab9",
+        "state": {
+          "acceptedFrames": 19,
+          "pointerEntries": 16,
+          "spatialEntries": 7
+        }
+      },
+      {
+        "foregroundFraction": 0.0608673095703125,
+        "index": 19,
+        "inputBGRASHA256": "b4175ba5baafd72ad2c12a0b05a001d70e668cf978af59b003cce7fd519adf8e",
+        "maskIoUAgainstMacCoreML": 0.9994986212083229,
+        "modelMilliseconds": {
+          "ImageEncoder": 105.41295833354525,
+          "Propagator": 208.64787500067905
+        },
+        "outputs": {
+          "best_iou": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 2.753734588623047e-05
+          },
+          "low_res_mask": {
+            "cosineSimilarity": 0.999995896336509,
+            "maximumAbsoluteError": 0.46875
+          },
+          "memory_features": {
+            "cosineSimilarity": 0.9990037539470199,
+            "maximumAbsoluteError": 1.162109375
+          },
+          "memory_positions": {
+            "cosineSimilarity": 1.0000000000000002,
+            "maximumAbsoluteError": 0
+          },
+          "object_pointer": {
+            "cosineSimilarity": 0.9998151367975486,
+            "maximumAbsoluteError": 0.0283203125
+          },
+          "object_score": {
+            "cosineSimilarity": 1,
+            "maximumAbsoluteError": 0.0078125
+          }
+        },
+        "passed": true,
+        "predictionAndStateMillisecondsDiagnosticOnly": 1192.7080416662648,
+        "ptsDenominator": 30,
+        "ptsNumerator": 19,
+        "sameObjectPresence": true,
+        "sourceImageSHA256": "05ef5ea441e42bb439f0a87c950f827d4b3cf5e2e6ddcee5125c2462295137a6",
+        "state": {
+          "acceptedFrames": 20,
+          "pointerEntries": 16,
+          "spatialEntries": 7
+        }
+      }
+    ],
+    "generatedAt": "2026-09-15T18:17:49Z",
+    "graphRevision": "dense-initializer-points.v1",
+    "hardware": "iPhone15,2",
+    "isIOSAppOnMac": false,
+    "lastCheckpoint": "Completed frame 20 comparison",
+    "mode": "CPU only",
+    "operatingSystem": "Version 26.5.2 (Build 23F84)",
+    "passed": true,
+    "pointNormalizedTopLeft": [
+      0.4912,
+      0.4706
+    ],
+    "precisionPolicy": "mixed-encoder-late-conv33-and-fp32-attention-iou.v1",
+    "reference": "Mac Core ML CPU replay of the passed original-PyTorch comparison fixture",
+    "schema": "bytewave.temporal-device-comparison.v1",
+    "scope": "20 exact-input sequential predictions with bounded Swift state. Low mask, pointer and memory cosine >= 0.99; low-mask IoU >= 0.95; matching object presence; all model outputs finite. High mask is checked for shape/finiteness, not compared numerically. No video decoding, sustained playback FPS, or measured hardware utilization.",
+    "sourceModelsManifestSHA256": "8e3855c53deda132d4c378d3a93343ac3bc6a678b1a95a8cf5bb7c6bd99e61c1",
+    "sourceReportSHA256": "e6a8cd5bb3bb1879aa2cdc58625ee64475f75438559cacc5e5f0d63d119e040d",
+    "thermalStateAtEnd": "nominal",
+    "thermalStateAtStart": "nominal",
+    "timingScope": "Model-call wall time excludes input copies, tensor checks, state assembly, reference comparison, checkpoint file I/O and display. Prediction-and-state time includes input copies/checks/state and pre-prediction checkpoint writes. First frame is cold; compile/load is separate. Debug-build timings are diagnostic.",
+    "verifiedModelFileCount": 12
+  }
+}

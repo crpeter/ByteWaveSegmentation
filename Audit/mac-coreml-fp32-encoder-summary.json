@@ -1,0 +1,358 @@
+{
+  "contract": "bytewave.edgetam-temporal-owned.v2",
+  "readyForDeviceValidation": false,
+  "diagnosticComplete": true,
+  "scope": "Each Core ML component is compared to PyTorch with the same actual inputs. Encoder output source is explicit below; masks and stored state come from Core ML. End-to-end comparison uses separate original PyTorch history. No parity gates are changed.",
+  "encoderOutputSource": "coreml-fp32-control",
+  "torchThreads": {
+    "intraOp": 1,
+    "interOp": 1
+  },
+  "pointNormalizedTopLeft": [
+    0.4912,
+    0.4706
+  ],
+  "coremlComputeUnits": "CPU_ONLY",
+  "precisionPolicy": "fp16-with-fp32-attention-and-iou.v1",
+  "modelsManifestSHA256": "f0684ef5926971f2c3d8c84594267c2948e37d9156e082e3bba6f5114c374ba4",
+  "encoderOverride": {
+    "computePrecision": "float32",
+    "tensorOutputs": "float32",
+    "files": {
+      "Data/com.apple.CoreML/model.mlmodel": "3f5d85e310aefbdd1c132b2ee57301a12b05e252c815f8b3dda1f212900537c1",
+      "Data/com.apple.CoreML/weights/weight.bin": "feb6bc40f1a56a1082eade9748b370b1f4b4206adc7a67270ab73f9ccdbb92a4",
+      "Manifest.json": "0034ebe6e8963e205552948e717b3ca5b05734667929ed6f7009e859d6ac534b"
+    }
+  },
+  "allRequestedFramesPassedComparison": true,
+  "sourceAttachment": "Pasted markdown(20260915-131857).md",
+  "sourceSHA256": "2844aa166dc16a2306baec0bdf6aa3e0efea47ab0c4cc800639fcceb6b6233d4",
+  "frames": [
+    {
+      "index": 0,
+      "ptsNumerator": 0,
+      "ptsDenominator": 1,
+      "imageSHA256": "df4fd26c6e7c6cce4cd9e6c04ace316788f125eb4f953f0aad96882e7b474dd9",
+      "passed": true,
+      "maskIoU": 0.9995991983967936,
+      "pointerCosine": 0.9999887039463059,
+      "memoryCosine": 0.9999152511348144,
+      "encoderRawFeatureCosine": 0.9999999999703464,
+      "state": {
+        "acceptedFrames": 1,
+        "spatialEntries": 1,
+        "pointerEntries": 1
+      }
+    },
+    {
+      "index": 1,
+      "ptsNumerator": 1,
+      "ptsDenominator": 30,
+      "imageSHA256": "8c59ab89ffc2586f78ef4ef021e62e9747201bc5ef42e32d8f6efa7854618b3f",
+      "passed": true,
+      "maskIoU": 0.9992389649923896,
+      "pointerCosine": 0.9999798057201723,
+      "memoryCosine": 0.9997590049162636,
+      "encoderRawFeatureCosine": 0.9999999999709882,
+      "state": {
+        "acceptedFrames": 2,
+        "spatialEntries": 2,
+        "pointerEntries": 2
+      }
+    },
+    {
+      "index": 2,
+      "ptsNumerator": 1,
+      "ptsDenominator": 15,
+      "imageSHA256": "105621e87fbb3ffbd493d3256d4e672d453603a91bf2db14bfc36226a013f15f",
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.9998804958930269,
+      "memoryCosine": 0.9999307668030387,
+      "encoderRawFeatureCosine": 0.9999999999710429,
+      "state": {
+        "acceptedFrames": 3,
+        "spatialEntries": 3,
+        "pointerEntries": 3
+      }
+    },
+    {
+      "index": 3,
+      "ptsNumerator": 1,
+      "ptsDenominator": 10,
+      "imageSHA256": "a5ff112a614abf780a0ee0a275e0890599673f0cf03a84d4e7d0a65abb4a8767",
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.9998755413132683,
+      "memoryCosine": 0.999950441027305,
+      "encoderRawFeatureCosine": 0.9999999999711148,
+      "state": {
+        "acceptedFrames": 4,
+        "spatialEntries": 4,
+        "pointerEntries": 4
+      }
+    },
+    {
+      "index": 4,
+      "ptsNumerator": 2,
+      "ptsDenominator": 15,
+      "imageSHA256": "62f93ffbadcdcf628dcc60349c18fa0a12df52ccbf0658b2f20312d3d1af018e",
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.9999442299667768,
+      "memoryCosine": 0.9999208682613755,
+      "encoderRawFeatureCosine": 0.9999999999703906,
+      "state": {
+        "acceptedFrames": 5,
+        "spatialEntries": 5,
+        "pointerEntries": 5
+      }
+    },
+    {
+      "index": 5,
+      "ptsNumerator": 1,
+      "ptsDenominator": 6,
+      "imageSHA256": "f6a40decba22d155c87c3c1266d596fd2bd6196f17b8aa8a8e331ce6f5cd4e2d",
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.9999638104075236,
+      "memoryCosine": 0.9999314985141463,
+      "encoderRawFeatureCosine": 0.9999999999707824,
+      "state": {
+        "acceptedFrames": 6,
+        "spatialEntries": 6,
+        "pointerEntries": 6
+      }
+    },
+    {
+      "index": 6,
+      "ptsNumerator": 1,
+      "ptsDenominator": 5,
+      "imageSHA256": "2ac9074fac47bc62545f8737795e6a64f267b59a0ad55d10b1a85150bcbaa59f",
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.9999848941898192,
+      "memoryCosine": 0.999829881089658,
+      "encoderRawFeatureCosine": 0.9999999999703931,
+      "state": {
+        "acceptedFrames": 7,
+        "spatialEntries": 7,
+        "pointerEntries": 7
+      }
+    },
+    {
+      "index": 7,
+      "ptsNumerator": 7,
+      "ptsDenominator": 30,
+      "imageSHA256": "bdc67ced61153a28b0569c2781bdb6aff68dd07dd278389e9ec387fe11e9dc9a",
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.9999795442256219,
+      "memoryCosine": 0.9998965638800524,
+      "encoderRawFeatureCosine": 0.9999999999710999,
+      "state": {
+        "acceptedFrames": 8,
+        "spatialEntries": 7,
+        "pointerEntries": 8
+      }
+    },
+    {
+      "index": 8,
+      "ptsNumerator": 4,
+      "ptsDenominator": 15,
+      "imageSHA256": "74ab3b24632b67dd4d82592166b5c02da84d02aa8a00d0aeff6724b6e98d9816",
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.9999887011823054,
+      "memoryCosine": 0.9997401711158701,
+      "encoderRawFeatureCosine": 0.9999999999703183,
+      "state": {
+        "acceptedFrames": 9,
+        "spatialEntries": 7,
+        "pointerEntries": 9
+      }
+    },
+    {
+      "index": 9,
+      "ptsNumerator": 3,
+      "ptsDenominator": 10,
+      "imageSHA256": "0a7e27e0429e46facf8d23eb41c4ab25e8cebf9b579a9f5c679125bb06cdc782",
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.9999532904306963,
+      "memoryCosine": 0.9997697188166872,
+      "encoderRawFeatureCosine": 0.999999999970727,
+      "state": {
+        "acceptedFrames": 10,
+        "spatialEntries": 7,
+        "pointerEntries": 10
+      }
+    },
+    {
+      "index": 10,
+      "ptsNumerator": 1,
+      "ptsDenominator": 3,
+      "imageSHA256": "e4257f051a23bb1524c2a20ae52414fa2791055db7e7a7dbb167f3f38af38eda",
+      "passed": true,
+      "maskIoU": 0.9996300406955235,
+      "pointerCosine": 0.9999626774046335,
+      "memoryCosine": 0.9995725507681625,
+      "encoderRawFeatureCosine": 0.9999999999697913,
+      "state": {
+        "acceptedFrames": 11,
+        "spatialEntries": 7,
+        "pointerEntries": 11
+      }
+    },
+    {
+      "index": 11,
+      "ptsNumerator": 11,
+      "ptsDenominator": 30,
+      "imageSHA256": "399ed04cfbb7808f567feb7165eb91011183ef33b2974d8b0bda2d917c2561d5",
+      "passed": true,
+      "maskIoU": 0.9996440014239943,
+      "pointerCosine": 0.999891511540616,
+      "memoryCosine": 0.99949645671528,
+      "encoderRawFeatureCosine": 0.9999999999705731,
+      "state": {
+        "acceptedFrames": 12,
+        "spatialEntries": 7,
+        "pointerEntries": 12
+      }
+    },
+    {
+      "index": 12,
+      "ptsNumerator": 2,
+      "ptsDenominator": 5,
+      "imageSHA256": "ff7db0909555b0146117f02782d1239dee34abe6bb449a74ed55810aecd501b9",
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.9999742013319242,
+      "memoryCosine": 0.9998628913585186,
+      "encoderRawFeatureCosine": 0.9999999999704956,
+      "state": {
+        "acceptedFrames": 13,
+        "spatialEntries": 7,
+        "pointerEntries": 13
+      }
+    },
+    {
+      "index": 13,
+      "ptsNumerator": 13,
+      "ptsDenominator": 30,
+      "imageSHA256": "f38ef5b23bc0ab5ee6d09f4713dcaaa89cebee59b82ec68ce9f7a55f38a5fbe1",
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.9999752171614207,
+      "memoryCosine": 0.9997750956959404,
+      "encoderRawFeatureCosine": 0.9999999999709956,
+      "state": {
+        "acceptedFrames": 14,
+        "spatialEntries": 7,
+        "pointerEntries": 14
+      }
+    },
+    {
+      "index": 14,
+      "ptsNumerator": 7,
+      "ptsDenominator": 15,
+      "imageSHA256": "19ac8be183ee9a5566c9bad4c3b46cc2fde023da81f6ee81650fd7e3b87a54b1",
+      "passed": true,
+      "maskIoU": 0.9993866911990187,
+      "pointerCosine": 0.9999694594037934,
+      "memoryCosine": 0.9999654367947474,
+      "encoderRawFeatureCosine": 0.9999999999702237,
+      "state": {
+        "acceptedFrames": 15,
+        "spatialEntries": 7,
+        "pointerEntries": 15
+      }
+    },
+    {
+      "index": 15,
+      "ptsNumerator": 1,
+      "ptsDenominator": 2,
+      "imageSHA256": "a1f6f364fc6b52333e04ce09c28846a3605aa2a56ba3ff3614dcdd52533b987d",
+      "passed": true,
+      "maskIoU": 0.9991551675584343,
+      "pointerCosine": 0.9999877737544282,
+      "memoryCosine": 0.9999223729395851,
+      "encoderRawFeatureCosine": 0.9999999999699937,
+      "state": {
+        "acceptedFrames": 16,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      }
+    },
+    {
+      "index": 16,
+      "ptsNumerator": 8,
+      "ptsDenominator": 15,
+      "imageSHA256": "9769759d13e3292cd9f6c52fda09ac76903c406362fe801c399c4fa7a1b05a53",
+      "passed": true,
+      "maskIoU": 0.9997340425531915,
+      "pointerCosine": 0.9999849735559386,
+      "memoryCosine": 0.9998493100164625,
+      "encoderRawFeatureCosine": 0.9999999999705862,
+      "state": {
+        "acceptedFrames": 17,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      }
+    },
+    {
+      "index": 17,
+      "ptsNumerator": 17,
+      "ptsDenominator": 30,
+      "imageSHA256": "547d222bd5a2f255779e7afc5269080924c0b7d2475607e930cc59342c0f2a59",
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.9999862485416736,
+      "memoryCosine": 0.9998763700284637,
+      "encoderRawFeatureCosine": 0.9999999999704365,
+      "state": {
+        "acceptedFrames": 18,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      }
+    },
+    {
+      "index": 18,
+      "ptsNumerator": 3,
+      "ptsDenominator": 5,
+      "imageSHA256": "a29dd4d4ec155aef133fe670ff73065aa2558101d980f187e24752dd0976bab9",
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.9999763125938154,
+      "memoryCosine": 0.9987508439310252,
+      "encoderRawFeatureCosine": 0.9999999999702509,
+      "state": {
+        "acceptedFrames": 19,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      }
+    },
+    {
+      "index": 19,
+      "ptsNumerator": 19,
+      "ptsDenominator": 30,
+      "imageSHA256": "05ef5ea441e42bb439f0a87c950f827d4b3cf5e2e6ddcee5125c2462295137a6",
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.9999627761087688,
+      "memoryCosine": 0.9998520695912694,
+      "encoderRawFeatureCosine": 0.9999999999699285,
+      "state": {
+        "acceptedFrames": 20,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      }
+    }
+  ],
+  "minimumMetrics": {
+    "maskIoU": 0.9991551675584343,
+    "pointerCosine": 0.9998755413132683,
+    "memoryCosine": 0.9987508439310252,
+    "encoderRawFeatureCosine": 0.9999999999697913
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "source": "User-pasted .temporal-runs/encoder-temporal-01/report.json, 2026-09-15",
+  "scope": "20 saved frames against original PyTorch; candidate encoder CPU_ONLY or CPU_AND_NE, tracker CPU_ONLY. Diagnostic only; no normal export or physical-device readiness.",
+  "completed": true,
+  "passed": true,
+  "readyForDeviceValidation": false,
+  "sourceManifestSHA256": "8e3855c53deda132d4c378d3a93343ac3bc6a678b1a95a8cf5bb7c6bd99e61c1",
+  "candidateReportSHA256": "4aafca0386d1af15f8dc347be30f4e3f3f614f9a04d31e09d8d6d4a9d6e68921",
+  "candidateVariant": "fanout",
+  "sourceFrameReportSHA256": "e6a8cd5bb3bb1879aa2cdc58625ee64475f75438559cacc5e5f0d63d119e040d",
+  "pointNormalizedTopLeft": [
+    0.4912,
+    0.4706
+  ],
+  "modes": {
+    "cpu": {
+      "returnCode": 0,
+      "passed": true,
+      "framesCompared": 20,
+      "minimumMaskIoU": 0.9957401490947817,
+      "minimumPointerCosine": 0.9990273321442846,
+      "minimumMemoryCosine": 0.9965700094527923,
+      "finalState": {
+        "acceptedFrames": 20,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      }
+    },
+    "ne": {
+      "returnCode": 0,
+      "passed": true,
+      "framesCompared": 20,
+      "minimumMaskIoU": 0.9981529368304396,
+      "minimumPointerCosine": 0.9994902590085539,
+      "minimumMemoryCosine": 0.9985372379192661,
+      "finalState": {
+        "acceptedFrames": 20,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      }
+    }
+  }
+}

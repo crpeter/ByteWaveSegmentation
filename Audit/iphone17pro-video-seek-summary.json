@@ -1,0 +1,51 @@
+{
+  "scope": "User reports multiple forward and backward seeks. Report counters and retained tail validate reset/resume behavior; older detailed frame rows have intentionally rolled off. No ground-truth quality or sustained playback FPS claim.",
+  "sourceReport": "Audit/iphone17pro-video-seek-report.json",
+  "sourceReportSHA256": "3c49090445e6bc41c39e85b8d1c128e3f96781dcc2424bee51c9ac738fff9a6d",
+  "hardware": "iPhone18,1",
+  "operatingSystem": "Version 27.0 (Build 24A435)",
+  "swiftDebugCompilation": false,
+  "requestedComputeUnits": "CPU_AND_GPU",
+  "fixtureSHA256": "f6b8e78c142538375ff6bf6fee5516975543f06e2f0780f959ffd3abc0dbbc9f",
+  "framesPredicted": 181,
+  "seeks": 4,
+  "segmentsStarted": 5,
+  "emptyMasks": 0,
+  "reportedError": null,
+  "lastState": {
+    "acceptedFrames": 71,
+    "pointerEntries": 16,
+    "spatialEntries": 7
+  },
+  "retainedFrameCount": 120,
+  "retainedSegments": [
+    4,
+    5
+  ],
+  "retainedResetTransitions": [
+    {
+      "fromSegment": 4,
+      "toSegment": 5,
+      "fromPTSSeconds": 18.605,
+      "toPTSSeconds": 6.617383333333334,
+      "initialized": true,
+      "stateAfterInitialization": {
+        "acceptedFrames": 1,
+        "pointerEntries": 1,
+        "spatialEntries": 1
+      }
+    }
+  ],
+  "thermalStateAtStart": "nominal",
+  "thermalStateAtSnapshot": "nominal",
+  "meanWarmMilliseconds": {
+    "encoder": 22.624036694072526,
+    "propagator": 33.453683712237265,
+    "predictionAndState": 65.58398721650023,
+    "request": 95.15011600416818
+  },
+  "preparationRenderingOtherMeanMilliseconds": 29.56612878766795,
+  "next": "Seek/reselection functional check complete. Next isolate frame-preparation/display costs before optimizing; retain bounded state and timestamp behavior.",
+  "withinSegmentTimestampsAndStateAdvanceVerified": true,
+  "allRetainedBanksBounded": true
+}
