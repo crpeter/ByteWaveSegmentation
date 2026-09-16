@@ -1,0 +1,1242 @@
+{
+  "scope": "User-run one-frame initializer controls; not complete temporal/device validation",
+  "runs": [
+    {
+      "run": "point-indexing-01",
+      "sourceAttachment": "Pasted text(20260915-154719).txt",
+      "sourceAttachmentSHA256": "b07fc2b96314ff7671d7c4ac68d8c0766c1a6d5acf58a2341b6f46f854008367",
+      "report": {
+        "scope": "One-frame prompt-indexing control; CPU encoder inputs held identical. GPU workers isolated from native aborts.",
+        "readyForDeviceValidation": false,
+        "sourceStatus": {
+          "contract": "bytewave.edgetam-temporal-owned.v2",
+          "upstream": "7711e012a30a2402c4eaab637bdb00a521302c91",
+          "precisionPolicy": "mixed-encoder-late-conv33-and-fp32-attention-iou.v1",
+          "tensorInterface": "float32",
+          "torchThreads": {
+            "intraOp": 1,
+            "interOp": 1
+          },
+          "checkpointSHA256": "ed2d4850b8792c239689b043c47046ec239b6e808a3d9b6ae676c803fd8780df",
+          "python": "3.11.16 (main, Aug 12 2026, 23:03:19) [Clang 21.0.0 (clang-2100.1.1.101)]",
+          "versions": {
+            "torch": "2.7.0",
+            "torchvision": "0.22.0",
+            "numpy": "1.26.4",
+            "av": "15.0.0",
+            "timm": "1.0.15",
+            "coremltools": "9.0"
+          },
+          "pointNormalizedTopLeft": [
+            0.4912,
+            0.4706
+          ],
+          "referencePassed": true,
+          "coremlPassed": true,
+          "readyForDeviceValidation": true
+        },
+        "sourceManifestSHA256": "b8d7f80fd31cc9ae75128379e18a228753254e0a9431d04d3e4fd86914d3b754",
+        "versions": {
+          "torch": "2.7.0",
+          "coremltools": "9.0"
+        },
+        "predictions": {
+          "original-CPU_ONLY": {
+            "outputs": {
+              "object_score": {
+                "shape": [
+                  1,
+                  1
+                ],
+                "nonfinite": 0,
+                "minimum": 33.46875,
+                "maximum": 33.46875,
+                "maximumAbsoluteError": 0.00388336181640625,
+                "cosineSimilarity": 1.0
+              },
+              "best_iou": {
+                "shape": [
+                  1
+                ],
+                "nonfinite": 0,
+                "minimum": 0.9772788882255554,
+                "maximum": 0.9772788882255554,
+                "maximumAbsoluteError": 0.00010353326797485352,
+                "cosineSimilarity": 1.0
+              },
+              "object_pointer": {
+                "shape": [
+                  1,
+                  256
+                ],
+                "nonfinite": 0,
+                "minimum": -1.369140625,
+                "maximum": 1.8173828125,
+                "maximumAbsoluteError": 0.007292628288269043,
+                "cosineSimilarity": 0.9999886696999812
+              },
+              "low_res_mask": {
+                "shape": [
+                  1,
+                  1,
+                  256,
+                  256
+                ],
+                "nonfinite": 0,
+                "minimum": -18.140625,
+                "maximum": 17.109375,
+                "maximumAbsoluteError": 0.07704639434814453,
+                "cosineSimilarity": 0.9999990065898272,
+                "maskIoUAgainstSameInputTorch": 1.0
+              },
+              "high_res_mask": {
+                "shape": [
+                  1,
+                  1,
+                  1024,
+                  1024
+                ],
+                "nonfinite": 0,
+                "minimum": -17.5,
+                "maximum": 16.609375,
+                "maximumAbsoluteError": 0.07199668884277344,
+                "cosineSimilarity": 0.9999993262329119,
+                "maskIoUAgainstSameInputTorch": 0.9998497558532615
+              }
+            },
+            "comparison": {
+              "passed": true,
+              "sameObjectPresence": true
+            },
+            "log": "original-CPU_ONLY.log"
+          },
+          "candidate-CPU_ONLY": {
+            "outputs": {
+              "object_score": {
+                "shape": [
+                  1,
+                  1
+                ],
+                "nonfinite": 0,
+                "minimum": 33.46875,
+                "maximum": 33.46875,
+                "maximumAbsoluteError": 0.00388336181640625,
+                "cosineSimilarity": 1.0
+              },
+              "best_iou": {
+                "shape": [
+                  1
+                ],
+                "nonfinite": 0,
+                "minimum": 0.9772788882255554,
+                "maximum": 0.9772788882255554,
+                "maximumAbsoluteError": 0.00010353326797485352,
+                "cosineSimilarity": 1.0
+              },
+              "object_pointer": {
+                "shape": [
+                  1,
+                  256
+                ],
+                "nonfinite": 0,
+                "minimum": -1.369140625,
+                "maximum": 1.8173828125,
+                "maximumAbsoluteError": 0.007292628288269043,
+                "cosineSimilarity": 0.9999886696999812
+              },
+              "low_res_mask": {
+                "shape": [
+                  1,
+                  1,
+                  256,
+                  256
+                ],
+                "nonfinite": 0,
+                "minimum": -18.140625,
+                "maximum": 17.109375,
+                "maximumAbsoluteError": 0.07704639434814453,
+                "cosineSimilarity": 0.9999990065898272,
+                "maskIoUAgainstSameInputTorch": 1.0
+              },
+              "high_res_mask": {
+                "shape": [
+                  1,
+                  1,
+                  1024,
+                  1024
+                ],
+                "nonfinite": 0,
+                "minimum": -17.5,
+                "maximum": 16.609375,
+                "maximumAbsoluteError": 0.07199668884277344,
+                "cosineSimilarity": 0.9999993262329119,
+                "maskIoUAgainstSameInputTorch": 0.9998497558532615
+              }
+            },
+            "comparison": {
+              "passed": true,
+              "sameObjectPresence": true
+            },
+            "log": "candidate-CPU_ONLY.log"
+          },
+          "original-CPU_AND_GPU": {
+            "outputs": {
+              "object_score": {
+                "shape": [
+                  1,
+                  1
+                ],
+                "nonfinite": 0,
+                "minimum": 33.4375,
+                "maximum": 33.4375,
+                "maximumAbsoluteError": 0.02736663818359375,
+                "cosineSimilarity": 1.0
+              },
+              "best_iou": {
+                "shape": [
+                  1
+                ],
+                "nonfinite": 0,
+                "minimum": 0.977130651473999,
+                "maximum": 0.977130651473999,
+                "maximumAbsoluteError": 4.470348358154297e-05,
+                "cosineSimilarity": 1.0
+              },
+              "object_pointer": {
+                "shape": [
+                  1,
+                  256
+                ],
+                "nonfinite": 0,
+                "minimum": -1.3720831871032715,
+                "maximum": 1.8205021619796753,
+                "maximumAbsoluteError": 0.006844311952590942,
+                "cosineSimilarity": 0.9999928457963955
+              },
+              "low_res_mask": {
+                "shape": [
+                  1,
+                  1,
+                  256,
+                  256
+                ],
+                "nonfinite": 0,
+                "minimum": -18.1875,
+                "maximum": 17.09375,
+                "maximumAbsoluteError": 0.046242713928222656,
+                "cosineSimilarity": 0.9999998969786131,
+                "maskIoUAgainstSameInputTorch": 1.0
+              },
+              "high_res_mask": {
+                "shape": [
+                  1,
+                  1,
+                  1024,
+                  1024
+                ],
+                "nonfinite": 0,
+                "minimum": -17.546875,
+                "maximum": 16.59375,
+                "maximumAbsoluteError": 0.036322593688964844,
+                "cosineSimilarity": 0.9999999168449052,
+                "maskIoUAgainstSameInputTorch": 0.99994991736365
+              }
+            },
+            "comparison": {
+              "passed": true,
+              "sameObjectPresence": true
+            },
+            "log": "original-CPU_AND_GPU.log"
+          },
+          "candidate-CPU_AND_GPU": {
+            "outputs": {
+              "object_score": {
+                "shape": [
+                  1,
+                  1
+                ],
+                "nonfinite": 0,
+                "minimum": 33.4375,
+                "maximum": 33.4375,
+                "maximumAbsoluteError": 0.02736663818359375,
+                "cosineSimilarity": 1.0
+              },
+              "best_iou": {
+                "shape": [
+                  1
+                ],
+                "nonfinite": 0,
+                "minimum": 0.977130651473999,
+                "maximum": 0.977130651473999,
+                "maximumAbsoluteError": 4.470348358154297e-05,
+                "cosineSimilarity": 1.0
+              },
+              "object_pointer": {
+                "shape": [
+                  1,
+                  256
+                ],
+                "nonfinite": 0,
+                "minimum": -1.3720831871032715,
+                "maximum": 1.8205021619796753,
+                "maximumAbsoluteError": 0.006844311952590942,
+                "cosineSimilarity": 0.9999928457963955
+              },
+              "low_res_mask": {
+                "shape": [
+                  1,
+                  1,
+                  256,
+                  256
+                ],
+                "nonfinite": 0,
+                "minimum": -18.1875,
+                "maximum": 17.09375,
+                "maximumAbsoluteError": 0.046242713928222656,
+                "cosineSimilarity": 0.9999998969786131,
+                "maskIoUAgainstSameInputTorch": 1.0
+              },
+              "high_res_mask": {
+                "shape": [
+                  1,
+                  1,
+                  1024,
+                  1024
+                ],
+                "nonfinite": 0,
+                "minimum": -17.546875,
+                "maximum": 16.59375,
+                "maximumAbsoluteError": 0.036322593688964844,
+                "cosineSimilarity": 0.9999999168449052,
+                "maskIoUAgainstSameInputTorch": 0.99994991736365
+              }
+            },
+            "comparison": {
+              "passed": true,
+              "sameObjectPresence": true
+            },
+            "log": "candidate-CPU_AND_GPU.log"
+          }
+        },
+        "imageSHA256": "df4fd26c6e7c6cce4cd9e6c04ace316788f125eb4f953f0aad96882e7b474dd9",
+        "promptChecks": [
+          {
+            "label": -1,
+            "point": [
+              0.0,
+              0.0
+            ],
+            "passed": true
+          },
+          {
+            "label": -1,
+            "point": [
+              511.25,
+              713.5
+            ],
+            "passed": true
+          },
+          {
+            "label": -1,
+            "point": [
+              1023.0,
+              1023.0
+            ],
+            "passed": true
+          },
+          {
+            "label": 0,
+            "point": [
+              0.0,
+              0.0
+            ],
+            "passed": true
+          },
+          {
+            "label": 0,
+            "point": [
+              511.25,
+              713.5
+            ],
+            "passed": true
+          },
+          {
+            "label": 0,
+            "point": [
+              1023.0,
+              1023.0
+            ],
+            "passed": true
+          },
+          {
+            "label": 1,
+            "point": [
+              0.0,
+              0.0
+            ],
+            "passed": true
+          },
+          {
+            "label": 1,
+            "point": [
+              511.25,
+              713.5
+            ],
+            "passed": true
+          },
+          {
+            "label": 1,
+            "point": [
+              1023.0,
+              1023.0
+            ],
+            "passed": true
+          },
+          {
+            "label": 2,
+            "point": [
+              0.0,
+              0.0
+            ],
+            "passed": true
+          },
+          {
+            "label": 2,
+            "point": [
+              511.25,
+              713.5
+            ],
+            "passed": true
+          },
+          {
+            "label": 2,
+            "point": [
+              1023.0,
+              1023.0
+            ],
+            "passed": true
+          },
+          {
+            "label": 3,
+            "point": [
+              0.0,
+              0.0
+            ],
+            "passed": true
+          },
+          {
+            "label": 3,
+            "point": [
+              511.25,
+              713.5
+            ],
+            "passed": true
+          },
+          {
+            "label": 3,
+            "point": [
+              1023.0,
+              1023.0
+            ],
+            "passed": true
+          }
+        ],
+        "sameInputTorch": {
+          "low_res_mask": {
+            "shape": [
+              1,
+              1,
+              256,
+              256
+            ],
+            "nonfinite": 0,
+            "minimum": -18.18423080444336,
+            "maximum": 17.091032028198242,
+            "maximumAbsoluteError": 0.0,
+            "cosineSimilarity": 1.0,
+            "maskIoUAgainstSameInputTorch": 1.0
+          },
+          "high_res_mask": {
+            "shape": [
+              1,
+              1,
+              1024,
+              1024
+            ],
+            "nonfinite": 0,
+            "minimum": -17.53525161743164,
+            "maximum": 16.594470977783203,
+            "maximumAbsoluteError": 0.0,
+            "cosineSimilarity": 1.0,
+            "maskIoUAgainstSameInputTorch": 1.0
+          },
+          "best_iou": {
+            "shape": [
+              1
+            ],
+            "nonfinite": 0,
+            "minimum": 0.9771753549575806,
+            "maximum": 0.9771753549575806,
+            "maximumAbsoluteError": 0.0,
+            "cosineSimilarity": 1.0
+          },
+          "object_pointer": {
+            "shape": [
+              1,
+              256
+            ],
+            "nonfinite": 0,
+            "minimum": -1.3706932067871094,
+            "maximum": 1.8219923973083496,
+            "maximumAbsoluteError": 0.0,
+            "cosineSimilarity": 1.0
+          },
+          "object_score": {
+            "shape": [
+              1,
+              1
+            ],
+            "nonfinite": 0,
+            "minimum": 33.464866638183594,
+            "maximum": 33.464866638183594,
+            "maximumAbsoluteError": 0.0,
+            "cosineSimilarity": 1.0
+          }
+        },
+        "sameInputTracedTorch": {
+          "low_res_mask": {
+            "shape": [
+              1,
+              1,
+              256,
+              256
+            ],
+            "nonfinite": 0,
+            "minimum": -18.18422508239746,
+            "maximum": 17.091041564941406,
+            "maximumAbsoluteError": 2.002716064453125e-05,
+            "cosineSimilarity": 0.9999999999999196,
+            "maskIoUAgainstSameInputTorch": 1.0
+          },
+          "high_res_mask": {
+            "shape": [
+              1,
+              1,
+              1024,
+              1024
+            ],
+            "nonfinite": 0,
+            "minimum": -17.535247802734375,
+            "maximum": 16.594478607177734,
+            "maximumAbsoluteError": 1.811981201171875e-05,
+            "cosineSimilarity": 0.9999999999998263,
+            "maskIoUAgainstSameInputTorch": 1.0
+          },
+          "best_iou": {
+            "shape": [
+              1
+            ],
+            "nonfinite": 0,
+            "minimum": 0.9771753549575806,
+            "maximum": 0.9771753549575806,
+            "maximumAbsoluteError": 0.0,
+            "cosineSimilarity": 1.0
+          },
+          "object_pointer": {
+            "shape": [
+              1,
+              256
+            ],
+            "nonfinite": 0,
+            "minimum": -1.3706928491592407,
+            "maximum": 1.8219910860061646,
+            "maximumAbsoluteError": 2.86102294921875e-06,
+            "cosineSimilarity": 0.9999999999977027
+          },
+          "object_score": {
+            "shape": [
+              1,
+              1
+            ],
+            "nonfinite": 0,
+            "minimum": 33.46486282348633,
+            "maximum": 33.46486282348633,
+            "maximumAbsoluteError": 3.814697265625e-06,
+            "cosineSimilarity": 1.0
+          }
+        },
+        "graphCounts": {
+          "original": {
+            "const": 472,
+            "cast": 55,
+            "add": 32,
+            "concat": 10,
+            "slice_by_index": 17,
+            "mul": 6,
+            "slice_update": 2,
+            "sub": 3,
+            "linear": 54,
+            "sin": 1,
+            "cos": 1,
+            "equal": 10,
+            "non_zero": 10,
+            "shape": 8,
+            "select": 13,
+            "tile": 7,
+            "greater_equal": 6,
+            "scatter_nd": 6,
+            "gather_nd": 8,
+            "reshape": 34,
+            "expand_dims": 6,
+            "real_div": 6,
+            "transpose": 30,
+            "scaled_dot_product_attention": 7,
+            "layer_norm": 9,
+            "relu": 16,
+            "conv_transpose": 2,
+            "reduce_mean": 2,
+            "pow": 1,
+            "sqrt": 1,
+            "batch_norm": 1,
+            "gelu": 2,
+            "stack": 2,
+            "matmul": 1,
+            "sigmoid": 1,
+            "greater": 1,
+            "upsample_bilinear": 1,
+            "reduce_argmax": 1,
+            "reduce_max": 1
+          },
+          "candidate": {
+            "const": 399,
+            "cast": 46,
+            "add": 27,
+            "concat": 4,
+            "fill_like": 1,
+            "mul": 7,
+            "slice_by_index": 12,
+            "slice_update": 2,
+            "sub": 3,
+            "linear": 54,
+            "sin": 1,
+            "cos": 1,
+            "equal": 5,
+            "expand_dims": 9,
+            "tile": 6,
+            "select": 8,
+            "reshape": 32,
+            "transpose": 30,
+            "scaled_dot_product_attention": 7,
+            "layer_norm": 9,
+            "relu": 16,
+            "conv_transpose": 2,
+            "reduce_mean": 2,
+            "pow": 1,
+            "sqrt": 1,
+            "real_div": 1,
+            "batch_norm": 1,
+            "gelu": 2,
+            "stack": 2,
+            "matmul": 1,
+            "sigmoid": 1,
+            "greater": 1,
+            "upsample_bilinear": 1,
+            "reduce_argmax": 1,
+            "greater_equal": 1,
+            "gather_nd": 3,
+            "reduce_max": 1
+          }
+        },
+        "completed": true
+      },
+      "trailingConsole": "petercody@MacBook-Pro ByteWaveSegmentation %"
+    },
+    {
+      "run": "point-indexing-02",
+      "sourceAttachment": "Pasted text(20260915-161923).txt",
+      "sourceAttachmentSHA256": "779c544045997dba61f0a0df431c3473557045b943bf0d330de671ae1246d30d",
+      "report": {
+        "scope": "One-frame prompt-indexing control; CPU encoder inputs held identical. GPU workers isolated from native aborts.",
+        "readyForDeviceValidation": false,
+        "sourceStatus": {
+          "contract": "bytewave.edgetam-temporal-owned.v2",
+          "upstream": "7711e012a30a2402c4eaab637bdb00a521302c91",
+          "precisionPolicy": "mixed-encoder-late-conv33-and-fp32-attention-iou.v1",
+          "tensorInterface": "float32",
+          "torchThreads": {
+            "intraOp": 1,
+            "interOp": 1
+          },
+          "checkpointSHA256": "ed2d4850b8792c239689b043c47046ec239b6e808a3d9b6ae676c803fd8780df",
+          "python": "3.11.16 (main, Aug 12 2026, 23:03:19) [Clang 21.0.0 (clang-2100.1.1.101)]",
+          "versions": {
+            "torch": "2.7.0",
+            "torchvision": "0.22.0",
+            "numpy": "1.26.4",
+            "av": "15.0.0",
+            "timm": "1.0.15",
+            "coremltools": "9.0"
+          },
+          "pointNormalizedTopLeft": [
+            0.4912,
+            0.4706
+          ],
+          "referencePassed": true,
+          "coremlPassed": true,
+          "readyForDeviceValidation": true
+        },
+        "sourceManifestSHA256": "b8d7f80fd31cc9ae75128379e18a228753254e0a9431d04d3e4fd86914d3b754",
+        "versions": {
+          "torch": "2.7.0",
+          "coremltools": "9.0"
+        },
+        "predictions": {
+          "original-CPU_ONLY": {
+            "outputs": {
+              "object_score": {
+                "shape": [
+                  1,
+                  1
+                ],
+                "nonfinite": 0,
+                "minimum": 33.46875,
+                "maximum": 33.46875,
+                "maximumAbsoluteError": 0.00388336181640625,
+                "cosineSimilarity": 1.0
+              },
+              "best_iou": {
+                "shape": [
+                  1
+                ],
+                "nonfinite": 0,
+                "minimum": 0.9772788882255554,
+                "maximum": 0.9772788882255554,
+                "maximumAbsoluteError": 0.00010353326797485352,
+                "cosineSimilarity": 1.0
+              },
+              "object_pointer": {
+                "shape": [
+                  1,
+                  256
+                ],
+                "nonfinite": 0,
+                "minimum": -1.369140625,
+                "maximum": 1.8173828125,
+                "maximumAbsoluteError": 0.007292628288269043,
+                "cosineSimilarity": 0.9999886696999812
+              },
+              "low_res_mask": {
+                "shape": [
+                  1,
+                  1,
+                  256,
+                  256
+                ],
+                "nonfinite": 0,
+                "minimum": -18.140625,
+                "maximum": 17.109375,
+                "maximumAbsoluteError": 0.07704639434814453,
+                "cosineSimilarity": 0.9999990065898272,
+                "maskIoUAgainstSameInputTorch": 1.0
+              },
+              "high_res_mask": {
+                "shape": [
+                  1,
+                  1,
+                  1024,
+                  1024
+                ],
+                "nonfinite": 0,
+                "minimum": -17.5,
+                "maximum": 16.609375,
+                "maximumAbsoluteError": 0.07199668884277344,
+                "cosineSimilarity": 0.9999993262329119,
+                "maskIoUAgainstSameInputTorch": 0.9998497558532615
+              }
+            },
+            "comparison": {
+              "passed": true,
+              "sameObjectPresence": true
+            },
+            "log": "original-CPU_ONLY.log"
+          },
+          "candidate-CPU_ONLY": {
+            "outputs": {
+              "object_score": {
+                "shape": [
+                  1,
+                  1
+                ],
+                "nonfinite": 0,
+                "minimum": 33.46875,
+                "maximum": 33.46875,
+                "maximumAbsoluteError": 0.00388336181640625,
+                "cosineSimilarity": 1.0
+              },
+              "best_iou": {
+                "shape": [
+                  1
+                ],
+                "nonfinite": 0,
+                "minimum": 0.9772788882255554,
+                "maximum": 0.9772788882255554,
+                "maximumAbsoluteError": 0.00010353326797485352,
+                "cosineSimilarity": 1.0
+              },
+              "object_pointer": {
+                "shape": [
+                  1,
+                  256
+                ],
+                "nonfinite": 0,
+                "minimum": -1.369140625,
+                "maximum": 1.8173828125,
+                "maximumAbsoluteError": 0.007292628288269043,
+                "cosineSimilarity": 0.9999886696999812
+              },
+              "low_res_mask": {
+                "shape": [
+                  1,
+                  1,
+                  256,
+                  256
+                ],
+                "nonfinite": 0,
+                "minimum": -18.140625,
+                "maximum": 17.109375,
+                "maximumAbsoluteError": 0.07704639434814453,
+                "cosineSimilarity": 0.9999990065898272,
+                "maskIoUAgainstSameInputTorch": 1.0
+              },
+              "high_res_mask": {
+                "shape": [
+                  1,
+                  1,
+                  1024,
+                  1024
+                ],
+                "nonfinite": 0,
+                "minimum": -17.5,
+                "maximum": 16.609375,
+                "maximumAbsoluteError": 0.07199668884277344,
+                "cosineSimilarity": 0.9999993262329119,
+                "maskIoUAgainstSameInputTorch": 0.9998497558532615
+              }
+            },
+            "comparison": {
+              "passed": true,
+              "sameObjectPresence": true
+            },
+            "log": "candidate-CPU_ONLY.log"
+          },
+          "original-CPU_AND_GPU": {
+            "error": "Prediction worker failed or aborted",
+            "returnCode": -6,
+            "log": "original-CPU_AND_GPU.log"
+          },
+          "candidate-CPU_AND_GPU": {
+            "outputs": {
+              "object_score": {
+                "shape": [
+                  1,
+                  1
+                ],
+                "nonfinite": 0,
+                "minimum": 33.4375,
+                "maximum": 33.4375,
+                "maximumAbsoluteError": 0.02736663818359375,
+                "cosineSimilarity": 1.0
+              },
+              "best_iou": {
+                "shape": [
+                  1
+                ],
+                "nonfinite": 0,
+                "minimum": 0.977130651473999,
+                "maximum": 0.977130651473999,
+                "maximumAbsoluteError": 4.470348358154297e-05,
+                "cosineSimilarity": 1.0
+              },
+              "object_pointer": {
+                "shape": [
+                  1,
+                  256
+                ],
+                "nonfinite": 0,
+                "minimum": -1.3720831871032715,
+                "maximum": 1.8205021619796753,
+                "maximumAbsoluteError": 0.006844311952590942,
+                "cosineSimilarity": 0.9999928457963955
+              },
+              "low_res_mask": {
+                "shape": [
+                  1,
+                  1,
+                  256,
+                  256
+                ],
+                "nonfinite": 0,
+                "minimum": -18.1875,
+                "maximum": 17.09375,
+                "maximumAbsoluteError": 0.046242713928222656,
+                "cosineSimilarity": 0.9999998969786131,
+                "maskIoUAgainstSameInputTorch": 1.0
+              },
+              "high_res_mask": {
+                "shape": [
+                  1,
+                  1,
+                  1024,
+                  1024
+                ],
+                "nonfinite": 0,
+                "minimum": -17.546875,
+                "maximum": 16.59375,
+                "maximumAbsoluteError": 0.036322593688964844,
+                "cosineSimilarity": 0.9999999168449052,
+                "maskIoUAgainstSameInputTorch": 0.99994991736365
+              }
+            },
+            "comparison": {
+              "passed": true,
+              "sameObjectPresence": true
+            },
+            "log": "candidate-CPU_AND_GPU.log"
+          }
+        },
+        "imageSHA256": "df4fd26c6e7c6cce4cd9e6c04ace316788f125eb4f953f0aad96882e7b474dd9",
+        "promptChecks": [
+          {
+            "label": -1,
+            "point": [
+              0.0,
+              0.0
+            ],
+            "passed": true
+          },
+          {
+            "label": -1,
+            "point": [
+              511.25,
+              713.5
+            ],
+            "passed": true
+          },
+          {
+            "label": -1,
+            "point": [
+              1023.0,
+              1023.0
+            ],
+            "passed": true
+          },
+          {
+            "label": 0,
+            "point": [
+              0.0,
+              0.0
+            ],
+            "passed": true
+          },
+          {
+            "label": 0,
+            "point": [
+              511.25,
+              713.5
+            ],
+            "passed": true
+          },
+          {
+            "label": 0,
+            "point": [
+              1023.0,
+              1023.0
+            ],
+            "passed": true
+          },
+          {
+            "label": 1,
+            "point": [
+              0.0,
+              0.0
+            ],
+            "passed": true
+          },
+          {
+            "label": 1,
+            "point": [
+              511.25,
+              713.5
+            ],
+            "passed": true
+          },
+          {
+            "label": 1,
+            "point": [
+              1023.0,
+              1023.0
+            ],
+            "passed": true
+          },
+          {
+            "label": 2,
+            "point": [
+              0.0,
+              0.0
+            ],
+            "passed": true
+          },
+          {
+            "label": 2,
+            "point": [
+              511.25,
+              713.5
+            ],
+            "passed": true
+          },
+          {
+            "label": 2,
+            "point": [
+              1023.0,
+              1023.0
+            ],
+            "passed": true
+          },
+          {
+            "label": 3,
+            "point": [
+              0.0,
+              0.0
+            ],
+            "passed": true
+          },
+          {
+            "label": 3,
+            "point": [
+              511.25,
+              713.5
+            ],
+            "passed": true
+          },
+          {
+            "label": 3,
+            "point": [
+              1023.0,
+              1023.0
+            ],
+            "passed": true
+          }
+        ],
+        "sameInputTorch": {
+          "low_res_mask": {
+            "shape": [
+              1,
+              1,
+              256,
+              256
+            ],
+            "nonfinite": 0,
+            "minimum": -18.18423080444336,
+            "maximum": 17.091032028198242,
+            "maximumAbsoluteError": 0.0,
+            "cosineSimilarity": 1.0,
+            "maskIoUAgainstSameInputTorch": 1.0
+          },
+          "high_res_mask": {
+            "shape": [
+              1,
+              1,
+              1024,
+              1024
+            ],
+            "nonfinite": 0,
+            "minimum": -17.53525161743164,
+            "maximum": 16.594470977783203,
+            "maximumAbsoluteError": 0.0,
+            "cosineSimilarity": 1.0,
+            "maskIoUAgainstSameInputTorch": 1.0
+          },
+          "best_iou": {
+            "shape": [
+              1
+            ],
+            "nonfinite": 0,
+            "minimum": 0.9771753549575806,
+            "maximum": 0.9771753549575806,
+            "maximumAbsoluteError": 0.0,
+            "cosineSimilarity": 1.0
+          },
+          "object_pointer": {
+            "shape": [
+              1,
+              256
+            ],
+            "nonfinite": 0,
+            "minimum": -1.3706932067871094,
+            "maximum": 1.8219923973083496,
+            "maximumAbsoluteError": 0.0,
+            "cosineSimilarity": 1.0
+          },
+          "object_score": {
+            "shape": [
+              1,
+              1
+            ],
+            "nonfinite": 0,
+            "minimum": 33.464866638183594,
+            "maximum": 33.464866638183594,
+            "maximumAbsoluteError": 0.0,
+            "cosineSimilarity": 1.0
+          }
+        },
+        "sameInputTracedTorch": {
+          "low_res_mask": {
+            "shape": [
+              1,
+              1,
+              256,
+              256
+            ],
+            "nonfinite": 0,
+            "minimum": -18.18422508239746,
+            "maximum": 17.091041564941406,
+            "maximumAbsoluteError": 2.002716064453125e-05,
+            "cosineSimilarity": 0.9999999999999196,
+            "maskIoUAgainstSameInputTorch": 1.0
+          },
+          "high_res_mask": {
+            "shape": [
+              1,
+              1,
+              1024,
+              1024
+            ],
+            "nonfinite": 0,
+            "minimum": -17.535247802734375,
+            "maximum": 16.594478607177734,
+            "maximumAbsoluteError": 1.811981201171875e-05,
+            "cosineSimilarity": 0.9999999999998263,
+            "maskIoUAgainstSameInputTorch": 1.0
+          },
+          "best_iou": {
+            "shape": [
+              1
+            ],
+            "nonfinite": 0,
+            "minimum": 0.9771753549575806,
+            "maximum": 0.9771753549575806,
+            "maximumAbsoluteError": 0.0,
+            "cosineSimilarity": 1.0
+          },
+          "object_pointer": {
+            "shape": [
+              1,
+              256
+            ],
+            "nonfinite": 0,
+            "minimum": -1.3706928491592407,
+            "maximum": 1.8219910860061646,
+            "maximumAbsoluteError": 2.86102294921875e-06,
+            "cosineSimilarity": 0.9999999999977027
+          },
+          "object_score": {
+            "shape": [
+              1,
+              1
+            ],
+            "nonfinite": 0,
+            "minimum": 33.46486282348633,
+            "maximum": 33.46486282348633,
+            "maximumAbsoluteError": 3.814697265625e-06,
+            "cosineSimilarity": 1.0
+          }
+        },
+        "graphCounts": {
+          "original": {
+            "const": 472,
+            "cast": 55,
+            "add": 32,
+            "concat": 10,
+            "slice_by_index": 17,
+            "mul": 6,
+            "slice_update": 2,
+            "sub": 3,
+            "linear": 54,
+            "sin": 1,
+            "cos": 1,
+            "equal": 10,
+            "non_zero": 10,
+            "shape": 8,
+            "select": 13,
+            "tile": 7,
+            "greater_equal": 6,
+            "scatter_nd": 6,
+            "gather_nd": 8,
+            "reshape": 34,
+            "expand_dims": 6,
+            "real_div": 6,
+            "transpose": 30,
+            "scaled_dot_product_attention": 7,
+            "layer_norm": 9,
+            "relu": 16,
+            "conv_transpose": 2,
+            "reduce_mean": 2,
+            "pow": 1,
+            "sqrt": 1,
+            "batch_norm": 1,
+            "gelu": 2,
+            "stack": 2,
+            "matmul": 1,
+            "sigmoid": 1,
+            "greater": 1,
+            "upsample_bilinear": 1,
+            "reduce_argmax": 1,
+            "reduce_max": 1
+          },
+          "candidate": {
+            "const": 399,
+            "cast": 46,
+            "add": 27,
+            "concat": 4,
+            "fill_like": 1,
+            "mul": 7,
+            "slice_by_index": 12,
+            "slice_update": 2,
+            "sub": 3,
+            "linear": 54,
+            "sin": 1,
+            "cos": 1,
+            "equal": 5,
+            "expand_dims": 9,
+            "tile": 6,
+            "select": 8,
+            "reshape": 32,
+            "transpose": 30,
+            "scaled_dot_product_attention": 7,
+            "layer_norm": 9,
+            "relu": 16,
+            "conv_transpose": 2,
+            "reduce_mean": 2,
+            "pow": 1,
+            "sqrt": 1,
+            "real_div": 1,
+            "batch_norm": 1,
+            "gelu": 2,
+            "stack": 2,
+            "matmul": 1,
+            "sigmoid": 1,
+            "greater": 1,
+            "upsample_bilinear": 1,
+            "reduce_argmax": 1,
+            "greater_equal": 1,
+            "gather_nd": 3,
+            "reduce_max": 1
+          }
+        },
+        "completed": true
+      },
+      "trailingConsole": "2026-09-15 12:19:04.191 Python[65675:40424394] Metal API Validation Enabled\n\n-[MTLDebugComputeCommandEncoder dispatchThreadgroups:threadsPerThreadgroup:]:1377: failed assertion `(threadgroupsPerGrid.width(8) * threadgroupsPerGrid.y(0) * threadgroupsPerGrid.depth(1))(0) must not be 0.'\n\n2026-09-15 12:19:06.088 Python[65684:40424494] Metal API Validation Enabled\n\npetercody@MacBook-Pro ByteWaveSegmentation %"
+    }
+  ],
+  "interpretation": "With Metal API validation explicitly enabled, original GPU initializer aborted (-6) with the same zero-threadgroup assertion as the app; dense-point candidate GPU passed, low-mask IoU 1.0, pointer cosine 0.9999928458. Both GPU logs confirm validation enabled. CPU original and candidate passed; all 15 source prompt checks passed. This validates a remedy for the reproduced initializer failure on Mac, not iPhone or complete GPU tracking, and does not resolve the NE image encoder failure."
+}

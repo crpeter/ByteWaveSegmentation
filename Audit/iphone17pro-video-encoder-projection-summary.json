@@ -1,0 +1,99 @@
+{
+  "scope": "Selected fields from user-supplied requested-video report; offline extraction only. No ground-truth quality pass or controlled speed comparison.",
+  "sourceAttachment": "076b4ee0-93be-4a17-bc20-3f16ef2a8f94.json",
+  "sourceAttachmentSHA256": "fe898765bba8601fc7dd7a0537c16683c7cb75bc04a2eee5887dbd559d9f61fe",
+  "userVisualFeedback": "Tracking looks good, not perfect. Screenshot shows the dog rolling with a visibly stepped mask outline.",
+  "previewObservation": "Code renders thresholded 256x256 low_res_mask with interpolation disabled; display stair-steps do not establish a model regression.",
+  "createdAt": "2026-09-16T18:35:16Z",
+  "modelVariant": "memoryfp16projection",
+  "precisionPolicy": "encoder-projection-memoryfp16.diagnostic.v1",
+  "diagnosticEncoder": {
+    "baselineFixtureSHA256": "f6b8e78c142538375ff6bf6fee5516975543f06e2f0780f959ffd3abc0dbbc9f",
+    "candidateReportSHA256": "e528b13089433270ab07b71f037bba208d608131504294dc993590abd047a308",
+    "contract": "bytewave.encoder-projection.diagnostic.v1",
+    "pairedReportSHA256": "c91c5c05ca927294c9b9ca796725ccf726b7ac916d1731f4b1fc56263162eb34",
+    "precisionPolicy": "encoder-projection-memoryfp16.diagnostic.v1",
+    "variant": "projection"
+  },
+  "diagnosticPropagator": {
+    "baselineFixtureSHA256": "80bfbde3da5d8d650a68d60a1f61e2da0050abbe576e0bc848da46d640298455",
+    "candidateReportSHA256": "36f8539aa651b010c4fd2321a13925aaf004a415d4feb1ff840d4c96a70b962e",
+    "contract": "bytewave.propagator-attention.diagnostic.v1",
+    "pairedReportSHA256": "7025a100b04591511fcad5d8519a44d182902fc55df743b4c4486dc5a576f5c2",
+    "precisionPolicy": "memory-sdpa-fp16-only.diagnostic.v1",
+    "variant": "memoryfp16"
+  },
+  "fixtureSHA256": "760dd45c6eed6972f434dd324920b74dbfa262fb6648983606c2872581430a61",
+  "hardware": "iPhone18,1",
+  "operatingSystem": "Version 27.0 (Build 24A435)",
+  "isIOSAppOnMac": false,
+  "swiftDebugCompilation": false,
+  "requestedComputeUnits": "CPU_AND_GPU",
+  "framesPredicted": 1079,
+  "seeks": 4,
+  "segmentsStarted": 4,
+  "emptyMasks": 0,
+  "lastState": {
+    "acceptedFrames": 48,
+    "pointerEntries": 16,
+    "spatialEntries": 7
+  },
+  "lastAction": "Predicted frame at 16.371666666666666 seconds",
+  "reachedEnd": false,
+  "videoDurationSeconds": 27.838333333333335,
+  "recentFrameLimit": 120,
+  "thermalStateAtStart": "nominal",
+  "thermalStateAtSnapshot": "nominal",
+  "warmModelTotals": {
+    "ImageEncoder": {
+      "count": 1075,
+      "maximumMilliseconds": 41.726416660822,
+      "meanMilliseconds": 20.27730248034607,
+      "totalMilliseconds": 21798.100166372024
+    },
+    "Propagator": {
+      "count": 1075,
+      "maximumMilliseconds": 174.59424999833573,
+      "meanMilliseconds": 34.76138213170194,
+      "totalMilliseconds": 37368.48579157959
+    }
+  },
+  "warmPredictionAndStateTotals": {
+    "count": 1075,
+    "maximumMilliseconds": 221.00558332749642,
+    "meanMilliseconds": 59.71327655034974,
+    "totalMilliseconds": 64191.772291625966
+  },
+  "warmRequestTotals": {
+    "count": 1075,
+    "maximumMilliseconds": 233.38345834054053,
+    "meanMilliseconds": 62.87659217060684,
+    "totalMilliseconds": 67592.33658340236
+  },
+  "warmDecodeAndPreparationTotals": {
+    "count": 1075,
+    "maximumMilliseconds": 11.312458344036713,
+    "meanMilliseconds": 2.627841550613169,
+    "totalMilliseconds": 2824.9296669091564
+  },
+  "warmMaskRenderingTotals": {
+    "count": 1075,
+    "maximumMilliseconds": 1.1315416631987318,
+    "meanMilliseconds": 0.4251993024115299,
+    "totalMilliseconds": 457.08925009239465
+  },
+  "modelFiles": {
+    "models/BWTemporalImageEncoder.mlpackage/Data/com.apple.CoreML/model.mlmodel": "a3046d4fbd83b7974d0b01d92ca30a55adad08aca218789b97034245023bbeba",
+    "models/BWTemporalImageEncoder.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "90e112d95a98e30486b768a2397f253766ceaa95bfd3cdb5a31a8db0341f61c3",
+    "models/BWTemporalImageEncoder.mlpackage/Manifest.json": "df20c1178e37ef2d4587281d5feca5979f2db8b859ffe7357161e4d5b51c254f",
+    "models/BWTemporalInitialMemoryEncoder.mlpackage/Data/com.apple.CoreML/model.mlmodel": "613c7a310f1fae1b698aaba6e5a70c3afb842f459d3ec96cf9e0f4b6b4b9438a",
+    "models/BWTemporalInitialMemoryEncoder.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "21ae511f368835d55fe519b9b4ae9032bf9256cdb3cc0e91fdf5b4c467311563",
+    "models/BWTemporalInitialMemoryEncoder.mlpackage/Manifest.json": "64fb8412cf6229dda7ec7227113c7c8cf1a5278a96b62b94e2a0a76f6d790b52",
+    "models/BWTemporalInitializer.mlpackage/Data/com.apple.CoreML/model.mlmodel": "a70da7906ee21086122e9c24479b149308337f49609854455ae9cf65f790625f",
+    "models/BWTemporalInitializer.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "9409edf81128013f2ff61ef2565832f0a35782304e7adc54466e0396b5ab94c2",
+    "models/BWTemporalInitializer.mlpackage/Manifest.json": "d2311a29bb658bd6f16e801e91893985eb5aea3f7a6587f718e3e93539bc3068",
+    "models/BWTemporalPropagator.mlpackage/Data/com.apple.CoreML/model.mlmodel": "dec2227edc7d22832a3726a68237b6789f2d79ede1a5b0cc6f76d400c69d08d9",
+    "models/BWTemporalPropagator.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "3e679bfdc49fc43e895434b8c8bb6e75bad20a2cad37fd0aa2d5019cd186386e",
+    "models/BWTemporalPropagator.mlpackage/Manifest.json": "aec4bf7ef5dafc3816e3a645f93b134824268f4b0e8184170452e10c8c5618c1"
+  }
+}

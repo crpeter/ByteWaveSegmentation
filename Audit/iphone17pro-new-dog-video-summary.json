@@ -1,0 +1,48 @@
+{
+  "scope": "First user-supplied arbitrary-video tracking result. User identifies this as a new video of the same dog and reports it looked good. No ground-truth accuracy measurement or unique-frame count claim.",
+  "sourceReport": "Audit/iphone17pro-new-dog-video-report.json",
+  "sourceReportSHA256": "affe06b9e7e47cfc71caa70eca61e50a5f9b3933f626ef2b0c477cbcee5cadda",
+  "hardware": "iPhone18,1",
+  "operatingSystem": "Version 27.0 (Build 24A435)",
+  "swiftDebugCompilation": false,
+  "requestedComputeUnits": "CPU_AND_GPU",
+  "fixtureSHA256": "f6b8e78c142538375ff6bf6fee5516975543f06e2f0780f959ffd3abc0dbbc9f",
+  "videoDurationSeconds": 27.838333333333335,
+  "framesPredicted": 836,
+  "segmentsStarted": 2,
+  "seeks": 0,
+  "reachedEnd": true,
+  "emptyMasks": 0,
+  "reportedError": null,
+  "lastState": {
+    "acceptedFrames": 821,
+    "pointerEntries": 16,
+    "spatialEntries": 7
+  },
+  "retainedFrameRecords": 120,
+  "allRetainedStatesWithinBounds": true,
+  "retainedTimestampsStrictlyIncreasing": true,
+  "thermalStateAtStart": "nominal",
+  "thermalStateAtSnapshot": "nominal",
+  "warmFrameCount": 834,
+  "meanWarmMilliseconds": {
+    "encoder": 29.521055106020295,
+    "propagator": 33.97052198231019,
+    "predictionAndState": 73.35827133291453,
+    "request": 104.36335351772546
+  },
+  "recent120MeansMilliseconds": {
+    "decodeAndPreparationMilliseconds": 34.86720625017673,
+    "predictionAndStateMilliseconds": 80.9564329857191,
+    "maskRenderingMilliseconds": 0.4261055551372313,
+    "requestMilliseconds": 116.37930729181487
+  },
+  "visualObservation": "Supplied portrait screenshot shows blue overlay broadly covering the dog while grass is largely excluded; edges are visibly stepped. This is one screenshot plus user feedback, not a frame-by-frame quality audit.",
+  "limitations": [
+    "No seek occurred in this report; seek/reset behavior is still pending device verification.",
+    "Two selections were started; total predictions need not equal unique decoded frames.",
+    "Reported processing time excludes UI presentation and pauses; not measured playback FPS.",
+    "Decoder/orientation/resize/PNG preparation is timed as a group; its cost cannot yet be attributed to one operation.",
+    "Bounded bank/record counts are verified, not physical memory utilization."
+  ]
+}

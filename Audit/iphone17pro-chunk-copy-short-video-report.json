@@ -1,0 +1,4691 @@
+{
+  "clipID" : "B98BBE00-99D9-4CC8-A561-7463C5105EFD",
+  "compileAndLoadMilliseconds" : {
+    "ImageEncoder" : 243.40395833132789,
+    "InitialMemoryEncoder" : 102.6045833423268,
+    "Initializer" : 131.94862499949522,
+    "Propagator" : 292.0378333365079
+  },
+  "contract" : "bytewave.edgetam-temporal-owned.v2",
+  "createdAt" : "2026-09-16T01:28:51Z",
+  "diagnosticPropagator" : {
+    "baselineFixtureSHA256" : "80bfbde3da5d8d650a68d60a1f61e2da0050abbe576e0bc848da46d640298455",
+    "candidateReportSHA256" : "36f8539aa651b010c4fd2321a13925aaf004a415d4feb1ff840d4c96a70b962e",
+    "contract" : "bytewave.propagator-attention.diagnostic.v1",
+    "pairedReportSHA256" : "7025a100b04591511fcad5d8519a44d182902fc55df743b4c4486dc5a576f5c2",
+    "precisionPolicy" : "memory-sdpa-fp16-only.diagnostic.v1",
+    "variant" : "memoryfp16"
+  },
+  "emptyMasks" : 0,
+  "fixtureSHA256" : "f6b8e78c142538375ff6bf6fee5516975543f06e2f0780f959ffd3abc0dbbc9f",
+  "framesPredicted" : 112,
+  "hardware" : "iPhone18,1",
+  "imagePreparation" : "Decoded BGRA; track presentation transform converted to Core Image coordinates; sRGB, stretched to 1024x1024. Preview keeps display aspect. Point is normalized top-left. Graph owns image scaling\/normalization.",
+  "isIOSAppOnMac" : false,
+  "lastAction" : "End of video",
+  "lastDecodedSize" : [
+    1920,
+    1080
+  ],
+  "lastDisplaySize" : [
+    1080,
+    1920
+  ],
+  "lastPointNormalizedTopLeft" : [
+    0.48558558558558557,
+    0.48445945945945945
+  ],
+  "lastResetReason" : "subject selection on current frame",
+  "lastState" : {
+    "acceptedFrames" : 112,
+    "pointerEntries" : 16,
+    "spatialEntries" : 7
+  },
+  "modelFiles" : {
+    "models\/BWTemporalImageEncoder.mlpackage\/Data\/com.apple.CoreML\/model.mlmodel" : "51a1fbee94f3b1ea3b47345d2539112d79b3fd39d49c850a37cff088ba9e69f7",
+    "models\/BWTemporalImageEncoder.mlpackage\/Data\/com.apple.CoreML\/weights\/weight.bin" : "74c81dbff608d07039888a1d8b417714f0f83eac37d65e9722f85324e7966c7c",
+    "models\/BWTemporalImageEncoder.mlpackage\/Manifest.json" : "137a2fbdef2f14de316c91d52d75c8938fe58fffa75c5639cb2befb3d009b5a1",
+    "models\/BWTemporalInitialMemoryEncoder.mlpackage\/Data\/com.apple.CoreML\/model.mlmodel" : "613c7a310f1fae1b698aaba6e5a70c3afb842f459d3ec96cf9e0f4b6b4b9438a",
+    "models\/BWTemporalInitialMemoryEncoder.mlpackage\/Data\/com.apple.CoreML\/weights\/weight.bin" : "21ae511f368835d55fe519b9b4ae9032bf9256cdb3cc0e91fdf5b4c467311563",
+    "models\/BWTemporalInitialMemoryEncoder.mlpackage\/Manifest.json" : "64fb8412cf6229dda7ec7227113c7c8cf1a5278a96b62b94e2a0a76f6d790b52",
+    "models\/BWTemporalInitializer.mlpackage\/Data\/com.apple.CoreML\/model.mlmodel" : "a70da7906ee21086122e9c24479b149308337f49609854455ae9cf65f790625f",
+    "models\/BWTemporalInitializer.mlpackage\/Data\/com.apple.CoreML\/weights\/weight.bin" : "9409edf81128013f2ff61ef2565832f0a35782304e7adc54466e0396b5ab94c2",
+    "models\/BWTemporalInitializer.mlpackage\/Manifest.json" : "d2311a29bb658bd6f16e801e91893985eb5aea3f7a6587f718e3e93539bc3068",
+    "models\/BWTemporalPropagator.mlpackage\/Data\/com.apple.CoreML\/model.mlmodel" : "dec2227edc7d22832a3726a68237b6789f2d79ede1a5b0cc6f76d400c69d08d9",
+    "models\/BWTemporalPropagator.mlpackage\/Data\/com.apple.CoreML\/weights\/weight.bin" : "3e679bfdc49fc43e895434b8c8bb6e75bad20a2cad37fd0aa2d5019cd186386e",
+    "models\/BWTemporalPropagator.mlpackage\/Manifest.json" : "aec4bf7ef5dafc3816e3a645f93b134824268f4b0e8184170452e10c8c5618c1"
+  },
+  "modelVariant" : "memoryfp16",
+  "operatingSystem" : "Version 27.0 (Build 24A435)",
+  "precisionPolicy" : "memory-sdpa-fp16-only.diagnostic.v1",
+  "preparationTimingScope" : "Non-overlapping API wall times within decodeAndPreparationMilliseconds: sample acquisition, orientation graph setup, model buffer allocation, model input render and eager preview image creation. Preview rendering uses deferred=false before handing the image to the UI. These are API wall times, not hardware execution times. Sample acquisition includes waiting for decoded pixels, not isolated decoder execution. Small bookkeeping and autorelease cleanup are not separate stages. Initialization has an empty stage dictionary because it reuses the displayed frame. Warm preparation totals include only successful next-frame predictions; exclude open\/seek previews and initialization. UI image construction, mask decoding, SwiftUI rendering and presentation remain outside request timing.",
+  "previewTransport" : "Eager sRGB RGBA8 CGImage shared with UI; no preview PNG encoding or decoding. Mask overlay still uses PNG.",
+  "reachedEnd" : true,
+  "recentFrameLimit" : 120,
+  "recentFrames" : [
+    {
+      "decodeAndPreparationMilliseconds" : 0,
+      "foregroundFraction" : 0.0369873046875,
+      "initialized" : true,
+      "maskRenderingMilliseconds" : 0.4247083270456642,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 107.97099999035709,
+        "InitialMemoryEncoder" : 36.31091666466091,
+        "Initializer" : 36.21870833740104
+      },
+      "objectScore" : 31.859375,
+      "predictedIoU" : 0.882255,
+      "predictionAndStateMilliseconds" : 191.30837499687914,
+      "preparationStageMilliseconds" : {
+
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 0,
+      "requestIndex" : 0,
+      "requestMilliseconds" : 191.7599166627042,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 2.6268750079907477,
+        "ImageEncoder.inputPreparation" : 0.02858332300093025,
+        "ImageEncoder.outputCopyAndValidation" : 3.6239166656741872,
+        "InitialMemoryEncoder.beforePredictionHook" : 0.608458329224959,
+        "InitialMemoryEncoder.inputPreparation" : 0.5708749959012493,
+        "InitialMemoryEncoder.outputCopyAndValidation" : 0.04204167635180056,
+        "Initializer.beforePredictionHook" : 1.0447499953443184,
+        "Initializer.inputPreparation" : 1.198833342641592,
+        "Initializer.outputCopyAndValidation" : 0.6937083380762488,
+        "state.commit" : 0.34445832716301084
+      },
+      "state" : {
+        "acceptedFrames" : 1,
+        "pointerEntries" : 1,
+        "spatialEntries" : 1
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 10.344291673391126,
+      "foregroundFraction" : 0.038665771484375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.40554166480433196,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 36.35241666052025,
+        "Propagator" : 161.05045833683107
+      },
+      "objectScore" : 7.71875,
+      "predictedIoU" : 0.9835224,
+      "predictionAndStateMilliseconds" : 214.14029167499393,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.45616665738634765,
+        "modelInputRender" : 4.858874992351048,
+        "orientationGraphSetup" : 0.0857499981066212,
+        "previewImageCreation" : 3.9559583383379504,
+        "sampleAcquisition" : 0.9717916691442952
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 11,
+      "requestIndex" : 1,
+      "requestMilliseconds" : 225.51558332634158,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 2.7512083324836567,
+        "ImageEncoder.inputPreparation" : 0.02891666372306645,
+        "ImageEncoder.outputCopyAndValidation" : 7.964125004946254,
+        "Propagator.beforePredictionHook" : 1.841416655224748,
+        "Propagator.inputPreparation" : 2.440833326545544,
+        "Propagator.outputCopyAndValidation" : 0.6925000052433461,
+        "state.commit" : 0.30124999466352165,
+        "state.pack" : 0.6833750085206702
+      },
+      "state" : {
+        "acceptedFrames" : 2,
+        "pointerEntries" : 2,
+        "spatialEntries" : 2
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 1.9572916644392535,
+      "foregroundFraction" : 0.0399932861328125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3856666589854285,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.433958332636394,
+        "Propagator" : 32.54524999647401
+      },
+      "objectScore" : 8.5703125,
+      "predictedIoU" : 0.9805064,
+      "predictionAndStateMilliseconds" : 58.82120833848603,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11787499533966184,
+        "modelInputRender" : 0.688833330059424,
+        "orientationGraphSetup" : 0.02245833456981927,
+        "previewImageCreation" : 0.8182083256542683,
+        "sampleAcquisition" : 0.308041664538905
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 31,
+      "requestIndex" : 2,
+      "requestMilliseconds" : 61.25145833357237,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.7820833270670846,
+        "ImageEncoder.inputPreparation" : 0.006333328201435506,
+        "ImageEncoder.outputCopyAndValidation" : 1.6420833417214453,
+        "Propagator.beforePredictionHook" : 0.5792500014649704,
+        "Propagator.inputPreparation" : 0.9315833303844556,
+        "Propagator.outputCopyAndValidation" : 0.40191666630562395,
+        "state.commit" : 0.32004165404941887,
+        "state.pack" : 0.1647916651563719
+      },
+      "state" : {
+        "acceptedFrames" : 3,
+        "pointerEntries" : 3,
+        "spatialEntries" : 3
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.340416656807065,
+      "foregroundFraction" : 0.041107177734375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.37562500801868737,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.793208332383074,
+        "Propagator" : 32.139958333573304
+      },
+      "objectScore" : 9.1796875,
+      "predictedIoU" : 0.98059916,
+      "predictionAndStateMilliseconds" : 58.14254166034516,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.10954166646115482,
+        "modelInputRender" : 1.2011666694888845,
+        "orientationGraphSetup" : 0.021833329810760915,
+        "previewImageCreation" : 0.7310000073630363,
+        "sampleAcquisition" : 0.2749999985098839
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 51,
+      "requestIndex" : 3,
+      "requestMilliseconds" : 60.95724999613594,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5071250052424148,
+        "ImageEncoder.inputPreparation" : 0.006291666068136692,
+        "ImageEncoder.outputCopyAndValidation" : 1.718833329505287,
+        "Propagator.beforePredictionHook" : 0.4871250130236149,
+        "Propagator.inputPreparation" : 0.5938749964116141,
+        "Propagator.outputCopyAndValidation" : 0.3908749931724742,
+        "state.commit" : 0.31183334067463875,
+        "state.pack" : 0.18066666962113231
+      },
+      "state" : {
+        "acceptedFrames" : 4,
+        "pointerEntries" : 4,
+        "spatialEntries" : 4
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.47183334431611,
+      "foregroundFraction" : 0.041900634765625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.38566667353734374,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.67800000461284,
+        "Propagator" : 32.889666661503725
+      },
+      "objectScore" : 9.3828125,
+      "predictedIoU" : 0.9797636,
+      "predictionAndStateMilliseconds" : 58.72516667295713,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11887498840223998,
+        "modelInputRender" : 1.291874999878928,
+        "orientationGraphSetup" : 0.021041661966592073,
+        "previewImageCreation" : 0.7607916631968692,
+        "sampleAcquisition" : 0.27712500013876706
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 71,
+      "requestIndex" : 4,
+      "requestMilliseconds" : 61.68495833117049,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5058749957242981,
+        "ImageEncoder.inputPreparation" : 0.0066250067902728915,
+        "ImageEncoder.outputCopyAndValidation" : 1.6240416589425877,
+        "Propagator.beforePredictionHook" : 0.4725833277916536,
+        "Propagator.inputPreparation" : 0.6122916674939916,
+        "Propagator.outputCopyAndValidation" : 0.4103333340026438,
+        "state.commit" : 0.32066667336039245,
+        "state.pack" : 0.19045833323616534
+      },
+      "state" : {
+        "acceptedFrames" : 5,
+        "pointerEntries" : 5,
+        "spatialEntries" : 5
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 1.9956250034738332,
+      "foregroundFraction" : 0.042816162109375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3920416784239933,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.97629166767001,
+        "Propagator" : 33.02804166742135
+      },
+      "objectScore" : 9.3984375,
+      "predictedIoU" : 0.9785322,
+      "predictionAndStateMilliseconds" : 59.4226666726172,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11962500866502523,
+        "modelInputRender" : 0.720124997314997,
+        "orientationGraphSetup" : 0.02220833266619593,
+        "previewImageCreation" : 0.8346666727447882,
+        "sampleAcquisition" : 0.2970416680909693
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 91,
+      "requestIndex" : 5,
+      "requestMilliseconds" : 61.95658333308529,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.526999996509403,
+        "ImageEncoder.inputPreparation" : 0.006874994141981006,
+        "ImageEncoder.outputCopyAndValidation" : 1.7858333449112251,
+        "Propagator.beforePredictionHook" : 0.5777083424618468,
+        "Propagator.inputPreparation" : 0.5746666720369831,
+        "Propagator.outputCopyAndValidation" : 0.4021666682092473,
+        "state.commit" : 0.32049999572336674,
+        "state.pack" : 0.20824999955948442
+      },
+      "state" : {
+        "acceptedFrames" : 6,
+        "pointerEntries" : 6,
+        "spatialEntries" : 6
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.3787916725268587,
+      "foregroundFraction" : 0.0419158935546875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.38891666918061674,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.277750002103858,
+        "Propagator" : 32.68762500374578
+      },
+      "objectScore" : 9.5,
+      "predictedIoU" : 0.9752339,
+      "predictionAndStateMilliseconds" : 59.22666666447185,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11845832341350615,
+        "modelInputRender" : 1.0586249991320074,
+        "orientationGraphSetup" : 0.021416664822027087,
+        "previewImageCreation" : 0.9046250052051619,
+        "sampleAcquisition" : 0.27374998899176717
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 111,
+      "requestIndex" : 6,
+      "requestMilliseconds" : 62.08350000088103,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5427500000223517,
+        "ImageEncoder.inputPreparation" : 0.006208327249623835,
+        "ImageEncoder.outputCopyAndValidation" : 1.6560833319090307,
+        "Propagator.beforePredictionHook" : 0.5181666783755645,
+        "Propagator.inputPreparation" : 0.5772083241026849,
+        "Propagator.outputCopyAndValidation" : 0.409541666158475,
+        "state.commit" : 0.3198750055162236,
+        "state.pack" : 0.21712499437853694
+      },
+      "state" : {
+        "acceptedFrames" : 7,
+        "pointerEntries" : 7,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.3386250104522333,
+      "foregroundFraction" : 0.0407562255859375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3789583424804732,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.96199999889359,
+        "Propagator" : 32.379958327510394
+      },
+      "objectScore" : 9.4609375,
+      "predictedIoU" : 0.97796404,
+      "predictionAndStateMilliseconds" : 58.500125000136904,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11516666563693434,
+        "modelInputRender" : 1.0892499994952232,
+        "orientationGraphSetup" : 0.018958337022922933,
+        "previewImageCreation" : 0.8624166657682508,
+        "sampleAcquisition" : 0.2507500030333176
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 131,
+      "requestIndex" : 7,
+      "requestMilliseconds" : 61.30116667191032,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.49516667786519974,
+        "ImageEncoder.inputPreparation" : 0.006333328201435506,
+        "ImageEncoder.outputCopyAndValidation" : 1.715249993139878,
+        "Propagator.beforePredictionHook" : 0.48516665992792696,
+        "Propagator.inputPreparation" : 0.531375000718981,
+        "Propagator.outputCopyAndValidation" : 0.3954999992856756,
+        "state.commit" : 0.31254166970029473,
+        "state.pack" : 0.20341666822787374
+      },
+      "state" : {
+        "acceptedFrames" : 8,
+        "pointerEntries" : 8,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.198291665990837,
+      "foregroundFraction" : 0.040069580078125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4392499977257103,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.32441666617524,
+        "Propagator" : 32.973000008496456
+      },
+      "objectScore" : 9.6640625,
+      "predictedIoU" : 0.9790643,
+      "predictionAndStateMilliseconds" : 58.57129166543018,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11670833919197321,
+        "modelInputRender" : 0.970749999396503,
+        "orientationGraphSetup" : 0.020874998881481588,
+        "previewImageCreation" : 0.8167500054696575,
+        "sampleAcquisition" : 0.27145833882968873
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 151,
+      "requestIndex" : 8,
+      "requestMilliseconds" : 61.29895833146293,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.47216666280291975,
+        "ImageEncoder.inputPreparation" : 0.005458336090669036,
+        "ImageEncoder.outputCopyAndValidation" : 1.625749995582737,
+        "Propagator.beforePredictionHook" : 0.5494999932125211,
+        "Propagator.inputPreparation" : 0.5955416709184647,
+        "Propagator.outputCopyAndValidation" : 0.4446666716830805,
+        "state.commit" : 0.3442499873926863,
+        "state.pack" : 0.22258333046920598
+      },
+      "state" : {
+        "acceptedFrames" : 9,
+        "pointerEntries" : 9,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.576208338723518,
+      "foregroundFraction" : 0.0399627685546875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.39924999873619527,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.90533334214706,
+        "Propagator" : 32.760541667812504
+      },
+      "objectScore" : 9.9296875,
+      "predictedIoU" : 0.9814652,
+      "predictionAndStateMilliseconds" : 59.040291656856425,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.13033334107603878,
+        "modelInputRender" : 1.3160833332221955,
+        "orientationGraphSetup" : 0.021708328858949244,
+        "previewImageCreation" : 0.8345416717929766,
+        "sampleAcquisition" : 0.26966667792294174
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 171,
+      "requestIndex" : 9,
+      "requestMilliseconds" : 62.10516666760668,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5430833261925727,
+        "ImageEncoder.inputPreparation" : 0.007208334864117205,
+        "ImageEncoder.outputCopyAndValidation" : 1.7587500042282045,
+        "Propagator.beforePredictionHook" : 0.5184583424124867,
+        "Propagator.inputPreparation" : 0.5787083355244249,
+        "Propagator.outputCopyAndValidation" : 0.4024166555609554,
+        "state.commit" : 0.3309166640974581,
+        "state.pack" : 0.22158333740662783
+      },
+      "state" : {
+        "acceptedFrames" : 10,
+        "pointerEntries" : 10,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.5333333323942497,
+      "foregroundFraction" : 0.040435791015625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3901666641468182,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.539624987985007,
+        "Propagator" : 32.77908332529478
+      },
+      "objectScore" : 10.0390625,
+      "predictedIoU" : 0.9761528,
+      "predictionAndStateMilliseconds" : 59.61199999728706,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.12587499804794788,
+        "modelInputRender" : 1.2823750003008172,
+        "orientationGraphSetup" : 0.02220833266619593,
+        "previewImageCreation" : 0.8213749970309436,
+        "sampleAcquisition" : 0.27949998911935836
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 191,
+      "requestIndex" : 10,
+      "requestMilliseconds" : 62.628958345158026,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.49741666589397937,
+        "ImageEncoder.inputPreparation" : 0.006791669875383377,
+        "ImageEncoder.outputCopyAndValidation" : 1.7030000017257407,
+        "Propagator.beforePredictionHook" : 0.5533749936148524,
+        "Propagator.inputPreparation" : 0.5703750066459179,
+        "Propagator.outputCopyAndValidation" : 0.40079167229123414,
+        "state.commit" : 0.3207499976269901,
+        "state.pack" : 0.2262499911012128
+      },
+      "state" : {
+        "acceptedFrames" : 11,
+        "pointerEntries" : 11,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.515125001082197,
+      "foregroundFraction" : 0.0407257080078125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3872500092256814,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.409875004086643,
+        "Propagator" : 32.43941666733008
+      },
+      "objectScore" : 10.1875,
+      "predictedIoU" : 0.9753618,
+      "predictionAndStateMilliseconds" : 59.13887500355486,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11366666876710951,
+        "modelInputRender" : 1.2834166700486094,
+        "orientationGraphSetup" : 0.02058333484455943,
+        "previewImageCreation" : 0.8419166697422042,
+        "sampleAcquisition" : 0.2537916589062661
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 211,
+      "requestIndex" : 11,
+      "requestMilliseconds" : 62.12983332807198,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5813333409605548,
+        "ImageEncoder.inputPreparation" : 0.006874994141981006,
+        "ImageEncoder.outputCopyAndValidation" : 1.6545833350392058,
+        "Propagator.beforePredictionHook" : 0.5046250007580966,
+        "Propagator.inputPreparation" : 0.5974583473289385,
+        "Propagator.outputCopyAndValidation" : 0.3927916695829481,
+        "state.commit" : 0.32033333263825625,
+        "state.pack" : 0.21804166317451745
+      },
+      "state" : {
+        "acceptedFrames" : 12,
+        "pointerEntries" : 12,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.2446666698670015,
+      "foregroundFraction" : 0.04248046875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.37924999196548015,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.824125011335127,
+        "Propagator" : 32.629083332722075
+      },
+      "objectScore" : 10.1328125,
+      "predictedIoU" : 0.97646683,
+      "predictionAndStateMilliseconds" : 58.57562500750646,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11029167217202485,
+        "modelInputRender" : 1.0772083332994953,
+        "orientationGraphSetup" : 0.01858333416748792,
+        "previewImageCreation" : 0.7843750063329935,
+        "sampleAcquisition" : 0.25224999990314245
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 231,
+      "requestIndex" : 12,
+      "requestMilliseconds" : 61.282750000827946,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.4908333357889205,
+        "ImageEncoder.inputPreparation" : 0.005750000127591193,
+        "ImageEncoder.outputCopyAndValidation" : 1.6562499949941412,
+        "Propagator.beforePredictionHook" : 0.5144166789250448,
+        "Propagator.inputPreparation" : 0.534999999217689,
+        "Propagator.outputCopyAndValidation" : 0.39008332532830536,
+        "state.commit" : 0.3122500056633726,
+        "state.pack" : 0.20383333321660757
+      },
+      "state" : {
+        "acceptedFrames" : 13,
+        "pointerEntries" : 13,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.300374995684251,
+      "foregroundFraction" : 0.04437255859375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.44174998765811324,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.582833331194706,
+        "Propagator" : 33.29233333352022
+      },
+      "objectScore" : 9.9453125,
+      "predictedIoU" : 0.9755839,
+      "predictionAndStateMilliseconds" : 59.05083334073424,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.10800000745803118,
+        "modelInputRender" : 1.2127916561439633,
+        "orientationGraphSetup" : 0.018749997252598405,
+        "previewImageCreation" : 0.7129583391360939,
+        "sampleAcquisition" : 0.2458749950164929
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 251,
+      "requestIndex" : 13,
+      "requestMilliseconds" : 61.87916666385718,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.4940833314321935,
+        "ImageEncoder.inputPreparation" : 0.006750007742084563,
+        "ImageEncoder.outputCopyAndValidation" : 1.592375003383495,
+        "Propagator.beforePredictionHook" : 0.4767083446495235,
+        "Propagator.inputPreparation" : 0.5718333413824439,
+        "Propagator.outputCopyAndValidation" : 0.4437916650203988,
+        "state.commit" : 0.3647083358373493,
+        "state.pack" : 0.21237500186543912
+      },
+      "state" : {
+        "acceptedFrames" : 14,
+        "pointerEntries" : 14,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.3456666676793247,
+      "foregroundFraction" : 0.0469512939453125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.40358332626055926,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.96324999385979,
+        "Propagator" : 33.124958325061016
+      },
+      "objectScore" : 9.984375,
+      "predictedIoU" : 0.977419,
+      "predictionAndStateMilliseconds" : 59.50262499391101,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.12250000145286322,
+        "modelInputRender" : 1.1004166735801846,
+        "orientationGraphSetup" : 0.021416664822027087,
+        "previewImageCreation" : 0.8280833280878142,
+        "sampleAcquisition" : 0.27095833502244204
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 271,
+      "requestIndex" : 14,
+      "requestMilliseconds" : 62.33687499479856,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5254166608210653,
+        "ImageEncoder.inputPreparation" : 0.005416673957370222,
+        "ImageEncoder.outputCopyAndValidation" : 1.8195416632806882,
+        "Propagator.beforePredictionHook" : 0.49500000022817403,
+        "Propagator.inputPreparation" : 0.5753750010626391,
+        "Propagator.outputCopyAndValidation" : 0.4186249861959368,
+        "state.commit" : 0.33066667674575,
+        "state.pack" : 0.23112501366995275
+      },
+      "state" : {
+        "acceptedFrames" : 15,
+        "pointerEntries" : 15,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.4191666743718088,
+      "foregroundFraction" : 0.04937744140625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3919166629202664,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.156125007313676,
+        "Propagator" : 32.350624998798594
+      },
+      "objectScore" : 9.8515625,
+      "predictedIoU" : 0.9782299,
+      "predictionAndStateMilliseconds" : 58.870791661320254,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.1284583267988637,
+        "modelInputRender" : 1.1623333411989734,
+        "orientationGraphSetup" : 0.020499996026046574,
+        "previewImageCreation" : 0.8437083306489512,
+        "sampleAcquisition" : 0.26195833925157785
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 291,
+      "requestIndex" : 15,
+      "requestMilliseconds" : 61.771624998073094,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5498333339346573,
+        "ImageEncoder.inputPreparation" : 0.006250003934837878,
+        "ImageEncoder.outputCopyAndValidation" : 1.7502916598459706,
+        "Propagator.beforePredictionHook" : 0.5079166730865836,
+        "Propagator.inputPreparation" : 0.5855833296664059,
+        "Propagator.outputCopyAndValidation" : 0.40141666249837726,
+        "state.commit" : 0.32091666071210057,
+        "state.pack" : 0.2273333229823038
+      },
+      "state" : {
+        "acceptedFrames" : 16,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.4339999945368618,
+      "foregroundFraction" : 0.0533294677734375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.38279166619759053,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.14383332466241,
+        "Propagator" : 32.25241666950751
+      },
+      "objectScore" : 9.9140625,
+      "predictedIoU" : 0.9787112,
+      "predictionAndStateMilliseconds" : 58.594875008566305,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.12220832286402583,
+        "modelInputRender" : 1.2637916661333293,
+        "orientationGraphSetup" : 0.0226666743401438,
+        "previewImageCreation" : 0.7624166755704209,
+        "sampleAcquisition" : 0.26091666950378567
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 311,
+      "requestIndex" : 16,
+      "requestMilliseconds" : 61.52625000686385,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5141666624695063,
+        "ImageEncoder.inputPreparation" : 0.006750007742084563,
+        "ImageEncoder.outputCopyAndValidation" : 1.700333334156312,
+        "Propagator.beforePredictionHook" : 0.45362500532064587,
+        "Propagator.inputPreparation" : 0.5753333389293402,
+        "Propagator.outputCopyAndValidation" : 0.4047499969601631,
+        "state.commit" : 0.31345833849627525,
+        "state.pack" : 0.21749999723397195
+      },
+      "state" : {
+        "acceptedFrames" : 17,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.2687500022584572,
+      "foregroundFraction" : 0.056671142578125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.43433334212750196,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.587458326597698,
+        "Propagator" : 32.6972083421424
+      },
+      "objectScore" : 9.8203125,
+      "predictedIoU" : 0.9811643,
+      "predictionAndStateMilliseconds" : 59.56995833548717,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11250001261942089,
+        "modelInputRender" : 1.0795833368320018,
+        "orientationGraphSetup" : 0.020083331037312746,
+        "previewImageCreation" : 0.8074166689766571,
+        "sampleAcquisition" : 0.24712500453460962
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 331,
+      "requestIndex" : 17,
+      "requestMilliseconds" : 62.366124999243766,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5147916672285646,
+        "ImageEncoder.inputPreparation" : 0.006208327249623835,
+        "ImageEncoder.outputCopyAndValidation" : 1.6055000014603138,
+        "Propagator.beforePredictionHook" : 0.45091666106600314,
+        "Propagator.inputPreparation" : 0.5783333326689899,
+        "Propagator.outputCopyAndValidation" : 0.5544583400478587,
+        "state.commit" : 0.3454583347775042,
+        "state.pack" : 0.21545833442360163
+      },
+      "state" : {
+        "acceptedFrames" : 18,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.3427916748914868,
+      "foregroundFraction" : 0.0588531494140625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.39924999873619527,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.320041665807366,
+        "Propagator" : 32.938416668912396
+      },
+      "objectScore" : 10.0234375,
+      "predictedIoU" : 0.98148996,
+      "predictionAndStateMilliseconds" : 59.60333334223833,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.12275000335648656,
+        "modelInputRender" : 1.1102083371952176,
+        "orientationGraphSetup" : 0.02154166577383876,
+        "previewImageCreation" : 0.8305833325721323,
+        "sampleAcquisition" : 0.25545833341311663
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 351,
+      "requestIndex" : 18,
+      "requestMilliseconds" : 62.462999994750135,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5118750123074278,
+        "ImageEncoder.inputPreparation" : 0.006624992238357663,
+        "ImageEncoder.outputCopyAndValidation" : 1.7482083349023014,
+        "Propagator.beforePredictionHook" : 0.47562499821651727,
+        "Propagator.inputPreparation" : 0.609916663961485,
+        "Propagator.outputCopyAndValidation" : 0.4234583320794627,
+        "state.commit" : 0.3311249893158674,
+        "state.pack" : 0.22508333495352417
+      },
+      "state" : {
+        "acceptedFrames" : 19,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.3840416688472033,
+      "foregroundFraction" : 0.060089111328125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.38029166171327233,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.15929167869035,
+        "Propagator" : 32.52604167209938
+      },
+      "objectScore" : 10.2890625,
+      "predictedIoU" : 0.98116976,
+      "predictionAndStateMilliseconds" : 58.88974999834318,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11858333891723305,
+        "modelInputRender" : 1.258416668861173,
+        "orientationGraphSetup" : 0.020041668904013932,
+        "previewImageCreation" : 0.7451249985024333,
+        "sampleAcquisition" : 0.24004167062230408
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 371,
+      "requestIndex" : 19,
+      "requestMilliseconds" : 61.756625000271015,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.48499999684281647,
+        "ImageEncoder.inputPreparation" : 0.005791662260890007,
+        "ImageEncoder.outputCopyAndValidation" : 1.7104583384934813,
+        "Propagator.beforePredictionHook" : 0.4241666756570339,
+        "Propagator.inputPreparation" : 0.6257499917410314,
+        "Propagator.outputCopyAndValidation" : 0.3972916747443378,
+        "state.commit" : 0.3125000075669959,
+        "state.pack" : 0.22920832270756364
+      },
+      "state" : {
+        "acceptedFrames" : 20,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.2716666717315093,
+      "foregroundFraction" : 0.0602569580078125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.39075000677257776,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.050666666473262,
+        "Propagator" : 32.672875007847324
+      },
+      "objectScore" : 10.2421875,
+      "predictedIoU" : 0.9791206,
+      "predictionAndStateMilliseconds" : 58.895249996567145,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11875000200234354,
+        "modelInputRender" : 1.0808333317982033,
+        "orientationGraphSetup" : 0.019833329133689404,
+        "previewImageCreation" : 0.8188333304133266,
+        "sampleAcquisition" : 0.2317916660103947
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 391,
+      "requestIndex" : 20,
+      "requestMilliseconds" : 61.672708339756355,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5173333338461816,
+        "ImageEncoder.inputPreparation" : 0.0065416679717600346,
+        "ImageEncoder.outputCopyAndValidation" : 1.6485416708746925,
+        "Propagator.beforePredictionHook" : 0.4481249925447628,
+        "Propagator.inputPreparation" : 0.5859166558366269,
+        "Propagator.outputCopyAndValidation" : 0.4061666550114751,
+        "state.commit" : 0.3217083285562694,
+        "state.pack" : 0.22466666996479034
+      },
+      "state" : {
+        "acceptedFrames" : 21,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.4541249877074733,
+      "foregroundFraction" : 0.06182861328125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3905000048689544,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.325791665934958,
+        "Propagator" : 32.963708334136754
+      },
+      "objectScore" : 10.2109375,
+      "predictedIoU" : 0.9801718,
+      "predictionAndStateMilliseconds" : 59.63629166944884,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.1514999894425273,
+        "modelInputRender" : 0.9595416631782427,
+        "orientationGraphSetup" : 0.022291656932793558,
+        "previewImageCreation" : 1.0337499988963827,
+        "sampleAcquisition" : 0.2832916652550921
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 411,
+      "requestIndex" : 21,
+      "requestMilliseconds" : 62.58629166404717,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.530666671693325,
+        "ImageEncoder.inputPreparation" : 0.006916670827195048,
+        "ImageEncoder.outputCopyAndValidation" : 1.6973750025499612,
+        "Propagator.beforePredictionHook" : 0.48804166726768017,
+        "Propagator.inputPreparation" : 0.5730416742153466,
+        "Propagator.outputCopyAndValidation" : 0.49074999697040766,
+        "state.commit" : 0.32137500238604844,
+        "state.pack" : 0.2227500081062317
+      },
+      "state" : {
+        "acceptedFrames" : 22,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.4075833207461983,
+      "foregroundFraction" : 0.0621185302734375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3919166774721816,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.434708327637054,
+        "Propagator" : 32.31479166424833
+      },
+      "objectScore" : 9.9921875,
+      "predictedIoU" : 0.98048395,
+      "predictionAndStateMilliseconds" : 58.89258334354963,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11629167420323938,
+        "modelInputRender" : 1.276625000173226,
+        "orientationGraphSetup" : 0.019416664144955575,
+        "previewImageCreation" : 0.7370833336608484,
+        "sampleAcquisition" : 0.2565833419794217
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 431,
+      "requestIndex" : 22,
+      "requestMilliseconds" : 61.806000012438744,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5104166630189866,
+        "ImageEncoder.inputPreparation" : 0.0071666581789031625,
+        "ImageEncoder.outputCopyAndValidation" : 1.6496666648890823,
+        "Propagator.beforePredictionHook" : 0.4433333233464509,
+        "Propagator.inputPreparation" : 0.5767499969806522,
+        "Propagator.outputCopyAndValidation" : 0.4012499994132668,
+        "state.commit" : 0.32141666451934725,
+        "state.pack" : 0.21954166004434228
+      },
+      "state" : {
+        "acceptedFrames" : 23,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.4258333287434652,
+      "foregroundFraction" : 0.0634918212890625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.38029166171327233,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.365833341609687,
+        "Propagator" : 32.36995832412504
+      },
+      "objectScore" : 9.578125,
+      "predictedIoU" : 0.9825188,
+      "predictionAndStateMilliseconds" : 58.93691667006351,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11129166523460299,
+        "modelInputRender" : 1.2538750015664846,
+        "orientationGraphSetup" : 0.02133334055542946,
+        "previewImageCreation" : 0.7794166594976559,
+        "sampleAcquisition" : 0.25800000003073364
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 451,
+      "requestIndex" : 23,
+      "requestMilliseconds" : 61.83120833884459,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5088749894639477,
+        "ImageEncoder.inputPreparation" : 0.006333328201435506,
+        "ImageEncoder.outputCopyAndValidation" : 1.7016666679410264,
+        "Propagator.beforePredictionHook" : 0.4398333403514698,
+        "Propagator.inputPreparation" : 0.5955000087851658,
+        "Propagator.outputCopyAndValidation" : 0.3984166542068124,
+        "state.commit" : 0.3130416589556262,
+        "state.pack" : 0.222958333324641
+      },
+      "state" : {
+        "acceptedFrames" : 24,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.2825416672276333,
+      "foregroundFraction" : 0.0652618408203125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.38804166251793504,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.151500001200475,
+        "Propagator" : 32.504791670362465
+      },
+      "objectScore" : 9.375,
+      "predictedIoU" : 0.9826933,
+      "predictionAndStateMilliseconds" : 58.75195833505131,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11337500473018736,
+        "modelInputRender" : 1.0893750004470348,
+        "orientationGraphSetup" : 0.020624996977858245,
+        "previewImageCreation" : 0.8041666587814689,
+        "sampleAcquisition" : 0.25329166965093464
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 471,
+      "requestIndex" : 24,
+      "requestMilliseconds" : 61.52883333561476,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.49020833102986217,
+        "ImageEncoder.inputPreparation" : 0.006416667019948363,
+        "ImageEncoder.outputCopyAndValidation" : 1.6022916533984244,
+        "Propagator.beforePredictionHook" : 0.4342916654422879,
+        "Propagator.inputPreparation" : 0.5894583300687373,
+        "Propagator.outputCopyAndValidation" : 0.4191250045550987,
+        "state.commit" : 0.3209999995306134,
+        "state.pack" : 0.22004166385158896
+      },
+      "state" : {
+        "acceptedFrames" : 25,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.3576666571898386,
+      "foregroundFraction" : 0.066864013671875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3787916648434475,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.16216667147819,
+        "Propagator" : 32.20729167514946
+      },
+      "objectScore" : 9.7890625,
+      "predictedIoU" : 0.9803443,
+      "predictionAndStateMilliseconds" : 58.63216666330118,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11487500160001218,
+        "modelInputRender" : 1.2360000109765679,
+        "orientationGraphSetup" : 0.02079166006296873,
+        "previewImageCreation" : 0.7430416590068489,
+        "sampleAcquisition" : 0.2411666646366939
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 491,
+      "requestIndex" : 25,
+      "requestMilliseconds" : 61.456791663658805,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5115416570333764,
+        "ImageEncoder.inputPreparation" : 0.0062083418015390635,
+        "ImageEncoder.outputCopyAndValidation" : 1.6964166716206819,
+        "Propagator.beforePredictionHook" : 0.4483333323150873,
+        "Propagator.inputPreparation" : 0.5740416672779247,
+        "Propagator.outputCopyAndValidation" : 0.4828333330806345,
+        "state.commit" : 0.3127083327854052,
+        "state.pack" : 0.21854166698176414
+      },
+      "state" : {
+        "acceptedFrames" : 26,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.413499998510815,
+      "foregroundFraction" : 0.0681610107421875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.39633332926314324,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.482333341031335,
+        "Propagator" : 32.71775000030175
+      },
+      "objectScore" : 9.8671875,
+      "predictedIoU" : 0.9796229,
+      "predictionAndStateMilliseconds" : 59.25533334084321,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.1345416676485911,
+        "modelInputRender" : 0.9691666637081653,
+        "orientationGraphSetup" : 0.0219999928958714,
+        "previewImageCreation" : 0.9925833292072639,
+        "sampleAcquisition" : 0.293541670544073
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 511,
+      "requestIndex" : 26,
+      "requestMilliseconds" : 62.16624999069609,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.4690416681114584,
+        "ImageEncoder.inputPreparation" : 0.006833332008682191,
+        "ImageEncoder.outputCopyAndValidation" : 1.6028333338908851,
+        "Propagator.beforePredictionHook" : 0.4650416667573154,
+        "Propagator.inputPreparation" : 0.565208334592171,
+        "Propagator.outputCopyAndValidation" : 0.39433332858607173,
+        "state.commit" : 0.32141666451934725,
+        "state.pack" : 0.2172083331970498
+      },
+      "state" : {
+        "acceptedFrames" : 27,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.4304999969899654,
+      "foregroundFraction" : 0.069122314453125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3823750012088567,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.190833333297633,
+        "Propagator" : 32.31658332515508
+      },
+      "objectScore" : 9.7578125,
+      "predictedIoU" : 0.9806974,
+      "predictionAndStateMilliseconds" : 58.71987499995157,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11399999493733048,
+        "modelInputRender" : 1.2771666661137715,
+        "orientationGraphSetup" : 0.020833336748182774,
+        "previewImageCreation" : 0.7462916692020372,
+        "sampleAcquisition" : 0.2705000079004094
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 531,
+      "requestIndex" : 27,
+      "requestMilliseconds" : 61.628750001545995,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5348749982658774,
+        "ImageEncoder.inputPreparation" : 0.00691665627527982,
+        "ImageEncoder.outputCopyAndValidation" : 1.6944166563916951,
+        "Propagator.beforePredictionHook" : 0.45291666174307466,
+        "Propagator.inputPreparation" : 0.5802083323942497,
+        "Propagator.outputCopyAndValidation" : 0.38912500895094126,
+        "state.commit" : 0.3128749958705157,
+        "state.pack" : 0.22741666180081666
+      },
+      "state" : {
+        "acceptedFrames" : 28,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.295750004122965,
+      "foregroundFraction" : 0.0705413818359375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3933333355234936,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.722416673786938,
+        "Propagator" : 32.444791664602235
+      },
+      "objectScore" : 9.40625,
+      "predictedIoU" : 0.9824537,
+      "predictionAndStateMilliseconds" : 59.278833330608904,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11854166223201901,
+        "modelInputRender" : 1.077708337106742,
+        "orientationGraphSetup" : 0.021166662918403745,
+        "previewImageCreation" : 0.8187916537281126,
+        "sampleAcquisition" : 0.2577499981271103
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 551,
+      "requestIndex" : 28,
+      "requestMilliseconds" : 62.07512499531731,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.4943749954691157,
+        "ImageEncoder.inputPreparation" : 0.006083340849727392,
+        "ImageEncoder.outputCopyAndValidation" : 1.6169583395821974,
+        "Propagator.beforePredictionHook" : 0.4589166637742892,
+        "Propagator.inputPreparation" : 0.592500000493601,
+        "Propagator.outputCopyAndValidation" : 0.3900833398802206,
+        "state.commit" : 0.3209583373973146,
+        "state.pack" : 0.21866665338166058
+      },
+      "state" : {
+        "acceptedFrames" : 29,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.236458327388391,
+      "foregroundFraction" : 0.0717926025390625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.38158333336468786,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.034083332982846,
+        "Propagator" : 32.51912500127219
+      },
+      "objectScore" : 9.8671875,
+      "predictedIoU" : 0.98316354,
+      "predictionAndStateMilliseconds" : 58.92391665838659,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11354166781529784,
+        "modelInputRender" : 1.0643333371262997,
+        "orientationGraphSetup" : 0.019958330085501075,
+        "previewImageCreation" : 0.7969583384692669,
+        "sampleAcquisition" : 0.23966666776686907
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 571,
+      "requestIndex" : 29,
+      "requestMilliseconds" : 61.632500000996515,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.4961666709277779,
+        "ImageEncoder.inputPreparation" : 0.007208334864117205,
+        "ImageEncoder.outputCopyAndValidation" : 1.6972916782833636,
+        "Propagator.beforePredictionHook" : 0.43920833559241146,
+        "Propagator.inputPreparation" : 0.6237499910639599,
+        "Propagator.outputCopyAndValidation" : 0.5465416616061702,
+        "state.commit" : 0.3126666706521064,
+        "state.pack" : 0.23420833167620003
+      },
+      "state" : {
+        "acceptedFrames" : 30,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.262208334286697,
+      "foregroundFraction" : 0.0726470947265625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3907916689058766,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.051375010050833,
+        "Propagator" : 32.27537499333266
+      },
+      "objectScore" : 9.484375,
+      "predictedIoU" : 0.98231053,
+      "predictionAndStateMilliseconds" : 58.41329167014919,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11670833919197321,
+        "modelInputRender" : 1.1437916691647843,
+        "orientationGraphSetup" : 0.019458340830169618,
+        "previewImageCreation" : 0.7433333230437711,
+        "sampleAcquisition" : 0.23725000210106373
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 591,
+      "requestIndex" : 30,
+      "requestMilliseconds" : 61.16729167115409,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.47941665980033576,
+        "ImageEncoder.inputPreparation" : 0.005916677764616907,
+        "ImageEncoder.outputCopyAndValidation" : 1.6234999930020422,
+        "Propagator.beforePredictionHook" : 0.45629167289007455,
+        "Propagator.inputPreparation" : 0.5664166674250737,
+        "Propagator.outputCopyAndValidation" : 0.4001666675321758,
+        "state.commit" : 0.3207916743122041,
+        "state.pack" : 0.22149999858811498
+      },
+      "state" : {
+        "acceptedFrames" : 31,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.4122499889926985,
+      "foregroundFraction" : 0.0744476318359375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3849166678264737,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.435708335251547,
+        "Propagator" : 32.05954167060554
+      },
+      "objectScore" : 9.953125,
+      "predictedIoU" : 0.98295516,
+      "predictionAndStateMilliseconds" : 58.79379167163279,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.1255833194591105,
+        "modelInputRender" : 1.106083334889263,
+        "orientationGraphSetup" : 0.019750004867091775,
+        "previewImageCreation" : 0.9050833323271945,
+        "sampleAcquisition" : 0.2539999986765906
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 611,
+      "requestIndex" : 31,
+      "requestMilliseconds" : 61.689750000368804,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5439999949885532,
+        "ImageEncoder.inputPreparation" : 0.007791662937961519,
+        "ImageEncoder.outputCopyAndValidation" : 1.7042499966919422,
+        "Propagator.beforePredictionHook" : 0.515791674843058,
+        "Propagator.inputPreparation" : 0.5773749871877953,
+        "Propagator.outputCopyAndValidation" : 0.40216665365733206,
+        "state.commit" : 0.3129999968223274,
+        "state.pack" : 0.21904167078901082
+      },
+      "state" : {
+        "acceptedFrames" : 32,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.3977500095497817,
+      "foregroundFraction" : 0.0755615234375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.41829167457763106,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.45375000347849,
+        "Propagator" : 32.441833332995884
+      },
+      "objectScore" : 10,
+      "predictedIoU" : 0.98127353,
+      "predictionAndStateMilliseconds" : 59.05291666567791,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11304166400805116,
+        "modelInputRender" : 1.265708327991888,
+        "orientationGraphSetup" : 0.02099999983329326,
+        "previewImageCreation" : 0.7325000042328611,
+        "sampleAcquisition" : 0.2638750011101365
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 631,
+      "requestIndex" : 32,
+      "requestMilliseconds" : 61.97404167323839,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.489208337967284,
+        "ImageEncoder.inputPreparation" : 0.006291666068136692,
+        "ImageEncoder.outputCopyAndValidation" : 1.6405416681664065,
+        "Propagator.beforePredictionHook" : 0.4402083286549896,
+        "Propagator.inputPreparation" : 0.5782500084023923,
+        "Propagator.outputCopyAndValidation" : 0.42912499338854104,
+        "state.commit" : 0.3447500057518482,
+        "state.pack" : 0.21570833632722497
+      },
+      "state" : {
+        "acceptedFrames" : 33,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.3914999910630286,
+      "foregroundFraction" : 0.0762939453125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.40874999831430614,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.512666662805714,
+        "Propagator" : 32.78754166967701
+      },
+      "objectScore" : 9.8359375,
+      "predictedIoU" : 0.9830261,
+      "predictionAndStateMilliseconds" : 59.72599999222439,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.1230000052601099,
+        "modelInputRender" : 1.2197500036563724,
+        "orientationGraphSetup" : 0.020708321244455874,
+        "previewImageCreation" : 0.7719999994151294,
+        "sampleAcquisition" : 0.25425000058021396
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 651,
+      "requestIndex" : 33,
+      "requestMilliseconds" : 62.65758334484417,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5189166695345193,
+        "ImageEncoder.inputPreparation" : 0.0066250067902728915,
+        "ImageEncoder.outputCopyAndValidation" : 1.7420000076526776,
+        "Propagator.beforePredictionHook" : 0.49308332381770015,
+        "Propagator.inputPreparation" : 0.5819999933009967,
+        "Propagator.outputCopyAndValidation" : 0.5093750078231096,
+        "state.commit" : 0.331000002915971,
+        "state.pack" : 0.22970832651481032
+      },
+      "state" : {
+        "acceptedFrames" : 34,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.2908750106580555,
+      "foregroundFraction" : 0.0782928466796875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.39379166264552623,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.523749998072162,
+        "Propagator" : 32.10283334192354
+      },
+      "objectScore" : 9.8359375,
+      "predictedIoU" : 0.9829428,
+      "predictionAndStateMilliseconds" : 58.78870832384564,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11950000771321356,
+        "modelInputRender" : 1.0808333317982033,
+        "orientationGraphSetup" : 0.02079167461488396,
+        "previewImageCreation" : 0.8105000015348196,
+        "sampleAcquisition" : 0.25762499717529863
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 671,
+      "requestIndex" : 34,
+      "requestMilliseconds" : 61.55891667003743,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.48741667706053704,
+        "ImageEncoder.inputPreparation" : 0.006166665116325021,
+        "ImageEncoder.outputCopyAndValidation" : 1.7042083345586434,
+        "Propagator.beforePredictionHook" : 0.4184166609775275,
+        "Propagator.inputPreparation" : 0.5828333378303796,
+        "Propagator.outputCopyAndValidation" : 0.40033333061728626,
+        "state.commit" : 0.32104166166391224,
+        "state.pack" : 0.22829166846349835
+      },
+      "state" : {
+        "acceptedFrames" : 35,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.430041669867933,
+      "foregroundFraction" : 0.080322265625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3932083345716819,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.17429167649243,
+        "Propagator" : 32.827458329848014
+      },
+      "objectScore" : 9.5546875,
+      "predictedIoU" : 0.9832471,
+      "predictionAndStateMilliseconds" : 59.132416659849696,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11283333878964186,
+        "modelInputRender" : 1.2243750097695738,
+        "orientationGraphSetup" : 0.020374995074234903,
+        "previewImageCreation" : 0.8269583340734243,
+        "sampleAcquisition" : 0.24362499243579805
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 691,
+      "requestIndex" : 35,
+      "requestMilliseconds" : 62.061333330348134,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.48708333633840084,
+        "ImageEncoder.inputPreparation" : 0.006333328201435506,
+        "ImageEncoder.outputCopyAndValidation" : 1.6647083248244599,
+        "Propagator.beforePredictionHook" : 0.4370833339635283,
+        "Propagator.inputPreparation" : 0.5708333337679505,
+        "Propagator.outputCopyAndValidation" : 0.40120833727996796,
+        "state.commit" : 0.3221666702302173,
+        "state.pack" : 0.2282499917782843
+      },
+      "state" : {
+        "acceptedFrames" : 36,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.1540833258768544,
+      "foregroundFraction" : 0.08197021484375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.38174999644979835,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.203291664482094,
+        "Propagator" : 32.44916666881181
+      },
+      "objectScore" : 9.6171875,
+      "predictedIoU" : 0.98317313,
+      "predictionAndStateMilliseconds" : 58.79587499657646,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.12154167052358389,
+        "modelInputRender" : 0.9581250051269308,
+        "orientationGraphSetup" : 0.020166669855825603,
+        "previewImageCreation" : 0.8066250011324883,
+        "sampleAcquisition" : 0.24587500956840813
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 711,
+      "requestIndex" : 36,
+      "requestMilliseconds" : 61.419791672960855,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.4791666578967124,
+        "ImageEncoder.inputPreparation" : 0.005958339897915721,
+        "ImageEncoder.outputCopyAndValidation" : 1.7088749882532284,
+        "Propagator.beforePredictionHook" : 0.4324166657170281,
+        "Propagator.inputPreparation" : 0.5800416693091393,
+        "Propagator.outputCopyAndValidation" : 0.3927500074496493,
+        "state.commit" : 0.30862500716466457,
+        "state.pack" : 0.22137501218821853
+      },
+      "state" : {
+        "acceptedFrames" : 37,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.3189583444036543,
+      "foregroundFraction" : 0.0857696533203125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3928333317162469,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.202374995686114,
+        "Propagator" : 32.462708331877366
+      },
+      "objectScore" : 9.640625,
+      "predictedIoU" : 0.9846687,
+      "predictionAndStateMilliseconds" : 58.951666665961966,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.13079166819807142,
+        "modelInputRender" : 1.0871666599996388,
+        "orientationGraphSetup" : 0.018874998204410076,
+        "previewImageCreation" : 0.8377083431696519,
+        "sampleAcquisition" : 0.24270832363981754
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 731,
+      "requestIndex" : 37,
+      "requestMilliseconds" : 61.775541660608724,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5792500014649704,
+        "ImageEncoder.inputPreparation" : 0.008166680345311761,
+        "ImageEncoder.outputCopyAndValidation" : 1.642124989302829,
+        "Propagator.beforePredictionHook" : 0.47795832506380975,
+        "Propagator.inputPreparation" : 0.5641666648443788,
+        "Propagator.outputCopyAndValidation" : 0.4650833288906142,
+        "state.commit" : 0.3212083247490227,
+        "state.pack" : 0.21491666848305613
+      },
+      "state" : {
+        "acceptedFrames" : 38,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.257583342725411,
+      "foregroundFraction" : 0.0905609130859375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3841666621156037,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.410000005038455,
+        "Propagator" : 32.501083333045244
+      },
+      "objectScore" : 9.8515625,
+      "predictedIoU" : 0.98457575,
+      "predictionAndStateMilliseconds" : 59.05666666512843,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.12062500172760338,
+        "modelInputRender" : 1.0652083437889814,
+        "orientationGraphSetup" : 0.020374995074234903,
+        "previewImageCreation" : 0.8021666726563126,
+        "sampleAcquisition" : 0.2474583307048306
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 751,
+      "requestIndex" : 38,
+      "requestMilliseconds" : 61.78749998798594,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.47074999019969255,
+        "ImageEncoder.inputPreparation" : 0.005958325346000493,
+        "ImageEncoder.outputCopyAndValidation" : 1.694541671895422,
+        "Propagator.beforePredictionHook" : 0.43862500751856714,
+        "Propagator.inputPreparation" : 0.5943750002188608,
+        "Propagator.outputCopyAndValidation" : 0.3906666679540649,
+        "state.commit" : 0.3127916716039181,
+        "state.pack" : 0.22429166710935533
+      },
+      "state" : {
+        "acceptedFrames" : 39,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.2111666621640325,
+      "foregroundFraction" : 0.0944976806640625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3932083345716819,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.797916662762873,
+        "Propagator" : 32.417125010397285
+      },
+      "objectScore" : 10.078125,
+      "predictedIoU" : 0.981355,
+      "predictionAndStateMilliseconds" : 58.21174998709466,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.1107916614273563,
+        "modelInputRender" : 1.0697499965317547,
+        "orientationGraphSetup" : 0.017875005141831934,
+        "previewImageCreation" : 0.7820833416189998,
+        "sampleAcquisition" : 0.22904167417436838
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 771,
+      "requestIndex" : 39,
+      "requestMilliseconds" : 60.908208339242265,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.4555000050459057,
+        "ImageEncoder.inputPreparation" : 0.005333320586942136,
+        "ImageEncoder.outputCopyAndValidation" : 1.6303333395626396,
+        "Propagator.beforePredictionHook" : 0.41362499177921563,
+        "Propagator.inputPreparation" : 0.5417500069597736,
+        "Propagator.outputCopyAndValidation" : 0.3927916695829481,
+        "state.commit" : 0.3246666747145355,
+        "state.pack" : 0.21945833577774465
+      },
+      "state" : {
+        "acceptedFrames" : 40,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.363833336858079,
+      "foregroundFraction" : 0.0977020263671875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.38358333404175937,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.418291657231748,
+        "Propagator" : 32.36612500040792
+      },
+      "objectScore" : 9.5703125,
+      "predictedIoU" : 0.98383766,
+      "predictionAndStateMilliseconds" : 58.954499996616505,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11550000635907054,
+        "modelInputRender" : 1.254833332495764,
+        "orientationGraphSetup" : 0.019541665096767247,
+        "previewImageCreation" : 0.7302083395188674,
+        "sampleAcquisition" : 0.24212501011788845
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 791,
+      "requestIndex" : 40,
+      "requestMilliseconds" : 61.792458334821276,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5290416738716885,
+        "ImageEncoder.inputPreparation" : 0.00691665627527982,
+        "ImageEncoder.outputCopyAndValidation" : 1.6982083325274289,
+        "Propagator.beforePredictionHook" : 0.42779167415574193,
+        "Propagator.inputPreparation" : 0.5807499983347952,
+        "Propagator.outputCopyAndValidation" : 0.38104166742414236,
+        "state.commit" : 0.31279165705200285,
+        "state.pack" : 0.22054166765883565
+      },
+      "state" : {
+        "acceptedFrames" : 41,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.359000005526468,
+      "foregroundFraction" : 0.10333251953125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4286250041332096,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.35133333306294,
+        "Propagator" : 32.56225000950508
+      },
+      "objectScore" : 9.5234375,
+      "predictedIoU" : 0.98474276,
+      "predictionAndStateMilliseconds" : 59.08487499982584,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11137498950120062,
+        "modelInputRender" : 1.2558333401102573,
+        "orientationGraphSetup" : 0.019749990315176547,
+        "previewImageCreation" : 0.745291676139459,
+        "sampleAcquisition" : 0.22516667377203703
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 811,
+      "requestIndex" : 41,
+      "requestMilliseconds" : 61.983166669961065,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.4565416747936979,
+        "ImageEncoder.inputPreparation" : 0.004874993464909494,
+        "ImageEncoder.outputCopyAndValidation" : 1.6032916610129178,
+        "Propagator.beforePredictionHook" : 0.415000002249144,
+        "Propagator.inputPreparation" : 0.585250003496185,
+        "Propagator.outputCopyAndValidation" : 0.5325833335518837,
+        "state.commit" : 0.34495834552217275,
+        "state.pack" : 0.2170000079786405
+      },
+      "state" : {
+        "acceptedFrames" : 42,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.5007499934872612,
+      "foregroundFraction" : 0.109832763671875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4079583304701373,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.260958328843117,
+        "Propagator" : 32.55587500461843
+      },
+      "objectScore" : 9.7109375,
+      "predictedIoU" : 0.9834049,
+      "predictionAndStateMilliseconds" : 59.42004166718107,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.13658334501087666,
+        "modelInputRender" : 1.1928750027436763,
+        "orientationGraphSetup" : 0.02225000935140997,
+        "previewImageCreation" : 0.8706666703801602,
+        "sampleAcquisition" : 0.2761249925242737
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 831,
+      "requestIndex" : 42,
+      "requestMilliseconds" : 62.43558332789689,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.6413333467207849,
+        "ImageEncoder.inputPreparation" : 0.008208327926695347,
+        "ImageEncoder.outputCopyAndValidation" : 1.8189999973401427,
+        "Propagator.beforePredictionHook" : 0.5475833313539624,
+        "Propagator.inputPreparation" : 0.5951250059297308,
+        "Propagator.outputCopyAndValidation" : 0.41320834134239703,
+        "state.commit" : 0.3313333436381072,
+        "state.pack" : 0.2332083386136219
+      },
+      "state" : {
+        "acceptedFrames" : 43,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.458708331687376,
+      "foregroundFraction" : 0.1164398193359375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.39795834163669497,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.63454165949952,
+        "Propagator" : 32.45924999646377
+      },
+      "objectScore" : 9.7265625,
+      "predictedIoU" : 0.9827412,
+      "predictionAndStateMilliseconds" : 59.92299999343231,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.1179583341581747,
+        "modelInputRender" : 1.2727916764561087,
+        "orientationGraphSetup" : 0.02112500078510493,
+        "previewImageCreation" : 0.7952916639624164,
+        "sampleAcquisition" : 0.24958333233371377
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 851,
+      "requestIndex" : 43,
+      "requestMilliseconds" : 62.88870834396221,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5085000011604279,
+        "ImageEncoder.inputPreparation" : 0.005958325346000493,
+        "ImageEncoder.outputCopyAndValidation" : 2.29537500126753,
+        "Propagator.beforePredictionHook" : 0.4962499951943755,
+        "Propagator.inputPreparation" : 0.5720000044675544,
+        "Propagator.outputCopyAndValidation" : 0.39520833524875343,
+        "state.commit" : 0.32141666451934725,
+        "state.pack" : 0.22095833264756948
+      },
+      "state" : {
+        "acceptedFrames" : 44,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.26154166739434,
+      "foregroundFraction" : 0.122528076171875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.42283332732040435,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.550000008777715,
+        "Propagator" : 32.60970833071042
+      },
+      "objectScore" : 9.890625,
+      "predictedIoU" : 0.98380166,
+      "predictionAndStateMilliseconds" : 59.335416663088836,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11766667012125254,
+        "modelInputRender" : 1.073666659067385,
+        "orientationGraphSetup" : 0.020749997929669917,
+        "previewImageCreation" : 0.7894166628830135,
+        "sampleAcquisition" : 0.25850000383798033
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 871,
+      "requestIndex" : 44,
+      "requestMilliseconds" : 62.114208325510845,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.48654167039785534,
+        "ImageEncoder.inputPreparation" : 0.006416667019948363,
+        "ImageEncoder.outputCopyAndValidation" : 1.655250001931563,
+        "Propagator.beforePredictionHook" : 0.4385000065667555,
+        "Propagator.inputPreparation" : 0.5828749999636784,
+        "Propagator.outputCopyAndValidation" : 0.4312083328841254,
+        "state.commit" : 0.34462500480003655,
+        "state.pack" : 0.21658332843799144
+      },
+      "state" : {
+        "acceptedFrames" : 45,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.441250006086193,
+      "foregroundFraction" : 0.1280364990234375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.40950000402517617,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.360125003615394,
+        "Propagator" : 32.87383333372418
+      },
+      "objectScore" : 9.9296875,
+      "predictedIoU" : 0.9842948,
+      "predictionAndStateMilliseconds" : 59.55499999981839,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.12237500050105155,
+        "modelInputRender" : 1.2415833334671333,
+        "orientationGraphSetup" : 0.02033333294093609,
+        "previewImageCreation" : 0.8036250073928386,
+        "sampleAcquisition" : 0.2515833330107853
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 891,
+      "requestIndex" : 45,
+      "requestMilliseconds" : 62.49754165764898,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.4900833300780505,
+        "ImageEncoder.inputPreparation" : 0.005999987479299307,
+        "ImageEncoder.outputCopyAndValidation" : 1.7613333329791203,
+        "Propagator.beforePredictionHook" : 0.43991666461806744,
+        "Propagator.inputPreparation" : 0.5831666640006006,
+        "Propagator.outputCopyAndValidation" : 0.4718750133179128,
+        "state.commit" : 0.3312500048195943,
+        "state.pack" : 0.22504167282022536
+      },
+      "state" : {
+        "acceptedFrames" : 46,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.4562916660215706,
+      "foregroundFraction" : 0.1285858154296875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3876249975292012,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.392708327970468,
+        "Propagator" : 32.48616665950976
+      },
+      "objectScore" : 9.78125,
+      "predictedIoU" : 0.9810106,
+      "predictionAndStateMilliseconds" : 59.12900000112131,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.12325000716373324,
+        "modelInputRender" : 1.2644583330256864,
+        "orientationGraphSetup" : 0.022083331714384258,
+        "previewImageCreation" : 0.7812916592229158,
+        "sampleAcquisition" : 0.2629999944474548
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 911,
+      "requestIndex" : 46,
+      "requestMilliseconds" : 62.097791669657454,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5379999929573387,
+        "ImageEncoder.inputPreparation" : 0.0066250067902728915,
+        "ImageEncoder.outputCopyAndValidation" : 1.7059166711987928,
+        "Propagator.beforePredictionHook" : 0.45033333299215883,
+        "Propagator.inputPreparation" : 0.6040416774339974,
+        "Propagator.outputCopyAndValidation" : 0.3934999986086041,
+        "state.commit" : 0.31545832462143153,
+        "state.pack" : 0.22208334121387452
+      },
+      "state" : {
+        "acceptedFrames" : 47,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.329291673959233,
+      "foregroundFraction" : 0.122802734375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.39724999805912375,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.496124991448596,
+        "Propagator" : 32.521625005756505
+      },
+      "objectScore" : 9.6796875,
+      "predictedIoU" : 0.9796816,
+      "predictionAndStateMilliseconds" : 59.2342916643247,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.12920833250973374,
+        "modelInputRender" : 1.163499997346662,
+        "orientationGraphSetup" : 0.019625003915280104,
+        "previewImageCreation" : 0.7644583383807912,
+        "sampleAcquisition" : 0.25066666421480477
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 931,
+      "requestIndex" : 47,
+      "requestMilliseconds" : 62.05870833946392,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5365416727727279,
+        "ImageEncoder.inputPreparation" : 0.0075833231676369905,
+        "ImageEncoder.outputCopyAndValidation" : 1.6546666738577187,
+        "Propagator.beforePredictionHook" : 0.488458332256414,
+        "Propagator.inputPreparation" : 0.5756250029662624,
+        "Propagator.outputCopyAndValidation" : 0.4002083296654746,
+        "state.commit" : 0.32137500238604844,
+        "state.pack" : 0.21837500389665365
+      },
+      "state" : {
+        "acceptedFrames" : 48,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.350624999962747,
+      "foregroundFraction" : 0.1199798583984375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3890416701324284,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.115708328783512,
+        "Propagator" : 32.52716666611377
+      },
+      "objectScore" : 10.28125,
+      "predictedIoU" : 0.98042405,
+      "predictionAndStateMilliseconds" : 58.8254583417438,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11858333891723305,
+        "modelInputRender" : 1.215500000398606,
+        "orientationGraphSetup" : 0.020833336748182774,
+        "previewImageCreation" : 0.7377500005532056,
+        "sampleAcquisition" : 0.2562916633905843
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 951,
+      "requestIndex" : 48,
+      "requestMilliseconds" : 61.67224999808241,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.49841667350847274,
+        "ImageEncoder.inputPreparation" : 0.0061250029830262065,
+        "ImageEncoder.outputCopyAndValidation" : 1.6975000035017729,
+        "Propagator.beforePredictionHook" : 0.4522499948507175,
+        "Propagator.inputPreparation" : 0.5817916680825874,
+        "Propagator.outputCopyAndValidation" : 0.39937499968800694,
+        "state.commit" : 0.31262499396689236,
+        "state.pack" : 0.22070833074394614
+      },
+      "state" : {
+        "acceptedFrames" : 49,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.4109166697598994,
+      "foregroundFraction" : 0.1175537109375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.40824999450705945,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.93379166419618,
+        "Propagator" : 32.52374999283347
+      },
+      "objectScore" : 10,
+      "predictedIoU" : 0.98078877,
+      "predictionAndStateMilliseconds" : 58.602708333637565,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.1124166592489928,
+        "modelInputRender" : 1.2449166679289192,
+        "orientationGraphSetup" : 0.01979166700039059,
+        "previewImageCreation" : 0.7855833391658962,
+        "sampleAcquisition" : 0.24658333859406412
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 971,
+      "requestIndex" : 49,
+      "requestMilliseconds" : 61.514708344475366,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.502958326251246,
+        "ImageEncoder.inputPreparation" : 0.006333342753350735,
+        "ImageEncoder.outputCopyAndValidation" : 1.6264583391603082,
+        "Propagator.beforePredictionHook" : 0.4607083392329514,
+        "Propagator.inputPreparation" : 0.573166660615243,
+        "Propagator.outputCopyAndValidation" : 0.4127083229832351,
+        "state.commit" : 0.33095834078267217,
+        "state.pack" : 0.2191666717408225
+      },
+      "state" : {
+        "acceptedFrames" : 50,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.3152083304012194,
+      "foregroundFraction" : 0.11651611328125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3944999916711822,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.837875003460795,
+        "Propagator" : 32.305208340403624
+      },
+      "objectScore" : 9.7421875,
+      "predictedIoU" : 0.98261285,
+      "predictionAndStateMilliseconds" : 59.35124999086838,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.12020833673886955,
+        "modelInputRender" : 1.102041671401821,
+        "orientationGraphSetup" : 0.02166666672565043,
+        "previewImageCreation" : 0.8037916704779491,
+        "sampleAcquisition" : 0.2656249998835847
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 991,
+      "requestIndex" : 50,
+      "requestMilliseconds" : 62.16029166535009,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5191666714381427,
+        "ImageEncoder.inputPreparation" : 0.007083333912305534,
+        "ImageEncoder.outputCopyAndValidation" : 1.707291667116806,
+        "Propagator.beforePredictionHook" : 0.44587500451598316,
+        "Propagator.inputPreparation" : 0.5791250005131587,
+        "Propagator.outputCopyAndValidation" : 0.3923333279090002,
+        "state.commit" : 0.3209583373973146,
+        "state.pack" : 0.22433332924265414
+      },
+      "state" : {
+        "acceptedFrames" : 51,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.282000001287088,
+      "foregroundFraction" : 0.1165771484375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.38695833063684404,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.322541670291685,
+        "Propagator" : 32.54058332822751
+      },
+      "objectScore" : 9.7734375,
+      "predictedIoU" : 0.98323846,
+      "predictionAndStateMilliseconds" : 58.970166675862856,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11662500037346035,
+        "modelInputRender" : 1.0871250124182552,
+        "orientationGraphSetup" : 0.020958337699994445,
+        "previewImageCreation" : 0.8101249986793846,
+        "sampleAcquisition" : 0.24504166503902525
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1011,
+      "requestIndex" : 51,
+      "requestMilliseconds" : 61.730291665298864,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.48874999629333615,
+        "ImageEncoder.inputPreparation" : 0.006624992238357663,
+        "ImageEncoder.outputCopyAndValidation" : 1.6467083332827315,
+        "Propagator.beforePredictionHook" : 0.43491665564943105,
+        "Propagator.inputPreparation" : 0.5909583414904773,
+        "Propagator.outputCopyAndValidation" : 0.3910416562575847,
+        "state.commit" : 0.3131666744593531,
+        "state.pack" : 0.22149999858811498
+      },
+      "state" : {
+        "acceptedFrames" : 52,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.3547916644020006,
+      "foregroundFraction" : 0.1160736083984375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3989583346992731,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.442791669163853,
+        "Propagator" : 32.53887499158736
+      },
+      "objectScore" : 10.0390625,
+      "predictedIoU" : 0.9825466,
+      "predictionAndStateMilliseconds" : 58.990041667129844,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11787500989157706,
+        "modelInputRender" : 1.2437916593626142,
+        "orientationGraphSetup" : 0.020083331037312746,
+        "previewImageCreation" : 0.7156666688388214,
+        "sampleAcquisition" : 0.25566665863152593
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1031,
+      "requestIndex" : 52,
+      "requestMilliseconds" : 61.83575000613928,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.4677083343267441,
+        "ImageEncoder.inputPreparation" : 0.006083340849727392,
+        "ImageEncoder.outputCopyAndValidation" : 1.589833336765878,
+        "Propagator.beforePredictionHook" : 0.4267083277227357,
+        "Propagator.inputPreparation" : 0.5757916660513729,
+        "Propagator.outputCopyAndValidation" : 0.39795832708477974,
+        "state.commit" : 0.3212916635675356,
+        "state.pack" : 0.21049998758826405
+      },
+      "state" : {
+        "acceptedFrames" : 53,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.548541669966653,
+      "foregroundFraction" : 0.116973876953125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3872500092256814,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.80304166197311,
+        "Propagator" : 32.46825000678655
+      },
+      "objectScore" : 9.875,
+      "predictedIoU" : 0.98374015,
+      "predictionAndStateMilliseconds" : 60.00900000799447,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.1296250120503828,
+        "modelInputRender" : 1.288958330405876,
+        "orientationGraphSetup" : 0.021500003640539944,
+        "previewImageCreation" : 0.8523333381162956,
+        "sampleAcquisition" : 0.2543333393987268
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1051,
+      "requestIndex" : 53,
+      "requestMilliseconds" : 63.07041666877922,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5701250047422945,
+        "ImageEncoder.inputPreparation" : 0.008083341526798904,
+        "ImageEncoder.outputCopyAndValidation" : 2.147958322893828,
+        "Propagator.beforePredictionHook" : 0.5015833303332329,
+        "Propagator.inputPreparation" : 0.5781666695838794,
+        "Propagator.outputCopyAndValidation" : 0.3810833295574412,
+        "state.commit" : 0.31262499396689236,
+        "state.pack" : 0.22154167527332902
+      },
+      "state" : {
+        "acceptedFrames" : 54,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.444374986225739,
+      "foregroundFraction" : 0.119049072265625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3946249926229939,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.459208325017244,
+        "Propagator" : 32.743874995503575
+      },
+      "objectScore" : 9.8671875,
+      "predictedIoU" : 0.9828182,
+      "predictionAndStateMilliseconds" : 59.25583333009854,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.12012499792035669,
+        "modelInputRender" : 0.9704583208076656,
+        "orientationGraphSetup" : 0.019833329133689404,
+        "previewImageCreation" : 1.076166663551703,
+        "sampleAcquisition" : 0.2542083238949999
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1071,
+      "requestIndex" : 54,
+      "requestMilliseconds" : 62.18516666558571,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.4384166677482426,
+        "ImageEncoder.inputPreparation" : 0.006666668923571706,
+        "ImageEncoder.outputCopyAndValidation" : 1.6362083260901272,
+        "Propagator.beforePredictionHook" : 0.4262916772859171,
+        "Propagator.inputPreparation" : 0.5900833348277956,
+        "Propagator.outputCopyAndValidation" : 0.40195832843892276,
+        "state.commit" : 0.3209583373973146,
+        "state.pack" : 0.2186666679335758
+      },
+      "state" : {
+        "acceptedFrames" : 55,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.2887500090291724,
+      "foregroundFraction" : 0.1232452392578125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3882083256030455,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.608375002164394,
+        "Propagator" : 32.380666671087965
+      },
+      "objectScore" : 9.859375,
+      "predictedIoU" : 0.9826925,
+      "predictionAndStateMilliseconds" : 59.187749997363426,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11904166603926569,
+        "modelInputRender" : 1.079541674698703,
+        "orientationGraphSetup" : 0.02058333484455943,
+        "previewImageCreation" : 0.8139166602632031,
+        "sampleAcquisition" : 0.25391665985807776
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1091,
+      "requestIndex" : 55,
+      "requestMilliseconds" : 61.958333346410654,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5299583426676691,
+        "ImageEncoder.inputPreparation" : 0.006833332008682191,
+        "ImageEncoder.outputCopyAndValidation" : 1.6903750074561685,
+        "Propagator.beforePredictionHook" : 0.45112500083632767,
+        "Propagator.inputPreparation" : 0.5781250074505806,
+        "Propagator.outputCopyAndValidation" : 0.3911250096280128,
+        "state.commit" : 0.3125416551483795,
+        "state.pack" : 0.22479167091660202
+      },
+      "state" : {
+        "acceptedFrames" : 56,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.3427499982062727,
+      "foregroundFraction" : 0.129302978515625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4023750079795718,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.315166672342457,
+        "Propagator" : 32.26429167261813
+      },
+      "objectScore" : 9.9453125,
+      "predictedIoU" : 0.981914,
+      "predictionAndStateMilliseconds" : 58.683833325630985,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11541666754055768,
+        "modelInputRender" : 1.1780000058934093,
+        "orientationGraphSetup" : 0.020749997929669917,
+        "previewImageCreation" : 0.7784166664350778,
+        "sampleAcquisition" : 0.24854167713783681
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1111,
+      "requestIndex" : 56,
+      "requestMilliseconds" : 61.528166668722406,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.48816666821949184,
+        "ImageEncoder.inputPreparation" : 0.0060416641645133495,
+        "ImageEncoder.outputCopyAndValidation" : 1.6260833363048732,
+        "Propagator.beforePredictionHook" : 0.43237500358372927,
+        "Propagator.inputPreparation" : 0.595749996136874,
+        "Propagator.outputCopyAndValidation" : 0.40116667514666915,
+        "state.commit" : 0.3270833258284256,
+        "state.pack" : 0.2139583375537768
+      },
+      "state" : {
+        "acceptedFrames" : 57,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.268458338221535,
+      "foregroundFraction" : 0.1385955810546875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.39091666985768825,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.412541657104157,
+        "Propagator" : 32.76370833918918
+      },
+      "objectScore" : 10.140625,
+      "predictedIoU" : 0.98255515,
+      "predictionAndStateMilliseconds" : 59.38087499816902,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.1125416747527197,
+        "modelInputRender" : 1.096916661481373,
+        "orientationGraphSetup" : 0.01991666795220226,
+        "previewImageCreation" : 0.8065416768658906,
+        "sampleAcquisition" : 0.23045833222568035
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1131,
+      "requestIndex" : 57,
+      "requestMilliseconds" : 62.12945833976846,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.47374999849125743,
+        "ImageEncoder.inputPreparation" : 0.005958325346000493,
+        "ImageEncoder.outputCopyAndValidation" : 1.713374993414618,
+        "Propagator.beforePredictionHook" : 0.46841666335240006,
+        "Propagator.inputPreparation" : 0.5932499916525558,
+        "Propagator.outputCopyAndValidation" : 0.4039583291159943,
+        "state.commit" : 0.31258333183359355,
+        "state.pack" : 0.22037499002180994
+      },
+      "state" : {
+        "acceptedFrames" : 58,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.4395416548941284,
+      "foregroundFraction" : 0.1453704833984375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.42608332296367735,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.425791670684703,
+        "Propagator" : 32.46291667164769
+      },
+      "objectScore" : 10.3046875,
+      "predictedIoU" : 0.9820853,
+      "predictionAndStateMilliseconds" : 59.0409166761674,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.12362499546725303,
+        "modelInputRender" : 1.2981666659470648,
+        "orientationGraphSetup" : 0.020708335796371102,
+        "previewImageCreation" : 0.7322916644625366,
+        "sampleAcquisition" : 0.2629166701808572
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1151,
+      "requestIndex" : 58,
+      "requestMilliseconds" : 61.99775000277441,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.46479166485369205,
+        "ImageEncoder.inputPreparation" : 0.005791662260890007,
+        "ImageEncoder.outputCopyAndValidation" : 1.6252083296421915,
+        "Propagator.beforePredictionHook" : 0.47616666415706277,
+        "Propagator.inputPreparation" : 0.5757500039180741,
+        "Propagator.outputCopyAndValidation" : 0.4267083277227357,
+        "state.commit" : 0.34520833287388086,
+        "state.pack" : 0.21858334366697818
+      },
+      "state" : {
+        "acceptedFrames" : 59,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.4507916532456875,
+      "foregroundFraction" : 0.151947021484375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.40879166044760495,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.439000007580034,
+        "Propagator" : 32.55041666852776
+      },
+      "objectScore" : 10.375,
+      "predictedIoU" : 0.97962576,
+      "predictionAndStateMilliseconds" : 59.30416665796656,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.12370833428576589,
+        "modelInputRender" : 1.258500007679686,
+        "orientationGraphSetup" : 0.02099999983329326,
+        "previewImageCreation" : 0.789208323112689,
+        "sampleAcquisition" : 0.25604166148696095
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1171,
+      "requestIndex" : 59,
+      "requestMilliseconds" : 62.28345833369531,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.509833320393227,
+        "ImageEncoder.inputPreparation" : 0.005750000127591193,
+        "ImageEncoder.outputCopyAndValidation" : 1.7489166639279574,
+        "Propagator.beforePredictionHook" : 0.4899583291262388,
+        "Propagator.inputPreparation" : 0.5875416682101786,
+        "Propagator.outputCopyAndValidation" : 0.40229165460914373,
+        "state.commit" : 0.331041679601185,
+        "state.pack" : 0.2251666592201218
+      },
+      "state" : {
+        "acceptedFrames" : 60,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.3810416751075536,
+      "foregroundFraction" : 0.154205322265625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3994583385065198,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.00154167076107,
+        "Propagator" : 32.68983332964126
+      },
+      "objectScore" : 10.09375,
+      "predictedIoU" : 0.9808576,
+      "predictionAndStateMilliseconds" : 58.95950000558514,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.12070834054611623,
+        "modelInputRender" : 1.173291660961695,
+        "orientationGraphSetup" : 0.02166666672565043,
+        "previewImageCreation" : 0.815458333818242,
+        "sampleAcquisition" : 0.2480416587786749
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1191,
+      "requestIndex" : 60,
+      "requestMilliseconds" : 61.82987499050796,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5221666651777923,
+        "ImageEncoder.inputPreparation" : 0.005333335138857365,
+        "ImageEncoder.outputCopyAndValidation" : 1.70395833265502,
+        "Propagator.beforePredictionHook" : 0.49070833483710885,
+        "Propagator.inputPreparation" : 0.5835833435412496,
+        "Propagator.outputCopyAndValidation" : 0.4007083334727213,
+        "state.commit" : 0.3205833345418796,
+        "state.pack" : 0.22674999490845948
+      },
+      "state" : {
+        "acceptedFrames" : 61,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.246750009362586,
+      "foregroundFraction" : 0.158111572265625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.40141666249837726,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.190958334249444,
+        "Propagator" : 32.543624998652376
+      },
+      "objectScore" : 10.0703125,
+      "predictedIoU" : 0.97820115,
+      "predictionAndStateMilliseconds" : 58.88570832030382,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11566666944418103,
+        "modelInputRender" : 1.0718750127125531,
+        "orientationGraphSetup" : 0.020833336748182774,
+        "previewImageCreation" : 0.7766250055283308,
+        "sampleAcquisition" : 0.2600833249744028
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1211,
+      "requestIndex" : 61,
+      "requestMilliseconds" : 61.620000007678755,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.49395833048038185,
+        "ImageEncoder.inputPreparation" : 0.006499991286545992,
+        "ImageEncoder.outputCopyAndValidation" : 1.6611666651442647,
+        "Propagator.beforePredictionHook" : 0.44249999336898327,
+        "Propagator.inputPreparation" : 0.5878749943803996,
+        "Propagator.outputCopyAndValidation" : 0.40320832340512425,
+        "state.commit" : 0.3216250042896718,
+        "state.pack" : 0.22183333931025118
+      },
+      "state" : {
+        "acceptedFrames" : 62,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.4533749965485185,
+      "foregroundFraction" : 0.1568603515625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.38983333797659725,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.59379166935105,
+        "Propagator" : 32.485541654750705
+      },
+      "objectScore" : 10.2421875,
+      "predictedIoU" : 0.9803013,
+      "predictionAndStateMilliseconds" : 59.24674999550916,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.12020833673886955,
+        "modelInputRender" : 1.2230833381181583,
+        "orientationGraphSetup" : 0.018749997252598405,
+        "previewImageCreation" : 0.8388333371840417,
+        "sampleAcquisition" : 0.25066666421480477
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1231,
+      "requestIndex" : 62,
+      "requestMilliseconds" : 62.199416672228836,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.49162498908117414,
+        "ImageEncoder.inputPreparation" : 0.006166679668240249,
+        "ImageEncoder.outputCopyAndValidation" : 1.708041672827676,
+        "Propagator.beforePredictionHook" : 0.4374999989522621,
+        "Propagator.inputPreparation" : 0.5867500003660098,
+        "Propagator.outputCopyAndValidation" : 0.38933333416935056,
+        "state.commit" : 0.31274999491870403,
+        "state.pack" : 0.22266666928771883
+      },
+      "state" : {
+        "acceptedFrames" : 63,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.4476666731061414,
+      "foregroundFraction" : 0.1546630859375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4261666617821902,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.833291674032807,
+        "Propagator" : 32.534750003833324
+      },
+      "objectScore" : 8.7265625,
+      "predictedIoU" : 0.98032135,
+      "predictionAndStateMilliseconds" : 59.67870833410416,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.13033332652412355,
+        "modelInputRender" : 1.2490416556829587,
+        "orientationGraphSetup" : 0.018624996300786734,
+        "previewImageCreation" : 0.7978749927133322,
+        "sampleAcquisition" : 0.2498333342373371
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1251,
+      "requestIndex" : 63,
+      "requestMilliseconds" : 62.644458332215436,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5265833315206692,
+        "ImageEncoder.inputPreparation" : 0.006208327249623835,
+        "ImageEncoder.outputCopyAndValidation" : 1.670458324952051,
+        "Propagator.beforePredictionHook" : 0.4835416766582057,
+        "Propagator.inputPreparation" : 0.5831249873153865,
+        "Propagator.outputCopyAndValidation" : 0.4559166554827243,
+        "state.commit" : 0.34695833164732903,
+        "state.pack" : 0.2235416613984853
+      },
+      "state" : {
+        "acceptedFrames" : 64,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.3040416708681732,
+      "foregroundFraction" : 0.150543212890625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.42104166641365737,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.566083338460885,
+        "Propagator" : 32.72366666351445
+      },
+      "objectScore" : 9.4921875,
+      "predictedIoU" : 0.9833492,
+      "predictionAndStateMilliseconds" : 59.696708325645886,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.12329165474511683,
+        "modelInputRender" : 1.0451666603330523,
+        "orientationGraphSetup" : 0.02187499194405973,
+        "previewImageCreation" : 0.8507083257427439,
+        "sampleAcquisition" : 0.26129165780730546
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1271,
+      "requestIndex" : 64,
+      "requestMilliseconds" : 62.52854167541955,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5004166741855443,
+        "ImageEncoder.inputPreparation" : 0.0056249991757795215,
+        "ImageEncoder.outputCopyAndValidation" : 1.8196249875472859,
+        "Propagator.beforePredictionHook" : 0.5060416733613238,
+        "Propagator.inputPreparation" : 0.5845416599186137,
+        "Propagator.outputCopyAndValidation" : 0.4120416706427932,
+        "state.commit" : 0.3332083288114518,
+        "state.pack" : 0.2325416571693495
+      },
+      "state" : {
+        "acceptedFrames" : 65,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.4665833334438503,
+      "foregroundFraction" : 0.15216064453125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.39724999805912375,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.231041657505557,
+        "Propagator" : 32.769666679087095
+      },
+      "objectScore" : 9.453125,
+      "predictedIoU" : 0.9846091,
+      "predictionAndStateMilliseconds" : 59.26062499929685,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.12012499792035669,
+        "modelInputRender" : 1.2218333431519568,
+        "orientationGraphSetup" : 0.020874998881481588,
+        "previewImageCreation" : 0.8559583366150036,
+        "sampleAcquisition" : 0.2456250076647848
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1291,
+      "requestIndex" : 65,
+      "requestMilliseconds" : 62.23920834599994,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.48870833416003734,
+        "ImageEncoder.inputPreparation" : 0.005958339897915721,
+        "ImageEncoder.outputCopyAndValidation" : 1.7528750031488016,
+        "Propagator.beforePredictionHook" : 0.4701249999925494,
+        "Propagator.inputPreparation" : 0.5675833235727623,
+        "Propagator.outputCopyAndValidation" : 0.41437499749008566,
+        "state.commit" : 0.3209583373973146,
+        "state.pack" : 0.22445833019446582
+      },
+      "state" : {
+        "acceptedFrames" : 66,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.3340416664723307,
+      "foregroundFraction" : 0.154541015625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3875833353959024,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.8146666593384,
+        "Propagator" : 32.509916665731
+      },
+      "objectScore" : 9.359375,
+      "predictedIoU" : 0.985823,
+      "predictionAndStateMilliseconds" : 58.47395834280178,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11924999125767499,
+        "modelInputRender" : 1.1517083330545574,
+        "orientationGraphSetup" : 0.020291656255722046,
+        "previewImageCreation" : 0.7843750063329935,
+        "sampleAcquisition" : 0.2566666662460193
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1311,
+      "requestIndex" : 66,
+      "requestMilliseconds" : 61.310999997658655,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5060833354946226,
+        "ImageEncoder.inputPreparation" : 0.007208334864117205,
+        "ImageEncoder.outputCopyAndValidation" : 1.6549166612094268,
+        "Propagator.beforePredictionHook" : 0.4472083383006975,
+        "Propagator.inputPreparation" : 0.5710833356715739,
+        "Propagator.outputCopyAndValidation" : 0.41920832882169634,
+        "state.commit" : 0.31220832897815853,
+        "state.pack" : 0.21712499437853694
+      },
+      "state" : {
+        "acceptedFrames" : 67,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.2707916650688276,
+      "foregroundFraction" : 0.15728759765625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4252500075381249,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.65462499053683,
+        "Propagator" : 32.67275000689551
+      },
+      "objectScore" : 9.0546875,
+      "predictedIoU" : 0.9862177,
+      "predictionAndStateMilliseconds" : 59.443624995765276,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11454167542979121,
+        "modelInputRender" : 1.1707500088959932,
+        "orientationGraphSetup" : 0.01904167584143579,
+        "previewImageCreation" : 0.7254583324538544,
+        "sampleAcquisition" : 0.23891666205599904
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1331,
+      "requestIndex" : 67,
+      "requestMilliseconds" : 62.23504166700877,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.4655416705645621,
+        "ImageEncoder.inputPreparation" : 0.005416659405454993,
+        "ImageEncoder.outputCopyAndValidation" : 1.5867083275225013,
+        "Propagator.beforePredictionHook" : 0.46949999523349106,
+        "Propagator.inputPreparation" : 0.5914166540605947,
+        "Propagator.outputCopyAndValidation" : 0.4283333255443722,
+        "state.commit" : 0.344416665029712,
+        "state.pack" : 0.21075000404380262
+      },
+      "state" : {
+        "acceptedFrames" : 68,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.4512083327863365,
+      "foregroundFraction" : 0.163818359375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3992916754214093,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.55204165703617,
+        "Propagator" : 32.65158332942519
+      },
+      "objectScore" : 9,
+      "predictedIoU" : 0.98503083,
+      "predictionAndStateMilliseconds" : 59.51270832156297,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11924999125767499,
+        "modelInputRender" : 1.2772499903803691,
+        "orientationGraphSetup" : 0.020541672711260617,
+        "previewImageCreation" : 0.7782916654832661,
+        "sampleAcquisition" : 0.25387499772477895
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1351,
+      "requestIndex" : 68,
+      "requestMilliseconds" : 62.48879166378174,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.532125006429851,
+        "ImageEncoder.inputPreparation" : 0.006874994141981006,
+        "ImageEncoder.outputCopyAndValidation" : 1.7533750069560483,
+        "Propagator.beforePredictionHook" : 0.4475416644709185,
+        "Propagator.inputPreparation" : 0.5958333349553868,
+        "Propagator.outputCopyAndValidation" : 0.4098750068806112,
+        "state.commit" : 0.32425000972580165,
+        "state.pack" : 0.22558332420885563
+      },
+      "state" : {
+        "acceptedFrames" : 69,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.4263749946840107,
+      "foregroundFraction" : 0.1729278564453125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.38912500895094126,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.5172499922337,
+        "Propagator" : 32.58899999491405
+      },
+      "objectScore" : 9.2421875,
+      "predictedIoU" : 0.9854268,
+      "predictionAndStateMilliseconds" : 59.38462499761954,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.1331249950453639,
+        "modelInputRender" : 1.1872499890159816,
+        "orientationGraphSetup" : 0.021166662918403745,
+        "previewImageCreation" : 0.8195416594389826,
+        "sampleAcquisition" : 0.26358333707321435
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1371,
+      "requestIndex" : 69,
+      "requestMilliseconds" : 62.28495833056513,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.540041655767709,
+        "ImageEncoder.inputPreparation" : 0.007291673682630062,
+        "ImageEncoder.outputCopyAndValidation" : 1.6918333276407793,
+        "Propagator.beforePredictionHook" : 0.4985416744602844,
+        "Propagator.inputPreparation" : 0.5963750008959323,
+        "Propagator.outputCopyAndValidation" : 0.3934999986086041,
+        "state.commit" : 0.31237500661518425,
+        "state.pack" : 0.22454166901297867
+      },
+      "state" : {
+        "acceptedFrames" : 70,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.305583329871297,
+      "foregroundFraction" : 0.182464599609375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4042916698381305,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.38575000956189,
+        "Propagator" : 32.510541670490056
+      },
+      "objectScore" : 9.1796875,
+      "predictedIoU" : 0.9840036,
+      "predictionAndStateMilliseconds" : 58.98449999222066,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.12208333646412939,
+        "modelInputRender" : 1.097666667192243,
+        "orientationGraphSetup" : 0.01937500201165676,
+        "previewImageCreation" : 0.8167500054696575,
+        "sampleAcquisition" : 0.24800001119729131
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1391,
+      "requestIndex" : 70,
+      "requestMilliseconds" : 61.81129167089239,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5072499916423112,
+        "ImageEncoder.inputPreparation" : 0.009958341252058744,
+        "ImageEncoder.outputCopyAndValidation" : 1.6341666778316721,
+        "Propagator.beforePredictionHook" : 0.4356666759122163,
+        "Propagator.inputPreparation" : 0.5573333328356966,
+        "Propagator.outputCopyAndValidation" : 0.3923333279090002,
+        "state.commit" : 0.3212083247490227,
+        "state.pack" : 0.21691666916012764
+      },
+      "state" : {
+        "acceptedFrames" : 71,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.2943749936530367,
+      "foregroundFraction" : 0.187744140625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3903333272319287,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.958833327516913,
+        "Propagator" : 32.72462499444373
+      },
+      "objectScore" : 9.2890625,
+      "predictedIoU" : 0.981417,
+      "predictionAndStateMilliseconds" : 58.88258332561236,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11479166278149933,
+        "modelInputRender" : 1.1872500035678968,
+        "orientationGraphSetup" : 0.018958337022922933,
+        "previewImageCreation" : 0.7340833253692836,
+        "sampleAcquisition" : 0.23733334091957659
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1411,
+      "requestIndex" : 71,
+      "requestMilliseconds" : 61.6617499908898,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5000416713301092,
+        "ImageEncoder.inputPreparation" : 0.006666668923571706,
+        "ImageEncoder.outputCopyAndValidation" : 1.7090833425754681,
+        "Propagator.beforePredictionHook" : 0.45700000191573054,
+        "Propagator.inputPreparation" : 0.5776666657766327,
+        "Propagator.outputCopyAndValidation" : 0.4005833325209096,
+        "state.commit" : 0.3128333337372169,
+        "state.pack" : 0.2217083383584395
+      },
+      "state" : {
+        "acceptedFrames" : 72,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.400124998530373,
+      "foregroundFraction" : 0.1943511962890625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.43845832988154143,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.207666668691672,
+        "Propagator" : 32.36258332617581
+      },
+      "objectScore" : 8.9765625,
+      "predictedIoU" : 0.98221105,
+      "predictionAndStateMilliseconds" : 58.727041658130474,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.12100000458303839,
+        "modelInputRender" : 1.0425000073155388,
+        "orientationGraphSetup" : 0.020166669855825603,
+        "previewImageCreation" : 0.9866250038612634,
+        "sampleAcquisition" : 0.22829165391158313
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1431,
+      "requestIndex" : 72,
+      "requestMilliseconds" : 61.680583326960914,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.47137500951066613,
+        "ImageEncoder.inputPreparation" : 0.0060416641645133495,
+        "ImageEncoder.outputCopyAndValidation" : 1.6518333286512643,
+        "Propagator.beforePredictionHook" : 0.4432916612131521,
+        "Propagator.inputPreparation" : 0.5780416686320677,
+        "Propagator.outputCopyAndValidation" : 0.43454166734591126,
+        "state.commit" : 0.3356666711624712,
+        "state.pack" : 0.22229166643228382
+      },
+      "state" : {
+        "acceptedFrames" : 73,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.3242500028572977,
+      "foregroundFraction" : 0.204742431640625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4010416741948575,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.79987500514835,
+        "Propagator" : 32.57275000214577
+      },
+      "objectScore" : 9.1015625,
+      "predictedIoU" : 0.98386717,
+      "predictionAndStateMilliseconds" : 59.89779166702647,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11675000132527202,
+        "modelInputRender" : 1.0659166582627222,
+        "orientationGraphSetup" : 0.021083338651806116,
+        "previewImageCreation" : 0.844958340167068,
+        "sampleAcquisition" : 0.27350000164005905
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1451,
+      "requestIndex" : 73,
+      "requestMilliseconds" : 62.73825000971556,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5270833353279158,
+        "ImageEncoder.inputPreparation" : 0.00670833105687052,
+        "ImageEncoder.outputCopyAndValidation" : 1.924708325532265,
+        "Propagator.beforePredictionHook" : 0.4987499996786937,
+        "Propagator.inputPreparation" : 0.5881249962840229,
+        "Propagator.outputCopyAndValidation" : 0.415333328419365,
+        "state.commit" : 0.3215416654711589,
+        "state.pack" : 0.22904165962245315
+      },
+      "state" : {
+        "acceptedFrames" : 74,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.3440000077243894,
+      "foregroundFraction" : 0.209625244140625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4005416703876108,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.99258334096521,
+        "Propagator" : 32.546499991440214
+      },
+      "objectScore" : 8.890625,
+      "predictedIoU" : 0.983754,
+      "predictionAndStateMilliseconds" : 59.71841666905675,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.1392083358950913,
+        "modelInputRender" : 1.1367499973857775,
+        "orientationGraphSetup" : 0.020208331989124417,
+        "previewImageCreation" : 0.7766250055283308,
+        "sampleAcquisition" : 0.2692499983822927
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1471,
+      "requestIndex" : 74,
+      "requestMilliseconds" : 62.55904167483095,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5028333252994344,
+        "ImageEncoder.inputPreparation" : 0.0061250029830262065,
+        "ImageEncoder.outputCopyAndValidation" : 1.6539166681468487,
+        "Propagator.beforePredictionHook" : 0.4927499976474792,
+        "Propagator.inputPreparation" : 0.581291678827256,
+        "Propagator.outputCopyAndValidation" : 0.3906250058207661,
+        "state.commit" : 0.3209583228453994,
+        "state.pack" : 0.2168749924749136
+      },
+      "state" : {
+        "acceptedFrames" : 75,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.278750005643815,
+      "foregroundFraction" : 0.2096099853515625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3939583257306367,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.477208331110887,
+        "Propagator" : 32.5707083393354
+      },
+      "objectScore" : 9.1015625,
+      "predictedIoU" : 0.98185515,
+      "predictionAndStateMilliseconds" : 59.220666662440635,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11958333197981119,
+        "modelInputRender" : 1.0816249996423721,
+        "orientationGraphSetup" : 0.020833322196267545,
+        "previewImageCreation" : 0.7949999999254942,
+        "sampleAcquisition" : 0.2599166618892923
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1491,
+      "requestIndex" : 75,
+      "requestMilliseconds" : 61.98904167104047,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.49195832980331033,
+        "ImageEncoder.inputPreparation" : 0.006291666068136692,
+        "ImageEncoder.outputCopyAndValidation" : 1.7031250026775524,
+        "Propagator.beforePredictionHook" : 0.46604165981989354,
+        "Propagator.inputPreparation" : 0.5611250089714304,
+        "Propagator.outputCopyAndValidation" : 0.3953749983338639,
+        "state.commit" : 0.3128333337372169,
+        "state.pack" : 0.22199998784344643
+      },
+      "state" : {
+        "acceptedFrames" : 76,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.400583340204321,
+      "foregroundFraction" : 0.209442138671875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4306666669435799,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.429833334172145,
+        "Propagator" : 32.446666664327495
+      },
+      "objectScore" : 9.5234375,
+      "predictedIoU" : 0.9813106,
+      "predictionAndStateMilliseconds" : 59.186166676227,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11475000064820051,
+        "modelInputRender" : 1.2717500067083165,
+        "orientationGraphSetup" : 0.020291656255722046,
+        "previewImageCreation" : 0.741249998100102,
+        "sampleAcquisition" : 0.2509166661184281
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1511,
+      "requestIndex" : 76,
+      "requestMilliseconds" : 62.136125008692034,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.47774999984540045,
+        "ImageEncoder.inputPreparation" : 0.006208327249623835,
+        "ImageEncoder.outputCopyAndValidation" : 1.6646250005578622,
+        "Propagator.beforePredictionHook" : 0.46387499605771154,
+        "Propagator.inputPreparation" : 0.5768333357991651,
+        "Propagator.outputCopyAndValidation" : 0.5370833387132734,
+        "state.commit" : 0.3452499950071797,
+        "state.pack" : 0.2245833311462775
+      },
+      "state" : {
+        "acceptedFrames" : 77,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.3680416779825464,
+      "foregroundFraction" : 0.2092437744140625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4016666644020006,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.466333335614763,
+        "Propagator" : 32.59829166927375
+      },
+      "objectScore" : 9.5859375,
+      "predictedIoU" : 0.97973263,
+      "predictionAndStateMilliseconds" : 59.30945833097212,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.12041666195727885,
+        "modelInputRender" : 1.1230833333684132,
+        "orientationGraphSetup" : 0.02045833389274776,
+        "previewImageCreation" : 0.8460416720481589,
+        "sampleAcquisition" : 0.2562916633905843
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1531,
+      "requestIndex" : 77,
+      "requestMilliseconds" : 62.18675000127405,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.49291666073258966,
+        "ImageEncoder.inputPreparation" : 0.005874986527487636,
+        "ImageEncoder.outputCopyAndValidation" : 1.750541661749594,
+        "Propagator.beforePredictionHook" : 0.44354166311677545,
+        "Propagator.inputPreparation" : 0.5827083223266527,
+        "Propagator.outputCopyAndValidation" : 0.4077083431184292,
+        "state.commit" : 0.32141666451934725,
+        "state.pack" : 0.22616666683461517
+      },
+      "state" : {
+        "acceptedFrames" : 78,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.333583339350298,
+      "foregroundFraction" : 0.208770751953125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.39062499126885086,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.55537500604987,
+        "Propagator" : 32.300999999279156
+      },
+      "objectScore" : 9.1328125,
+      "predictedIoU" : 0.97849506,
+      "predictionAndStateMilliseconds" : 59.03224999201484,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.12650000280700624,
+        "modelInputRender" : 0.9191666613332927,
+        "orientationGraphSetup" : 0.02133332600351423,
+        "previewImageCreation" : 1.0039166663773358,
+        "sampleAcquisition" : 0.259000007645227
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1551,
+      "requestIndex" : 78,
+      "requestMilliseconds" : 61.89441666356288,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5190833326196298,
+        "ImageEncoder.inputPreparation" : 0.006583344656974077,
+        "ImageEncoder.outputCopyAndValidation" : 1.6943749942583963,
+        "Propagator.beforePredictionHook" : 0.453916669357568,
+        "Propagator.inputPreparation" : 0.5716666782973334,
+        "Propagator.outputCopyAndValidation" : 0.3801666753133759,
+        "state.commit" : 0.31237500661518425,
+        "state.pack" : 0.225124997086823
+      },
+      "state" : {
+        "acceptedFrames" : 79,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.4205833324231207,
+      "foregroundFraction" : 0.2108612060546875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4023333312943578,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 23.127416672650725,
+        "Propagator" : 32.63316667289473
+      },
+      "objectScore" : 8.9375,
+      "predictedIoU" : 0.9829538,
+      "predictionAndStateMilliseconds" : 59.94679166178685,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.1141666725743562,
+        "modelInputRender" : 1.182791660539806,
+        "orientationGraphSetup" : 0.017458340153098106,
+        "previewImageCreation" : 0.856583341374062,
+        "sampleAcquisition" : 0.2478333335602656
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1571,
+      "requestIndex" : 79,
+      "requestMilliseconds" : 62.8663750103442,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5254583375062793,
+        "ImageEncoder.inputPreparation" : 0.007124996045604348,
+        "ImageEncoder.outputCopyAndValidation" : 1.630124999792315,
+        "Propagator.beforePredictionHook" : 0.4754583351314068,
+        "Propagator.inputPreparation" : 0.5815416661789641,
+        "Propagator.outputCopyAndValidation" : 0.41779167077038437,
+        "state.commit" : 0.32091666071210057,
+        "state.pack" : 0.2135833346983418
+      },
+      "state" : {
+        "acceptedFrames" : 80,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.4385416618315503,
+      "foregroundFraction" : 0.2176055908203125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3943750052712858,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.396083339117467,
+        "Propagator" : 32.55387498938944
+      },
+      "objectScore" : 9.03125,
+      "predictedIoU" : 0.9825058,
+      "predictionAndStateMilliseconds" : 59.2554999893764,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.12070834054611623,
+        "modelInputRender" : 1.2578333262354136,
+        "orientationGraphSetup" : 0.021416664822027087,
+        "previewImageCreation" : 0.7814999989932403,
+        "sampleAcquisition" : 0.25533333246130496
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1591,
+      "requestIndex" : 80,
+      "requestMilliseconds" : 62.19766667345539,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5169583455426618,
+        "ImageEncoder.inputPreparation" : 0.011708340025506914,
+        "ImageEncoder.outputCopyAndValidation" : 1.7108333413489163,
+        "Propagator.beforePredictionHook" : 0.4405416693771258,
+        "Propagator.inputPreparation" : 0.589958333875984,
+        "Propagator.outputCopyAndValidation" : 0.4884166701231152,
+        "state.commit" : 0.31295833468902856,
+        "state.pack" : 0.22129165881779045
+      },
+      "state" : {
+        "acceptedFrames" : 81,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.406375002465211,
+      "foregroundFraction" : 0.2294921875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.40191666630562395,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.172916666022502,
+        "Propagator" : 32.629249995807186
+      },
+      "objectScore" : 8.921875,
+      "predictedIoU" : 0.9828386,
+      "predictionAndStateMilliseconds" : 58.895791677059606,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.12120834435336292,
+        "modelInputRender" : 1.2466250045690686,
+        "orientationGraphSetup" : 0.02033333294093609,
+        "previewImageCreation" : 0.7774166733724996,
+        "sampleAcquisition" : 0.23712500114925206
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1611,
+      "requestIndex" : 81,
+      "requestMilliseconds" : 61.79550000524614,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.47683333104941994,
+        "ImageEncoder.inputPreparation" : 0.005958325346000493,
+        "ImageEncoder.outputCopyAndValidation" : 1.664666662691161,
+        "Propagator.beforePredictionHook" : 0.4179166571702808,
+        "Propagator.inputPreparation" : 0.5683749914169312,
+        "Propagator.outputCopyAndValidation" : 0.4009166732430458,
+        "state.commit" : 0.32162498973775655,
+        "state.pack" : 0.22404167975764722
+      },
+      "state" : {
+        "acceptedFrames" : 82,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.370291666011326,
+      "foregroundFraction" : 0.243194580078125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.39091666985768825,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.459083338617347,
+        "Propagator" : 32.39704166480806
+      },
+      "objectScore" : 8.203125,
+      "predictedIoU" : 0.9825324,
+      "predictionAndStateMilliseconds" : 59.036208331235684,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11616667325142771,
+        "modelInputRender" : 1.2096249993192032,
+        "orientationGraphSetup" : 0.020208346541039646,
+        "previewImageCreation" : 0.7779166626278311,
+        "sampleAcquisition" : 0.24466666218359023
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1631,
+      "requestIndex" : 82,
+      "requestMilliseconds" : 61.91837499500252,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5079583352198824,
+        "ImageEncoder.inputPreparation" : 0.00650000583846122,
+        "ImageEncoder.outputCopyAndValidation" : 1.709041665890254,
+        "Propagator.beforePredictionHook" : 0.44695832184515893,
+        "Propagator.inputPreparation" : 0.5759166670031846,
+        "Propagator.outputCopyAndValidation" : 0.3811250062426552,
+        "state.commit" : 0.31233334448188543,
+        "state.pack" : 0.22766666370444
+      },
+      "state" : {
+        "acceptedFrames" : 83,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.3345416702795774,
+      "foregroundFraction" : 0.262054443359375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4359166632639244,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.702416667016223,
+        "Propagator" : 32.68383334216196
+      },
+      "objectScore" : 8.671875,
+      "predictedIoU" : 0.98262733,
+      "predictionAndStateMilliseconds" : 59.60566665453371,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11883332626894116,
+        "modelInputRender" : 1.231541667948477,
+        "orientationGraphSetup" : 0.020166669855825603,
+        "previewImageCreation" : 0.7301666773855686,
+        "sampleAcquisition" : 0.23220833099912852
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1651,
+      "requestIndex" : 83,
+      "requestMilliseconds" : 62.46954167727381,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5316666647559032,
+        "ImageEncoder.inputPreparation" : 0.006375004886649549,
+        "ImageEncoder.outputCopyAndValidation" : 1.6404583293478936,
+        "Propagator.beforePredictionHook" : 0.4302916640881449,
+        "Propagator.inputPreparation" : 0.5971249920548871,
+        "Propagator.outputCopyAndValidation" : 0.4396666627144441,
+        "state.commit" : 0.34516667074058205,
+        "state.pack" : 0.21554167324211448
+      },
+      "state" : {
+        "acceptedFrames" : 84,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.414333343040198,
+      "foregroundFraction" : 0.2823944091796875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4230416670907289,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.169916672282852,
+        "Propagator" : 33.01762499904726
+      },
+      "objectScore" : 8.8984375,
+      "predictedIoU" : 0.9780673,
+      "predictionAndStateMilliseconds" : 59.652875002939254,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.12087498907931149,
+        "modelInputRender" : 1.0301250003976747,
+        "orientationGraphSetup" : 0.021416664822027087,
+        "previewImageCreation" : 0.9669999999459833,
+        "sampleAcquisition" : 0.2730000123847276
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1671,
+      "requestIndex" : 84,
+      "requestMilliseconds" : 62.619500007713214,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5406249983934686,
+        "ImageEncoder.inputPreparation" : 0.006833332008682191,
+        "ImageEncoder.outputCopyAndValidation" : 1.8169999966630712,
+        "Propagator.beforePredictionHook" : 0.4780000017490238,
+        "Propagator.inputPreparation" : 0.5776666657766327,
+        "Propagator.outputCopyAndValidation" : 0.4697083350038156,
+        "state.commit" : 0.331000002915971,
+        "state.pack" : 0.230916659347713
+      },
+      "state" : {
+        "acceptedFrames" : 85,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.5188750005327165,
+      "foregroundFraction" : 0.3005218505859375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4106666601728648,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.747625000192784,
+        "Propagator" : 32.49516666983254
+      },
+      "objectScore" : 9.3203125,
+      "predictedIoU" : 0.9839722,
+      "predictionAndStateMilliseconds" : 59.54375000146683,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.14166666369419545,
+        "modelInputRender" : 1.2145416694693267,
+        "orientationGraphSetup" : 0.021500003640539944,
+        "previewImageCreation" : 0.874708333867602,
+        "sampleAcquisition" : 0.26462500682100654
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1691,
+      "requestIndex" : 85,
+      "requestMilliseconds" : 62.56970833055675,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5654583364957944,
+        "ImageEncoder.inputPreparation" : 0.007541661034338176,
+        "ImageEncoder.outputCopyAndValidation" : 1.7019583319779485,
+        "Propagator.beforePredictionHook" : 0.4907916591037065,
+        "Propagator.inputPreparation" : 0.5727083334932104,
+        "Propagator.outputCopyAndValidation" : 0.4043333319714293,
+        "state.commit" : 0.3214166790712625,
+        "state.pack" : 0.22195834026206285
+      },
+      "state" : {
+        "acceptedFrames" : 86,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.2374166728695855,
+      "foregroundFraction" : 0.3213348388671875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4191666666883975,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.28758332785219,
+        "Propagator" : 32.71704167127609
+      },
+      "objectScore" : 9.4375,
+      "predictedIoU" : 0.9825881,
+      "predictionAndStateMilliseconds" : 59.10991666314658,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11404167162254453,
+        "modelInputRender" : 1.042749994667247,
+        "orientationGraphSetup" : 0.019958330085501075,
+        "previewImageCreation" : 0.8110000053420663,
+        "sampleAcquisition" : 0.24774999474175274
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1711,
+      "requestIndex" : 86,
+      "requestMilliseconds" : 61.86979166523088,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.47795832506380975,
+        "ImageEncoder.inputPreparation" : 0.005291658453643322,
+        "ImageEncoder.outputCopyAndValidation" : 1.6457083402201533,
+        "Propagator.beforePredictionHook" : 0.42983333696611226,
+        "Propagator.inputPreparation" : 0.5817083292640746,
+        "Propagator.outputCopyAndValidation" : 0.4032500000903383,
+        "state.commit" : 0.3311249893158674,
+        "state.pack" : 0.21725000988226384
+      },
+      "state" : {
+        "acceptedFrames" : 87,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.3530833423137665,
+      "foregroundFraction" : 0.329132080078125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.39924999873619527,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.197958329343237,
+        "Propagator" : 32.359000004362315
+      },
+      "objectScore" : 9.6796875,
+      "predictedIoU" : 0.9829648,
+      "predictionAndStateMilliseconds" : 58.792125011677854,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11395833280403167,
+        "modelInputRender" : 1.227833330631256,
+        "orientationGraphSetup" : 0.019541665096767247,
+        "previewImageCreation" : 0.755791668780148,
+        "sampleAcquisition" : 0.23445833357982337
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1731,
+      "requestIndex" : 87,
+      "requestMilliseconds" : 61.64445832837373,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.4639999970095232,
+        "ImageEncoder.inputPreparation" : 0.0056249991757795215,
+        "ImageEncoder.outputCopyAndValidation" : 1.7299999890383333,
+        "Propagator.beforePredictionHook" : 0.5038749950472265,
+        "Propagator.inputPreparation" : 0.589958333875984,
+        "Propagator.outputCopyAndValidation" : 0.39008332532830536,
+        "state.commit" : 0.3125000075669959,
+        "state.pack" : 0.22600000374950469
+      },
+      "state" : {
+        "acceptedFrames" : 88,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.4264999956358224,
+      "foregroundFraction" : 0.339508056640625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.44283333409111947,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.162916662637144,
+        "Propagator" : 32.619958321447484
+      },
+      "objectScore" : 9.40625,
+      "predictedIoU" : 0.9815996,
+      "predictionAndStateMilliseconds" : 59.03441667032894,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11345834354870021,
+        "modelInputRender" : 1.2945833441335708,
+        "orientationGraphSetup" : 0.020374995074234903,
+        "previewImageCreation" : 0.7542083330918103,
+        "sampleAcquisition" : 0.24212499556597322
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1751,
+      "requestIndex" : 88,
+      "requestMilliseconds" : 61.99712499801535,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.4940000071655959,
+        "ImageEncoder.inputPreparation" : 0.00650000583846122,
+        "ImageEncoder.outputCopyAndValidation" : 1.6435416764579713,
+        "Propagator.beforePredictionHook" : 0.4329583316575736,
+        "Propagator.inputPreparation" : 0.5723333306377754,
+        "Propagator.outputCopyAndValidation" : 0.5228749942034483,
+        "state.commit" : 0.34533333382569253,
+        "state.pack" : 0.2208333316957578
+      },
+      "state" : {
+        "acceptedFrames" : 89,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.2675000072922558,
+      "foregroundFraction" : 0.3444976806640625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4207083402434364,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.428416661568917,
+        "Propagator" : 32.8120000049239
+      },
+      "objectScore" : 9.6015625,
+      "predictedIoU" : 0.97972775,
+      "predictionAndStateMilliseconds" : 59.65720833046362,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.12533333210740238,
+        "modelInputRender" : 0.9529583330731839,
+        "orientationGraphSetup" : 0.021958330762572587,
+        "previewImageCreation" : 0.8895000064512715,
+        "sampleAcquisition" : 0.2757916663540527
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1771,
+      "requestIndex" : 89,
+      "requestMilliseconds" : 62.46162499883212,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.530624995008111,
+        "ImageEncoder.inputPreparation" : 0.006083340849727392,
+        "ImageEncoder.outputCopyAndValidation" : 1.8139999883715063,
+        "Propagator.beforePredictionHook" : 0.47408333921339363,
+        "Propagator.inputPreparation" : 0.591791671467945,
+        "Propagator.outputCopyAndValidation" : 0.41537500510457903,
+        "state.commit" : 0.33079166314564645,
+        "state.pack" : 0.24004167062230408
+      },
+      "state" : {
+        "acceptedFrames" : 90,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.3507916630478576,
+      "foregroundFraction" : 0.3448333740234375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4144166596233845,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.70958333974704,
+        "Propagator" : 32.77637499559205
+      },
+      "objectScore" : 9.515625,
+      "predictedIoU" : 0.9759016,
+      "predictionAndStateMilliseconds" : 59.73312500282191,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.14291667321231216,
+        "modelInputRender" : 0.9436666732653975,
+        "orientationGraphSetup" : 0.021916668629273772,
+        "previewImageCreation" : 0.9487916686339304,
+        "sampleAcquisition" : 0.28987500991206616
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1791,
+      "requestIndex" : 90,
+      "requestMilliseconds" : 62.606749997939914,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5322500073816627,
+        "ImageEncoder.inputPreparation" : 0.007041657227091491,
+        "ImageEncoder.outputCopyAndValidation" : 1.6912083374336362,
+        "Propagator.beforePredictionHook" : 0.48929166223388165,
+        "Propagator.inputPreparation" : 0.5727083334932104,
+        "Propagator.outputCopyAndValidation" : 0.3991250123362988,
+        "state.commit" : 0.32120833930093795,
+        "state.pack" : 0.22062499192543328
+      },
+      "state" : {
+        "acceptedFrames" : 91,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.4083333410089836,
+      "foregroundFraction" : 0.351959228515625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.41183333087246865,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.693791674100794,
+        "Propagator" : 32.70250000059605
+      },
+      "objectScore" : 9.4765625,
+      "predictedIoU" : 0.98177403,
+      "predictionAndStateMilliseconds" : 59.52691666607279,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.12120832980144769,
+        "modelInputRender" : 1.2574583379318938,
+        "orientationGraphSetup" : 0.01958332723006606,
+        "previewImageCreation" : 0.7554583280580118,
+        "sampleAcquisition" : 0.2529166667954996
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1811,
+      "requestIndex" : 91,
+      "requestMilliseconds" : 62.43525000172667,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.49612499424256384,
+        "ImageEncoder.inputPreparation" : 0.005875001079402864,
+        "ImageEncoder.outputCopyAndValidation" : 1.647958328248933,
+        "Propagator.beforePredictionHook" : 0.4375416610855609,
+        "Propagator.inputPreparation" : 0.5834999901708215,
+        "Propagator.outputCopyAndValidation" : 0.40249999437946826,
+        "state.commit" : 0.3211666626157239,
+        "state.pack" : 0.22258333046920598
+      },
+      "state" : {
+        "acceptedFrames" : 92,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.353583331569098,
+      "foregroundFraction" : 0.3650360107421875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.41216667159460485,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.598749987082556,
+        "Propagator" : 32.270416675601155
+      },
+      "objectScore" : 9.3203125,
+      "predictedIoU" : 0.98222846,
+      "predictionAndStateMilliseconds" : 59.18516666861251,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11841667583212256,
+        "modelInputRender" : 1.237000004039146,
+        "orientationGraphSetup" : 0.021166662918403745,
+        "previewImageCreation" : 0.7192083430709317,
+        "sampleAcquisition" : 0.25583333626855165
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1831,
+      "requestIndex" : 92,
+      "requestMilliseconds" : 62.066291662631556,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5355833272915334,
+        "ImageEncoder.inputPreparation" : 0.0071250105975195765,
+        "ImageEncoder.outputCopyAndValidation" : 1.7078333330573514,
+        "Propagator.beforePredictionHook" : 0.45774999307468534,
+        "Propagator.inputPreparation" : 0.5792500014649704,
+        "Propagator.outputCopyAndValidation" : 0.4650416667573154,
+        "state.commit" : 0.32087499857880175,
+        "state.pack" : 0.22895833535585552
+      },
+      "state" : {
+        "acceptedFrames" : 93,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.266666662762873,
+      "foregroundFraction" : 0.381256103515625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4396666627144441,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.352416679495946,
+        "Propagator" : 32.34900000097696
+      },
+      "objectScore" : 9.1484375,
+      "predictedIoU" : 0.98569393,
+      "predictionAndStateMilliseconds" : 58.88612499984447,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.12170833360869437,
+        "modelInputRender" : 1.0729999921750277,
+        "orientationGraphSetup" : 0.02091667556669563,
+        "previewImageCreation" : 0.8103333384497091,
+        "sampleAcquisition" : 0.23933332704473287
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1851,
+      "requestIndex" : 93,
+      "requestMilliseconds" : 61.68645834259223,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.4952500021317974,
+        "ImageEncoder.inputPreparation" : 0.006458343705162406,
+        "ImageEncoder.outputCopyAndValidation" : 1.655708343605511,
+        "Propagator.beforePredictionHook" : 0.43483334593474865,
+        "Propagator.inputPreparation" : 0.5768749979324639,
+        "Propagator.outputCopyAndValidation" : 0.43341667333152145,
+        "state.commit" : 0.34462500480003655,
+        "state.pack" : 0.22370833903551102
+      },
+      "state" : {
+        "acceptedFrames" : 94,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.4499166756868362,
+      "foregroundFraction" : 0.3937530517578125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.420791664510034,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.491041672765277,
+        "Propagator" : 32.91212501062546
+      },
+      "objectScore" : 9.5859375,
+      "predictedIoU" : 0.9844433,
+      "predictionAndStateMilliseconds" : 59.75133333413396,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.12395833618938923,
+        "modelInputRender" : 1.2877499975729734,
+        "orientationGraphSetup" : 0.0221250083995983,
+        "previewImageCreation" : 0.7607916631968692,
+        "sampleAcquisition" : 0.25354165700264275
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1871,
+      "requestIndex" : 94,
+      "requestMilliseconds" : 62.72329165949486,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5027916777180508,
+        "ImageEncoder.inputPreparation" : 0.006583330105058849,
+        "ImageEncoder.outputCopyAndValidation" : 1.8151250114897266,
+        "Propagator.beforePredictionHook" : 0.45958333066664636,
+        "Propagator.inputPreparation" : 0.577541664824821,
+        "Propagator.outputCopyAndValidation" : 0.40716666262596846,
+        "state.commit" : 0.33116666600108147,
+        "state.pack" : 0.2343333326280117
+      },
+      "state" : {
+        "acceptedFrames" : 95,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.4177500017685816,
+      "foregroundFraction" : 0.4067840576171875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4177083319518715,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.844250008347444,
+        "Propagator" : 32.44970833475236
+      },
+      "objectScore" : 9.7890625,
+      "predictedIoU" : 0.98158115,
+      "predictionAndStateMilliseconds" : 59.57033333834261,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.13275000674184412,
+        "modelInputRender" : 1.172625008621253,
+        "orientationGraphSetup" : 0.020499996026046574,
+        "previewImageCreation" : 0.8377500053029507,
+        "sampleAcquisition" : 0.25245832512155175
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1891,
+      "requestIndex" : 95,
+      "requestMilliseconds" : 62.511458338121884,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5163750029169023,
+        "ImageEncoder.inputPreparation" : 0.00704167177900672,
+        "ImageEncoder.outputCopyAndValidation" : 1.6896666638785973,
+        "Propagator.beforePredictionHook" : 0.5148750060470775,
+        "Propagator.inputPreparation" : 0.5763749941252172,
+        "Propagator.outputCopyAndValidation" : 0.40699999954085797,
+        "state.commit" : 0.3260416560806334,
+        "state.pack" : 0.2242083428427577
+      },
+      "state" : {
+        "acceptedFrames" : 96,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.407791660516523,
+      "foregroundFraction" : 0.417449951171875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.419333329773508,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.491083334898576,
+        "Propagator" : 32.71237500302959
+      },
+      "objectScore" : 9.625,
+      "predictedIoU" : 0.97775054,
+      "predictionAndStateMilliseconds" : 59.433916670968756,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11845833796542138,
+        "modelInputRender" : 0.8977083343779668,
+        "orientationGraphSetup" : 0.0237500062212348,
+        "previewImageCreation" : 1.090875011868775,
+        "sampleAcquisition" : 0.2732083376031369
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1911,
+      "requestIndex" : 96,
+      "requestMilliseconds" : 62.36549999448471,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5128333286847919,
+        "ImageEncoder.inputPreparation" : 0.006458343705162406,
+        "ImageEncoder.outputCopyAndValidation" : 1.6521666548214853,
+        "Propagator.beforePredictionHook" : 0.4414583381731063,
+        "Propagator.inputPreparation" : 0.6059583247406408,
+        "Propagator.outputCopyAndValidation" : 0.4572916659526527,
+        "state.commit" : 0.32087499857880175,
+        "state.pack" : 0.22033332788851112
+      },
+      "state" : {
+        "acceptedFrames" : 97,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.4421666748821735,
+      "foregroundFraction" : 0.430511474609375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4135000053793192,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.953583335038275,
+        "Propagator" : 32.27979165967554
+      },
+      "objectScore" : 10.0546875,
+      "predictedIoU" : 0.9814658,
+      "predictionAndStateMilliseconds" : 59.45162499847356,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11208333307877183,
+        "modelInputRender" : 1.2452499940991402,
+        "orientationGraphSetup" : 0.01791665272321552,
+        "previewImageCreation" : 0.7955833425512537,
+        "sampleAcquisition" : 0.26991666527464986
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1931,
+      "requestIndex" : 97,
+      "requestMilliseconds" : 62.40233333664946,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5055416550021619,
+        "ImageEncoder.inputPreparation" : 0.007000009645707905,
+        "ImageEncoder.outputCopyAndValidation" : 1.6953750018728897,
+        "Propagator.beforePredictionHook" : 0.4482916701817885,
+        "Propagator.inputPreparation" : 0.5959166737738997,
+        "Propagator.outputCopyAndValidation" : 0.4043333319714293,
+        "state.commit" : 0.32091666071210057,
+        "state.pack" : 0.22795832774136215
+      },
+      "state" : {
+        "acceptedFrames" : 98,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.2224166605155915,
+      "foregroundFraction" : 0.4397430419921875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.42566667252685875,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.626416670391336,
+        "Propagator" : 32.36316666880157
+      },
+      "objectScore" : 10.1484375,
+      "predictedIoU" : 0.9839686,
+      "predictionAndStateMilliseconds" : 59.17120834055822,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.10929166455753148,
+        "modelInputRender" : 1.0029583354480565,
+        "orientationGraphSetup" : 0.018291670130565763,
+        "previewImageCreation" : 0.8392083254875615,
+        "sampleAcquisition" : 0.2509583282517269
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1951,
+      "requestIndex" : 98,
+      "requestMilliseconds" : 61.917416664073244,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.49500000022817403,
+        "ImageEncoder.inputPreparation" : 0.00670833105687052,
+        "ImageEncoder.outputCopyAndValidation" : 1.651666680118069,
+        "Propagator.beforePredictionHook" : 0.4290000069886446,
+        "Propagator.inputPreparation" : 0.6157083407742903,
+        "Propagator.outputCopyAndValidation" : 0.40829165664035827,
+        "state.commit" : 0.3375416563358158,
+        "state.pack" : 0.2242499904241413
+      },
+      "state" : {
+        "acceptedFrames" : 99,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.413166657788679,
+      "foregroundFraction" : 0.455352783203125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4289583448553458,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.034333320334554,
+        "Propagator" : 32.695041663828306
+      },
+      "objectScore" : 10.125,
+      "predictedIoU" : 0.97812784,
+      "predictionAndStateMilliseconds" : 59.11641666898504,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.1060833310475573,
+        "modelInputRender" : 1.2459999998100102,
+        "orientationGraphSetup" : 0.01791666727513075,
+        "previewImageCreation" : 0.7895416638348252,
+        "sampleAcquisition" : 0.25208333681803197
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1971,
+      "requestIndex" : 99,
+      "requestMilliseconds" : 62.076458329102024,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.4709583299700171,
+        "ImageEncoder.inputPreparation" : 0.005750000127591193,
+        "ImageEncoder.outputCopyAndValidation" : 1.74433333449997,
+        "Propagator.beforePredictionHook" : 0.5212916730670258,
+        "Propagator.inputPreparation" : 0.6224166718311608,
+        "Propagator.outputCopyAndValidation" : 0.457166665000841,
+        "state.commit" : 0.32070832094177604,
+        "state.pack" : 0.2310833369847387
+      },
+      "state" : {
+        "acceptedFrames" : 100,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.4367500009248033,
+      "foregroundFraction" : 0.4505157470703125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.41649999911896884,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.601291668252088,
+        "Propagator" : 32.57070832478348
+      },
+      "objectScore" : 10.15625,
+      "predictedIoU" : 0.98226464,
+      "predictionAndStateMilliseconds" : 59.38354166573845,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.12133333075325936,
+        "modelInputRender" : 1.2495416740421206,
+        "orientationGraphSetup" : 0.019333339878357947,
+        "previewImageCreation" : 0.7920416537672281,
+        "sampleAcquisition" : 0.2525000018067658
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 1991,
+      "requestIndex" : 100,
+      "requestMilliseconds" : 62.33058332873043,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5118749977555126,
+        "ImageEncoder.inputPreparation" : 0.005958339897915721,
+        "ImageEncoder.outputCopyAndValidation" : 1.6569583385717124,
+        "Propagator.beforePredictionHook" : 0.4648750036722049,
+        "Propagator.inputPreparation" : 0.6068749935366213,
+        "Propagator.outputCopyAndValidation" : 0.4105416592210531,
+        "state.commit" : 0.3209999995306134,
+        "state.pack" : 0.21987500076647848
+      },
+      "state" : {
+        "acceptedFrames" : 101,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.6304583298042417,
+      "foregroundFraction" : 0.44683837890625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.414624999393709,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.84670833614655,
+        "Propagator" : 32.565374989644624
+      },
+      "objectScore" : 9.828125,
+      "predictedIoU" : 0.98413116,
+      "predictionAndStateMilliseconds" : 59.588125004665926,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.13404166384134442,
+        "modelInputRender" : 1.3150416634744033,
+        "orientationGraphSetup" : 0.023291664547286928,
+        "previewImageCreation" : 0.8912499906728044,
+        "sampleAcquisition" : 0.2643750049173832
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 2011,
+      "requestIndex" : 101,
+      "requestMilliseconds" : 62.77462499565445,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5047500017099082,
+        "ImageEncoder.inputPreparation" : 0.007291673682630062,
+        "ImageEncoder.outputCopyAndValidation" : 1.6545833350392058,
+        "Propagator.beforePredictionHook" : 0.4650416667573154,
+        "Propagator.inputPreparation" : 0.5864166596438736,
+        "Propagator.outputCopyAndValidation" : 0.40304166032001376,
+        "state.commit" : 0.3207916597602889,
+        "state.pack" : 0.21929167269263417
+      },
+      "state" : {
+        "acceptedFrames" : 102,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.371708338614553,
+      "foregroundFraction" : 0.4570770263671875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4104166728211567,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.045083343982697,
+        "Propagator" : 32.47012499195989
+      },
+      "objectScore" : 9.7421875,
+      "predictedIoU" : 0.9833038,
+      "predictionAndStateMilliseconds" : 58.71983333781827,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.114916663733311,
+        "modelInputRender" : 1.0780833254102618,
+        "orientationGraphSetup" : 0.02033333294093609,
+        "previewImageCreation" : 0.9072083339560777,
+        "sampleAcquisition" : 0.24912500521168113
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 2031,
+      "requestIndex" : 102,
+      "requestMilliseconds" : 61.60445834393613,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.533874990651384,
+        "ImageEncoder.inputPreparation" : 0.0066250067902728915,
+        "ImageEncoder.outputCopyAndValidation" : 1.6997500060824677,
+        "Propagator.beforePredictionHook" : 0.4525833355728537,
+        "Propagator.inputPreparation" : 0.5741666682297364,
+        "Propagator.outputCopyAndValidation" : 0.3918750007869676,
+        "state.commit" : 0.3128333337372169,
+        "state.pack" : 0.22004166385158896
+      },
+      "state" : {
+        "acceptedFrames" : 103,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.3687500070082024,
+      "foregroundFraction" : 0.46832275390625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.44462499499786645,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.504125008708797,
+        "Propagator" : 32.564958339207806
+      },
+      "objectScore" : 9.9375,
+      "predictedIoU" : 0.98437357,
+      "predictionAndStateMilliseconds" : 59.23970833828207,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11770834680646658,
+        "modelInputRender" : 1.2127083318773657,
+        "orientationGraphSetup" : 0.02012499317061156,
+        "previewImageCreation" : 0.7478750048903748,
+        "sampleAcquisition" : 0.26849999267142266
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 2051,
+      "requestIndex" : 103,
+      "requestMilliseconds" : 62.147874996298924,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.4951250011799857,
+        "ImageEncoder.inputPreparation" : 0.006791669875383377,
+        "ImageEncoder.outputCopyAndValidation" : 1.6622916591586545,
+        "Propagator.beforePredictionHook" : 0.44033332960680127,
+        "Propagator.inputPreparation" : 0.5688750097760931,
+        "Propagator.outputCopyAndValidation" : 0.4190833424217999,
+        "state.commit" : 0.34554167359601706,
+        "state.pack" : 0.21908333292230964
+      },
+      "state" : {
+        "acceptedFrames" : 104,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.4622500059194863,
+      "foregroundFraction" : 0.473388671875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4259583365637809,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.909250008524396,
+        "Propagator" : 32.486333322594874
+      },
+      "objectScore" : 9.8359375,
+      "predictedIoU" : 0.9859993,
+      "predictionAndStateMilliseconds" : 59.65262500103563,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.12120832980144769,
+        "modelInputRender" : 1.285708334762603,
+        "orientationGraphSetup" : 0.021624990040436387,
+        "previewImageCreation" : 0.764833326684311,
+        "sampleAcquisition" : 0.266916656983085
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 2071,
+      "requestIndex" : 104,
+      "requestMilliseconds" : 62.643208337249234,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.4980000085197389,
+        "ImageEncoder.inputPreparation" : 0.005875001079402864,
+        "ImageEncoder.outputCopyAndValidation" : 1.7418749921489507,
+        "Propagator.beforePredictionHook" : 0.44874999730382115,
+        "Propagator.inputPreparation" : 0.5839583318447694,
+        "Propagator.outputCopyAndValidation" : 0.4039583291159943,
+        "state.commit" : 0.33091667864937335,
+        "state.pack" : 0.23116667580325156
+      },
+      "state" : {
+        "acceptedFrames" : 105,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.4017083342187107,
+      "foregroundFraction" : 0.47705078125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.41404165676794946,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.43787499901373,
+        "Propagator" : 32.61808333627414
+      },
+      "objectScore" : 10.3203125,
+      "predictedIoU" : 0.98161465,
+      "predictionAndStateMilliseconds" : 59.297500003594905,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.12466666521504521,
+        "modelInputRender" : 1.076541666407138,
+        "orientationGraphSetup" : 0.021374988136813045,
+        "previewImageCreation" : 0.9321666730102152,
+        "sampleAcquisition" : 0.24512498930562288
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 2091,
+      "requestIndex" : 105,
+      "requestMilliseconds" : 62.23462500202004,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5349583370843902,
+        "ImageEncoder.inputPreparation" : 0.00704167177900672,
+        "ImageEncoder.outputCopyAndValidation" : 1.7093333444790915,
+        "Propagator.beforePredictionHook" : 0.4380000027595088,
+        "Propagator.inputPreparation" : 0.5792083393316716,
+        "Propagator.outputCopyAndValidation" : 0.41725000482983887,
+        "state.commit" : 0.3210833383491263,
+        "state.pack" : 0.2216666762251407
+      },
+      "state" : {
+        "acceptedFrames" : 106,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.257208339869976,
+      "foregroundFraction" : 0.4718017578125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.41900000360328704,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.545958330738358,
+        "Propagator" : 32.605958345811814
+      },
+      "objectScore" : 10.203125,
+      "predictedIoU" : 0.9836737,
+      "predictionAndStateMilliseconds" : 59.29837499570567,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.12891666847281158,
+        "modelInputRender" : 1.0306666663382202,
+        "orientationGraphSetup" : 0.01991666795220226,
+        "previewImageCreation" : 0.8179583237506449,
+        "sampleAcquisition" : 0.2580833242973313
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 2111,
+      "requestIndex" : 106,
+      "requestMilliseconds" : 62.069916661130264,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5031666660215706,
+        "ImageEncoder.inputPreparation" : 0.005583337042480707,
+        "ImageEncoder.outputCopyAndValidation" : 1.6499999910593033,
+        "Propagator.beforePredictionHook" : 0.4500833456404507,
+        "Propagator.inputPreparation" : 0.5868750013178214,
+        "Propagator.outputCopyAndValidation" : 0.39924999873619527,
+        "state.commit" : 0.3217499906895682,
+        "state.pack" : 0.21654166630469263
+      },
+      "state" : {
+        "acceptedFrames" : 107,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.257208325318061,
+      "foregroundFraction" : 0.470916748046875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.41725000482983887,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.35304166970309,
+        "Propagator" : 32.309041678672656
+      },
+      "objectScore" : 10.28125,
+      "predictedIoU" : 0.984932,
+      "predictionAndStateMilliseconds" : 58.908333332510665,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11954166984651238,
+        "modelInputRender" : 1.0447916720295325,
+        "orientationGraphSetup" : 0.020291656255722046,
+        "previewImageCreation" : 0.8164166647475213,
+        "sampleAcquisition" : 0.25441666366532445
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 2131,
+      "requestIndex" : 107,
+      "requestMilliseconds" : 61.71637501392979,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.4980416706530377,
+        "ImageEncoder.inputPreparation" : 0.005708337994292378,
+        "ImageEncoder.outputCopyAndValidation" : 1.6900000046007335,
+        "Propagator.beforePredictionHook" : 0.4892916767857969,
+        "Propagator.inputPreparation" : 0.5759583291364834,
+        "Propagator.outputCopyAndValidation" : 0.42712500726338476,
+        "state.commit" : 0.32125000143423676,
+        "state.pack" : 0.22629166778642684
+      },
+      "state" : {
+        "acceptedFrames" : 108,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.389916655374691,
+      "foregroundFraction" : 0.482208251953125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.44391666597221047,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.942416657111607,
+        "Propagator" : 32.754916668636724
+      },
+      "objectScore" : 9.28125,
+      "predictedIoU" : 0.98820066,
+      "predictionAndStateMilliseconds" : 58.92854166449979,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11704166536219418,
+        "modelInputRender" : 1.1047083389712498,
+        "orientationGraphSetup" : 0.02120832505170256,
+        "previewImageCreation" : 0.8927916642278433,
+        "sampleAcquisition" : 0.2526666648918763
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 2151,
+      "requestIndex" : 108,
+      "requestMilliseconds" : 61.882958325440995,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5199583392823115,
+        "ImageEncoder.inputPreparation" : 0.006250003934837878,
+        "ImageEncoder.outputCopyAndValidation" : 1.6467499954160303,
+        "Propagator.beforePredictionHook" : 0.47833332791924477,
+        "Propagator.inputPreparation" : 0.5774166638730094,
+        "Propagator.outputCopyAndValidation" : 0.42833334009628743,
+        "state.commit" : 0.3447500057518482,
+        "state.pack" : 0.2161250013159588
+      },
+      "state" : {
+        "acceptedFrames" : 109,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.4942500022007152,
+      "foregroundFraction" : 0.4902801513671875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.41437499749008566,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.5112916668877,
+        "Propagator" : 32.55416666797828
+      },
+      "objectScore" : 9.578125,
+      "predictedIoU" : 0.9874421,
+      "predictionAndStateMilliseconds" : 59.39845833927393,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.1264583261217922,
+        "modelInputRender" : 1.282041659578681,
+        "orientationGraphSetup" : 0.020624996977858245,
+        "previewImageCreation" : 0.8043333364184946,
+        "sampleAcquisition" : 0.2588749921415001
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 2171,
+      "requestIndex" : 109,
+      "requestMilliseconds" : 62.43208333035,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5180000007385388,
+        "ImageEncoder.inputPreparation" : 0.005958325346000493,
+        "ImageEncoder.outputCopyAndValidation" : 1.7580833373358473,
+        "Propagator.beforePredictionHook" : 0.4938333295285702,
+        "Propagator.inputPreparation" : 0.586000009207055,
+        "Propagator.outputCopyAndValidation" : 0.41254167445003986,
+        "state.commit" : 0.3212916635675356,
+        "state.pack" : 0.22375000116880983
+      },
+      "state" : {
+        "acceptedFrames" : 110,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.3047499998938292,
+      "foregroundFraction" : 0.49627685546875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.40841667214408517,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.560708326636814,
+        "Propagator" : 32.3214999953052
+      },
+      "objectScore" : 9.234375,
+      "predictedIoU" : 0.9877955,
+      "predictionAndStateMilliseconds" : 59.088750000228174,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11920832912437618,
+        "modelInputRender" : 1.0695833334466442,
+        "orientationGraphSetup" : 0.02037500962615013,
+        "previewImageCreation" : 0.8193333342205733,
+        "sampleAcquisition" : 0.27437500830274075
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 2191,
+      "requestIndex" : 110,
+      "requestMilliseconds" : 61.90324999624863,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5226250068517402,
+        "ImageEncoder.inputPreparation" : 0.006333328201435506,
+        "ImageEncoder.outputCopyAndValidation" : 1.696333332802169,
+        "Propagator.beforePredictionHook" : 0.4587916628224775,
+        "Propagator.inputPreparation" : 0.5826249980600551,
+        "Propagator.outputCopyAndValidation" : 0.3917499998351559,
+        "state.commit" : 0.3132499987259507,
+        "state.pack" : 0.22237500525079668
+      },
+      "state" : {
+        "acceptedFrames" : 111,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 2.449958337820135,
+      "foregroundFraction" : 0.5030975341796875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4155000060563907,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.57370832376182,
+        "Propagator" : 32.64187499007676
+      },
+      "objectScore" : 9.109375,
+      "predictedIoU" : 0.98828065,
+      "predictionAndStateMilliseconds" : 59.358833328587934,
+      "preparationStageMilliseconds" : {
+        "modelBufferAllocation" : 0.11566666944418103,
+        "modelInputRender" : 1.2699583312496543,
+        "orientationGraphSetup" : 0.01958332723006606,
+        "previewImageCreation" : 0.7792916585458443,
+        "sampleAcquisition" : 0.2637083234731108
+      },
+      "ptsTimescale" : 600,
+      "ptsValue" : 2211,
+      "requestIndex" : 111,
+      "requestMilliseconds" : 62.365041667362675,
+      "segment" : 1,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5047500017099082,
+        "ImageEncoder.inputPreparation" : 0.006333342753350735,
+        "ImageEncoder.outputCopyAndValidation" : 1.6297083348035812,
+        "Propagator.beforePredictionHook" : 0.44766666542273015,
+        "Propagator.inputPreparation" : 0.5793333402834833,
+        "Propagator.outputCopyAndValidation" : 0.41725000482983887,
+        "state.commit" : 0.3210833383491263,
+        "state.pack" : 0.22308333427645266
+      },
+      "state" : {
+        "acceptedFrames" : 112,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    }
+  ],
+  "requestedComputeUnits" : "CPU_AND_GPU",
+  "schema" : "bytewave.requested-video-tracking.v1",
+  "scope" : "On-demand sequential decoded frames from a user-selected video. One positive point per reset; no ground-truth parity or automatic quality pass. All model outputs retain shape\/finiteness checks. No audio, frame dropping, pre-scan or full-video mask cache. Run tracking advances as requests finish, not on a real-time playback clock.",
+  "seeks" : 0,
+  "segmentsStarted" : 1,
+  "sessionTimingInstrumentation" : "session-stages.v1",
+  "sessionTimingScope" : "Input preparation, output copy\/validation, before-prediction checkpoint hooks and state pack\/commit are timed separately inside predictionAndStateMilliseconds. Stages exclude model calls and do not sum to the full session time; orchestration overhead remains. Warm totals exclude initialization after every reset.",
+  "sourceFileBytes" : 8687559,
+  "sourceModelsManifestSHA256" : "47b7b85eef755ff7a440c0017f232a82ac7213af622d15d30a04f3487e07dd67",
+  "sourceReportSHA256" : "8768eab4331ad57994782ee244861b64f3c3eb27fa6c970cc881a843618af9a6",
+  "swiftDebugCompilation" : false,
+  "tensorCopyImplementation" : "owned-float32-chunk-copy.v1",
+  "thermalStateAtSnapshot" : "nominal",
+  "thermalStateAtStart" : "nominal",
+  "timingInstrumentation" : "video-preparation-stages.v2",
+  "timingScope" : "Request time includes synchronous decode, orientation\/resize, preview image rendering, prediction\/state, mask PNG and small pre-prediction checkpoint writes. Excludes model loading, UI presentation, report saving and user pauses. Initialization uses the already prepared displayed frame. Warm totals exclude the first prediction after every reset. These are processing diagnostics, not sustained playback FPS.",
+  "trackTransform" : [
+    0,
+    1,
+    -1,
+    0,
+    1080,
+    0
+  ],
+  "videoDurationSeconds" : 3.716666666666667,
+  "warmDecodeAndPreparationTotals" : {
+    "count" : 111,
+    "maximumMilliseconds" : 10.344291673391126,
+    "meanMilliseconds" : 2.435454580385389,
+    "totalMilliseconds" : 270.3354584227782
+  },
+  "warmMaskRenderingTotals" : {
+    "count" : 111,
+    "maximumMilliseconds" : 0.44462499499786645,
+    "meanMilliseconds" : 0.40401989512296543,
+    "totalMilliseconds" : 44.846208358649164
+  },
+  "warmModelTotals" : {
+    "ImageEncoder" : {
+      "count" : 111,
+      "maximumMilliseconds" : 36.35241666052025,
+      "meanMilliseconds" : 22.480747748222957,
+      "totalMilliseconds" : 2495.3630000527482
+    },
+    "Propagator" : {
+      "count" : 111,
+      "maximumMilliseconds" : 161.05045833683107,
+      "meanMilliseconds" : 33.721085210427276,
+      "totalMilliseconds" : 3743.0404583574273
+    }
+  },
+  "warmPredictionAndStateTotals" : {
+    "count" : 111,
+    "maximumMilliseconds" : 214.14029167499393,
+    "meanMilliseconds" : 60.55679354320599,
+    "totalMilliseconds" : 6721.804083295865
+  },
+  "warmPreparationStageTotals" : {
+    "modelBufferAllocation" : {
+      "count" : 111,
+      "maximumMilliseconds" : 0.45616665738634765,
+      "meanMilliseconds" : 0.12335135207641534,
+      "totalMilliseconds" : 13.692000080482103
+    },
+    "modelInputRender" : {
+      "count" : 111,
+      "maximumMilliseconds" : 4.858874992351048,
+      "meanMilliseconds" : 1.182756381846654,
+      "totalMilliseconds" : 131.28595838497858
+    },
+    "orientationGraphSetup" : {
+      "count" : 111,
+      "maximumMilliseconds" : 0.0857499981066212,
+      "meanMilliseconds" : 0.021137011228003412,
+      "totalMilliseconds" : 2.346208246308379
+    },
+    "previewImageCreation" : {
+      "count" : 111,
+      "maximumMilliseconds" : 3.9559583383379504,
+      "meanMilliseconds" : 0.8436580337237919,
+      "totalMilliseconds" : 93.6460417433409
+    },
+    "sampleAcquisition" : {
+      "count" : 111,
+      "maximumMilliseconds" : 0.9717916691442952,
+      "meanMilliseconds" : 0.2624771016574389,
+      "totalMilliseconds" : 29.13495828397572
+    }
+  },
+  "warmRequestTotals" : {
+    "count" : 111,
+    "maximumMilliseconds" : 225.51558332634158,
+    "meanMilliseconds" : 63.504134009981335,
+    "totalMilliseconds" : 7048.958875107928
+  },
+  "warmSessionStageTotals" : {
+    "ImageEncoder.beforePredictionHook" : {
+      "count" : 111,
+      "maximumMilliseconds" : 2.7512083324836567,
+      "meanMilliseconds" : 0.530459084165249,
+      "totalMilliseconds" : 58.88095834234264
+    },
+    "ImageEncoder.inputPreparation" : {
+      "count" : 111,
+      "maximumMilliseconds" : 0.02891666372306645,
+      "meanMilliseconds" : 0.006711336617307687,
+      "totalMilliseconds" : 0.7449583645211533
+    },
+    "ImageEncoder.outputCopyAndValidation" : {
+      "count" : 111,
+      "maximumMilliseconds" : 7.964125004946254,
+      "meanMilliseconds" : 1.7539294292890206,
+      "totalMilliseconds" : 194.6861666510813
+    },
+    "Propagator.beforePredictionHook" : {
+      "count" : 111,
+      "maximumMilliseconds" : 1.841416655224748,
+      "meanMilliseconds" : 0.47862837861946506,
+      "totalMilliseconds" : 53.12775002676062
+    },
+    "Propagator.inputPreparation" : {
+      "count" : 111,
+      "maximumMilliseconds" : 2.440833326545544,
+      "meanMilliseconds" : 0.6022503754744927,
+      "totalMilliseconds" : 66.84979167766869
+    },
+    "Propagator.outputCopyAndValidation" : {
+      "count" : 111,
+      "maximumMilliseconds" : 0.6925000052433461,
+      "meanMilliseconds" : 0.42051651611030605,
+      "totalMilliseconds" : 46.67733328824397
+    },
+    "state.commit" : {
+      "count" : 111,
+      "maximumMilliseconds" : 0.3647083358373493,
+      "meanMilliseconds" : 0.3237545045579339,
+      "totalMilliseconds" : 35.93675000593066
+    },
+    "state.pack" : {
+      "count" : 111,
+      "maximumMilliseconds" : 0.6833750085206702,
+      "meanMilliseconds" : 0.22496433935426008,
+      "totalMilliseconds" : 24.97104166832287
+    }
+  }
+}

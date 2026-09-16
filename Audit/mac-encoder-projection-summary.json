@@ -1,0 +1,57 @@
+{
+  "evidence": "Selected fields transcribed from the user's encoder-projection-01/report.json terminal paste; not the original report bytes. Preparation verifies the actual Mac reports and package hashes.",
+  "scope": "Composed FP32 high-resolution encoder projections; original CPU tracker for temporal isolation. Paired Mac encoder calls only, not iPhone or playback performance.",
+  "contract": "bytewave.encoder-projection.diagnostic.v1",
+  "completed": true,
+  "passed": true,
+  "readyForDeviceValidation": false,
+  "sourceManifestSHA256": "47b7b85eef755ff7a440c0017f232a82ac7213af622d15d30a04f3487e07dd67",
+  "sourceFrameReportSHA256": "8768eab4331ad57994782ee244861b64f3c3eb27fa6c970cc881a843618af9a6",
+  "variantsSHA256": "9ddff3e562cfbf0b31cd624eea5252fe31bb167a1afde42e5d95d4cd3d53aa90",
+  "candidateFiles": {
+    "Manifest.json": "df20c1178e37ef2d4587281d5feca5979f2db8b859ffe7357161e4d5b51c254f",
+    "Data/com.apple.CoreML/model.mlmodel": "a3046d4fbd83b7974d0b01d92ca30a55adad08aca218789b97034245023bbeba",
+    "Data/com.apple.CoreML/weights/weight.bin": "90e112d95a98e30486b768a2397f253766ceaa95bfd3cdb5a31a8db0341f61c3"
+  },
+  "runs": {
+    "unchanged-cpu": {
+      "passed": true,
+      "framesCompared": 20,
+      "reportSHA256": "00f6cfe1b1b5a57df16fbd141ce0d077f50fd09c6f6ad3cc352c0ed69535a398",
+      "minimumMaskIoU": 0.9957401490947817,
+      "minimumPointerCosine": 0.9990273321442846,
+      "minimumMemoryCosine": 0.9965700094527923
+    },
+    "projection-cpu": {
+      "passed": true,
+      "framesCompared": 20,
+      "reportSHA256": "d58e0fd776ee40522d06d1aa3780a69005cf74dd9dc319910fb95730df739171",
+      "minimumMaskIoU": 0.9957401490947817,
+      "minimumPointerCosine": 0.9990216843104643,
+      "minimumMemoryCosine": 0.9961701455786228
+    },
+    "projection-gpu": {
+      "passed": true,
+      "framesCompared": 20,
+      "reportSHA256": "3f8e5467e57026916ba28a1e60fccb4d7974682a656e1c1d7f3000f5b6c8478d",
+      "minimumMaskIoU": 0.9981529368304396,
+      "minimumPointerCosine": 0.9996637744207189,
+      "minimumMemoryCosine": 0.9993806365303214
+    }
+  },
+  "allRunsFinalState": {"acceptedFrames": 20, "spatialEntries": 7, "pointerEntries": 16},
+  "paired": {
+    "reportSHA256": "c91c5c05ca927294c9b9ca796725ccf726b7ac916d1731f4b1fc56263162eb34",
+    "measuredPairs": 80,
+    "medianMilliseconds": {"original": 9.38893761485815, "projection": 8.719583391211927},
+    "ratioOfMediansOriginalOverCandidate": 1.0767644729816834,
+    "medianPairedRatioOriginalOverCandidate": 1.0862322758812548,
+    "medianLatencyReductionPercent": 7.129179584567257,
+    "allMeasuredOutputsPassed": true,
+    "medianMillisecondsByFirstModel": {
+      "original": {"original": 9.33824956882745, "projection": 8.874500053934753},
+      "projection": {"original": 9.41541651263833, "projection": 8.252208353951573}
+    }
+  },
+  "decision": "Prepare isolated iPhone comparison of current memoryfp16 versus the same tracker plus projection encoder. No promotion or iPhone speed claim yet."
+}

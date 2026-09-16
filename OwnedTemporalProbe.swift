@@ -1,0 +1,866 @@
+import SwiftUI
+import CoreML
+import CoreMedia
+import CoreVideo
+import CryptoKit
+import ImageIO
+import UniformTypeIdentifiers
+import Darwin
+
+enum OwnedDeviceMode: String, CaseIterable, Identifiable, Sendable {
+    case cpu = "CPU only"
+    case neuralEngine = "CPU + Neural Engine"
+    case encoderNeuralEngine = "Encoder NE + CPU tracker"
+    case gpu = "CPU + GPU"
+    case propagatorNeuralEngine = "GPU + NE propagator"
+    case automatic = "Automatic"
+    var id: String { rawValue }
+    func supports(propagatorVariant: String?, encoderVariant: String? = nil) -> Bool {
+        if let encoderVariant {
+            return encoderVariant == "projection" && propagatorVariant == "memoryfp16" && (self == .cpu || self == .gpu)
+        }
+        switch propagatorVariant {
+        case nil: return true
+        case .some("memoryfp16"): return self == .cpu || self == .gpu || self == .propagatorNeuralEngine
+        case .some("memoryfp16k4096"): return self == .cpu || self == .gpu
+        default: return false
+        }
+    }
+    func units(for component: String) -> MLComputeUnits {
+        switch self {
+        case .cpu: return .cpuOnly
+        case .neuralEngine: return .cpuAndNeuralEngine
+        case .encoderNeuralEngine: return component == "ImageEncoder" ? .cpuAndNeuralEngine : .cpuOnly
+        case .gpu: return .cpuAndGPU
+        case .propagatorNeuralEngine:
+            return component == "Propagator" ? .cpuAndNeuralEngine : .cpuAndGPU
+        case .automatic: return .all
+        }
+    }
+    var requestedUnitsByComponent: [String: String] {
+        Dictionary(uniqueKeysWithValues: OwnedTemporalContract.components.map { component in
+            let name: String
+            switch units(for: component) {
+            case .cpuOnly: name = "CPU_ONLY"
+            case .cpuAndNeuralEngine: name = "CPU_AND_NE"
+            case .cpuAndGPU: name = "CPU_AND_GPU"
+            case .all: name = "ALL"
+            @unknown default: name = "UNKNOWN"
+            }
+            return (component, name)
+        })
+    }
+}
+
+enum OwnedFixtureChoice: String, CaseIterable, Identifiable {
+    case original = "Original"
+    case memoryFP16 = "Memory FP16 candidate"
+    case paddedMemoryFP16 = "Memory FP16 padded candidate"
+    case encoderProjection = "Memory FP16 + fused encoder"
+    var id: String { rawValue }
+    var folder: String {
+        switch self {
+        case .original: return "baseline"
+        case .memoryFP16: return "memoryfp16"
+        case .paddedMemoryFP16: return "memoryfp16k4096"
+        case .encoderProjection: return "memoryfp16projection"
+        }
+    }
+    var propagatorVariant: String? {
+        switch self {
+        case .original: return nil
+        case .memoryFP16, .encoderProjection: return "memoryfp16"
+        case .paddedMemoryFP16: return "memoryfp16k4096"
+        }
+    }
+    var encoderVariant: String? { self == .encoderProjection ? "projection" : nil }
+}
+
+struct OwnedDiagnosticEncoder: Codable, Sendable {
+    let variant: String
+    let contract: String
+    let precisionPolicy: String
+    let baselineFixtureSHA256: String
+    let candidateReportSHA256: String
+    let pairedReportSHA256: String
+
+    func validate() throws {
+        let hashes = [baselineFixtureSHA256, candidateReportSHA256, pairedReportSHA256]
+        guard variant == "projection", contract == OwnedTemporalContract.encoderProjectionContract,
+              precisionPolicy == OwnedTemporalContract.encoderProjectionFP16Precision,
+              hashes.allSatisfy({ $0.count == 64 && $0.allSatisfy({ "0123456789abcdef".contains($0) }) }) else {
+            throw OwnedTemporalError.invalid("Incompatible diagnostic encoder provenance.")
+        }
+    }
+}
+
+struct OwnedDiagnosticPropagator: Codable, Sendable {
+    let variant: String
+    let contract: String
+    let precisionPolicy: String
+    let baselineFixtureSHA256: String
+    let candidateReportSHA256: String
+    let pairedReportSHA256: String
+
+    func validate() throws {
+        let hashes = [baselineFixtureSHA256, candidateReportSHA256, pairedReportSHA256]
+        guard let expectedPrecision = OwnedTemporalContract.diagnosticPrecision(for: variant),
+              contract == OwnedTemporalContract.attentionDiagnosticContract,
+              precisionPolicy == expectedPrecision,
+              hashes.allSatisfy({ $0.count == 64 && $0.allSatisfy({ "0123456789abcdef".contains($0) }) }) else {
+            throw OwnedTemporalError.invalid("Incompatible diagnostic propagator provenance.")
+        }
+    }
+}
+
+struct OwnedFixture: Decodable {
+    struct TensorFile: Decodable {
+        let path: String
+        let sha256: String
+        let shape: [Int]
+    }
+    struct Frame: Decodable {
+        let index: Int
+        let ptsNumerator: Int64
+        let ptsDenominator: Int32
+        let imageSHA256: String
+        let inputPath: String
+        let inputSHA256: String
+        let previewPath: String
+        let tensors: [String: TensorFile]
+    }
+    let schema: String
+    let contract: String
+    let precisionPolicy: String
+    let graphRevision: String?
+    let upstream: String
+    let checkpointSHA256: String
+    let sourceModelsManifestSHA256: String
+    let sourceReportSHA256: String
+    let pointNormalizedTopLeft: [Double]
+    let referenceComputeUnits: String
+    let modelFiles: [String: String]
+    let frames: [Frame]
+    let diagnosticPropagator: OwnedDiagnosticPropagator?
+    let diagnosticEncoder: OwnedDiagnosticEncoder?
+}
+
+struct OwnedTensorComparison: Codable, Sendable {
+    let maximumAbsoluteError: Double
+    let cosineSimilarity: Double
+}
+
+struct OwnedFrameComparison: Codable, Sendable {
+    let index: Int
+    let ptsNumerator: Int64
+    let ptsDenominator: Int32
+    let sourceImageSHA256: String
+    let inputBGRASHA256: String
+    let modelMilliseconds: [String: Double]
+    var sessionStageMilliseconds: [String: Double]? = nil
+    let predictionAndStateMillisecondsDiagnosticOnly: Double
+    let maskIoUAgainstMacCoreML: Double
+    let sameObjectPresence: Bool
+    let foregroundFraction: Double
+    let outputs: [String: OwnedTensorComparison]
+    let state: OwnedStateSummary
+    let passed: Bool
+}
+
+struct OwnedDeviceReport: Encodable, Sendable {
+    let schema = "bytewave.temporal-device-comparison.v1"
+    let contract = OwnedTemporalContract.id
+    var precisionPolicy = OwnedTemporalContract.precision
+    var modelVariant = "original"
+    var diagnosticPropagator: OwnedDiagnosticPropagator?
+    var diagnosticEncoder: OwnedDiagnosticEncoder?
+    let graphRevision = OwnedTemporalContract.graphRevision
+    let timingInstrumentation = "session-stages.v1"
+    let tensorCopyImplementation = OwnedTensor.copyImplementation
+    #if DEBUG
+    let swiftDebugCompilation = true
+    #else
+    let swiftDebugCompilation = false
+    #endif
+    let generatedAt = Date()
+    let hardware: String
+    let operatingSystem = ProcessInfo.processInfo.operatingSystemVersionString
+    let isIOSAppOnMac = ProcessInfo.processInfo.isiOSAppOnMac
+    let mode: String
+    var requestedComputeUnitsByComponent: [String: String] = [:]
+    let reference = "Mac Core ML CPU replay of the passed original-PyTorch comparison fixture"
+    let scope = "20 exact-input sequential predictions with bounded Swift state. Low mask, pointer and memory cosine >= 0.99; low-mask IoU >= 0.95; matching object presence; all model outputs finite. High mask is checked for shape/finiteness, not compared numerically. No video decoding, sustained playback FPS, or measured hardware utilization."
+    let timingScope = "Model-call wall time excludes input copies, tensor checks, state assembly, reference comparison, checkpoint file I/O and display. Prediction-and-state time includes input copies/checks/state and pre-prediction checkpoint writes. Session stages separately time input preparation, output copy/validation, state pack/commit and the before-prediction hook (checkpoint write plus console logging). Stages exclude model calls and need not sum to the full session time; orchestration/allocation overhead remains. First frame is cold; compile/load is separate. Neither Debug nor Release fixture timings establish sustained playback FPS or measured hardware utilization."
+    var fixtureSHA256: String?
+    var sourceModelsManifestSHA256: String?
+    var sourceReportSHA256: String?
+    var pointNormalizedTopLeft: [Double]?
+    var verifiedModelFileCount = 0
+    var compileAndLoadMilliseconds: [String: Double] = [:]
+    var frames: [OwnedFrameComparison] = []
+    var passed = false
+    var completed = false
+    var lastCheckpoint: String?
+    var activeFrameIndex: Int?
+    var activeComponent: String?
+    var cancelled = false
+    var failedStage: String?
+    var error: String?
+    var thermalStateAtStart: String
+    var thermalStateAtEnd: String?
+}
+
+struct OwnedProbeUpdate: Sendable {
+    let message: String
+    var previewPNG: Data? = nil
+    var overlayPNG: Data? = nil
+}
+
+struct OwnedPlanOperation: Encodable, Sendable {
+    let path: String
+    let operation: String
+    let outputs: [String]
+    let preferredDevice: String?
+    let supportedDevices: [String]
+    let estimatedRelativeCost: Double?
+}
+
+struct OwnedComponentPlan: Encodable, Sendable {
+    let component: String
+    let requestedComputeUnits: String
+    var constantOperationsExcluded = 0
+    var preferredCounts: [String: Int] = [:]
+    var operationsWithEstimatedCost = 0
+    var estimatedRelativeCostByPreferredDevice: [String: Double] = [:]
+    var operations: [OwnedPlanOperation] = []
+    var error: String?
+}
+
+struct OwnedPlanReport: Encodable, Sendable {
+    let schema = "bytewave.temporal-compute-plan.v1"
+    let generatedAt = Date()
+    let contract = OwnedTemporalContract.id
+    let graphRevision = OwnedTemporalContract.graphRevision
+    let precisionPolicy = OwnedTemporalContract.precision
+    let hardware: String
+    let operatingSystem = ProcessInfo.processInfo.operatingSystemVersionString
+    let isIOSAppOnMac = ProcessInfo.processInfo.isiOSAppOnMac
+    let scope = "Verified owned ImageEncoder and Propagator plans under CPU_AND_GPU and CPU_AND_NE. No predictions or numerical validation. Constants excluded. Relative costs are compiler estimates within each model/plan, not measured milliseconds, runtime device utilization, or comparable absolute costs across plans. Missing cost is unreported, not zero."
+    var fixtureSHA256: String?
+    var sourceModelsManifestSHA256: String?
+    var sourceReportSHA256: String?
+    var verifiedModelFileCount = 0
+    var plans: [OwnedComponentPlan] = []
+    var lastCheckpoint: String?
+    var completed = false
+    var allPlansLoaded = false
+    var error: String?
+}
+
+actor OwnedTemporalProbeRunner {
+    private var running = false
+
+    func run(root: URL, mode: OwnedDeviceMode, hardware: String, expectedPropagatorVariant: String? = nil,
+             expectedEncoderVariant: String? = nil,
+             progress: @Sendable (OwnedProbeUpdate) async -> Void) async -> OwnedDeviceReport {
+        var report = OwnedDeviceReport(hardware: hardware, mode: mode.rawValue, thermalStateAtStart: thermal())
+        report.requestedComputeUnitsByComponent = mode.requestedUnitsByComponent
+        guard !running else {
+            report.error = "A temporal comparison is already running."
+            return report
+        }
+        running = true
+        var models: [String: MLModel] = [:]
+        var compiledURLs: [URL] = []
+        var stage = "fixture validation"
+        var checkpointURL: URL?
+        defer {
+            models.removeAll()
+            for url in compiledURLs { try? FileManager.default.removeItem(at: url) }
+            running = false
+        }
+        do {
+            let documents = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask,
+                                                        appropriateFor: nil, create: true)
+            let checkpoint = documents.appendingPathComponent("temporal-last-run.json")
+            checkpointURL = checkpoint
+            report.lastCheckpoint = stage
+            try saveCheckpoint(report, to: checkpoint)
+            let data = try Data(contentsOf: root.appendingPathComponent("fixture.json"))
+            let fixture = try JSONDecoder().decode(OwnedFixture.self, from: data)
+            try fixture.diagnosticPropagator?.validate()
+            try fixture.diagnosticEncoder?.validate()
+            guard fixture.diagnosticPropagator?.variant == expectedPropagatorVariant,
+                  fixture.diagnosticEncoder?.variant == expectedEncoderVariant else {
+                throw OwnedTemporalError.invalid("Prepared fixture does not match the selected model variant.")
+            }
+            if !mode.supports(propagatorVariant: fixture.diagnosticPropagator?.variant,
+                              encoderVariant: fixture.diagnosticEncoder?.variant) {
+                throw OwnedTemporalError.invalid("This compute mode is not enabled for the selected model variant.")
+            }
+            let expectedPrecision = fixture.diagnosticEncoder?.precisionPolicy
+                ?? fixture.diagnosticPropagator?.precisionPolicy ?? OwnedTemporalContract.precision
+            report.precisionPolicy = expectedPrecision
+            report.modelVariant = fixture.diagnosticEncoder == nil
+                ? (fixture.diagnosticPropagator?.variant ?? "original") : "memoryfp16projection"
+            report.diagnosticPropagator = fixture.diagnosticPropagator
+            report.diagnosticEncoder = fixture.diagnosticEncoder
+            report.fixtureSHA256 = digest(data)
+            report.sourceModelsManifestSHA256 = fixture.sourceModelsManifestSHA256
+            report.sourceReportSHA256 = fixture.sourceReportSHA256
+            report.pointNormalizedTopLeft = fixture.pointNormalizedTopLeft
+            guard fixture.schema == "bytewave.temporal-device-fixture.v1",
+                  fixture.contract == OwnedTemporalContract.id,
+                  fixture.precisionPolicy == expectedPrecision,
+                  fixture.graphRevision == OwnedTemporalContract.graphRevision,
+                  fixture.upstream == OwnedTemporalContract.upstream,
+                  fixture.checkpointSHA256 == OwnedTemporalContract.checkpoint,
+                  fixture.referenceComputeUnits == "CPU_ONLY", fixture.frames.count == 20,
+                  fixture.pointNormalizedTopLeft.count == 2,
+                  fixture.pointNormalizedTopLeft.allSatisfy({ $0.isFinite && (0...1).contains($0) }),
+                  !fixture.modelFiles.isEmpty else {
+                throw OwnedTemporalError.invalid("Missing or incompatible device fixture. Run the Mac preparation command first.")
+            }
+            await progress(OwnedProbeUpdate(message: "Verifying model files…"))
+            for (path, hash) in fixture.modelFiles.sorted(by: { $0.key < $1.key }) {
+                try Task.checkCancellation()
+                _ = try verifiedData(root, path, hash)
+                report.verifiedModelFileCount += 1
+            }
+            for component in OwnedTemporalContract.components {
+                stage = "compile/load \(component)"
+                try Task.checkCancellation()
+                report.activeComponent = component
+                report.lastCheckpoint = stage
+                try saveCheckpoint(report, to: checkpoint)
+                await progress(OwnedProbeUpdate(message: "Loading \(component)…"))
+                let start = ProcessInfo.processInfo.systemUptime
+                let package = root.appendingPathComponent("models/BWTemporal\(component).mlpackage")
+                let compiled = try await MLModel.compileModel(at: package)
+                compiledURLs.append(compiled)
+                let configuration = MLModelConfiguration()
+                configuration.computeUnits = mode.units(for: component)
+                let model = try await MLModel.load(contentsOf: compiled, configuration: configuration)
+                try OwnedTemporalContract.validate(model, component: component,
+                                                   propagatorVariant: fixture.diagnosticPropagator?.variant,
+                                                   encoderVariant: fixture.diagnosticEncoder?.variant)
+                models[component] = model
+                report.compileAndLoadMilliseconds[component] = (ProcessInfo.processInfo.systemUptime - start) * 1000
+            }
+            // The session is local to this run. No await occurs inside predict;
+            // a cancellation/new run cannot commit an old frame into new state.
+            let session = OwnedTemporalSession(models: models)
+            defer { session.reset() }
+            for (index, frame) in fixture.frames.enumerated() {
+                stage = "frame \(index + 1)"
+                report.activeFrameIndex = index
+                report.activeComponent = nil
+                report.lastCheckpoint = "Preparing \(stage)"
+                try saveCheckpoint(report, to: checkpoint)
+                try Task.checkCancellation()
+                guard frame.index == index, frame.ptsDenominator > 0 else {
+                    throw OwnedTemporalError.invalid("Invalid fixture frame order or timestamp.")
+                }
+                let result = try autoreleasepool { () throws -> (OwnedFrameComparison, Data, Data) in
+                    let bytes = try verifiedData(root, frame.inputPath, frame.inputSHA256)
+                    let buffer = try pixelBuffer(bytes)
+                    let timestamp = CMTime(value: frame.ptsNumerator, timescale: frame.ptsDenominator)
+                    let start = ProcessInfo.processInfo.systemUptime
+                    let prediction = try session.predict(image: buffer, at: timestamp,
+                                                         initialPoint: fixture.pointNormalizedTopLeft) { component in
+                        stage = "frame \(index + 1), \(component)"
+                        report.activeComponent = component
+                        report.lastCheckpoint = "Before prediction: \(stage)"
+                        try saveCheckpoint(report, to: checkpoint)
+                        print("[OwnedTemporal] \(mode.rawValue): \(stage), beginning prediction")
+                        fflush(stdout)
+                    }
+                    let elapsed = (ProcessInfo.processInfo.systemUptime - start) * 1000
+                    stage = "frame \(index + 1), reference comparison"
+                    let expectedNames = Set(["low_res_mask", "best_iou", "object_pointer", "object_score",
+                                             "memory_features", "memory_positions"])
+                    guard Set(frame.tensors.keys) == expectedNames else {
+                        throw OwnedTemporalError.invalid("Reference tensor set is incomplete.")
+                    }
+                    var references: [String: OwnedTensor] = [:]
+                    var comparisons: [String: OwnedTensorComparison] = [:]
+                    for name in expectedNames.sorted() {
+                        guard let file = frame.tensors[name], file.shape == OwnedTemporalContract.shapes[name],
+                              let actual = prediction.tensors[name] else {
+                            throw OwnedTemporalError.invalid("Missing comparison tensor \(name).")
+                        }
+                        let reference = try readTensor(verifiedData(root, file.path, file.sha256), shape: file.shape)
+                        references[name] = reference
+                        comparisons[name] = compare(actual.values, reference.values)
+                    }
+                    guard let actualMask = prediction.tensors["low_res_mask"], let expectedMask = references["low_res_mask"],
+                          let actualScore = prediction.tensors["object_score"]?.values.first,
+                          let expectedScore = references["object_score"]?.values.first else {
+                        throw OwnedTemporalError.invalid("Missing mask or presence score.")
+                    }
+                    var intersection = 0
+                    var union = 0
+                    var foreground = 0
+                    for i in actualMask.values.indices {
+                        let actual = actualMask.values[i] > 0
+                        let expected = expectedMask.values[i] > 0
+                        if actual { foreground += 1 }
+                        if actual && expected { intersection += 1 }
+                        if actual || expected { union += 1 }
+                    }
+                    if index == 0 && !expectedMask.values.contains(where: { $0 > 0 }) {
+                        throw OwnedTemporalError.invalid("Empty reference subject on frame 1.")
+                    }
+                    let iou = union == 0 ? 1 : Double(intersection) / Double(union)
+                    let presence = (actualScore > 0) == (expectedScore > 0)
+                    let cosinePassed = ["low_res_mask", "object_pointer", "memory_features", "memory_positions"]
+                        .allSatisfy { (comparisons[$0]?.cosineSimilarity ?? -1) >= 0.99 }
+                    let state = prediction.state
+                    let statePassed = state.acceptedFrames == index + 1 && state.spatialEntries == min(index + 1, 7)
+                        && state.pointerEntries == min(index + 1, 16)
+                    var row = OwnedFrameComparison(index: index, ptsNumerator: frame.ptsNumerator,
+                        ptsDenominator: frame.ptsDenominator, sourceImageSHA256: frame.imageSHA256,
+                        inputBGRASHA256: frame.inputSHA256, modelMilliseconds: prediction.modelMilliseconds,
+                        predictionAndStateMillisecondsDiagnosticOnly: elapsed, maskIoUAgainstMacCoreML: iou,
+                        sameObjectPresence: presence, foregroundFraction: Double(foreground) / Double(actualMask.values.count),
+                        outputs: comparisons, state: state, passed: iou >= 0.95 && presence && cosinePassed && statePassed)
+                    row.sessionStageMilliseconds = prediction.sessionStageMilliseconds
+                    let preview = try Data(contentsOf: safeURL(root, frame.previewPath))
+                    return (row, preview, try maskPNG(actualMask.values))
+                }
+                report.frames.append(result.0)
+                report.activeComponent = nil
+                report.lastCheckpoint = "Completed frame \(index + 1) comparison"
+                try saveCheckpoint(report, to: checkpoint)
+                await progress(OwnedProbeUpdate(message: "Frame \(index + 1)/20: \(result.0.passed ? "passed" : "FAILED")",
+                                               previewPNG: result.1, overlayPNG: result.2))
+                try Task.checkCancellation()
+                guard result.0.passed else {
+                    throw OwnedTemporalError.invalid("Device comparison failed at frame \(index + 1). Share the report.")
+                }
+            }
+            report.passed = report.frames.count == 20 && report.frames.allSatisfy(\.passed)
+        } catch {
+            report.cancelled = error is CancellationError
+            report.failedStage = stage
+            report.error = error.localizedDescription
+        }
+        report.completed = true
+        report.thermalStateAtEnd = thermal()
+        if let checkpointURL {
+            do { try saveCheckpoint(report, to: checkpointURL) }
+            catch { print("[OwnedTemporal] Final checkpoint save failed: \(error.localizedDescription)") }
+        }
+        return report
+    }
+
+    func inspectPlans(root: URL, hardware: String,
+                      progress: @Sendable (String) async -> Void) async -> OwnedPlanReport {
+        var report = OwnedPlanReport(hardware: hardware)
+        guard !running else {
+            report.error = "A temporal diagnostic is already running."
+            return report
+        }
+        running = true
+        defer { running = false }
+        var checkpoint: URL?
+        do {
+            let documents = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask,
+                                                        appropriateFor: nil, create: true)
+            let url = documents.appendingPathComponent("temporal-last-plan.json")
+            checkpoint = url
+            report.lastCheckpoint = "Verifying owned fixture and models"
+            try saveCheckpoint(report, to: url)
+            let data = try Data(contentsOf: root.appendingPathComponent("fixture.json"))
+            let fixture = try JSONDecoder().decode(OwnedFixture.self, from: data)
+            guard fixture.schema == "bytewave.temporal-device-fixture.v1",
+                  fixture.diagnosticPropagator == nil,
+                  fixture.diagnosticEncoder == nil,
+                  fixture.contract == OwnedTemporalContract.id,
+                  fixture.graphRevision == OwnedTemporalContract.graphRevision,
+                  fixture.precisionPolicy == OwnedTemporalContract.precision,
+                  fixture.upstream == OwnedTemporalContract.upstream,
+                  fixture.checkpointSHA256 == OwnedTemporalContract.checkpoint,
+                  fixture.referenceComputeUnits == "CPU_ONLY", fixture.frames.count == 20,
+                  !fixture.modelFiles.isEmpty else {
+                throw OwnedTemporalError.invalid("Incompatible owned fixture for plan inspection.")
+            }
+            report.fixtureSHA256 = digest(data)
+            report.sourceModelsManifestSHA256 = fixture.sourceModelsManifestSHA256
+            report.sourceReportSHA256 = fixture.sourceReportSHA256
+            await progress("Verifying owned model files…")
+            for (path, hash) in fixture.modelFiles.sorted(by: { $0.key < $1.key }) {
+                try Task.checkCancellation()
+                _ = try verifiedData(root, path, hash)
+                report.verifiedModelFileCount += 1
+            }
+            // These two components dominate the measured propagation frames.
+            for component in ["ImageEncoder", "Propagator"] {
+                report.lastCheckpoint = "Compiling \(component) for plan inspection"
+                try saveCheckpoint(report, to: url)
+                await progress(report.lastCheckpoint!)
+                try Task.checkCancellation()
+                let package = root.appendingPathComponent("models/BWTemporal\(component).mlpackage")
+                let compiled = try await MLModel.compileModel(at: package)
+                defer { try? FileManager.default.removeItem(at: compiled) }
+                for mode in [OwnedDeviceMode.gpu, .neuralEngine] {
+                    let units = mode.requestedUnitsByComponent[component]!
+                    report.lastCheckpoint = "Loading \(component) plan: \(units)"
+                    try saveCheckpoint(report, to: url)
+                    await progress(report.lastCheckpoint!)
+                    var row = OwnedComponentPlan(component: component, requestedComputeUnits: units)
+                    do {
+                        try Task.checkCancellation()
+                        let configuration = MLModelConfiguration()
+                        configuration.computeUnits = mode.units(for: component)
+                        let model = try await MLModel.load(contentsOf: compiled, configuration: configuration)
+                        try OwnedTemporalContract.validate(model, component: component)
+                        let plan = try await MLComputePlan.load(contentsOf: compiled, configuration: configuration)
+                        guard case let .program(program) = plan.modelStructure else {
+                            throw OwnedTemporalError.invalid("Expected an ML Program compute plan.")
+                        }
+                        for name in program.functions.keys.sorted() {
+                            if let function = program.functions[name] {
+                                try collectPlan(function.block, path: name, plan: plan, into: &row)
+                            }
+                        }
+                        guard !row.operations.isEmpty else {
+                            throw OwnedTemporalError.invalid("Compute plan returned no nonconstant operations.")
+                        }
+                    } catch {
+                        if error is CancellationError { throw error }
+                        row.error = error.localizedDescription
+                    }
+                    report.plans.append(row)
+                    try saveCheckpoint(report, to: url)
+                }
+            }
+            report.allPlansLoaded = report.plans.count == 4 && report.plans.allSatisfy { $0.error == nil }
+            report.completed = true
+            report.lastCheckpoint = "Plan inspection completed"
+        } catch { report.error = error.localizedDescription }
+        if let checkpoint { try? saveCheckpoint(report, to: checkpoint) }
+        return report
+    }
+
+    private func collectPlan(_ block: MLModelStructure.Program.Block, path: String,
+                             plan: MLComputePlan, into report: inout OwnedComponentPlan) throws {
+        func deviceName(_ device: MLComputeDevice) -> String {
+            switch device {
+            case .cpu(_): return "CPU"
+            case .gpu(_): return "GPU"
+            case .neuralEngine(_): return "Neural Engine"
+            @unknown default: return "Unknown"
+            }
+        }
+        for (index, operation) in block.operations.enumerated() {
+            try Task.checkCancellation()
+            let location = "\(path)/\(index)"
+            if operation.operatorName.split(separator: ".").last == "const" {
+                report.constantOperationsExcluded += 1
+            } else {
+                let usage = plan.deviceUsage(for: operation)
+                let preferred = usage.map { deviceName($0.preferred) }
+                let rawCost = plan.estimatedCost(of: operation).map { Double($0.weight) }
+                let cost = rawCost.flatMap { $0.isFinite && $0 >= 0 ? $0 : nil }
+                report.operations.append(OwnedPlanOperation(path: location, operation: operation.operatorName,
+                    outputs: operation.outputs.map { $0.name }, preferredDevice: preferred,
+                    supportedDevices: usage?.supported.map(deviceName) ?? [], estimatedRelativeCost: cost))
+                report.preferredCounts[preferred ?? "Unreported", default: 0] += 1
+                if let cost {
+                    report.operationsWithEstimatedCost += 1
+                    report.estimatedRelativeCostByPreferredDevice[preferred ?? "Unreported", default: 0] += cost
+                }
+            }
+            for (childIndex, child) in operation.blocks.enumerated() {
+                try collectPlan(child, path: "\(location)/block\(childIndex)", plan: plan, into: &report)
+            }
+        }
+    }
+
+    private func saveCheckpoint<T: Encodable>(_ report: T, to url: URL) throws {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+        encoder.dateEncodingStrategy = .iso8601
+        try encoder.encode(report).write(to: url, options: .atomic)
+    }
+
+    private func safeURL(_ root: URL, _ relative: String) throws -> URL {
+        let base = root.standardizedFileURL.resolvingSymlinksInPath()
+        let url = base.appendingPathComponent(relative).standardizedFileURL.resolvingSymlinksInPath()
+        guard !relative.hasPrefix("/"), url.path.hasPrefix(base.path + "/") else {
+            throw OwnedTemporalError.invalid("Invalid fixture path.")
+        }
+        return url
+    }
+
+    private func digest(_ data: Data) -> String {
+        SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
+    }
+
+    private func verifiedData(_ root: URL, _ relative: String, _ expected: String) throws -> Data {
+        let data = try Data(contentsOf: safeURL(root, relative), options: .mappedIfSafe)
+        guard digest(data) == expected else { throw OwnedTemporalError.invalid("Fixture hash mismatch: \(relative).") }
+        return data
+    }
+
+    private func readTensor(_ data: Data, shape: [Int]) throws -> OwnedTensor {
+        let count = shape.reduce(1, *)
+        guard data.count == count * 4 else { throw OwnedTemporalError.invalid("Truncated reference tensor.") }
+        let values = data.withUnsafeBytes { bytes in
+            (0..<count).map { Float(bitPattern: UInt32(littleEndian: bytes.loadUnaligned(fromByteOffset: $0 * 4, as: UInt32.self))) }
+        }
+        return try OwnedTensor(shape: shape, values: values)
+    }
+
+    private func pixelBuffer(_ bytes: Data) throws -> CVPixelBuffer {
+        guard bytes.count == 1024 * 1024 * 4 else { throw OwnedTemporalError.invalid("Invalid BGRA input size.") }
+        var optional: CVPixelBuffer?
+        let status = CVPixelBufferCreate(kCFAllocatorDefault, 1024, 1024, kCVPixelFormatType_32BGRA,
+                                        [kCVPixelBufferIOSurfacePropertiesKey: [:]] as CFDictionary, &optional)
+        guard status == kCVReturnSuccess, let buffer = optional else {
+            throw OwnedTemporalError.invalid("Pixel buffer allocation failed (\(status)).")
+        }
+        guard CVPixelBufferLockBaseAddress(buffer, []) == kCVReturnSuccess else {
+            throw OwnedTemporalError.invalid("Pixel buffer lock failed.")
+        }
+        defer { CVPixelBufferUnlockBaseAddress(buffer, []) }
+        guard let base = CVPixelBufferGetBaseAddress(buffer) else { throw OwnedTemporalError.invalid("No pixel buffer storage.") }
+        let stride = CVPixelBufferGetBytesPerRow(buffer)
+        bytes.withUnsafeBytes { source in
+            guard let address = source.baseAddress else { return }
+            for y in 0..<1024 {
+                base.advanced(by: y * stride).copyMemory(from: address.advanced(by: y * 1024 * 4), byteCount: 1024 * 4)
+            }
+        }
+        return buffer
+    }
+
+    private func compare(_ actual: [Float], _ expected: [Float]) -> OwnedTensorComparison {
+        var maximum = 0.0, dot = 0.0, normA = 0.0, normB = 0.0
+        for i in actual.indices {
+            let a = Double(actual[i]), b = Double(expected[i])
+            maximum = max(maximum, abs(a - b))
+            dot += a * b
+            normA += a * a
+            normB += b * b
+        }
+        let denominator = sqrt(normA) * sqrt(normB)
+        let cosine = denominator > 0 ? dot / denominator : (maximum == 0 ? 1 : 0)
+        return OwnedTensorComparison(maximumAbsoluteError: maximum, cosineSimilarity: cosine)
+    }
+
+    private func maskPNG(_ values: [Float]) throws -> Data {
+        var bytes = [UInt8](repeating: 0, count: 256 * 256 * 4)
+        for i in values.indices where values[i] > 0 {
+            bytes[i * 4] = 90
+            bytes[i * 4 + 1] = 160
+            bytes[i * 4 + 2] = 255
+            bytes[i * 4 + 3] = 255
+        }
+        guard let provider = CGDataProvider(data: Data(bytes) as CFData),
+              let image = CGImage(width: 256, height: 256, bitsPerComponent: 8, bitsPerPixel: 32,
+                  bytesPerRow: 256 * 4, space: CGColorSpaceCreateDeviceRGB(),
+                  bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue),
+                  provider: provider, decode: nil, shouldInterpolate: false, intent: .defaultIntent) else {
+            throw OwnedTemporalError.invalid("Could not draw the mask.")
+        }
+        let data = NSMutableData()
+        guard let destination = CGImageDestinationCreateWithData(data as CFMutableData, UTType.png.identifier as CFString, 1, nil) else {
+            throw OwnedTemporalError.invalid("Could not encode mask PNG.")
+        }
+        CGImageDestinationAddImage(destination, image, nil)
+        guard CGImageDestinationFinalize(destination) else { throw OwnedTemporalError.invalid("PNG encoding failed.") }
+        return data as Data
+    }
+
+    private func thermal() -> String {
+        switch ProcessInfo.processInfo.thermalState {
+        case .nominal: return "nominal"
+        case .fair: return "fair"
+        case .serious: return "serious"
+        case .critical: return "critical"
+        @unknown default: return "unknown"
+        }
+    }
+}
+
+@MainActor
+struct OwnedTemporalProbeView: View {
+    @State private var mode: OwnedDeviceMode = .cpu
+    @State private var fixtureChoice: OwnedFixtureChoice = .original
+    @State private var running = false
+    @State private var status = "Run the prepared 20-frame subject-tracking comparison."
+    @State private var preview: UIImage?
+    @State private var overlay: UIImage?
+    @State private var showMask = true
+    @State private var reportURL: URL?
+    @State private var planReportURL: URL?
+    @State private var job: Task<Void, Never>?
+    @State private var runner = OwnedTemporalProbeRunner()
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 16) {
+                Picker("Model", selection: $fixtureChoice) {
+                    ForEach(OwnedFixtureChoice.allCases) { Text($0.rawValue).tag($0) }
+                }.disabled(running)
+                Picker("Compute devices", selection: $mode) {
+                    ForEach(OwnedDeviceMode.allCases.filter {
+                        $0.supports(propagatorVariant: fixtureChoice.propagatorVariant, encoderVariant: fixtureChoice.encoderVariant)
+                    }) {
+                        Text($0.rawValue).tag($0)
+                    }
+                }.disabled(running)
+                if mode == .propagatorNeuralEngine {
+                    Text("Only the propagator changes to CPU + Neural Engine. The encoder and initialization keep CPU + GPU. Core ML chooses where operations run within those allowed devices.")
+                        .font(.footnote).foregroundStyle(.secondary)
+                }
+                Button("Run 20-frame comparison", action: start)
+                    .buttonStyle(.borderedProminent).disabled(running)
+                Button("Inspect GPU/NE plans", action: startPlans)
+                    .buttonStyle(.bordered).disabled(running || fixtureChoice != .original)
+                if running { ProgressView() }
+                Text(status).textSelection(.enabled).accessibilityAddTraits(.updatesFrequently)
+                if let preview {
+                    ZStack {
+                        Image(uiImage: preview).resizable().aspectRatio(contentMode: .fit)
+                        if showMask, let overlay {
+                            Image(uiImage: overlay).resizable().interpolation(.none).opacity(0.45)
+                        }
+                    }.aspectRatio(1, contentMode: .fit)
+                    Toggle("Show subject mask", isOn: $showMask)
+                }
+                if let reportURL { ShareLink("Share temporal report", item: reportURL) }
+                if let planReportURL { ShareLink("Share plan report", item: planReportURL) }
+                Text("Tracks one subject through 20 prepared frames, keeping a bounded memory. Each run starts fresh. This checks agreement with your Mac; it is not a playback-speed test.")
+                    .font(.footnote).foregroundStyle(.secondary)
+                Text("Plan inspection checks the encoder and propagator in both GPU and Neural Engine modes without predicting frames. Device assignments and costs are estimates.")
+                    .font(.footnote).foregroundStyle(.secondary)
+            }.padding()
+        }
+        .navigationTitle("Temporal comparison")
+        .onAppear {
+            guard !running,
+                  let documents = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
+            let previousPlan = documents.appendingPathComponent("temporal-last-plan.json")
+            if planReportURL == nil && FileManager.default.fileExists(atPath: previousPlan.path) {
+                planReportURL = previousPlan
+            }
+            let previous = documents.appendingPathComponent("temporal-last-run.json")
+            if reportURL == nil && FileManager.default.fileExists(atPath: previous.path) {
+                reportURL = previous
+                status = "The previous run's report is available, including its last saved step if interrupted."
+            }
+        }
+        .onChange(of: mode) { _, _ in
+            reportURL = nil
+            preview = nil
+            overlay = nil
+            status = "Run the comparison in this mode."
+        }
+        .onChange(of: fixtureChoice) { _, _ in
+            if !mode.supports(propagatorVariant: fixtureChoice.propagatorVariant,
+                              encoderVariant: fixtureChoice.encoderVariant) { mode = .gpu }
+            reportURL = nil
+            planReportURL = nil
+            preview = nil
+            overlay = nil
+            status = "Run the comparison with \(fixtureChoice.rawValue)."
+        }
+        .onDisappear { job?.cancel() }
+    }
+
+    private func startPlans() {
+        #if targetEnvironment(simulator)
+        status = "Inspect the plans on your physical iPhone."
+        return
+        #else
+        guard !running, let root = Bundle.main.resourceURL?.appendingPathComponent("DeviceValidationData/baseline"),
+              let documents = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
+        running = true
+        planReportURL = nil
+        reportURL = nil
+        preview = nil
+        overlay = nil
+        let hardware = hardwareIdentifier()
+        job = Task {
+            defer { running = false }
+            let report = await runner.inspectPlans(root: root, hardware: hardware) { message in
+                await MainActor.run {
+                    guard !Task.isCancelled else { return }
+                    status = message
+                }
+            }
+            do {
+                let encoder = JSONEncoder()
+                encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+                encoder.dateEncodingStrategy = .iso8601
+                let url = documents.appendingPathComponent("temporal-plan-\(UUID().uuidString).json")
+                try encoder.encode(report).write(to: url, options: .atomic)
+                planReportURL = url
+                status = report.allPlansLoaded ? "All four plans loaded. Share the plan report."
+                    : "Plan inspection incomplete. Share the plan report. \(report.error ?? "See component errors.")"
+            } catch {
+                planReportURL = documents.appendingPathComponent("temporal-last-plan.json")
+                status = "Could not save the final plan report: \(error.localizedDescription)"
+            }
+        }
+        #endif
+    }
+
+    private func start() {
+        #if targetEnvironment(simulator)
+        status = "Run the temporal comparison on your physical iPhone."
+        return
+        #else
+        guard !running, let root = Bundle.main.resourceURL?.appendingPathComponent("DeviceValidationData/\(fixtureChoice.folder)") else { return }
+        guard FileManager.default.fileExists(atPath: root.appendingPathComponent("fixture.json").path) else {
+            status = "The device fixture is missing. Run the Mac preparation command, then rebuild."
+            return
+        }
+        running = true
+        reportURL = nil
+        preview = nil
+        overlay = nil
+        let selectedMode = mode
+        let selectedVariant = fixtureChoice.propagatorVariant
+        let selectedEncoderVariant = fixtureChoice.encoderVariant
+        let hardware = hardwareIdentifier()
+        job = Task {
+            defer { running = false }
+            let report = await runner.run(root: root, mode: selectedMode, hardware: hardware,
+                                          expectedPropagatorVariant: selectedVariant,
+                                          expectedEncoderVariant: selectedEncoderVariant) { update in
+                await MainActor.run {
+                    guard !Task.isCancelled else { return }
+                    status = update.message
+                    if let data = update.previewPNG { preview = UIImage(data: data) }
+                    if let data = update.overlayPNG { overlay = UIImage(data: data) }
+                }
+            }
+            guard !Task.isCancelled else { return }
+            do {
+                let encoder = JSONEncoder()
+                encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+                encoder.dateEncodingStrategy = .iso8601
+                let directory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask,
+                                                            appropriateFor: nil, create: true)
+                let url = directory.appendingPathComponent("temporal-\(UUID().uuidString).json")
+                try encoder.encode(report).write(to: url, options: .atomic)
+                reportURL = url
+                status = report.passed ? "All 20 frames passed. Share the temporal report."
+                    : "Comparison stopped: \(report.error ?? "unknown error"). Share the temporal report."
+            } catch { status = "Could not save the report: \(error.localizedDescription)" }
+        }
+        #endif
+    }
+
+    private func hardwareIdentifier() -> String {
+        var size: size_t = 0
+        guard sysctlbyname("hw.machine", nil, &size, nil, 0) == 0, size > 0 else { return "Unknown" }
+        var bytes = [CChar](repeating: 0, count: size)
+        guard sysctlbyname("hw.machine", &bytes, &size, nil, 0) == 0 else { return "Unknown" }
+        return String(cString: bytes)
+    }
+}

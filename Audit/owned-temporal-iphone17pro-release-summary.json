@@ -1,0 +1,43 @@
+{
+  "deviceNameFromUser": "iPhone 17 Pro",
+  "hardware": "iPhone18,1",
+  "operatingSystem": "Version 27.0 (Build 24A435)",
+  "scope": "Same dog-09 fixture as iPhone 14 Pro. Hardware and OS both differ, so cross-device differences are not a hardware-only effect. DEBUG disabled; debugger/Metal validation settings not recorded. Medians exclude cold frame 0; fixed-fixture timings, not sustained playback FPS or measured hardware utilization.",
+  "fixtureSHA256": "80bfbde3da5d8d650a68d60a1f61e2da0050abbe576e0bc848da46d640298455",
+  "modes": [
+    {
+      "mode": "CPU + Neural Engine",
+      "report": "owned-temporal-fanout-iphone17pro-release-ne-report.json",
+      "sourceAttachment": "152211c4-10a2-4abe-915d-026d99a645f0.json",
+      "sourceAttachmentSHA256": "29793f586a1a1ae7c1cffd2c162962b3a3188b0b7ecad10a45891c244af51e95",
+      "passedFrames": 20,
+      "minimumMaskIoU": 0.9964488636363636,
+      "minimumPointerCosine": 0.9986669150742543,
+      "minimumMemoryCosine": 0.992680252335507,
+      "medianModelMilliseconds": 426.2077083258191,
+      "medianSessionMilliseconds": 439.4709166663233,
+      "medianNonModelSessionMilliseconds": 12.707291680271737,
+      "medianModelsByComponent": {
+        "ImageEncoder": 81.46495833352674,
+        "Propagator": 344.9769166618353
+      }
+    },
+    {
+      "mode": "CPU + GPU",
+      "report": "owned-temporal-fanout-iphone17pro-release-gpu-report.json",
+      "sourceAttachment": "732e4415-7e52-4122-9865-7a07fe36fe5a.json",
+      "sourceAttachmentSHA256": "59683c49f50cd3b393f06fefdc80c2e7e9b5c53467ebfd0a0335e8af64b6888f",
+      "passedFrames": 20,
+      "minimumMaskIoU": 0.9968039772727273,
+      "minimumPointerCosine": 0.9989761542919103,
+      "minimumMemoryCosine": 0.9959750418467518,
+      "medianModelMilliseconds": 88.82187498966232,
+      "medianSessionMilliseconds": 100.08774999005254,
+      "medianNonModelSessionMilliseconds": 11.200375010957941,
+      "medianModelsByComponent": {
+        "ImageEncoder": 22.037375005311333,
+        "Propagator": 66.75029166217428
+      }
+    }
+  ]
+}

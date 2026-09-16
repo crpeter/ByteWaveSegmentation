@@ -1,0 +1,39 @@
+{
+  "source": "User-pasted encoder-plan-01 summary and console, 2026-09-15",
+  "scope": "Planned assignments, not observed runtime execution or timing shares",
+  "computeUnits": "CPU_AND_NE",
+  "coremltoolsVersion": "9.0",
+  "macOS": "26.5.2",
+  "machine": "arm64",
+  "sourceManifestSHA256": "8e3855c53deda132d4c378d3a93343ac3bc6a678b1a95a8cf5bb7c6bd99e61c1",
+  "sourceDiagnosticReportSHA256": "cd852a6863c5fefdd0fe431385e11d2d5369943ec086fe86f243f894e74e0b72",
+  "existing": {
+    "nonconstantOperationCount": 450,
+    "preferredCounts": {
+      "MLCPUComputeDevice": 367,
+      "MLNeuralEngineComputeDevice": 83
+    },
+    "supportedCounts": {
+      "MLCPUComputeDevice": 450,
+      "MLNeuralEngineComputeDevice": 99
+    },
+    "convolutionPreferredCounts": {
+      "MLCPUComputeDevice": 49,
+      "MLNeuralEngineComputeDevice": 83
+    },
+    "allOtherOperationsPreferCPU": true
+  },
+  "fp32": {
+    "nonconstantOperationCount": 277,
+    "preferredCounts": {
+      "MLCPUComputeDevice": 277
+    },
+    "supportedCounts": {
+      "MLCPUComputeDevice": 277
+    },
+    "convolutionPreferredCounts": {
+      "MLCPUComputeDevice": 132
+    }
+  },
+  "interpretation": "FP32 pass is a CPU-only plan, not an NE fix. Existing mixed encoder plans 83 convolutions on NE and fails with NE allowed. Next sample intermediate values and verify whether exposing them preserves the failure and planned sampled assignments."
+}

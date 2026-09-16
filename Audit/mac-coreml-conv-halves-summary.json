@@ -1,0 +1,1405 @@
+{
+  "scope": "Complementary encoder convolution precision controls on the same 20-frame fixture; CPU_ONLY. No device or performance claim.",
+  "readyForDeviceValidation": false,
+  "controls": [
+    {
+      "contract": "bytewave.edgetam-temporal-owned.v2",
+      "readyForDeviceValidation": false,
+      "diagnosticComplete": true,
+      "scope": "Each Core ML component is compared to PyTorch with the same actual inputs. Encoder output source is explicit below; masks and stored state come from Core ML. End-to-end comparison uses separate original PyTorch history. No parity gates are changed.",
+      "encoderOutputSource": "coreml-fp16-conv-control",
+      "torchThreads": {
+        "intraOp": 1,
+        "interOp": 1
+      },
+      "pointNormalizedTopLeft": [
+        0.4912,
+        0.4706
+      ],
+      "coremlComputeUnits": "CPU_ONLY",
+      "precisionPolicy": "fp16-with-fp32-attention-and-iou.v1",
+      "modelsManifestSHA256": "f0684ef5926971f2c3d8c84594267c2948e37d9156e082e3bba6f5114c374ba4",
+      "encoderOverride": {
+        "computePrecision": "fp32-with-selective-fp16-conv.v1",
+        "tensorOutputs": "float32",
+        "files": {
+          "Data/com.apple.CoreML/model.mlmodel": "a62ae6013d016b5f1c4c74a9c3c15a18c9db24195f3b572f53cc3a0e8f04a9bd",
+          "Data/com.apple.CoreML/weights/weight.bin": "268cc18f56d41ccafd3d4c1911b0bc6026179c366d15c6fb9b22f12e840ac7c4",
+          "Manifest.json": "84c3df1ede754e2a7d555a7ff18c9c3f0fb9802a511f3ab5ea513bda77671f15"
+        },
+        "fp32ConvolutionRangeStartInclusiveEndExclusive": [
+          66,
+          132
+        ],
+        "expectedConvolutionCount": 132,
+        "convolutionsSelectedForFP16TransformCount": 66,
+        "convolutionsRetainedInFP32Count": 66
+      },
+      "allRequestedFramesPassedComparison": true,
+      "sourceAttachment": "Pasted markdown(20260915-134019).md",
+      "sourceSHA256": "4ea219b8d29d13eef5e6bdb662ebdcf2b7d15b5b8753154bc715c4f91197d9a2",
+      "frames": [
+        {
+          "index": 0,
+          "ptsNumerator": 0,
+          "ptsDenominator": 1,
+          "imageSHA256": "df4fd26c6e7c6cce4cd9e6c04ace316788f125eb4f953f0aad96882e7b474dd9",
+          "passed": true,
+          "maskIoU": 0.9995990376904571,
+          "pointerCosine": 0.9998374137739071,
+          "memoryCosine": 0.9978276095207275,
+          "encoderRawFeatureCosine": 0.9996187029188355,
+          "state": {
+            "acceptedFrames": 1,
+            "spatialEntries": 1,
+            "pointerEntries": 1
+          }
+        },
+        {
+          "index": 1,
+          "ptsNumerator": 1,
+          "ptsDenominator": 30,
+          "imageSHA256": "8c59ab89ffc2586f78ef4ef021e62e9747201bc5ef42e32d8f6efa7854618b3f",
+          "passed": true,
+          "maskIoU": 0.9992383853769993,
+          "pointerCosine": 0.9996533182640439,
+          "memoryCosine": 0.9977894604499047,
+          "encoderRawFeatureCosine": 0.999617916078073,
+          "state": {
+            "acceptedFrames": 2,
+            "spatialEntries": 2,
+            "pointerEntries": 2
+          }
+        },
+        {
+          "index": 2,
+          "ptsNumerator": 1,
+          "ptsDenominator": 15,
+          "imageSHA256": "105621e87fbb3ffbd493d3256d4e672d453603a91bf2db14bfc36226a013f15f",
+          "passed": true,
+          "maskIoU": 0.9992570579494799,
+          "pointerCosine": 0.9990073315180692,
+          "memoryCosine": 0.998072260559149,
+          "encoderRawFeatureCosine": 0.9996036237802223,
+          "state": {
+            "acceptedFrames": 3,
+            "spatialEntries": 3,
+            "pointerEntries": 3
+          }
+        },
+        {
+          "index": 3,
+          "ptsNumerator": 1,
+          "ptsDenominator": 10,
+          "imageSHA256": "a5ff112a614abf780a0ee0a275e0890599673f0cf03a84d4e7d0a65abb4a8767",
+          "passed": true,
+          "maskIoU": 0.9996384671005062,
+          "pointerCosine": 0.9992288990797558,
+          "memoryCosine": 0.9980514587485136,
+          "encoderRawFeatureCosine": 0.9995934762218934,
+          "state": {
+            "acceptedFrames": 4,
+            "spatialEntries": 4,
+            "pointerEntries": 4
+          }
+        },
+        {
+          "index": 4,
+          "ptsNumerator": 2,
+          "ptsDenominator": 15,
+          "imageSHA256": "62f93ffbadcdcf628dcc60349c18fa0a12df52ccbf0658b2f20312d3d1af018e",
+          "passed": true,
+          "maskIoU": 0.998229461756374,
+          "pointerCosine": 0.9984204806192277,
+          "memoryCosine": 0.9987666445998782,
+          "encoderRawFeatureCosine": 0.999621509260071,
+          "state": {
+            "acceptedFrames": 5,
+            "spatialEntries": 5,
+            "pointerEntries": 5
+          }
+        },
+        {
+          "index": 5,
+          "ptsNumerator": 1,
+          "ptsDenominator": 6,
+          "imageSHA256": "f6a40decba22d155c87c3c1266d596fd2bd6196f17b8aa8a8e331ce6f5cd4e2d",
+          "passed": true,
+          "maskIoU": 0.9985611510791367,
+          "pointerCosine": 0.9995560605759132,
+          "memoryCosine": 0.9986319721014645,
+          "encoderRawFeatureCosine": 0.9996201401106344,
+          "state": {
+            "acceptedFrames": 6,
+            "spatialEntries": 6,
+            "pointerEntries": 6
+          }
+        },
+        {
+          "index": 6,
+          "ptsNumerator": 1,
+          "ptsDenominator": 5,
+          "imageSHA256": "2ac9074fac47bc62545f8737795e6a64f267b59a0ad55d10b1a85150bcbaa59f",
+          "passed": true,
+          "maskIoU": 0.9988884772137829,
+          "pointerCosine": 0.9998973955149658,
+          "memoryCosine": 0.9972323906175682,
+          "encoderRawFeatureCosine": 0.9996206389456485,
+          "state": {
+            "acceptedFrames": 7,
+            "spatialEntries": 7,
+            "pointerEntries": 7
+          }
+        },
+        {
+          "index": 7,
+          "ptsNumerator": 7,
+          "ptsDenominator": 30,
+          "imageSHA256": "bdc67ced61153a28b0569c2781bdb6aff68dd07dd278389e9ec387fe11e9dc9a",
+          "passed": true,
+          "maskIoU": 0.9984888553078958,
+          "pointerCosine": 0.9996930207571283,
+          "memoryCosine": 0.9983337805945637,
+          "encoderRawFeatureCosine": 0.9996107754126048,
+          "state": {
+            "acceptedFrames": 8,
+            "spatialEntries": 7,
+            "pointerEntries": 8
+          }
+        },
+        {
+          "index": 8,
+          "ptsNumerator": 4,
+          "ptsDenominator": 15,
+          "imageSHA256": "74ab3b24632b67dd4d82592166b5c02da84d02aa8a00d0aeff6724b6e98d9816",
+          "passed": true,
+          "maskIoU": 0.9988627748294162,
+          "pointerCosine": 0.9997049477302655,
+          "memoryCosine": 0.9980904950052839,
+          "encoderRawFeatureCosine": 0.9996085696275826,
+          "state": {
+            "acceptedFrames": 9,
+            "spatialEntries": 7,
+            "pointerEntries": 9
+          }
+        },
+        {
+          "index": 9,
+          "ptsNumerator": 3,
+          "ptsDenominator": 10,
+          "imageSHA256": "0a7e27e0429e46facf8d23eb41c4ab25e8cebf9b579a9f5c679125bb06cdc782",
+          "passed": true,
+          "maskIoU": 0.9981082103670071,
+          "pointerCosine": 0.9997342424044126,
+          "memoryCosine": 0.9981525532117554,
+          "encoderRawFeatureCosine": 0.9996076029609318,
+          "state": {
+            "acceptedFrames": 10,
+            "spatialEntries": 7,
+            "pointerEntries": 10
+          }
+        },
+        {
+          "index": 10,
+          "ptsNumerator": 1,
+          "ptsDenominator": 3,
+          "imageSHA256": "e4257f051a23bb1524c2a20ae52414fa2791055db7e7a7dbb167f3f38af38eda",
+          "passed": true,
+          "maskIoU": 0.9977818853974122,
+          "pointerCosine": 0.9997003339495663,
+          "memoryCosine": 0.9984561008280749,
+          "encoderRawFeatureCosine": 0.9995993382403578,
+          "state": {
+            "acceptedFrames": 11,
+            "spatialEntries": 7,
+            "pointerEntries": 11
+          }
+        },
+        {
+          "index": 11,
+          "ptsNumerator": 11,
+          "ptsDenominator": 30,
+          "imageSHA256": "399ed04cfbb7808f567feb7165eb91011183ef33b2974d8b0bda2d917c2561d5",
+          "passed": true,
+          "maskIoU": 0.9982212735681252,
+          "pointerCosine": 0.9996043320405276,
+          "memoryCosine": 0.9983417414599203,
+          "encoderRawFeatureCosine": 0.9996079400013652,
+          "state": {
+            "acceptedFrames": 12,
+            "spatialEntries": 7,
+            "pointerEntries": 12
+          }
+        },
+        {
+          "index": 12,
+          "ptsNumerator": 2,
+          "ptsDenominator": 5,
+          "imageSHA256": "ff7db0909555b0146117f02782d1239dee34abe6bb449a74ed55810aecd501b9",
+          "passed": true,
+          "maskIoU": 0.9986445272788885,
+          "pointerCosine": 0.9998371922491919,
+          "memoryCosine": 0.9986079807969326,
+          "encoderRawFeatureCosine": 0.9996128240549937,
+          "state": {
+            "acceptedFrames": 13,
+            "spatialEntries": 7,
+            "pointerEntries": 13
+          }
+        },
+        {
+          "index": 13,
+          "ptsNumerator": 13,
+          "ptsDenominator": 30,
+          "imageSHA256": "f38ef5b23bc0ab5ee6d09f4713dcaaa89cebee59b82ec68ce9f7a55f38a5fbe1",
+          "passed": true,
+          "maskIoU": 0.9993550467591099,
+          "pointerCosine": 0.9997466668078304,
+          "memoryCosine": 0.9982395121735937,
+          "encoderRawFeatureCosine": 0.9995914742074496,
+          "state": {
+            "acceptedFrames": 14,
+            "spatialEntries": 7,
+            "pointerEntries": 14
+          }
+        },
+        {
+          "index": 14,
+          "ptsNumerator": 7,
+          "ptsDenominator": 15,
+          "imageSHA256": "19ac8be183ee9a5566c9bad4c3b46cc2fde023da81f6ee81650fd7e3b87a54b1",
+          "passed": true,
+          "maskIoU": 0.9984671980380135,
+          "pointerCosine": 0.9998692437962702,
+          "memoryCosine": 0.997953504262114,
+          "encoderRawFeatureCosine": 0.9995944826216109,
+          "state": {
+            "acceptedFrames": 15,
+            "spatialEntries": 7,
+            "pointerEntries": 15
+          }
+        },
+        {
+          "index": 15,
+          "ptsNumerator": 1,
+          "ptsDenominator": 2,
+          "imageSHA256": "a1f6f364fc6b52333e04ce09c28846a3605aa2a56ba3ff3614dcdd52533b987d",
+          "passed": true,
+          "maskIoU": 0.9980287243030133,
+          "pointerCosine": 0.9997777487523745,
+          "memoryCosine": 0.9988634680995565,
+          "encoderRawFeatureCosine": 0.9995923825790091,
+          "state": {
+            "acceptedFrames": 16,
+            "spatialEntries": 7,
+            "pointerEntries": 16
+          }
+        },
+        {
+          "index": 16,
+          "ptsNumerator": 8,
+          "ptsDenominator": 15,
+          "imageSHA256": "9769759d13e3292cd9f6c52fda09ac76903c406362fe801c399c4fa7a1b05a53",
+          "passed": true,
+          "maskIoU": 0.9997340425531915,
+          "pointerCosine": 0.9997155807541841,
+          "memoryCosine": 0.9977385165408634,
+          "encoderRawFeatureCosine": 0.9995764342963191,
+          "state": {
+            "acceptedFrames": 17,
+            "spatialEntries": 7,
+            "pointerEntries": 16
+          }
+        },
+        {
+          "index": 17,
+          "ptsNumerator": 17,
+          "ptsDenominator": 30,
+          "imageSHA256": "547d222bd5a2f255779e7afc5269080924c0b7d2475607e930cc59342c0f2a59",
+          "passed": true,
+          "maskIoU": 0.9994863893168978,
+          "pointerCosine": 0.9996840755804414,
+          "memoryCosine": 0.9986561775793894,
+          "encoderRawFeatureCosine": 0.9996113292195514,
+          "state": {
+            "acceptedFrames": 18,
+            "spatialEntries": 7,
+            "pointerEntries": 16
+          }
+        },
+        {
+          "index": 18,
+          "ptsNumerator": 3,
+          "ptsDenominator": 5,
+          "imageSHA256": "a29dd4d4ec155aef133fe670ff73065aa2558101d980f187e24752dd0976bab9",
+          "passed": true,
+          "maskIoU": 0.9997473471450228,
+          "pointerCosine": 0.9997788393174344,
+          "memoryCosine": 0.9981622385300218,
+          "encoderRawFeatureCosine": 0.9996012160504505,
+          "state": {
+            "acceptedFrames": 19,
+            "spatialEntries": 7,
+            "pointerEntries": 16
+          }
+        },
+        {
+          "index": 19,
+          "ptsNumerator": 19,
+          "ptsDenominator": 30,
+          "imageSHA256": "05ef5ea441e42bb439f0a87c950f827d4b3cf5e2e6ddcee5125c2462295137a6",
+          "passed": true,
+          "maskIoU": 0.9979959919839679,
+          "pointerCosine": 0.9995463877599449,
+          "memoryCosine": 0.9954640479991255,
+          "encoderRawFeatureCosine": 0.9995991841642161,
+          "state": {
+            "acceptedFrames": 20,
+            "spatialEntries": 7,
+            "pointerEntries": 16
+          }
+        }
+      ],
+      "minimumMetrics": {
+        "maskIoU": 0.9977818853974122,
+        "pointerCosine": 0.9984204806192277,
+        "memoryCosine": 0.9954640479991255,
+        "encoderRawFeatureCosine": 0.9995764342963191
+      },
+      "failedFrameIndices": []
+    },
+    {
+      "contract": "bytewave.edgetam-temporal-owned.v2",
+      "readyForDeviceValidation": false,
+      "diagnosticComplete": true,
+      "scope": "Each Core ML component is compared to PyTorch with the same actual inputs. Encoder output source is explicit below; masks and stored state come from Core ML. End-to-end comparison uses separate original PyTorch history. No parity gates are changed.",
+      "encoderOutputSource": "coreml-fp16-conv-control",
+      "torchThreads": {
+        "intraOp": 1,
+        "interOp": 1
+      },
+      "pointNormalizedTopLeft": [
+        0.4912,
+        0.4706
+      ],
+      "coremlComputeUnits": "CPU_ONLY",
+      "precisionPolicy": "fp16-with-fp32-attention-and-iou.v1",
+      "modelsManifestSHA256": "f0684ef5926971f2c3d8c84594267c2948e37d9156e082e3bba6f5114c374ba4",
+      "encoderOverride": {
+        "computePrecision": "fp32-with-selective-fp16-conv.v1",
+        "tensorOutputs": "float32",
+        "files": {
+          "Data/com.apple.CoreML/model.mlmodel": "49cefc9be427feec092251ed6f8145f2b55e61f90cb6d85b6cffc826a1f6823f",
+          "Data/com.apple.CoreML/weights/weight.bin": "1ea8278b07aab19b395ba5c58bda1a628ac779a40a5b59a12e491c1bd39a69a8",
+          "Manifest.json": "b111579df02d1230c281f94c54e56b774a0032906d1ababe6d1b862856112e6e"
+        },
+        "fp32ConvolutionRangeStartInclusiveEndExclusive": [
+          0,
+          66
+        ],
+        "expectedConvolutionCount": 132,
+        "convolutionsSelectedForFP16TransformCount": 66,
+        "convolutionsRetainedInFP32Count": 66
+      },
+      "allRequestedFramesPassedComparison": false,
+      "sourceAttachment": "Pasted markdown (2)(20260915-134024).md",
+      "sourceSHA256": "411fa217c48ecf39738ed39843bed8c92b0e944b1ee23b6cdc41ccbdb42efa74",
+      "frames": [
+        {
+          "index": 0,
+          "ptsNumerator": 0,
+          "ptsDenominator": 1,
+          "imageSHA256": "df4fd26c6e7c6cce4cd9e6c04ace316788f125eb4f953f0aad96882e7b474dd9",
+          "passed": true,
+          "maskIoU": 0.9987975951903808,
+          "pointerCosine": 0.9997094952074491,
+          "memoryCosine": 0.9980234398504251,
+          "encoderRawFeatureCosine": 0.9988952805546306,
+          "state": {
+            "acceptedFrames": 1,
+            "spatialEntries": 1,
+            "pointerEntries": 1
+          }
+        },
+        {
+          "index": 1,
+          "ptsNumerator": 1,
+          "ptsDenominator": 30,
+          "imageSHA256": "8c59ab89ffc2586f78ef4ef021e62e9747201bc5ef42e32d8f6efa7854618b3f",
+          "passed": true,
+          "maskIoU": 0.9984773505900266,
+          "pointerCosine": 0.9973519492504137,
+          "memoryCosine": 0.9927384063731655,
+          "encoderRawFeatureCosine": 0.998885487532981,
+          "state": {
+            "acceptedFrames": 2,
+            "spatialEntries": 2,
+            "pointerEntries": 2
+          }
+        },
+        {
+          "index": 2,
+          "ptsNumerator": 1,
+          "ptsDenominator": 15,
+          "imageSHA256": "105621e87fbb3ffbd493d3256d4e672d453603a91bf2db14bfc36226a013f15f",
+          "passed": false,
+          "maskIoU": 0.9981440237564959,
+          "pointerCosine": 0.9880370765730216,
+          "memoryCosine": 0.9952689391721821,
+          "encoderRawFeatureCosine": 0.9988903352295817,
+          "state": {
+            "acceptedFrames": 3,
+            "spatialEntries": 3,
+            "pointerEntries": 3
+          }
+        },
+        {
+          "index": 3,
+          "ptsNumerator": 1,
+          "ptsDenominator": 10,
+          "imageSHA256": "a5ff112a614abf780a0ee0a275e0890599673f0cf03a84d4e7d0a65abb4a8767",
+          "passed": false,
+          "maskIoU": 0.9985538684020245,
+          "pointerCosine": 0.985782835150971,
+          "memoryCosine": 0.9966264547453231,
+          "encoderRawFeatureCosine": 0.9988807336271626,
+          "state": {
+            "acceptedFrames": 4,
+            "spatialEntries": 4,
+            "pointerEntries": 4
+          }
+        },
+        {
+          "index": 4,
+          "ptsNumerator": 2,
+          "ptsDenominator": 15,
+          "imageSHA256": "62f93ffbadcdcf628dcc60349c18fa0a12df52ccbf0658b2f20312d3d1af018e",
+          "passed": false,
+          "maskIoU": 0.9968130311614731,
+          "pointerCosine": 0.9856971797985407,
+          "memoryCosine": 0.9977526447841475,
+          "encoderRawFeatureCosine": 0.9988979725068143,
+          "state": {
+            "acceptedFrames": 5,
+            "spatialEntries": 5,
+            "pointerEntries": 5
+          }
+        },
+        {
+          "index": 5,
+          "ptsNumerator": 1,
+          "ptsDenominator": 6,
+          "imageSHA256": "f6a40decba22d155c87c3c1266d596fd2bd6196f17b8aa8a8e331ce6f5cd4e2d",
+          "passed": true,
+          "maskIoU": 0.9985611510791367,
+          "pointerCosine": 0.9968470339328827,
+          "memoryCosine": 0.9981270956462903,
+          "encoderRawFeatureCosine": 0.9989168445393828,
+          "state": {
+            "acceptedFrames": 6,
+            "spatialEntries": 6,
+            "pointerEntries": 6
+          }
+        },
+        {
+          "index": 6,
+          "ptsNumerator": 1,
+          "ptsDenominator": 5,
+          "imageSHA256": "2ac9074fac47bc62545f8737795e6a64f267b59a0ad55d10b1a85150bcbaa59f",
+          "passed": true,
+          "maskIoU": 0.9988884772137829,
+          "pointerCosine": 0.9991839555198627,
+          "memoryCosine": 0.9957315298081556,
+          "encoderRawFeatureCosine": 0.9988871478119138,
+          "state": {
+            "acceptedFrames": 7,
+            "spatialEntries": 7,
+            "pointerEntries": 7
+          }
+        },
+        {
+          "index": 7,
+          "ptsNumerator": 7,
+          "ptsDenominator": 30,
+          "imageSHA256": "bdc67ced61153a28b0569c2781bdb6aff68dd07dd278389e9ec387fe11e9dc9a",
+          "passed": true,
+          "maskIoU": 0.9984888553078958,
+          "pointerCosine": 0.9987614467308513,
+          "memoryCosine": 0.9979150842550722,
+          "encoderRawFeatureCosine": 0.9988940520499154,
+          "state": {
+            "acceptedFrames": 8,
+            "spatialEntries": 7,
+            "pointerEntries": 8
+          }
+        },
+        {
+          "index": 8,
+          "ptsNumerator": 4,
+          "ptsDenominator": 15,
+          "imageSHA256": "74ab3b24632b67dd4d82592166b5c02da84d02aa8a00d0aeff6724b6e98d9816",
+          "passed": true,
+          "maskIoU": 0.9992421371731717,
+          "pointerCosine": 0.9981491996619115,
+          "memoryCosine": 0.9980059602962872,
+          "encoderRawFeatureCosine": 0.9988726705755306,
+          "state": {
+            "acceptedFrames": 9,
+            "spatialEntries": 7,
+            "pointerEntries": 9
+          }
+        },
+        {
+          "index": 9,
+          "ptsNumerator": 3,
+          "ptsDenominator": 10,
+          "imageSHA256": "0a7e27e0429e46facf8d23eb41c4ab25e8cebf9b579a9f5c679125bb06cdc782",
+          "passed": true,
+          "maskIoU": 0.9984859954579863,
+          "pointerCosine": 0.9993024236294611,
+          "memoryCosine": 0.9982016488632649,
+          "encoderRawFeatureCosine": 0.998887382009969,
+          "state": {
+            "acceptedFrames": 10,
+            "spatialEntries": 7,
+            "pointerEntries": 10
+          }
+        },
+        {
+          "index": 10,
+          "ptsNumerator": 1,
+          "ptsDenominator": 3,
+          "imageSHA256": "e4257f051a23bb1524c2a20ae52414fa2791055db7e7a7dbb167f3f38af38eda",
+          "passed": true,
+          "maskIoU": 0.9996299037749815,
+          "pointerCosine": 0.9989970693781691,
+          "memoryCosine": 0.9977276053063484,
+          "encoderRawFeatureCosine": 0.9988795354469344,
+          "state": {
+            "acceptedFrames": 11,
+            "spatialEntries": 7,
+            "pointerEntries": 11
+          }
+        },
+        {
+          "index": 11,
+          "ptsNumerator": 11,
+          "ptsDenominator": 30,
+          "imageSHA256": "399ed04cfbb7808f567feb7165eb91011183ef33b2974d8b0bda2d917c2561d5",
+          "passed": true,
+          "maskIoU": 0.9982212735681252,
+          "pointerCosine": 0.9992872147478392,
+          "memoryCosine": 0.9978273701578042,
+          "encoderRawFeatureCosine": 0.9988909463373584,
+          "state": {
+            "acceptedFrames": 12,
+            "spatialEntries": 7,
+            "pointerEntries": 12
+          }
+        },
+        {
+          "index": 12,
+          "ptsNumerator": 2,
+          "ptsDenominator": 5,
+          "imageSHA256": "ff7db0909555b0146117f02782d1239dee34abe6bb449a74ed55810aecd501b9",
+          "passed": true,
+          "maskIoU": 0.9989827060020345,
+          "pointerCosine": 0.9986824991405692,
+          "memoryCosine": 0.9982696510545703,
+          "encoderRawFeatureCosine": 0.998881870038072,
+          "state": {
+            "acceptedFrames": 13,
+            "spatialEntries": 7,
+            "pointerEntries": 13
+          }
+        },
+        {
+          "index": 13,
+          "ptsNumerator": 13,
+          "ptsDenominator": 30,
+          "imageSHA256": "f38ef5b23bc0ab5ee6d09f4713dcaaa89cebee59b82ec68ce9f7a55f38a5fbe1",
+          "passed": true,
+          "maskIoU": 0.9993554624556881,
+          "pointerCosine": 0.9990983496170467,
+          "memoryCosine": 0.998511813322649,
+          "encoderRawFeatureCosine": 0.9988840731708475,
+          "state": {
+            "acceptedFrames": 14,
+            "spatialEntries": 7,
+            "pointerEntries": 14
+          }
+        },
+        {
+          "index": 14,
+          "ptsNumerator": 7,
+          "ptsDenominator": 15,
+          "imageSHA256": "19ac8be183ee9a5566c9bad4c3b46cc2fde023da81f6ee81650fd7e3b87a54b1",
+          "passed": true,
+          "maskIoU": 0.9993866911990187,
+          "pointerCosine": 0.9995763980423567,
+          "memoryCosine": 0.9986800237083082,
+          "encoderRawFeatureCosine": 0.9988858586713655,
+          "state": {
+            "acceptedFrames": 15,
+            "spatialEntries": 7,
+            "pointerEntries": 15
+          }
+        },
+        {
+          "index": 15,
+          "ptsNumerator": 1,
+          "ptsDenominator": 2,
+          "imageSHA256": "a1f6f364fc6b52333e04ce09c28846a3605aa2a56ba3ff3614dcdd52533b987d",
+          "passed": true,
+          "maskIoU": 0.9983098591549295,
+          "pointerCosine": 0.9994166094058844,
+          "memoryCosine": 0.9987480531394624,
+          "encoderRawFeatureCosine": 0.9988499990978779,
+          "state": {
+            "acceptedFrames": 16,
+            "spatialEntries": 7,
+            "pointerEntries": 16
+          }
+        },
+        {
+          "index": 16,
+          "ptsNumerator": 8,
+          "ptsDenominator": 15,
+          "imageSHA256": "9769759d13e3292cd9f6c52fda09ac76903c406362fe801c399c4fa7a1b05a53",
+          "passed": true,
+          "maskIoU": 0.9989364530709918,
+          "pointerCosine": 0.9995044409157081,
+          "memoryCosine": 0.9982510970974371,
+          "encoderRawFeatureCosine": 0.9988532167414252,
+          "state": {
+            "acceptedFrames": 17,
+            "spatialEntries": 7,
+            "pointerEntries": 16
+          }
+        },
+        {
+          "index": 17,
+          "ptsNumerator": 17,
+          "ptsDenominator": 30,
+          "imageSHA256": "547d222bd5a2f255779e7afc5269080924c0b7d2475607e930cc59342c0f2a59",
+          "passed": true,
+          "maskIoU": 0.99948625738505,
+          "pointerCosine": 0.9993351875182509,
+          "memoryCosine": 0.9987921260592915,
+          "encoderRawFeatureCosine": 0.9988740722523877,
+          "state": {
+            "acceptedFrames": 18,
+            "spatialEntries": 7,
+            "pointerEntries": 16
+          }
+        },
+        {
+          "index": 18,
+          "ptsNumerator": 3,
+          "ptsDenominator": 5,
+          "imageSHA256": "a29dd4d4ec155aef133fe670ff73065aa2558101d980f187e24752dd0976bab9",
+          "passed": true,
+          "maskIoU": 0.9997473471450228,
+          "pointerCosine": 0.9961566220793611,
+          "memoryCosine": 0.9980839947372337,
+          "encoderRawFeatureCosine": 0.9988707577053438,
+          "state": {
+            "acceptedFrames": 19,
+            "spatialEntries": 7,
+            "pointerEntries": 16
+          }
+        },
+        {
+          "index": 19,
+          "ptsNumerator": 19,
+          "ptsDenominator": 30,
+          "imageSHA256": "05ef5ea441e42bb439f0a87c950f827d4b3cf5e2e6ddcee5125c2462295137a6",
+          "passed": false,
+          "maskIoU": 0.9989972424166458,
+          "pointerCosine": 0.985437915177584,
+          "memoryCosine": 0.9986613044698297,
+          "encoderRawFeatureCosine": 0.9989030208519195,
+          "state": {
+            "acceptedFrames": 20,
+            "spatialEntries": 7,
+            "pointerEntries": 16
+          }
+        }
+      ],
+      "minimumMetrics": {
+        "maskIoU": 0.9968130311614731,
+        "pointerCosine": 0.985437915177584,
+        "memoryCosine": 0.9927384063731655,
+        "encoderRawFeatureCosine": 0.9988499990978779
+      },
+      "failedFrameIndices": [
+        2,
+        3,
+        4,
+        19
+      ]
+    }
+  ],
+  "convolutionInventory": [
+    {
+      "index": 0,
+      "name": "input.5",
+      "scope": "image_encoder.trunk.body.stem.conv1.bn.input.5"
+    },
+    {
+      "index": 1,
+      "name": "input.11",
+      "scope": "image_encoder.trunk.body.stem.conv2.bn.input.11"
+    },
+    {
+      "index": 2,
+      "name": "116",
+      "scope": "image_encoder.trunk.body.stages_0.blocks.0.token_mixer.conv.bn.116"
+    },
+    {
+      "index": 3,
+      "name": "129",
+      "scope": "image_encoder.trunk.body.stages_0.blocks.0.token_mixer.conv1.bn.129"
+    },
+    {
+      "index": 4,
+      "name": "input.19",
+      "scope": "image_encoder.trunk.body.stages_0.blocks.0.se.fc1.input.19"
+    },
+    {
+      "index": 5,
+      "name": "x.3",
+      "scope": "image_encoder.trunk.body.stages_0.blocks.0.se.fc2.x.3"
+    },
+    {
+      "index": 6,
+      "name": "input.27",
+      "scope": "image_encoder.trunk.body.stages_0.blocks.0.channel_mixer.conv1.bn.input.27"
+    },
+    {
+      "index": 7,
+      "name": "x.5",
+      "scope": "image_encoder.trunk.body.stages_0.blocks.0.channel_mixer.conv2.bn.x.5"
+    },
+    {
+      "index": 8,
+      "name": "199",
+      "scope": "image_encoder.trunk.body.stages_0.blocks.1.token_mixer.conv.bn.199"
+    },
+    {
+      "index": 9,
+      "name": "212",
+      "scope": "image_encoder.trunk.body.stages_0.blocks.1.token_mixer.conv1.bn.212"
+    },
+    {
+      "index": 10,
+      "name": "input.43",
+      "scope": "image_encoder.trunk.body.stages_0.blocks.1.channel_mixer.conv1.bn.input.43"
+    },
+    {
+      "index": 11,
+      "name": "x.7",
+      "scope": "image_encoder.trunk.body.stages_0.blocks.1.channel_mixer.conv2.bn.x.7"
+    },
+    {
+      "index": 12,
+      "name": "267",
+      "scope": "image_encoder.trunk.body.stages_1.downsample.pre_block.token_mixer.conv.bn.267"
+    },
+    {
+      "index": 13,
+      "name": "280",
+      "scope": "image_encoder.trunk.body.stages_1.downsample.pre_block.token_mixer.conv1.bn.280"
+    },
+    {
+      "index": 14,
+      "name": "input.59",
+      "scope": "image_encoder.trunk.body.stages_1.downsample.pre_block.channel_mixer.conv1.bn.input.59"
+    },
+    {
+      "index": 15,
+      "name": "x.9",
+      "scope": "image_encoder.trunk.body.stages_1.downsample.pre_block.channel_mixer.conv2.bn.x.9"
+    },
+    {
+      "index": 16,
+      "name": "input.69",
+      "scope": "image_encoder.trunk.body.stages_1.downsample.spatial_downsample.bn.input.69"
+    },
+    {
+      "index": 17,
+      "name": "input.73",
+      "scope": "image_encoder.trunk.body.stages_1.downsample.channel_downsample.bn.input.73"
+    },
+    {
+      "index": 18,
+      "name": "input.77",
+      "scope": "image_encoder.trunk.body.stages_1.downsample.ffn.conv1.bn.input.77"
+    },
+    {
+      "index": 19,
+      "name": "x.11",
+      "scope": "image_encoder.trunk.body.stages_1.downsample.ffn.conv2.bn.x.11"
+    },
+    {
+      "index": 20,
+      "name": "388",
+      "scope": "image_encoder.trunk.body.stages_1.blocks.0.token_mixer.conv.bn.388"
+    },
+    {
+      "index": 21,
+      "name": "401",
+      "scope": "image_encoder.trunk.body.stages_1.blocks.0.token_mixer.conv1.bn.401"
+    },
+    {
+      "index": 22,
+      "name": "input.91",
+      "scope": "image_encoder.trunk.body.stages_1.blocks.0.se.fc1.input.91"
+    },
+    {
+      "index": 23,
+      "name": "x.15",
+      "scope": "image_encoder.trunk.body.stages_1.blocks.0.se.fc2.x.15"
+    },
+    {
+      "index": 24,
+      "name": "input.99",
+      "scope": "image_encoder.trunk.body.stages_1.blocks.0.channel_mixer.conv1.bn.input.99"
+    },
+    {
+      "index": 25,
+      "name": "x.17",
+      "scope": "image_encoder.trunk.body.stages_1.blocks.0.channel_mixer.conv2.bn.x.17"
+    },
+    {
+      "index": 26,
+      "name": "471",
+      "scope": "image_encoder.trunk.body.stages_1.blocks.1.token_mixer.conv.bn.471"
+    },
+    {
+      "index": 27,
+      "name": "484",
+      "scope": "image_encoder.trunk.body.stages_1.blocks.1.token_mixer.conv1.bn.484"
+    },
+    {
+      "index": 28,
+      "name": "input.115",
+      "scope": "image_encoder.trunk.body.stages_1.blocks.1.channel_mixer.conv1.bn.input.115"
+    },
+    {
+      "index": 29,
+      "name": "x.19",
+      "scope": "image_encoder.trunk.body.stages_1.blocks.1.channel_mixer.conv2.bn.x.19"
+    },
+    {
+      "index": 30,
+      "name": "539",
+      "scope": "image_encoder.trunk.body.stages_2.downsample.pre_block.token_mixer.conv.bn.539"
+    },
+    {
+      "index": 31,
+      "name": "552",
+      "scope": "image_encoder.trunk.body.stages_2.downsample.pre_block.token_mixer.conv1.bn.552"
+    },
+    {
+      "index": 32,
+      "name": "input.131",
+      "scope": "image_encoder.trunk.body.stages_2.downsample.pre_block.channel_mixer.conv1.bn.input.131"
+    },
+    {
+      "index": 33,
+      "name": "x.21",
+      "scope": "image_encoder.trunk.body.stages_2.downsample.pre_block.channel_mixer.conv2.bn.x.21"
+    },
+    {
+      "index": 34,
+      "name": "input.141",
+      "scope": "image_encoder.trunk.body.stages_2.downsample.spatial_downsample.bn.input.141"
+    },
+    {
+      "index": 35,
+      "name": "input.145",
+      "scope": "image_encoder.trunk.body.stages_2.downsample.channel_downsample.bn.input.145"
+    },
+    {
+      "index": 36,
+      "name": "input.149",
+      "scope": "image_encoder.trunk.body.stages_2.downsample.ffn.conv1.bn.input.149"
+    },
+    {
+      "index": 37,
+      "name": "x.23",
+      "scope": "image_encoder.trunk.body.stages_2.downsample.ffn.conv2.bn.x.23"
+    },
+    {
+      "index": 38,
+      "name": "672",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.0.token_mixer.conv.bn.672"
+    },
+    {
+      "index": 39,
+      "name": "685",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.0.token_mixer.conv1.bn.685"
+    },
+    {
+      "index": 40,
+      "name": "input.163",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.0.se.fc1.input.163"
+    },
+    {
+      "index": 41,
+      "name": "x.27",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.0.se.fc2.x.27"
+    },
+    {
+      "index": 42,
+      "name": "input.171",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.0.channel_mixer.conv1.bn.input.171"
+    },
+    {
+      "index": 43,
+      "name": "x.29",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.0.channel_mixer.conv2.bn.x.29"
+    },
+    {
+      "index": 44,
+      "name": "755",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.1.token_mixer.conv.bn.755"
+    },
+    {
+      "index": 45,
+      "name": "768",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.1.token_mixer.conv1.bn.768"
+    },
+    {
+      "index": 46,
+      "name": "input.187",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.1.channel_mixer.conv1.bn.input.187"
+    },
+    {
+      "index": 47,
+      "name": "x.31",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.1.channel_mixer.conv2.bn.x.31"
+    },
+    {
+      "index": 48,
+      "name": "818",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.2.token_mixer.conv.bn.818"
+    },
+    {
+      "index": 49,
+      "name": "831",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.2.token_mixer.conv1.bn.831"
+    },
+    {
+      "index": 50,
+      "name": "input.201",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.2.se.fc1.input.201"
+    },
+    {
+      "index": 51,
+      "name": "x.35",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.2.se.fc2.x.35"
+    },
+    {
+      "index": 52,
+      "name": "input.209",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.2.channel_mixer.conv1.bn.input.209"
+    },
+    {
+      "index": 53,
+      "name": "x.37",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.2.channel_mixer.conv2.bn.x.37"
+    },
+    {
+      "index": 54,
+      "name": "901",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.3.token_mixer.conv.bn.901"
+    },
+    {
+      "index": 55,
+      "name": "914",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.3.token_mixer.conv1.bn.914"
+    },
+    {
+      "index": 56,
+      "name": "input.225",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.3.channel_mixer.conv1.bn.input.225"
+    },
+    {
+      "index": 57,
+      "name": "x.39",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.3.channel_mixer.conv2.bn.x.39"
+    },
+    {
+      "index": 58,
+      "name": "964",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.4.token_mixer.conv.bn.964"
+    },
+    {
+      "index": 59,
+      "name": "977",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.4.token_mixer.conv1.bn.977"
+    },
+    {
+      "index": 60,
+      "name": "input.239",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.4.se.fc1.input.239"
+    },
+    {
+      "index": 61,
+      "name": "x.43",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.4.se.fc2.x.43"
+    },
+    {
+      "index": 62,
+      "name": "input.247",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.4.channel_mixer.conv1.bn.input.247"
+    },
+    {
+      "index": 63,
+      "name": "x.45",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.4.channel_mixer.conv2.bn.x.45"
+    },
+    {
+      "index": 64,
+      "name": "1047",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.5.token_mixer.conv.bn.1047"
+    },
+    {
+      "index": 65,
+      "name": "1060",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.5.token_mixer.conv1.bn.1060"
+    },
+    {
+      "index": 66,
+      "name": "input.263",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.5.channel_mixer.conv1.bn.input.263"
+    },
+    {
+      "index": 67,
+      "name": "x.47",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.5.channel_mixer.conv2.bn.x.47"
+    },
+    {
+      "index": 68,
+      "name": "1110",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.6.token_mixer.conv.bn.1110"
+    },
+    {
+      "index": 69,
+      "name": "1123",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.6.token_mixer.conv1.bn.1123"
+    },
+    {
+      "index": 70,
+      "name": "input.277",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.6.se.fc1.input.277"
+    },
+    {
+      "index": 71,
+      "name": "x.51",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.6.se.fc2.x.51"
+    },
+    {
+      "index": 72,
+      "name": "input.285",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.6.channel_mixer.conv1.bn.input.285"
+    },
+    {
+      "index": 73,
+      "name": "x.53",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.6.channel_mixer.conv2.bn.x.53"
+    },
+    {
+      "index": 74,
+      "name": "1193",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.7.token_mixer.conv.bn.1193"
+    },
+    {
+      "index": 75,
+      "name": "1206",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.7.token_mixer.conv1.bn.1206"
+    },
+    {
+      "index": 76,
+      "name": "input.301",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.7.channel_mixer.conv1.bn.input.301"
+    },
+    {
+      "index": 77,
+      "name": "x.55",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.7.channel_mixer.conv2.bn.x.55"
+    },
+    {
+      "index": 78,
+      "name": "1256",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.8.token_mixer.conv.bn.1256"
+    },
+    {
+      "index": 79,
+      "name": "1269",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.8.token_mixer.conv1.bn.1269"
+    },
+    {
+      "index": 80,
+      "name": "input.315",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.8.se.fc1.input.315"
+    },
+    {
+      "index": 81,
+      "name": "x.59",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.8.se.fc2.x.59"
+    },
+    {
+      "index": 82,
+      "name": "input.323",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.8.channel_mixer.conv1.bn.input.323"
+    },
+    {
+      "index": 83,
+      "name": "x.61",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.8.channel_mixer.conv2.bn.x.61"
+    },
+    {
+      "index": 84,
+      "name": "1339",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.9.token_mixer.conv.bn.1339"
+    },
+    {
+      "index": 85,
+      "name": "1352",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.9.token_mixer.conv1.bn.1352"
+    },
+    {
+      "index": 86,
+      "name": "input.339",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.9.channel_mixer.conv1.bn.input.339"
+    },
+    {
+      "index": 87,
+      "name": "x.63",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.9.channel_mixer.conv2.bn.x.63"
+    },
+    {
+      "index": 88,
+      "name": "1402",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.10.token_mixer.conv.bn.1402"
+    },
+    {
+      "index": 89,
+      "name": "1415",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.10.token_mixer.conv1.bn.1415"
+    },
+    {
+      "index": 90,
+      "name": "input.353",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.10.se.fc1.input.353"
+    },
+    {
+      "index": 91,
+      "name": "x.67",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.10.se.fc2.x.67"
+    },
+    {
+      "index": 92,
+      "name": "input.361",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.10.channel_mixer.conv1.bn.input.361"
+    },
+    {
+      "index": 93,
+      "name": "x.69",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.10.channel_mixer.conv2.bn.x.69"
+    },
+    {
+      "index": 94,
+      "name": "1485",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.11.token_mixer.conv.bn.1485"
+    },
+    {
+      "index": 95,
+      "name": "1498",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.11.token_mixer.conv1.bn.1498"
+    },
+    {
+      "index": 96,
+      "name": "input.377",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.11.channel_mixer.conv1.bn.input.377"
+    },
+    {
+      "index": 97,
+      "name": "x.71",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.11.channel_mixer.conv2.bn.x.71"
+    },
+    {
+      "index": 98,
+      "name": "1548",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.12.token_mixer.conv.bn.1548"
+    },
+    {
+      "index": 99,
+      "name": "1561",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.12.token_mixer.conv1.bn.1561"
+    },
+    {
+      "index": 100,
+      "name": "input.391",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.12.se.fc1.input.391"
+    },
+    {
+      "index": 101,
+      "name": "x.75",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.12.se.fc2.x.75"
+    },
+    {
+      "index": 102,
+      "name": "input.399",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.12.channel_mixer.conv1.bn.input.399"
+    },
+    {
+      "index": 103,
+      "name": "x.77",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.12.channel_mixer.conv2.bn.x.77"
+    },
+    {
+      "index": 104,
+      "name": "1631",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.13.token_mixer.conv.bn.1631"
+    },
+    {
+      "index": 105,
+      "name": "1644",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.13.token_mixer.conv1.bn.1644"
+    },
+    {
+      "index": 106,
+      "name": "input.415",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.13.channel_mixer.conv1.bn.input.415"
+    },
+    {
+      "index": 107,
+      "name": "x.79",
+      "scope": "image_encoder.trunk.body.stages_2.blocks.13.channel_mixer.conv2.bn.x.79"
+    },
+    {
+      "index": 108,
+      "name": "1699",
+      "scope": "image_encoder.trunk.body.stages_3.downsample.pre_block.token_mixer.conv.bn.1699"
+    },
+    {
+      "index": 109,
+      "name": "1712",
+      "scope": "image_encoder.trunk.body.stages_3.downsample.pre_block.token_mixer.conv1.bn.1712"
+    },
+    {
+      "index": 110,
+      "name": "input.431",
+      "scope": "image_encoder.trunk.body.stages_3.downsample.pre_block.channel_mixer.conv1.bn.input.431"
+    },
+    {
+      "index": 111,
+      "name": "x.81",
+      "scope": "image_encoder.trunk.body.stages_3.downsample.pre_block.channel_mixer.conv2.bn.x.81"
+    },
+    {
+      "index": 112,
+      "name": "input.441",
+      "scope": "image_encoder.trunk.body.stages_3.downsample.spatial_downsample.bn.input.441"
+    },
+    {
+      "index": 113,
+      "name": "input.445",
+      "scope": "image_encoder.trunk.body.stages_3.downsample.channel_downsample.bn.input.445"
+    },
+    {
+      "index": 114,
+      "name": "input.449",
+      "scope": "image_encoder.trunk.body.stages_3.downsample.ffn.conv1.bn.input.449"
+    },
+    {
+      "index": 115,
+      "name": "x.83",
+      "scope": "image_encoder.trunk.body.stages_3.downsample.ffn.conv2.bn.x.83"
+    },
+    {
+      "index": 116,
+      "name": "1820",
+      "scope": "image_encoder.trunk.body.stages_3.blocks.0.token_mixer.conv.bn.1820"
+    },
+    {
+      "index": 117,
+      "name": "1833",
+      "scope": "image_encoder.trunk.body.stages_3.blocks.0.token_mixer.conv1.bn.1833"
+    },
+    {
+      "index": 118,
+      "name": "input.463",
+      "scope": "image_encoder.trunk.body.stages_3.blocks.0.se.fc1.input.463"
+    },
+    {
+      "index": 119,
+      "name": "x.87",
+      "scope": "image_encoder.trunk.body.stages_3.blocks.0.se.fc2.x.87"
+    },
+    {
+      "index": 120,
+      "name": "input.471",
+      "scope": "image_encoder.trunk.body.stages_3.blocks.0.channel_mixer.conv1.bn.input.471"
+    },
+    {
+      "index": 121,
+      "name": "x.89",
+      "scope": "image_encoder.trunk.body.stages_3.blocks.0.channel_mixer.conv2.bn.x.89"
+    },
+    {
+      "index": 122,
+      "name": "1903",
+      "scope": "image_encoder.trunk.body.stages_3.blocks.1.token_mixer.conv.bn.1903"
+    },
+    {
+      "index": 123,
+      "name": "1916",
+      "scope": "image_encoder.trunk.body.stages_3.blocks.1.token_mixer.conv1.bn.1916"
+    },
+    {
+      "index": 124,
+      "name": "input.487",
+      "scope": "image_encoder.trunk.body.stages_3.blocks.1.channel_mixer.conv1.bn.input.487"
+    },
+    {
+      "index": 125,
+      "name": "x.91",
+      "scope": "image_encoder.trunk.body.stages_3.blocks.1.channel_mixer.conv2.bn.x.91"
+    },
+    {
+      "index": 126,
+      "name": "x.93",
+      "scope": "image_encoder.neck.0.conv.x.93"
+    },
+    {
+      "index": 127,
+      "name": "lateral_features",
+      "scope": "image_encoder.neck.1.conv.lateral_features"
+    },
+    {
+      "index": 128,
+      "name": "x.97",
+      "scope": "image_encoder.neck.2.conv.x.97"
+    },
+    {
+      "index": 129,
+      "name": "x",
+      "scope": "image_encoder.neck.3.conv.x"
+    },
+    {
+      "index": 130,
+      "name": "2021",
+      "scope": "conv_s0.2021"
+    },
+    {
+      "index": 131,
+      "name": "2032",
+      "scope": "conv_s1.2032"
+    }
+  ]
+}
