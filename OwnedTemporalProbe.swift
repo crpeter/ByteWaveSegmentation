@@ -64,7 +64,7 @@ struct OwnedDiagnosticPropagator: Codable, Sendable {
     }
 }
 
-private struct OwnedFixture: Decodable {
+struct OwnedFixture: Decodable {
     struct TensorFile: Decodable {
         let path: String
         let sha256: String

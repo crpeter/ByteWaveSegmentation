@@ -192,6 +192,8 @@ struct ProbeView: View {
                         .disabled(running)
                     NavigationLink("Test temporal tracking") { OwnedTemporalProbeView() }
                         .disabled(running)
+                    NavigationLink("Track a video") { OwnedVideoTrackingView() }
+                        .disabled(running)
                     Picker("Compute devices", selection: $mode) {
                         ForEach(ProbeMode.allCases) { mode in Text(mode.rawValue).tag(mode) }
                     }

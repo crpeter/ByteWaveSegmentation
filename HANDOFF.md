@@ -1,5 +1,50 @@
 # ByteWave segmentation: continuation handoff
 
+## Current step: requested video frames (implementation awaiting user build)
+
+`OwnedVideoTracking.swift` adds a separate **Track a video** screen using the
+existing verified `DeviceValidationData/memoryfp16` packages with CPU + GPU.
+It shares the fixture schema and unchanged OwnedTemporalSession/state runtime;
+normal exports, the fixed 20-frame comparison and the community probe remain.
+The loader checks diagnostic/source metadata, exact package file set and hashes,
+then all four loaded model interfaces before inference. No re-export is needed.
+
+One actor owns the imported movie, AVAssetReader, current prepared frame and
+session. It decodes the next presentation-ordered sample only when requested,
+uses the exact decoded CMTime, converts the track presentation transform into
+Core Image coordinates, renders sRGB 1024-square model input and an aspect-correct
+preview. Point selection uses normalized top-left coordinates. The UI supports
+initialization on the displayed frame, next frame, continuous demand-driven
+tracking, pause after the in-flight frame, seek and restart. Seeking/reselection
+starts fresh state and requires a new subject point. No frames are dropped to
+catch a clock; no audio or real-time playback-rate claim. A separate real-time
+renderer/scheduler is not implemented in this probe.
+
+Inference is synchronous inside the actor. UI task cancellation and a generation
+check across loading awaits prevent stale results after navigation/reset. On
+prediction/decode failure the state is invalidated and stale UI pixels are hidden;
+seek/restart recovers. The temporary import and compiled packages are released on
+replacement/close. Only bounded 7/16 banks and the current image survive requests;
+no per-video mask or decoded-frame cache. Diagnostic frame records are capped at
+120, with incremental warm timing totals and no retained tensors. Reports include
+source package provenance, actual timestamps, reset/segment counts, orientation,
+mask fraction/presence score, model/decode/render timings and thermal snapshots.
+There is no automatic quality/parity pass for an unseen video. Snapshot and native
+prediction checkpoint files overwrite fixed names instead of accumulating files.
+
+Assistant validation: static source/lifecycle/ownership review, project source
+registration and diff checks only. No Swift compiler/Apple SDK is available here;
+no tests, builds, decoding, inference or conversion were run. User validation is
+next: Release iPhone 17 Pro build, dog clip visual orientation/subject/step/run,
+then pause/seek/reselect and share **video tracking report** plus a mask screenshot.
+A portrait clip with an off-center subject is useful for transform/point mapping.
+Setup and report-sharing instructions belong in chat, not README.
+
+API references checked: Apple [decoded sample ordering and EOF status](https://developer.apple.com/documentation/avfoundation/avassetreaderoutput/copynextsamplebuffer%28%29),
+[reader time range](https://developer.apple.com/documentation/avfoundation/avassetreader/timerange),
+and [track presentation transform](https://developer.apple.com/documentation/avfoundation/avassettrack/preferredtransform).
+These support the decoder design, not device validation of this new path.
+
 ## iPhone 17 Pro comparison passed: original versus memoryfp16
 
 Added `Temporal/prepare_attention_device.py`: read-only verification and copying,
