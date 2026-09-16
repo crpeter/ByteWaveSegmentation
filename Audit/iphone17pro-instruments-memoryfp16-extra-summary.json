@@ -1,0 +1,46 @@
+{
+  "schema": "bytewave.instruments-memoryfp16-extra-summary.v1",
+  "sourceZIP": {
+    "name": "2ba409c7-aac3-4817-a4c0-43e0dd8a3533.zip",
+    "sha256": "1bd76f936c6df185d9e911f49f1af20de7f57739e8d331e3d7924838fb7ba21f"
+  },
+  "runNumber": 1,
+  "targetPID": 7794,
+  "exports": {
+    "gpu-shader-profiler-interval.xml": {
+      "sha256": "d8c56e43a1881f25524e758d4a4b50e67696b680303f613fd51cfd86a37aae8e",
+      "bytes": 749,
+      "rows": 0,
+      "targetRows": 0,
+      "targetEventNames": {},
+      "targetEventTypes": {}
+    },
+    "os-signpost-arg.xml": {
+      "sha256": "42c40bff2ab72f306a381d632d43eb6f17d3e6e05c4432a1c5c3a227d858dfb5",
+      "bytes": 25845305,
+      "rows": 113524,
+      "targetRows": 4840,
+      "targetEventNames": {
+        "FunctionCompiled": 3872,
+        "ComputePipelineLabel": 968
+      },
+      "targetEventTypes": {}
+    },
+    "os-signpost.xml": {
+      "sha256": "14f791159df9d6534595a36477b4ba9590e9aec8d48f47780b6d25d5512f0d67",
+      "bytes": 8178273,
+      "rows": 14250,
+      "targetRows": 726,
+      "targetEventNames": {
+        "FunctionCompiled": 484,
+        "ComputePipelineLabel": 242
+      },
+      "targetEventTypes": {
+        "Event": 726
+      }
+    }
+  },
+  "conclusion": "Raw GPU shader interval table is empty. All target ShaderTimeline signposts are compilation or pipeline labels, not execution durations; argument rows cannot recover missing sample timings.",
+  "scope": "Offline XML parsing only. Current model-level prediction/GPU-active results remain valid; no shader cost attribution or cause of missing samples established.",
+  "nextStep": "Inspect saved trace GPU/Compute detail in Instruments before requesting another capture. No more speculative table exports or model changes."
+}

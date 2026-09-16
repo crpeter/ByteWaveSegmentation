@@ -16,9 +16,16 @@ not additional time. Original archived trace had 67.497 ms warm propagation;
 new trace is consistent with retained FP16 gains, not a new paired benchmark.
 
 Shader Timeline was enabled, but metal-shader-profiler-intervals export has ZERO
-rows. Shader list has names only and cannot establish operation costs. Next:
-export gpu-shader-profiler-interval and ShaderTimeline signpost/arguments from
-this SAME saved trace, before requesting any repeat recording. No model changes.
+rows. The extra ZIP now also has zero raw gpu-shader-profiler-interval rows.
+Target PID 7794 has 726 ShaderTimeline signposts: 484 FunctionCompiled and 242
+ComputePipelineLabel, all instantaneous Event type. 4,840 corresponding argument
+rows describe metadata, not durations. See the companion
+`Audit/iphone17pro-instruments-memoryfp16-extra-summary.json` for counts/hashes.
+No shader execution timing can be recovered from these supplied tables. The
+cause is unknown; do not attribute it to user settings, model precision or OS.
+Next: inspect saved trace GPU/Compute detail in Instruments (screenshot of the
+prediction burst) to distinguish visible UI detail from an export limitation
+before another recording. No further speculative exports or model changes.
 User moved the trace into project folder after Desktop access errors. Do not
 request privacy permission changes; the original cause was not established.
 Static/offline parsing only; no assistant builds, tests, inference or profiling.
