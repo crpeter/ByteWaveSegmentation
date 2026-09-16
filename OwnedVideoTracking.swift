@@ -47,9 +47,9 @@ private struct VideoTrackingReport: Encodable {
     let hardware: String
     let operatingSystem = ProcessInfo.processInfo.operatingSystemVersionString
     let isIOSAppOnMac = ProcessInfo.processInfo.isiOSAppOnMac
-    let modelVariant = "memoryfp16"
+    let modelVariant = "memoryfp16projection"
     let contract = OwnedTemporalContract.id
-    let precisionPolicy = OwnedTemporalContract.memoryFP16Precision
+    let precisionPolicy = OwnedTemporalContract.encoderProjectionFP16Precision
     let requestedComputeUnits = "CPU_AND_GPU"
     #if DEBUG
     let swiftDebugCompilation = true
@@ -68,6 +68,7 @@ private struct VideoTrackingReport: Encodable {
     let recentFrameLimit = 120
     var fixtureSHA256: String?
     var diagnosticPropagator: OwnedDiagnosticPropagator?
+    var diagnosticEncoder: OwnedDiagnosticEncoder?
     var sourceModelsManifestSHA256: String?
     var sourceReportSHA256: String?
     var modelFiles: [String: String] = [:]
@@ -169,18 +170,20 @@ actor OwnedVideoRunner {
             let data = try Data(contentsOf: modelsRoot.appendingPathComponent("fixture.json"))
             let fixture = try JSONDecoder().decode(OwnedFixture.self, from: data)
             try fixture.diagnosticPropagator?.validate()
+            try fixture.diagnosticEncoder?.validate()
             guard fixture.schema == "bytewave.temporal-device-fixture.v1",
                   fixture.contract == OwnedTemporalContract.id,
                   fixture.graphRevision == OwnedTemporalContract.graphRevision,
                   fixture.upstream == OwnedTemporalContract.upstream,
                   fixture.checkpointSHA256 == OwnedTemporalContract.checkpoint,
-                  fixture.precisionPolicy == OwnedTemporalContract.memoryFP16Precision,
-                  fixture.diagnosticEncoder == nil,
+                  fixture.precisionPolicy == OwnedTemporalContract.encoderProjectionFP16Precision,
+                  fixture.diagnosticEncoder?.variant == "projection",
                   fixture.diagnosticPropagator?.variant == "memoryfp16" else {
-                throw OwnedTemporalError.invalid("Prepare the validated Memory FP16 candidate before tracking video.")
+                throw OwnedTemporalError.invalid("Prepare the validated Memory FP16 + fused encoder fixture before tracking video.")
             }
             report?.fixtureSHA256 = digest(data)
             report?.diagnosticPropagator = fixture.diagnosticPropagator
+            report?.diagnosticEncoder = fixture.diagnosticEncoder
             report?.sourceModelsManifestSHA256 = fixture.sourceModelsManifestSHA256
             report?.sourceReportSHA256 = fixture.sourceReportSHA256
             report?.modelFiles = fixture.modelFiles
@@ -225,7 +228,8 @@ actor OwnedVideoRunner {
                 configuration.computeUnits = .cpuAndGPU
                 let model = try await MLModel.load(contentsOf: compiled, configuration: configuration)
                 try check(ticket)
-                try OwnedTemporalContract.validate(model, component: component, propagatorVariant: "memoryfp16")
+                try OwnedTemporalContract.validate(model, component: component,
+                                                   propagatorVariant: "memoryfp16", encoderVariant: "projection")
                 models[component] = model
                 report?.compileAndLoadMilliseconds[component] = elapsed(start)
             }
@@ -502,7 +506,7 @@ actor OwnedVideoRunner {
     private func checkpoint(_ stage: String, time: CMTime? = nil) throws {
         guard let checkpointURL else { return }
         let data: [String: Any] = ["schema": "bytewave.video-checkpoint.v1", "stage": stage,
-            "modelVariant": "memoryfp16", "fixtureSHA256": report?.fixtureSHA256 ?? "",
+            "modelVariant": "memoryfp16projection", "fixtureSHA256": report?.fixtureSHA256 ?? "",
             "framesPredicted": report?.framesPredicted ?? 0,
             "ptsValue": time?.value ?? 0, "ptsTimescale": time?.timescale ?? 1]
         try JSONSerialization.data(withJSONObject: data, options: [.sortedKeys]).write(to: checkpointURL, options: .atomic)
@@ -572,7 +576,7 @@ struct OwnedVideoTrackingView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 PhotosPicker("Choose video", selection: $selection, matching: .videos).disabled(busy)
-                Text("Memory FP16 · CPU + GPU").font(.subheadline).foregroundStyle(.secondary)
+                Text("Memory FP16 + fused encoder · CPU + GPU").font(.subheadline).foregroundStyle(.secondary)
                 if let preview {
                     GeometryReader { geometry in
                         ZStack(alignment: .topLeading) {
@@ -651,7 +655,11 @@ struct OwnedVideoTrackingView: View {
         #if targetEnvironment(simulator)
         status = "Run video tracking on a physical iPhone."
         #else
-        guard let item, !busy, let root = Bundle.main.resourceURL?.appendingPathComponent("DeviceValidationData/memoryfp16") else { return }
+        guard let item, !busy, let root = Bundle.main.resourceURL?.appendingPathComponent("DeviceValidationData/memoryfp16projection") else { return }
+        guard FileManager.default.fileExists(atPath: root.appendingPathComponent("fixture.json").path) else {
+            status = "The fused encoder fixture is missing. Run the Mac preparation command, then rebuild."
+            return
+        }
         let ticket = lifecycle
         busy = true; preview = nil; overlay = nil; point = nil; tracking = false; ended = false
         duration = 0; reportURL = nil; status = "Opening video…"

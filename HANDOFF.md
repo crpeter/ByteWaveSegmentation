@@ -1,6 +1,42 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: encoder projection improves first iPhone pair; reverse order pending
+## Current work: reverse-order encoder gain confirmed; Track a video uses fused encoder
+
+User supplied b4819aee-62df-4b9f-b400-058e9ec838fd.json (fused encoder first,
+2026-09-16T18:16:03Z) and c36a47e6-b05f-496a-8802-ea8ae63e701d.json (memoryfp16
+second, 18:16:13Z). Original bytes preserved in
+Audit/iphone17pro-encoder-projection-reverse-{variant}-report.json; summary in
+Audit/iphone17pro-encoder-projection-reverse-summary.json. Exact fixture hashes,
+input/reference identities, tracker provenance, hardware/OS, Release settings and
+copy implementation match the first pair. Both 20/20 passed, banks 7/16, nominal
+thermal snapshots. Each variant's reported quality/state fields exactly repeat
+its own first run; this is not proof that different variants have identical masks.
+
+Reverse-order warm medians (baseline -> fused): encoder 21.99771 -> 18.76950 ms,
+14.6752% lower; propagator 32.60423 -> 32.50829 ms; prediction/state 59.47498 ->
+55.85156 ms, 6.0923% lower. Encoder excludes frame 0; propagator/session exclude
+indices 0/1. First-order improvement was 14.4346% encoder and 5.2614% session.
+The encoder gain holds in both orders; no further 20-frame repeats needed now.
+These remain short fixture measurements, not sustained playback FPS or general
+quality validation. Metal validation/debugger flags are not reported in JSON.
+
+OwnedVideoTracking.swift now loads the existing prepared memoryfp16projection
+fixture and strictly requires projection encoder + memoryfp16 propagator metadata.
+All package-file/hash/schema checks retained; report includes diagnosticEncoder,
+combined precision and modelVariant, and checkpoints/UI identify the fused model.
+Missing fixture produces an explicit message, never falls back silently. No model
+re-export/preparation, precision change, state/seek logic, decode, copy or mask
+rendering changes. Original FP16 remains available in Temporal comparison. This
+adopts the measured improvement in the standalone prototype, not ByteWave production.
+
+Next: user git pull --ff-only, rebuild same Release 17 Pro with Metal validation
+off, Track a video on the longer dog clip including hand-patting section; seek
+forward/backward as before, visually check edges/identity, share video tracking
+report. No Instruments or further temporal reports requested at this point.
+Assistant checked offline JSON identity/quality/arithmetic and Swift diff only;
+no builds/tests/model execution. Normal exports/fixture generation stay unchanged.
+
+## Earlier: encoder projection improves first iPhone pair; reverse order pending
 
 User supplied 8c9cdd2e-e246-4e24-b397-421802359eb7.json (memoryfp16,
 2026-09-16T18:13:52Z) and 33740519-efec-4e3a-aae3-ae3ed481cf70.json
