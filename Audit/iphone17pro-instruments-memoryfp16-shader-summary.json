@@ -1,6 +1,6 @@
 {
   "schema": "bytewave.instruments-memoryfp16-shader-summary.v1",
-  "scope": "Offline analysis of current-model workflow Instruments capture after switching to Instruments 27 beta. Shader samples identify expensive families, not exact MIL operations. Same-run device comparison report still requested.",
+  "scope": "Offline analysis of current FP16 Instruments capture with supplied same-run device comparison report. Shader samples identify expensive families, not exact MIL operations.",
   "sourceZIP": {
     "name": "c3323650-dc92-483a-81dc-499bfe4042c7.zip",
     "sha256": "3a103b6343a010463323fdb8cdfbec97371781e7de5476c4ea003d7073ee006c"
@@ -43,7 +43,7 @@
   "processTermination": "exit(0)",
   "shaderTimelineEnabled": true,
   "modelVariantUserWorkflow": "memoryfp16",
-  "sameRunDeviceReportReceived": false,
+  "sameRunDeviceReportReceived": true,
   "method": "Resolve XML id/ref independently per document. Match Core ML Prediction spans by model; filter GPU Active and shader rows to PID 7849. Clip to each prediction, union overlaps, and exclude the first prediction of each model. Family groups remove trailing numeric shader ID only. SDPA group is shader names containing sdpa. Shader/GPU/prediction intervals overlap and are not additive.",
   "models": {
     "BWTemporalImageEncoder": {
@@ -2697,9 +2697,60 @@
   ],
   "limitations": [
     "Shader samples cover part of GPU-active time; gaps are not necessarily idle time. Family medians need not sum to group medians.",
-    "No ground-truth accuracy, model package hashes or shared fixture run ID in timing exports. The earlier 07:49 device report does not validate this 08:10 capture.",
+    "Accuracy and fixture identity are provided by the associated temporal report, not timing XML. All reported numerical/input/state fields equal the bulk-copy baseline; this does not prove tensor byte identity or annotated ground-truth accuracy.",
     "Not sustained playback FPS or a paired speed comparison; profiler version/configuration affects comparability.",
     "No demonstrated precise shader-to-MIL mapping; no claim that a particular next rewrite will improve latency."
   ],
-  "nextStep": "Receive Share temporal report from this existing run to link the workflow to model/fixture provenance and reported numerical checks; no new recording requested. Then choose a bounded attention-focused diagnostic distinct from closed query batching, preserving all reference gates."
+  "nextStep": "Profiling evidence complete for this stage. Retain working FP16 and bulk-copy implementation. Choose further bounded model work from the remaining attention cost; do not repeat profiling or promote closed query batching.",
+  "deviceReport": {
+    "archive": "Audit/iphone17pro-instruments-memoryfp16-shader-device-report.json",
+    "sha256": "fb4350f5a6cd0bbf50a9838de736b237a5f94a93ca013be26606f158aacd6dd2",
+    "generatedAt": "2026-09-16T12:10:08Z",
+    "completed": true,
+    "passed": true,
+    "modelVariant": "memoryfp16",
+    "fixtureSHA256": "f6b8e78c142538375ff6bf6fee5516975543f06e2f0780f959ffd3abc0dbbc9f",
+    "sourceModelsManifestSHA256": "47b7b85eef755ff7a440c0017f232a82ac7213af622d15d30a04f3487e07dd67",
+    "sourceReportSHA256": "8768eab4331ad57994782ee244861b64f3c3eb27fa6c970cc881a843618af9a6",
+    "mode": "CPU + GPU",
+    "hardware": "iPhone18,1",
+    "swiftDebugCompilation": false,
+    "tensorCopyImplementation": "owned-float32-chunk-copy.v1",
+    "thermalStateAtStart": "nominal",
+    "thermalStateAtEnd": "nominal",
+    "frames": 20,
+    "allFrameChecksPassed": true,
+    "finalState": {
+      "acceptedFrames": 20,
+      "pointerEntries": 16,
+      "spatialEntries": 7
+    },
+    "minimumMaskIoU": 0.9968039772727273,
+    "minimumPointerCosine": 0.9989310422512354,
+    "minimumMemoryCosine": 0.9961403122331987,
+    "reportedQualityInputAndStateFieldsEqualBulkCopyBaseline": true,
+    "comparisonBaseline": "Audit/iphone17pro-chunk-copy-memoryfp16-report.json",
+    "comparedFields": [
+      "index",
+      "inputBGRASHA256",
+      "sourceImageSHA256",
+      "foregroundFraction",
+      "maskIoUAgainstMacCoreML",
+      "outputs",
+      "passed",
+      "sameObjectPresence",
+      "ptsNumerator",
+      "ptsDenominator",
+      "state"
+    ]
+  },
+  "reportTraceConsistency": {
+    "reportTimestampWithinTrace": true,
+    "modelCallCountsMatch": true,
+    "maximumPerCallDurationDifferenceMilliseconds": {
+      "ImageEncoder": 0.01362501110509129,
+      "Propagator": 0.010875004163942492
+    },
+    "limitation": "Consistent timestamps/counts/timings and user workflow associate these artifacts; XML does not embed a common run ID or model package hashes."
+  }
 }

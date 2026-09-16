@@ -1,6 +1,6 @@
 # ByteWave segmentation: continuation handoff
 
-## Current step: Instruments 27 shader capture analyzed; same-run report pending
+## Current step: FP16 profiling baseline complete; accuracy confirmed
 
 The user identified mixed tool versions: recording with Xcode/Instruments 26.6,
 Terminal using Xcode 27 beta. The 26.6 UI warning was “GPU Service reported
@@ -21,14 +21,23 @@ sampled intervals, not additive complete accounting or exact MIL attribution.
 Encoder's largest sampled family is mmul_kernel_a16_float_float_float (4.627 ms);
 its name is insufficient to identify safe precision changes.
 
-No matching temporal report supplied for this new run yet. Request Share temporal
-report from the existing run; no new recording or model experiment needed for
-that request. The earlier 07:49 report belongs to the prior trace and must not be
-reused as this run's accuracy/provenance evidence. Current memoryfp16 identity
-is based on instructed/user workflow until the matching report is received.
-Next model work should target the demonstrated remaining attention cost while
-preserving all quality checks; closed query-batching rewrite stays unpromoted.
-No runtime/model changes. Only offline XML parsing and static checks executed.
+The matching device report is now archived as
+`Audit/iphone17pro-instruments-memoryfp16-shader-device-report.json`. It confirms
+memoryfp16, unchanged fixture f6b8e78c..., iPhone18,1 / Release CPU + GPU and
+all 20 frames passed. Minimum IoU/pointer cosine/memory cosine are
+0.996804/0.998931/0.996140. Every reported input/quality/state field equals the
+prior bulk-copy FP16 baseline (not proof of raw tensor identity). Final banks
+7/16, nominal thermal snapshots. Report timestamp 12:10:08Z lies inside the
+trace; corresponding encoder/propagator call durations differ by at most
+0.013626/0.010876 ms. This strongly associates the artifacts with the same run,
+although XML does not carry a shared run ID or model package hashes.
+
+The profiling stage is complete; no repeat recording or fixture run needed now.
+Remaining attention cost is the main measured shader group for further bounded
+optimization. Retain working FP16, direct previews and bulk copies; closed query
+batching stays unpromoted. No new model rewrite is implemented or claimed faster.
+Evidence/handoff only; offline parsing and static checks, no assistant tests,
+builds, inference, conversion or profiling executed.
 
 ## Earlier FP16 capture: shader timing export empty
 
