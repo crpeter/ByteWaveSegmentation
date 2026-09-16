@@ -1,6 +1,32 @@
 # ByteWave segmentation: continuation handoff
 
-## Current step: Memory FP16 fixed comparison still needed after copy change
+## Current step: bulk-copy optimization validated on both model variants
+
+The requested Memory FP16 candidate / CPU + GPU report is now received and
+archived in `Audit/iphone17pro-chunk-copy-memoryfp16-report.json` with a companion
+summary. All 20 frames pass, all exact input hashes match the earlier candidate
+repeat, and every reported accuracy/state field equals that baseline report.
+This is equality of reported comparison metrics, not a raw tensor byte check.
+Minimum mask IoU is 0.996804, pointer cosine 0.998931, memory cosine 0.996140.
+State counts are correct through 20 accepted frames with 7/16 banks. iPhone 17
+Pro Release, iOS 27.0, nominal thermal snapshots, no reported error.
+
+Across 19 warm frames, combined encoder/propagator copy and validation mean fell
+8.362 -> 2.096 ms (74.94%). Session mean fell 71.900 -> 64.902 ms (9.73%); median
+fell 64.895 -> 58.950 ms. Propagator median is essentially unchanged at 32.351 ->
+32.504 ms, consistent with optimizing host copies rather than model math.
+These are successive runs, not paired timing or sustained playback FPS.
+
+Both Original and Memory FP16 numerical gates for the copy change are complete.
+Retain bulk copying and direct preview transport. No more fixed-fixture repeats
+are required for these changes. Next speed work should target actual model calls
+using a bounded diagnostic and the existing numerical checks; do not repeat
+closed conv2/chunk256 experiments or loosen checks. Short arbitrary-video
+validation and the user's hand-exclusion observation are recorded below.
+This turn changes evidence/handoff only; no Swift/model implementation change
+and no assistant test/build/inference execution.
+
+## First post-copy reports (Original fixture and short video)
 
 User supplied two reports after `903c940`. The 20-frame numerical comparison
 passed all gates, but its modelVariant is Original, not Memory FP16 candidate.
@@ -9,7 +35,7 @@ same Original fixture in the earlier repeat report, warm output copy/validation
 averages 8.627 -> 2.136 ms (75.25% reduction, 6.492 ms saved). All 20 input hashes
 match that baseline; all state counts are correct. Minimum mask IoU 0.996804,
 pointer cosine 0.998976, memory cosine 0.995975. Separate runs, not paired timing.
-Do not mark the candidate's post-change numerical comparison complete yet.
+The later candidate comparison completing this gate is recorded above.
 
 `Audit/iphone17pro-chunk-copy-short-video-report.json` is a 3.717-second clip,
 112 predictions, one segment, no seeks, EOF reached, zero empty masks/no error.
@@ -26,10 +52,8 @@ User reports the dog approaches the camera and is patted, and the tracking mask
 successfully excludes their hand. Preserve this useful qualitative interaction/
 occlusion observation without claiming annotated accuracy or general robustness.
 
-Next smallest gate: existing Test temporal tracking, Memory FP16 candidate,
-CPU + GPU, share temporal report. No rebuild/model preparation is required to
-switch that model choice. No further implementation change was made this turn;
-assistant only parsed reports, checked arithmetic/state and archived evidence.
+The requested candidate comparison has since completed, as recorded above.
+Assistant only parsed reports, checked arithmetic/state and archived evidence.
 
 ## Contiguous tensor-copy implementation
 

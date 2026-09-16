@@ -1,0 +1,47 @@
+{
+  "scope": "20-frame post-copy-change Memory FP16 candidate comparison; same fixture/input/reference, successive-run timing not paired. All accuracy fields match the earlier report, not a byte-level comparison of raw tensors. No playback FPS or general-quality claim.",
+  "report": "Audit/iphone17pro-chunk-copy-memoryfp16-report.json",
+  "reportSHA256": "7334630940ccb15f5bea20c4ef8a0cf5ff35df730404af154e4c9b29131142ca",
+  "baselineReport": "Audit/iphone17pro-memoryfp16-repeat-memoryfp16-report.json",
+  "baselineReportSHA256": "73cb5ba892a730b827b9766c6e300723bd077fbfb76f46faa99c3fdc8e450b11",
+  "hardware": "iPhone18,1",
+  "operatingSystem": "Version 27.0 (Build 24A435)",
+  "swiftDebugCompilation": false,
+  "modelVariant": "memoryfp16",
+  "mode": "CPU + GPU",
+  "fixtureSHA256": "f6b8e78c142538375ff6bf6fee5516975543f06e2f0780f959ffd3abc0dbbc9f",
+  "tensorCopyImplementation": "owned-float32-chunk-copy.v1",
+  "passed": true,
+  "completed": true,
+  "thermalStateAtStart": "nominal",
+  "thermalStateAtEnd": "nominal",
+  "reportedError": null,
+  "frames": 20,
+  "allFramesPassed": true,
+  "minimumMaskIoU": 0.9968039772727273,
+  "minimumPointerCosine": 0.9989310422512354,
+  "minimumMemoryCosine": 0.9961403122331987,
+  "allStateCountsCorrect": true,
+  "allInputHashesMatchBaseline": true,
+  "allReportedAccuracyAndStateFieldsMatchBaseline": true,
+  "warmFramesPerRun": 19,
+  "warmMilliseconds": {
+    "before": {
+      "copyAndValidationMean": 8.362133769735106,
+      "predictionAndStateMean": 71.90011622993839,
+      "predictionAndStateMedian": 64.8945833381731,
+      "propagatorMean": 38.75330701856384,
+      "propagatorMedian": 32.35129166569095
+    },
+    "after": {
+      "copyAndValidationMean": 2.095837721227374,
+      "predictionAndStateMean": 64.90246929828764,
+      "predictionAndStateMedian": 58.95016666909214,
+      "propagatorMean": 38.29479824344162,
+      "propagatorMedian": 32.504041664651595
+    }
+  },
+  "copyReductionPercent": 74.93656787920811,
+  "sessionMeanReductionPercent": 9.732455660116178,
+  "conclusion": "Both Original and Memory FP16 post-change numerical gates are now complete. Retain bulk copying. No further fixed-fixture repeat required for this change; future speed work should target actual model calls with existing checks preserved."
+}
