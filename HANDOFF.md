@@ -1,6 +1,33 @@
 # ByteWave segmentation: continuation handoff
 
-## Current step: isolate current FP16 propagator with Neural Engine permitted
+## Current step: FP16 NE propagator passed Debug; Release timing pending
+
+User report f9ac2a27-378a-42c2-9ab7-4c79bc5b22bc.json is archived byte-for-byte
+as `Audit/iphone17pro-memoryfp16-ne-propagator-debug-report.json`; SHA256
+893f4d9429f43064e852b5c3c0e0a9aad319347563afe46a2648f3eaf76ad852.
+Physical iPhone18,1 / iOS 27.0 (24A435), current memoryfp16 fixture and package
+provenance, GPU + NE propagator. Requested units match the intended isolation:
+Propagator CPU_AND_NE, all other components CPU_AND_GPU. All 20 frames pass;
+minimum mask IoU 0.996092, pointer cosine 0.996693, memory cosine 0.993702.
+Final state 20 accepted / 7 spatial / 16 pointers; both thermal snapshots nominal.
+Input frame identities match the archived current FP16 GPU shader-capture run.
+
+The report explicitly records swiftDebugCompilation=true. Excluding the first
+call of each component, encoder median is 31.580 ms and propagator 220.296 ms.
+Do not compare these as controlled latency results against Release GPU or claim
+actual NE execution. Correctness passed for this fixture; speed remains pending.
+No model or gate changes are indicated. Next user action is the same mode/model
+on 17 Pro with Run scheme configuration explicitly set to Release, then share
+the temporal report. No further Instruments capture or package preparation.
+
+The preceding local cleanup added ignored LocalArtifacts/ and assets/. User was
+given commands to move traces/exports and back up then restore the tracked Xcode
+scheme. Its tracked Run configuration is Debug, consistent with this report.
+Use LocalArtifacts/profiling/ for future recordings/exports; keep video assets
+at assets/ so existing commands work. User-facing commands stay in chat. Offline
+JSON/identity checks only; no assistant tests, builds, inference or benchmarks.
+
+## Earlier: isolate current FP16 propagator with Neural Engine permitted
 
 User chose to continue optimizing EdgeTAM and asked how the original Neural
 Engine goal fits. Keep the current working model and on-demand video architecture.

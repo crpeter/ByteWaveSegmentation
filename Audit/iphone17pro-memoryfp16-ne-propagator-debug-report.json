@@ -1,0 +1,1198 @@
+{
+  "activeFrameIndex" : 19,
+  "cancelled" : false,
+  "compileAndLoadMilliseconds" : {
+    "ImageEncoder" : 399.62333333096467,
+    "InitialMemoryEncoder" : 107.21312499663327,
+    "Initializer" : 147.47920833178796,
+    "Propagator" : 17951.299458334688
+  },
+  "completed" : true,
+  "contract" : "bytewave.edgetam-temporal-owned.v2",
+  "diagnosticPropagator" : {
+    "baselineFixtureSHA256" : "80bfbde3da5d8d650a68d60a1f61e2da0050abbe576e0bc848da46d640298455",
+    "candidateReportSHA256" : "36f8539aa651b010c4fd2321a13925aaf004a415d4feb1ff840d4c96a70b962e",
+    "contract" : "bytewave.propagator-attention.diagnostic.v1",
+    "pairedReportSHA256" : "7025a100b04591511fcad5d8519a44d182902fc55df743b4c4486dc5a576f5c2",
+    "precisionPolicy" : "memory-sdpa-fp16-only.diagnostic.v1",
+    "variant" : "memoryfp16"
+  },
+  "fixtureSHA256" : "f6b8e78c142538375ff6bf6fee5516975543f06e2f0780f959ffd3abc0dbbc9f",
+  "frames" : [
+    {
+      "foregroundFraction" : 0.038055419921875,
+      "index" : 0,
+      "inputBGRASHA256" : "58af78b22a89b99e8b39aac3aa50950136c5975ab68e186c3801366c329c5cf7",
+      "maskIoUAgainstMacCoreML" : 0.9995991983967936,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 2191.8725833384087,
+        "InitialMemoryEncoder" : 1588.2651249994524,
+        "Initializer" : 1024.61545834376
+      },
+      "outputs" : {
+        "best_iou" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 0.0018811821937561035
+        },
+        "low_res_mask" : {
+          "cosineSimilarity" : 0.9999854104946446,
+          "maximumAbsoluteError" : 0.484375
+        },
+        "memory_features" : {
+          "cosineSimilarity" : 0.9969402137879336,
+          "maximumAbsoluteError" : 2.870361328125
+        },
+        "memory_positions" : {
+          "cosineSimilarity" : 1.0000000000000002,
+          "maximumAbsoluteError" : 0
+        },
+        "object_pointer" : {
+          "cosineSimilarity" : 0.9995555021727744,
+          "maximumAbsoluteError" : 0.048922836780548096
+        },
+        "object_score" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 0.03125
+        }
+      },
+      "passed" : true,
+      "predictionAndStateMillisecondsDiagnosticOnly" : 5039.4047500012675,
+      "ptsDenominator" : 1,
+      "ptsNumerator" : 0,
+      "sameObjectPresence" : true,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5140833236509934,
+        "ImageEncoder.inputPreparation" : 0.20974999642930925,
+        "ImageEncoder.outputCopyAndValidation" : 134.95470833731815,
+        "InitialMemoryEncoder.beforePredictionHook" : 0.7536249904660508,
+        "InitialMemoryEncoder.inputPreparation" : 1.0099583305418491,
+        "InitialMemoryEncoder.outputCopyAndValidation" : 1.6589166625635698,
+        "Initializer.beforePredictionHook" : 0.955416660872288,
+        "Initializer.inputPreparation" : 2.444541663862765,
+        "Initializer.outputCopyAndValidation" : 28.83429166104179,
+        "state.commit" : 63.19600000279024
+      },
+      "sourceImageSHA256" : "df4fd26c6e7c6cce4cd9e6c04ace316788f125eb4f953f0aad96882e7b474dd9",
+      "state" : {
+        "acceptedFrames" : 1,
+        "pointerEntries" : 1,
+        "spatialEntries" : 1
+      }
+    },
+    {
+      "foregroundFraction" : 0.04010009765625,
+      "index" : 1,
+      "inputBGRASHA256" : "8e008f2d5fca0e7567956ad3929a07a86d2f3a664574fc09915cd9a05bbca145",
+      "maskIoUAgainstMacCoreML" : 0.99885888170407,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 43.53970833471976,
+        "Propagator" : 255.05537500430364
+      },
+      "outputs" : {
+        "best_iou" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 2.956390380859375e-05
+        },
+        "low_res_mask" : {
+          "cosineSimilarity" : 0.999962611354773,
+          "maximumAbsoluteError" : 1.515625
+        },
+        "memory_features" : {
+          "cosineSimilarity" : 0.9957117250843774,
+          "maximumAbsoluteError" : 2.7734375
+        },
+        "memory_positions" : {
+          "cosineSimilarity" : 1.0000000000000002,
+          "maximumAbsoluteError" : 0
+        },
+        "object_pointer" : {
+          "cosineSimilarity" : 0.9997034929779723,
+          "maximumAbsoluteError" : 0.0498046875
+        },
+        "object_score" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 0.0546875
+        }
+      },
+      "passed" : true,
+      "predictionAndStateMillisecondsDiagnosticOnly" : 545.0072916719364,
+      "ptsDenominator" : 30,
+      "ptsNumerator" : 1,
+      "sameObjectPresence" : true,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 2.5821250019362196,
+        "ImageEncoder.inputPreparation" : 0.05016666545998305,
+        "ImageEncoder.outputCopyAndValidation" : 120.46116666169837,
+        "Propagator.beforePredictionHook" : 0.710333333699964,
+        "Propagator.inputPreparation" : 0.7141249952837825,
+        "Propagator.outputCopyAndValidation" : 32.07399998791516,
+        "state.commit" : 67.01491665444337,
+        "state.pack" : 22.75375000317581
+      },
+      "sourceImageSHA256" : "8c59ab89ffc2586f78ef4ef021e62e9747201bc5ef42e32d8f6efa7854618b3f",
+      "state" : {
+        "acceptedFrames" : 2,
+        "pointerEntries" : 2,
+        "spatialEntries" : 2
+      }
+    },
+    {
+      "foregroundFraction" : 0.04107666015625,
+      "index" : 2,
+      "inputBGRASHA256" : "1d709e93ecd9a6362bbb68acc70b7f4896392a96d68362362757982c4e4f8aed",
+      "maskIoUAgainstMacCoreML" : 0.9988864142538976,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 31.509166670730338,
+        "Propagator" : 223.37824999704026
+      },
+      "outputs" : {
+        "best_iou" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 1.6927719116210938e-05
+        },
+        "low_res_mask" : {
+          "cosineSimilarity" : 0.9999651846102251,
+          "maximumAbsoluteError" : 1.890625
+        },
+        "memory_features" : {
+          "cosineSimilarity" : 0.9980619217827926,
+          "maximumAbsoluteError" : 2.830078125
+        },
+        "memory_positions" : {
+          "cosineSimilarity" : 1.0000000000000002,
+          "maximumAbsoluteError" : 0
+        },
+        "object_pointer" : {
+          "cosineSimilarity" : 0.9978485146872579,
+          "maximumAbsoluteError" : 0.08984375
+        },
+        "object_score" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 0.0390625
+        }
+      },
+      "passed" : true,
+      "predictionAndStateMillisecondsDiagnosticOnly" : 513.5210833250312,
+      "ptsDenominator" : 15,
+      "ptsNumerator" : 1,
+      "sameObjectPresence" : true,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5381666560424492,
+        "ImageEncoder.inputPreparation" : 0.014916673535481095,
+        "ImageEncoder.outputCopyAndValidation" : 129.93570833350532,
+        "Propagator.beforePredictionHook" : 1.2319999950705096,
+        "Propagator.inputPreparation" : 0.9298333316110075,
+        "Propagator.outputCopyAndValidation" : 33.743833322660066,
+        "state.commit" : 67.75475000904407,
+        "state.pack" : 24.450333337881602
+      },
+      "sourceImageSHA256" : "105621e87fbb3ffbd493d3256d4e672d453603a91bf2db14bfc36226a013f15f",
+      "state" : {
+        "acceptedFrames" : 3,
+        "pointerEntries" : 3,
+        "spatialEntries" : 3
+      }
+    },
+    {
+      "foregroundFraction" : 0.0422210693359375,
+      "index" : 3,
+      "inputBGRASHA256" : "ab01d934adb0f3134494e7172c1244cdd4351f00f436e33d5afa0d5f4662f55a",
+      "maskIoUAgainstMacCoreML" : 0.9985554351751534,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 31.429708338691853,
+        "Propagator" : 218.3340833435068
+      },
+      "outputs" : {
+        "best_iou" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 0.0002194046974182129
+        },
+        "low_res_mask" : {
+          "cosineSimilarity" : 0.999967544516246,
+          "maximumAbsoluteError" : 1.25
+        },
+        "memory_features" : {
+          "cosineSimilarity" : 0.9978753933053853,
+          "maximumAbsoluteError" : 1.62945556640625
+        },
+        "memory_positions" : {
+          "cosineSimilarity" : 1.0000000000000002,
+          "maximumAbsoluteError" : 0
+        },
+        "object_pointer" : {
+          "cosineSimilarity" : 0.999535892222333,
+          "maximumAbsoluteError" : 0.0673828125
+        },
+        "object_score" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 0
+        }
+      },
+      "passed" : true,
+      "predictionAndStateMillisecondsDiagnosticOnly" : 512.6568333362229,
+      "ptsDenominator" : 10,
+      "ptsNumerator" : 1,
+      "sameObjectPresence" : true,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.6265416741371155,
+        "ImageEncoder.inputPreparation" : 0.01274999522138387,
+        "ImageEncoder.outputCopyAndValidation" : 134.97804166399874,
+        "Propagator.beforePredictionHook" : 1.1756666644942015,
+        "Propagator.inputPreparation" : 0.7482916553271934,
+        "Propagator.outputCopyAndValidation" : 33.69629166263621,
+        "state.commit" : 66.36041666206438,
+        "state.pack" : 25.25666667497717
+      },
+      "sourceImageSHA256" : "a5ff112a614abf780a0ee0a275e0890599673f0cf03a84d4e7d0a65abb4a8767",
+      "state" : {
+        "acceptedFrames" : 4,
+        "pointerEntries" : 4,
+        "spatialEntries" : 4
+      }
+    },
+    {
+      "foregroundFraction" : 0.043060302734375,
+      "index" : 4,
+      "inputBGRASHA256" : "50b4bfbae52d317e2fa6c0275aa1fdc69dc4cd6d4d39a9d50c074d3d6c3f012b",
+      "maskIoUAgainstMacCoreML" : 0.9975221238938053,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 31.38629166642204,
+        "Propagator" : 222.5965416582767
+      },
+      "outputs" : {
+        "best_iou" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 0.00011324882507324219
+        },
+        "low_res_mask" : {
+          "cosineSimilarity" : 0.9999741296222191,
+          "maximumAbsoluteError" : 0.78125
+        },
+        "memory_features" : {
+          "cosineSimilarity" : 0.996632061140133,
+          "maximumAbsoluteError" : 4.126953125
+        },
+        "memory_positions" : {
+          "cosineSimilarity" : 1.0000000000000002,
+          "maximumAbsoluteError" : 0
+        },
+        "object_pointer" : {
+          "cosineSimilarity" : 0.9997021541641948,
+          "maximumAbsoluteError" : 0.04052734375
+        },
+        "object_score" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 0.0078125
+        }
+      },
+      "passed" : true,
+      "predictionAndStateMillisecondsDiagnosticOnly" : 515.6355416693259,
+      "ptsDenominator" : 15,
+      "ptsNumerator" : 2,
+      "sameObjectPresence" : true,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5792083393316716,
+        "ImageEncoder.inputPreparation" : 0.012375006917864084,
+        "ImageEncoder.outputCopyAndValidation" : 131.58779167861212,
+        "Propagator.beforePredictionHook" : 1.2532499968074262,
+        "Propagator.inputPreparation" : 0.7430416735587642,
+        "Propagator.outputCopyAndValidation" : 33.577708338270895,
+        "state.commit" : 69.00416666758247,
+        "state.pack" : 24.863250000635162
+      },
+      "sourceImageSHA256" : "62f93ffbadcdcf628dcc60349c18fa0a12df52ccbf0658b2f20312d3d1af018e",
+      "state" : {
+        "acceptedFrames" : 5,
+        "pointerEntries" : 5,
+        "spatialEntries" : 5
+      }
+    },
+    {
+      "foregroundFraction" : 0.042449951171875,
+      "index" : 5,
+      "inputBGRASHA256" : "b87ae417e2595a663f70583eb9f98fc0cb7b6a91d0d1bd9e896f7a75e3fe4696",
+      "maskIoUAgainstMacCoreML" : 0.9978440531800216,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 31.26329166116193,
+        "Propagator" : 223.00124999310356
+      },
+      "outputs" : {
+        "best_iou" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 8.958578109741211e-05
+        },
+        "low_res_mask" : {
+          "cosineSimilarity" : 0.9999745078782503,
+          "maximumAbsoluteError" : 0.921875
+        },
+        "memory_features" : {
+          "cosineSimilarity" : 0.9979874317167605,
+          "maximumAbsoluteError" : 2.31036114692688
+        },
+        "memory_positions" : {
+          "cosineSimilarity" : 1.0000000000000002,
+          "maximumAbsoluteError" : 0
+        },
+        "object_pointer" : {
+          "cosineSimilarity" : 0.9996921692104815,
+          "maximumAbsoluteError" : 0.03564453125
+        },
+        "object_score" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 0.0390625
+        }
+      },
+      "passed" : true,
+      "predictionAndStateMillisecondsDiagnosticOnly" : 521.0867499990854,
+      "ptsDenominator" : 6,
+      "ptsNumerator" : 1,
+      "sameObjectPresence" : true,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.5697083397535607,
+        "ImageEncoder.inputPreparation" : 0.0115416623884812,
+        "ImageEncoder.outputCopyAndValidation" : 135.1416666584555,
+        "Propagator.beforePredictionHook" : 1.2015416577924043,
+        "Propagator.inputPreparation" : 0.7796666614012793,
+        "Propagator.outputCopyAndValidation" : 33.844500008854084,
+        "state.commit" : 69.90295833384153,
+        "state.pack" : 25.33829165622592
+      },
+      "sourceImageSHA256" : "f6a40decba22d155c87c3c1266d596fd2bd6196f17b8aa8a8e331ce6f5cd4e2d",
+      "state" : {
+        "acceptedFrames" : 6,
+        "pointerEntries" : 6,
+        "spatialEntries" : 6
+      }
+    },
+    {
+      "foregroundFraction" : 0.0412139892578125,
+      "index" : 6,
+      "inputBGRASHA256" : "42fe63dfb236efdf052eb2a62713bafa51b5f38e137bb6ad86b9cb2fc2e56e3a",
+      "maskIoUAgainstMacCoreML" : 0.9981488337652721,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 31.680749991210178,
+        "Propagator" : 215.93249999568798
+      },
+      "outputs" : {
+        "best_iou" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 0.00029927492141723633
+        },
+        "low_res_mask" : {
+          "cosineSimilarity" : 0.9999743854431467,
+          "maximumAbsoluteError" : 0.90625
+        },
+        "memory_features" : {
+          "cosineSimilarity" : 0.9937017435767164,
+          "maximumAbsoluteError" : 3.306640625
+        },
+        "memory_positions" : {
+          "cosineSimilarity" : 1.0000000000000002,
+          "maximumAbsoluteError" : 0
+        },
+        "object_pointer" : {
+          "cosineSimilarity" : 0.9995520037879132,
+          "maximumAbsoluteError" : 0.0517578125
+        },
+        "object_score" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 0.0234375
+        }
+      },
+      "passed" : true,
+      "predictionAndStateMillisecondsDiagnosticOnly" : 508.1779583269963,
+      "ptsDenominator" : 5,
+      "ptsNumerator" : 1,
+      "sameObjectPresence" : true,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.6507083307951689,
+        "ImageEncoder.inputPreparation" : 0.013166660210117698,
+        "ImageEncoder.outputCopyAndValidation" : 135.40558333625086,
+        "Propagator.beforePredictionHook" : 1.1277083394816145,
+        "Propagator.inputPreparation" : 0.7580416713608429,
+        "Propagator.outputCopyAndValidation" : 31.606916672899388,
+        "state.commit" : 66.13258333527483,
+        "state.pack" : 24.837249991833232
+      },
+      "sourceImageSHA256" : "2ac9074fac47bc62545f8737795e6a64f267b59a0ad55d10b1a85150bcbaa59f",
+      "state" : {
+        "acceptedFrames" : 7,
+        "pointerEntries" : 7,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "foregroundFraction" : 0.04034423828125,
+      "index" : 7,
+      "inputBGRASHA256" : "7b96b7bf64dbeada41915ad057931b60dad7b1932d465779bf9522cd2939d92a",
+      "maskIoUAgainstMacCoreML" : 0.9984888553078958,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 30.838583334116265,
+        "Propagator" : 215.82558332011104
+      },
+      "outputs" : {
+        "best_iou" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 0.00018036365509033203
+        },
+        "low_res_mask" : {
+          "cosineSimilarity" : 0.9999748503334568,
+          "maximumAbsoluteError" : 0.6875
+        },
+        "memory_features" : {
+          "cosineSimilarity" : 0.9977910200341784,
+          "maximumAbsoluteError" : 2.806640625
+        },
+        "memory_positions" : {
+          "cosineSimilarity" : 1.0000000000000002,
+          "maximumAbsoluteError" : 0
+        },
+        "object_pointer" : {
+          "cosineSimilarity" : 0.9994629562883136,
+          "maximumAbsoluteError" : 0.046142578125
+        },
+        "object_score" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 0.0234375
+        }
+      },
+      "passed" : true,
+      "predictionAndStateMillisecondsDiagnosticOnly" : 503.77441666205414,
+      "ptsDenominator" : 30,
+      "ptsNumerator" : 7,
+      "sameObjectPresence" : true,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.6530833343276754,
+        "ImageEncoder.inputPreparation" : 0.012083328329026699,
+        "ImageEncoder.outputCopyAndValidation" : 130.77658333349973,
+        "Propagator.beforePredictionHook" : 1.0522499942453578,
+        "Propagator.inputPreparation" : 0.7267500041052699,
+        "Propagator.outputCopyAndValidation" : 32.70879166666418,
+        "state.commit" : 66.31816667504609,
+        "state.pack" : 24.829958332702518
+      },
+      "sourceImageSHA256" : "bdc67ced61153a28b0569c2781bdb6aff68dd07dd278389e9ec387fe11e9dc9a",
+      "state" : {
+        "acceptedFrames" : 8,
+        "pointerEntries" : 8,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "foregroundFraction" : 0.0402069091796875,
+      "index" : 8,
+      "inputBGRASHA256" : "3457655e8d4863821b746069b63d24fac077c2380d8325af73947ec3e440ed5e",
+      "maskIoUAgainstMacCoreML" : 0.9984842743463433,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 30.973041662946343,
+        "Propagator" : 222.8621666727122
+      },
+      "outputs" : {
+        "best_iou" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 0.0001437067985534668
+        },
+        "low_res_mask" : {
+          "cosineSimilarity" : 0.9999718105177761,
+          "maximumAbsoluteError" : 0.90625
+        },
+        "memory_features" : {
+          "cosineSimilarity" : 0.9977860280936041,
+          "maximumAbsoluteError" : 2.71533203125
+        },
+        "memory_positions" : {
+          "cosineSimilarity" : 1.0000000000000002,
+          "maximumAbsoluteError" : 0
+        },
+        "object_pointer" : {
+          "cosineSimilarity" : 0.9996888252286277,
+          "maximumAbsoluteError" : 0.043701171875
+        },
+        "object_score" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 0.046875
+        }
+      },
+      "passed" : true,
+      "predictionAndStateMillisecondsDiagnosticOnly" : 510.11254166951403,
+      "ptsDenominator" : 15,
+      "ptsNumerator" : 4,
+      "sameObjectPresence" : true,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.6558333261637017,
+        "ImageEncoder.inputPreparation" : 0.012833334039896727,
+        "ImageEncoder.outputCopyAndValidation" : 131.35199999669567,
+        "Propagator.beforePredictionHook" : 1.3031666749157012,
+        "Propagator.inputPreparation" : 0.747083337046206,
+        "Propagator.outputCopyAndValidation" : 31.51616666582413,
+        "state.commit" : 65.96466666087508,
+        "state.pack" : 24.69366666628048
+      },
+      "sourceImageSHA256" : "74ab3b24632b67dd4d82592166b5c02da84d02aa8a00d0aeff6724b6e98d9816",
+      "state" : {
+        "acceptedFrames" : 9,
+        "pointerEntries" : 9,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "foregroundFraction" : 0.0402984619140625,
+      "index" : 9,
+      "inputBGRASHA256" : "3697fa0a91761fb6403bcdeb4ca1971571d745a123f8cc6df0d00ec9d30f6636",
+      "maskIoUAgainstMacCoreML" : 0.9988644965934897,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 31.586583325406536,
+        "Propagator" : 222.82170833204873
+      },
+      "outputs" : {
+        "best_iou" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 0.00018012523651123047
+        },
+        "low_res_mask" : {
+          "cosineSimilarity" : 0.9999765553854179,
+          "maximumAbsoluteError" : 0.796875
+        },
+        "memory_features" : {
+          "cosineSimilarity" : 0.996114373902911,
+          "maximumAbsoluteError" : 3.505859375
+        },
+        "memory_positions" : {
+          "cosineSimilarity" : 1.0000000000000002,
+          "maximumAbsoluteError" : 0
+        },
+        "object_pointer" : {
+          "cosineSimilarity" : 0.9989072271347998,
+          "maximumAbsoluteError" : 0.06573486328125
+        },
+        "object_score" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 0.0234375
+        }
+      },
+      "passed" : true,
+      "predictionAndStateMillisecondsDiagnosticOnly" : 516.1160833231406,
+      "ptsDenominator" : 10,
+      "ptsNumerator" : 3,
+      "sameObjectPresence" : true,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.6542500050272793,
+        "ImageEncoder.inputPreparation" : 0.012666670954786241,
+        "ImageEncoder.outputCopyAndValidation" : 131.33433333132416,
+        "Propagator.beforePredictionHook" : 1.3330833317013457,
+        "Propagator.inputPreparation" : 0.7632500055478886,
+        "Propagator.outputCopyAndValidation" : 33.94587499496993,
+        "state.commit" : 68.5807499976363,
+        "state.pack" : 25.049666670383886
+      },
+      "sourceImageSHA256" : "0a7e27e0429e46facf8d23eb41c4ab25e8cebf9b579a9f5c679125bb06cdc782",
+      "state" : {
+        "acceptedFrames" : 10,
+        "pointerEntries" : 10,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "foregroundFraction" : 0.0413360595703125,
+      "index" : 10,
+      "inputBGRASHA256" : "1ff2aa7d665d1eb0d4e8d9bd4e1952dac297e4f39e14bd1486434c1a4c4a0777",
+      "maskIoUAgainstMacCoreML" : 0.9974160206718347,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 31.59583333763294,
+        "Propagator" : 219.87975000229198
+      },
+      "outputs" : {
+        "best_iou" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 0.00015604496002197266
+        },
+        "low_res_mask" : {
+          "cosineSimilarity" : 0.9999750040262261,
+          "maximumAbsoluteError" : 0.703125
+        },
+        "memory_features" : {
+          "cosineSimilarity" : 0.9970952256327432,
+          "maximumAbsoluteError" : 2.18359375
+        },
+        "memory_positions" : {
+          "cosineSimilarity" : 1.0000000000000002,
+          "maximumAbsoluteError" : 0
+        },
+        "object_pointer" : {
+          "cosineSimilarity" : 0.9993176652343763,
+          "maximumAbsoluteError" : 0.06011962890625
+        },
+        "object_score" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 0.046875
+        }
+      },
+      "passed" : true,
+      "predictionAndStateMillisecondsDiagnosticOnly" : 509.87875000282656,
+      "ptsDenominator" : 3,
+      "ptsNumerator" : 1,
+      "sameObjectPresence" : true,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.711458342266269,
+        "ImageEncoder.inputPreparation" : 0.012166667147539556,
+        "ImageEncoder.outputCopyAndValidation" : 134.3793749983888,
+        "Propagator.beforePredictionHook" : 1.2134583230363205,
+        "Propagator.inputPreparation" : 0.695833339705132,
+        "Propagator.outputCopyAndValidation" : 31.40545832866337,
+        "state.commit" : 65.41291667963378,
+        "state.pack" : 24.53970833448693
+      },
+      "sourceImageSHA256" : "e4257f051a23bb1524c2a20ae52414fa2791055db7e7a7dbb167f3f38af38eda",
+      "state" : {
+        "acceptedFrames" : 11,
+        "pointerEntries" : 11,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "foregroundFraction" : 0.042816162109375,
+      "index" : 11,
+      "inputBGRASHA256" : "62a9901a46daf18ece1757e99d1618dae119ac3f0b64c241e04ab5d5600d344a",
+      "maskIoUAgainstMacCoreML" : 0.9960923623445825,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 31.055333340191282,
+        "Propagator" : 216.33441667654552
+      },
+      "outputs" : {
+        "best_iou" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 0.00044989585876464844
+        },
+        "low_res_mask" : {
+          "cosineSimilarity" : 0.9999755981866559,
+          "maximumAbsoluteError" : 0.75
+        },
+        "memory_features" : {
+          "cosineSimilarity" : 0.9970047785816654,
+          "maximumAbsoluteError" : 2.430908203125
+        },
+        "memory_positions" : {
+          "cosineSimilarity" : 1.0000000000000002,
+          "maximumAbsoluteError" : 0
+        },
+        "object_pointer" : {
+          "cosineSimilarity" : 0.9993771265047515,
+          "maximumAbsoluteError" : 0.06005859375
+        },
+        "object_score" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 0.0546875
+        }
+      },
+      "passed" : true,
+      "predictionAndStateMillisecondsDiagnosticOnly" : 502.88908333459403,
+      "ptsDenominator" : 30,
+      "ptsNumerator" : 11,
+      "sameObjectPresence" : true,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.7417916640406474,
+        "ImageEncoder.inputPreparation" : 0.012666670954786241,
+        "ImageEncoder.outputCopyAndValidation" : 130.29895832005423,
+        "Propagator.beforePredictionHook" : 1.2232500012032688,
+        "Propagator.inputPreparation" : 0.7252916693687439,
+        "Propagator.outputCopyAndValidation" : 31.22962499037385,
+        "state.commit" : 66.62233333918266,
+        "state.pack" : 24.61224999569822
+      },
+      "sourceImageSHA256" : "399ed04cfbb7808f567feb7165eb91011183ef33b2974d8b0bda2d917c2561d5",
+      "state" : {
+        "acceptedFrames" : 12,
+        "pointerEntries" : 12,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "foregroundFraction" : 0.0449981689453125,
+      "index" : 12,
+      "inputBGRASHA256" : "de0bfe6ffec896918bba9924222f6deeb315e830949b030a52a1b0f698cd5777",
+      "maskIoUAgainstMacCoreML" : 0.9986445272788885,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 30.682500000693835,
+        "Propagator" : 216.41787499538623
+      },
+      "outputs" : {
+        "best_iou" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 9.417533874511719e-06
+        },
+        "low_res_mask" : {
+          "cosineSimilarity" : 0.9999749036865053,
+          "maximumAbsoluteError" : 0.71875
+        },
+        "memory_features" : {
+          "cosineSimilarity" : 0.9977393174658108,
+          "maximumAbsoluteError" : 1.481689453125
+        },
+        "memory_positions" : {
+          "cosineSimilarity" : 1.0000000000000002,
+          "maximumAbsoluteError" : 0
+        },
+        "object_pointer" : {
+          "cosineSimilarity" : 0.9995147145126588,
+          "maximumAbsoluteError" : 0.0540008544921875
+        },
+        "object_score" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 0.0234375
+        }
+      },
+      "passed" : true,
+      "predictionAndStateMillisecondsDiagnosticOnly" : 506.78379167220555,
+      "ptsDenominator" : 5,
+      "ptsNumerator" : 2,
+      "sameObjectPresence" : true,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.7116250053513795,
+        "ImageEncoder.inputPreparation" : 0.012874996173195541,
+        "ImageEncoder.outputCopyAndValidation" : 129.7154583298834,
+        "Propagator.beforePredictionHook" : 1.3575416669482365,
+        "Propagator.inputPreparation" : 0.747416663216427,
+        "Propagator.outputCopyAndValidation" : 34.12479166581761,
+        "state.commit" : 69.00479165778961,
+        "state.pack" : 23.976916665560566
+      },
+      "sourceImageSHA256" : "ff7db0909555b0146117f02782d1239dee34abe6bb449a74ed55810aecd501b9",
+      "state" : {
+        "acceptedFrames" : 13,
+        "pointerEntries" : 13,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "foregroundFraction" : 0.0473480224609375,
+      "index" : 13,
+      "inputBGRASHA256" : "f5d58f3a3738790c2aaf4b72ab67345c3efa244b377ba0c4bf00f42145162254",
+      "maskIoUAgainstMacCoreML" : 0.9987113402061856,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 30.992041662102565,
+        "Propagator" : 220.37033333617728
+      },
+      "outputs" : {
+        "best_iou" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 2.1398067474365234e-05
+        },
+        "low_res_mask" : {
+          "cosineSimilarity" : 0.9999751335124591,
+          "maximumAbsoluteError" : 0.734375
+        },
+        "memory_features" : {
+          "cosineSimilarity" : 0.9972538017188319,
+          "maximumAbsoluteError" : 2.26806640625
+        },
+        "memory_positions" : {
+          "cosineSimilarity" : 1.0000000000000002,
+          "maximumAbsoluteError" : 0
+        },
+        "object_pointer" : {
+          "cosineSimilarity" : 0.9996712353028364,
+          "maximumAbsoluteError" : 0.04931640625
+        },
+        "object_score" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 0.015625
+        }
+      },
+      "passed" : true,
+      "predictionAndStateMillisecondsDiagnosticOnly" : 512.2372499899939,
+      "ptsDenominator" : 30,
+      "ptsNumerator" : 13,
+      "sameObjectPresence" : true,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.8160416764440015,
+        "ImageEncoder.inputPreparation" : 0.01254167000297457,
+        "ImageEncoder.outputCopyAndValidation" : 135.13141665316653,
+        "Propagator.beforePredictionHook" : 1.3327916676644236,
+        "Propagator.inputPreparation" : 0.7374583365162835,
+        "Propagator.outputCopyAndValidation" : 31.45037499780301,
+        "state.commit" : 66.13166666647885,
+        "state.pack" : 25.230041675968096
+      },
+      "sourceImageSHA256" : "f38ef5b23bc0ab5ee6d09f4713dcaaa89cebee59b82ec68ce9f7a55f38a5fbe1",
+      "state" : {
+        "acceptedFrames" : 14,
+        "pointerEntries" : 14,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "foregroundFraction" : 0.049774169921875,
+      "index" : 14,
+      "inputBGRASHA256" : "33d5ecea20b256d38675ed3a93530d2dabe264eecce84fbe84962988d9dbbeda",
+      "maskIoUAgainstMacCoreML" : 0.9987741342323015,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 31.670916665461846,
+        "Propagator" : 224.2733750026673
+      },
+      "outputs" : {
+        "best_iou" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 2.6702880859375e-05
+        },
+        "low_res_mask" : {
+          "cosineSimilarity" : 0.9999742882841537,
+          "maximumAbsoluteError" : 0.671875
+        },
+        "memory_features" : {
+          "cosineSimilarity" : 0.9978978133947011,
+          "maximumAbsoluteError" : 1.517822265625
+        },
+        "memory_positions" : {
+          "cosineSimilarity" : 1.0000000000000002,
+          "maximumAbsoluteError" : 0
+        },
+        "object_pointer" : {
+          "cosineSimilarity" : 0.9995490396869826,
+          "maximumAbsoluteError" : 0.044189453125
+        },
+        "object_score" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 0
+        }
+      },
+      "passed" : true,
+      "predictionAndStateMillisecondsDiagnosticOnly" : 515.03595833492,
+      "ptsDenominator" : 15,
+      "ptsNumerator" : 7,
+      "sameObjectPresence" : true,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.8025416609598324,
+        "ImageEncoder.inputPreparation" : 0.012375006917864084,
+        "ImageEncoder.outputCopyAndValidation" : 130.42175000009593,
+        "Propagator.beforePredictionHook" : 1.2909166689496487,
+        "Propagator.inputPreparation" : 0.7477083418052644,
+        "Propagator.outputCopyAndValidation" : 33.8951666635694,
+        "state.commit" : 67.99454166321084,
+        "state.pack" : 23.894166661193594
+      },
+      "sourceImageSHA256" : "19ac8be183ee9a5566c9bad4c3b46cc2fde023da81f6ee81650fd7e3b87a54b1",
+      "state" : {
+        "acceptedFrames" : 15,
+        "pointerEntries" : 15,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "foregroundFraction" : 0.0540924072265625,
+      "index" : 15,
+      "inputBGRASHA256" : "663b4f38566494757c4d9580e038166f90749fa57ce872ed6ee189a4935362d9",
+      "maskIoUAgainstMacCoreML" : 0.9980270574971815,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 31.86829165497329,
+        "Propagator" : 220.38216666260269
+      },
+      "outputs" : {
+        "best_iou" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 9.822845458984375e-05
+        },
+        "low_res_mask" : {
+          "cosineSimilarity" : 0.9999745946290047,
+          "maximumAbsoluteError" : 0.640625
+        },
+        "memory_features" : {
+          "cosineSimilarity" : 0.9986126802787971,
+          "maximumAbsoluteError" : 1.050537109375
+        },
+        "memory_positions" : {
+          "cosineSimilarity" : 1.0000000000000002,
+          "maximumAbsoluteError" : 0
+        },
+        "object_pointer" : {
+          "cosineSimilarity" : 0.9995093352013593,
+          "maximumAbsoluteError" : 0.0458984375
+        },
+        "object_score" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 0.0390625
+        }
+      },
+      "passed" : true,
+      "predictionAndStateMillisecondsDiagnosticOnly" : 515.2755833405536,
+      "ptsDenominator" : 2,
+      "ptsNumerator" : 1,
+      "sameObjectPresence" : true,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.8192083332687616,
+        "ImageEncoder.inputPreparation" : 0.012291668099351227,
+        "ImageEncoder.outputCopyAndValidation" : 134.34258333290927,
+        "Propagator.beforePredictionHook" : 1.4204583421815187,
+        "Propagator.inputPreparation" : 0.7185416761785746,
+        "Propagator.outputCopyAndValidation" : 33.7335416697897,
+        "state.commit" : 67.31883333122823,
+        "state.pack" : 24.627958322525956
+      },
+      "sourceImageSHA256" : "a1f6f364fc6b52333e04ce09c28846a3605aa2a56ba3ff3614dcdd52533b987d",
+      "state" : {
+        "acceptedFrames" : 16,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "foregroundFraction" : 0.057342529296875,
+      "index" : 16,
+      "inputBGRASHA256" : "c84e01f27d2df4e28edfbe83a44a6985fc4d62b16800a86476804f2a78280435",
+      "maskIoUAgainstMacCoreML" : 0.9992021276595745,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 32.25200000451878,
+        "Propagator" : 220.22120832116343
+      },
+      "outputs" : {
+        "best_iou" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 0.00012093782424926758
+        },
+        "low_res_mask" : {
+          "cosineSimilarity" : 0.9999741970191306,
+          "maximumAbsoluteError" : 0.59375
+        },
+        "memory_features" : {
+          "cosineSimilarity" : 0.9949966449487078,
+          "maximumAbsoluteError" : 4.1611328125
+        },
+        "memory_positions" : {
+          "cosineSimilarity" : 1.0000000000000002,
+          "maximumAbsoluteError" : 0
+        },
+        "object_pointer" : {
+          "cosineSimilarity" : 0.999596400440558,
+          "maximumAbsoluteError" : 0.0604248046875
+        },
+        "object_score" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 0.03125
+        }
+      },
+      "passed" : true,
+      "predictionAndStateMillisecondsDiagnosticOnly" : 513.359083342948,
+      "ptsDenominator" : 15,
+      "ptsNumerator" : 8,
+      "sameObjectPresence" : true,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 1.0073750017909333,
+        "ImageEncoder.inputPreparation" : 0.01254167000297457,
+        "ImageEncoder.outputCopyAndValidation" : 134.79333333089016,
+        "Propagator.beforePredictionHook" : 1.3456666638376191,
+        "Propagator.inputPreparation" : 0.8479166572215036,
+        "Propagator.outputCopyAndValidation" : 32.18112500326242,
+        "state.commit" : 66.05316666536964,
+        "state.pack" : 24.613083340227604
+      },
+      "sourceImageSHA256" : "9769759d13e3292cd9f6c52fda09ac76903c406362fe801c399c4fa7a1b05a53",
+      "state" : {
+        "acceptedFrames" : 17,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "foregroundFraction" : 0.0594482421875,
+      "index" : 17,
+      "inputBGRASHA256" : "5442ed0a1432b87aa5a922cd6ea24cf429df0f3c1a7678824e2961c76bada8f8",
+      "maskIoUAgainstMacCoreML" : 0.9982046678635548,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 31.81300000869669,
+        "Propagator" : 218.67408334219363
+      },
+      "outputs" : {
+        "best_iou" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 0.0001507401466369629
+        },
+        "low_res_mask" : {
+          "cosineSimilarity" : 0.9999690380644418,
+          "maximumAbsoluteError" : 0.703125
+        },
+        "memory_features" : {
+          "cosineSimilarity" : 0.9970310681669834,
+          "maximumAbsoluteError" : 2.43017578125
+        },
+        "memory_positions" : {
+          "cosineSimilarity" : 1.0000000000000002,
+          "maximumAbsoluteError" : 0
+        },
+        "object_pointer" : {
+          "cosineSimilarity" : 0.9996250336608996,
+          "maximumAbsoluteError" : 0.0400390625
+        },
+        "object_score" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 0.0390625
+        }
+      },
+      "passed" : true,
+      "predictionAndStateMillisecondsDiagnosticOnly" : 506.37870833452325,
+      "ptsDenominator" : 30,
+      "ptsNumerator" : 17,
+      "sameObjectPresence" : true,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.8471666660625488,
+        "ImageEncoder.inputPreparation" : 0.013125012628734112,
+        "ImageEncoder.outputCopyAndValidation" : 130.97608333919197,
+        "Propagator.beforePredictionHook" : 1.4203750033630058,
+        "Propagator.inputPreparation" : 0.774750005803071,
+        "Propagator.outputCopyAndValidation" : 31.594291678629816,
+        "state.commit" : 65.60258334502578,
+        "state.pack" : 24.631624997709878
+      },
+      "sourceImageSHA256" : "547d222bd5a2f255779e7afc5269080924c0b7d2475607e930cc59342c0f2a59",
+      "state" : {
+        "acceptedFrames" : 18,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "foregroundFraction" : 0.0604095458984375,
+      "index" : 18,
+      "inputBGRASHA256" : "1b4c8e707ca4374c9c95583c683c7c10dae8d8c5b21907ea6019387055f928ac",
+      "maskIoUAgainstMacCoreML" : 0.9992424242424243,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 31.58004167198669,
+        "Propagator" : 225.62516665493604
+      },
+      "outputs" : {
+        "best_iou" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 0.00014197826385498047
+        },
+        "low_res_mask" : {
+          "cosineSimilarity" : 0.9999694208055083,
+          "maximumAbsoluteError" : 0.6875
+        },
+        "memory_features" : {
+          "cosineSimilarity" : 0.9974462863748798,
+          "maximumAbsoluteError" : 1.9443359375
+        },
+        "memory_positions" : {
+          "cosineSimilarity" : 1.0000000000000002,
+          "maximumAbsoluteError" : 0
+        },
+        "object_pointer" : {
+          "cosineSimilarity" : 0.9986117956501035,
+          "maximumAbsoluteError" : 0.087890625
+        },
+        "object_score" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 0
+        }
+      },
+      "passed" : true,
+      "predictionAndStateMillisecondsDiagnosticOnly" : 512.6902083429741,
+      "ptsDenominator" : 5,
+      "ptsNumerator" : 3,
+      "sameObjectPresence" : true,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.9154583240160719,
+        "ImageEncoder.inputPreparation" : 0.013124998076818883,
+        "ImageEncoder.outputCopyAndValidation" : 130.2049166552024,
+        "Propagator.beforePredictionHook" : 1.479583341279067,
+        "Propagator.inputPreparation" : 0.7418333261739463,
+        "Propagator.outputCopyAndValidation" : 31.4021666708868,
+        "state.commit" : 66.30470833624713,
+        "state.pack" : 24.389583340962417
+      },
+      "sourceImageSHA256" : "a29dd4d4ec155aef133fe670ff73065aa2558101d980f187e24752dd0976bab9",
+      "state" : {
+        "acceptedFrames" : 19,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "foregroundFraction" : 0.06085205078125,
+      "index" : 19,
+      "inputBGRASHA256" : "b4175ba5baafd72ad2c12a0b05a001d70e668cf978af59b003cce7fd519adf8e",
+      "maskIoUAgainstMacCoreML" : 0.9982464929859719,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 31.947666677297093,
+        "Propagator" : 218.39383333281148
+      },
+      "outputs" : {
+        "best_iou" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 2.950429916381836e-05
+        },
+        "low_res_mask" : {
+          "cosineSimilarity" : 0.9999721639714764,
+          "maximumAbsoluteError" : 1
+        },
+        "memory_features" : {
+          "cosineSimilarity" : 0.9966770392733126,
+          "maximumAbsoluteError" : 2.0576171875
+        },
+        "memory_positions" : {
+          "cosineSimilarity" : 1.0000000000000002,
+          "maximumAbsoluteError" : 0
+        },
+        "object_pointer" : {
+          "cosineSimilarity" : 0.996693409734254,
+          "maximumAbsoluteError" : 0.173828125
+        },
+        "object_score" : {
+          "cosineSimilarity" : 1,
+          "maximumAbsoluteError" : 0.0625
+        }
+      },
+      "passed" : true,
+      "predictionAndStateMillisecondsDiagnosticOnly" : 505.11745833500754,
+      "ptsDenominator" : 30,
+      "ptsNumerator" : 19,
+      "sameObjectPresence" : true,
+      "sessionStageMilliseconds" : {
+        "ImageEncoder.beforePredictionHook" : 0.8119166595861316,
+        "ImageEncoder.inputPreparation" : 0.011833340977318585,
+        "ImageEncoder.outputCopyAndValidation" : 129.89541665592697,
+        "Propagator.beforePredictionHook" : 1.5064583421917632,
+        "Propagator.inputPreparation" : 0.7424999930663034,
+        "Propagator.outputCopyAndValidation" : 31.424083339516073,
+        "state.commit" : 66.46166666178033,
+        "state.pack" : 23.8905416772468
+      },
+      "sourceImageSHA256" : "05ef5ea441e42bb439f0a87c950f827d4b3cf5e2e6ddcee5125c2462295137a6",
+      "state" : {
+        "acceptedFrames" : 20,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    }
+  ],
+  "generatedAt" : "2026-09-16T12:39:44Z",
+  "graphRevision" : "dense-points-encoder-fanout.v1",
+  "hardware" : "iPhone18,1",
+  "isIOSAppOnMac" : false,
+  "lastCheckpoint" : "Completed frame 20 comparison",
+  "mode" : "GPU + NE propagator",
+  "modelVariant" : "memoryfp16",
+  "operatingSystem" : "Version 27.0 (Build 24A435)",
+  "passed" : true,
+  "pointNormalizedTopLeft" : [
+    0.4912,
+    0.4706
+  ],
+  "precisionPolicy" : "memory-sdpa-fp16-only.diagnostic.v1",
+  "reference" : "Mac Core ML CPU replay of the passed original-PyTorch comparison fixture",
+  "requestedComputeUnitsByComponent" : {
+    "ImageEncoder" : "CPU_AND_GPU",
+    "InitialMemoryEncoder" : "CPU_AND_GPU",
+    "Initializer" : "CPU_AND_GPU",
+    "Propagator" : "CPU_AND_NE"
+  },
+  "schema" : "bytewave.temporal-device-comparison.v1",
+  "scope" : "20 exact-input sequential predictions with bounded Swift state. Low mask, pointer and memory cosine >= 0.99; low-mask IoU >= 0.95; matching object presence; all model outputs finite. High mask is checked for shape\/finiteness, not compared numerically. No video decoding, sustained playback FPS, or measured hardware utilization.",
+  "sourceModelsManifestSHA256" : "47b7b85eef755ff7a440c0017f232a82ac7213af622d15d30a04f3487e07dd67",
+  "sourceReportSHA256" : "8768eab4331ad57994782ee244861b64f3c3eb27fa6c970cc881a843618af9a6",
+  "swiftDebugCompilation" : true,
+  "tensorCopyImplementation" : "owned-float32-chunk-copy.v1",
+  "thermalStateAtEnd" : "nominal",
+  "thermalStateAtStart" : "nominal",
+  "timingInstrumentation" : "session-stages.v1",
+  "timingScope" : "Model-call wall time excludes input copies, tensor checks, state assembly, reference comparison, checkpoint file I\/O and display. Prediction-and-state time includes input copies\/checks\/state and pre-prediction checkpoint writes. Session stages separately time input preparation, output copy\/validation, state pack\/commit and the before-prediction hook (checkpoint write plus console logging). Stages exclude model calls and need not sum to the full session time; orchestration\/allocation overhead remains. First frame is cold; compile\/load is separate. Neither Debug nor Release fixture timings establish sustained playback FPS or measured hardware utilization.",
+  "verifiedModelFileCount" : 12
+}
