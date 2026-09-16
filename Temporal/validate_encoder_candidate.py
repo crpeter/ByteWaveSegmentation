@@ -100,13 +100,13 @@ class CandidateBackend(v.CoreMLBackend):
         return result
 
 
-def worker(args, status, source):
+def worker(args, status, source, *, backend_class=CandidateBackend, candidate_evidence='report.json'):
     args.output.mkdir(parents=True, exist_ok=False)
     path = args.output / 'report.json'
     report = {'passed': False, 'completed': False, 'readyForDeviceValidation': False,
               'contract': owned.CONTRACT + '.diagnostic', 'reference': 'Pinned original PyTorch; independent history',
               'sourceManifestSHA256': sha(args.run / 'models/manifest.json'),
-              'candidateReportSHA256': sha(args.candidate / 'report.json'), 'candidateVariant': args.variant,
+              'candidateReportSHA256': sha(args.candidate / candidate_evidence), 'candidateVariant': args.variant,
               'upstream': owned.UPSTREAM_REVISION, 'checkpointSHA256': owned.CHECKPOINT_SHA256,
               'encoderComputeUnits': args.encoder_units, 'trackerComputeUnits': 'CPU_ONLY',
               'pointNormalizedTopLeft': status['pointNormalizedTopLeft'],
@@ -116,7 +116,7 @@ def worker(args, status, source):
     try:
         write_json(path, report)
         model = owned.load_reference(args.upstream)
-        backend = CandidateBackend(args, report, path)
+        backend = backend_class(args, report, path)
         state = TemporalState()
         history = {'cond_frame_outputs': {}, 'non_cond_frame_outputs': {}}
         point = [min(max(float(x) * 1024, 0), 1023) for x in status['pointNormalizedTopLeft']]

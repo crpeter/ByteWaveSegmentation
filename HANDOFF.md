@@ -1,6 +1,49 @@
 # ByteWave segmentation: continuation handoff
 
-## Current decision: key-padding experiment closed; retain current FP16 GPU
+## Current work: isolated encoder projection composition, awaiting Mac results
+
+User authorized the next optimization after closing key padding. Target encoder
+(about 22 ms warm on 17 Pro), not another attention variation. Upstream pinned
+edgetam.yaml sets fpn_top_down_levels=[2,3]: high-resolution FPN levels 0/1 each
+apply a 1x1 48/96->256 convolution, followed directly by SAM conv_s0/conv_s1
+256->32/64. Compose each pair into one FP32 1x1 convolution. This is equivalent
+in real arithmetic, but floating-point association changes and must be measured.
+No lower precision, learned-weight retraining, activation changes, or fanout edits.
+The composed constants are derived from the exact serialized source constants.
+
+Temporal/encoder_projection.py loads the serialized dog-09 encoder using the
+same Core ML Tools 9 MIL loader as prior diagnostics. It requires the exact
+two direct single-consumer FP32 1x1 chains, expected shapes and 132 source convs.
+Composes weights/biases in float64 and stores FP32; checks all unrelated ops and
+constant-consuming inputs, composed hashes/source inputs, and all interfaces.
+Preserves original image preprocessing; no new precision or optimization passes.
+Both an unchanged reconversion and the candidate are isolated diagnostic packages.
+
+Temporal/diagnose_encoder_projection.py verifies the complete passing source
+and every package hash. Runs unchanged CPU, candidate CPU, candidate GPU in
+separate 20-frame workers against pinned original PyTorch with independent
+bounded state and unchanged temporal gates. Tracker stays original CPU to isolate
+encoder changes. Also checks all four encoder outputs against same-image original
+CPU, with float32Close required for unchanged control. Reuses existing encoder
+worker through optional backend/evidence parameters; previous defaults preserved.
+Only after all pass: separate GPU paired worker, original/candidate identical
+images, one checked warm-up each per frame, four balanced pairs per frame (80
+pairs). Every measured output must be finite and cosine >=.99 vs original CPU.
+No iPhone speed or sustained FPS inference from Mac timings. Reports checkpoint
+before prediction and on Python errors; native crashes leave partial checkpoints.
+
+User runs --upstream .upstream-edgetam --run .temporal-runs/dog-09 --output
+.temporal-runs/encoder-projection-01. Share root report.json (includes compact
+accuracy and paired summaries); full paired data in paired-summary.json and each
+accuracy mode has report.json/log. Provide full command plus cat in chat. No new
+phone fixture, normal export, Swift model selection or Track a video changes.
+Current memoryfp16 GPU remains selected; no optimization is claimed yet.
+
+Assistant inspected upstream configuration/source and Apple's Core ML Tools 9
+Var/Block implementation, reviewed rewrite/provenance flow, Python AST and diff
+only. No model conversion, inference, tests, builds or benchmarks executed.
+
+## Earlier decision: key-padding experiment closed; retain current FP16 GPU
 
 User supplied ed97737a-129c-4afd-b443-792d81723256.json (current memoryfp16,
 13:16:49Z) and a6727ff9-8b2d-43a9-97ec-72072b93a8f1.json (memoryfp16k4096,
