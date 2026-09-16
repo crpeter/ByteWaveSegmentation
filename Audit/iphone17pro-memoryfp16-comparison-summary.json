@@ -1,5 +1,5 @@
 {
-  "scope": "Two separate 20-frame iPhone runs, original first; warm medians exclude frame zero. No sustained playback FPS, representative quality or statistical significance claim.",
+  "scope": "Four separate 20-frame iPhone runs in original/candidate then candidate/original order. Warm medians exclude frame zero. No sustained playback FPS, representative quality or statistical significance claim.",
   "hardware": "iPhone18,1",
   "operatingSystem": "Version 27.0 (Build 24A435)",
   "mode": "CPU + GPU",
@@ -57,6 +57,55 @@
     "propagator": 51.392380650951154,
     "predictionAndState": 34.305501443226284
   },
-  "next": "Repeat candidate first, original second in the same Release CPU + GPU setup before promotion.",
-  "normalExportPromoted": false
+  "next": "Order check complete; carry memoryfp16 forward into requested-video-frame operation and broader visual/sustained validation. No additional repeat of this fixture is needed. Normal exporter remains unchanged pending deliberate integration.",
+  "normalExportPromoted": false,
+  "reverseOrderRepeat": {
+    "order": [
+      "memoryfp16",
+      "original"
+    ],
+    "runs": {
+      "original": {
+        "report": "Audit/iphone17pro-memoryfp16-repeat-original-report.json",
+        "sha256": "63d2106ff948fec8904653ac87e0e67908fbe5d28893d99acf3e99ea1bb6d7ab",
+        "generatedAt": "2026-09-16T00:32:10Z",
+        "passed": true,
+        "frames": 20,
+        "numericalMetricsExactlyMatchFirstRun": true,
+        "minimumMaskIoU": 0.9968039772727273,
+        "minimumPointerCosine": 0.9989761542919103,
+        "minimumMemoryCosine": 0.9959750418467518,
+        "thermalStateAtStart": "nominal",
+        "thermalStateAtEnd": "nominal",
+        "medianWarmMilliseconds": {
+          "encoder": 21.966708329273388,
+          "propagator": 66.76304167194758,
+          "predictionAndState": 99.99679165775888
+        }
+      },
+      "memoryfp16": {
+        "report": "Audit/iphone17pro-memoryfp16-repeat-memoryfp16-report.json",
+        "sha256": "73cb5ba892a730b827b9766c6e300723bd077fbfb76f46faa99c3fdc8e450b11",
+        "generatedAt": "2026-09-16T00:31:46Z",
+        "passed": true,
+        "frames": 20,
+        "numericalMetricsExactlyMatchFirstRun": true,
+        "minimumMaskIoU": 0.9968039772727273,
+        "minimumPointerCosine": 0.9989310422512354,
+        "minimumMemoryCosine": 0.9961403122331987,
+        "thermalStateAtStart": "nominal",
+        "thermalStateAtEnd": "nominal",
+        "medianWarmMilliseconds": {
+          "encoder": 21.792333340272307,
+          "propagator": 32.35129166569095,
+          "predictionAndState": 64.8945833381731
+        }
+      }
+    },
+    "medianLatencyReductionPercent": {
+      "propagator": 51.54311299258212,
+      "predictionAndState": 35.10333455469633
+    },
+    "fixtureAndInputIdentitiesMatchFirstRuns": true
+  }
 }

@@ -32,9 +32,21 @@ state 99.337/65.259 ms. Candidate latency reductions are 51.39% for propagation
 and 34.31% for prediction/state. Both minimum mask IoUs are 0.996804; candidate
 minimum pointer/memory cosines are 0.998931/0.996140. Full uploaded reports and
 summary are in Audit/iphone17pro-memoryfp16-*.json. These are separate short
-runs, original first; no sustained FPS or broader quality claim. Next: repeat
-candidate first then original with the same Release GPU setup to check order
-effects. Original normal export remains selected; no promotion yet.
+runs, original first; no sustained FPS or broader quality claim.
+
+The reverse-order repeat also passed on the same device/OS/Release GPU setup:
+candidate completed at 00:31:46Z, original at 00:32:10Z on 2026-09-16. Warm
+original/candidate propagator medians are 66.763/32.351 ms, prediction/state
+99.997/64.895 ms, encoder 21.967/21.792 ms. Reductions are 51.54% and 35.10%.
+Fixture and input identities match the first runs; every per-frame numerical
+comparison metric and bounded state exactly matches its same-variant first run.
+Both pass all 20 frames with nominal thermals. Reports are archived as
+Audit/iphone17pro-memoryfp16-repeat-*-report.json; comparison-summary.json
+contains both orders. The speed benefit survives reversed run order. No more
+repeats of this fixed fixture are needed. Carry memoryfp16 forward to requested-
+video-frame operation and broader visual/sustained validation. Original normal
+export remains selected until deliberate integration; this evidence does not
+validate unseen clips or sustained playback.
 
 ## Mac pass: isolated memory-attention precision
 
