@@ -12,14 +12,23 @@ enum OwnedDeviceMode: String, CaseIterable, Identifiable, Sendable {
     case neuralEngine = "CPU + Neural Engine"
     case encoderNeuralEngine = "Encoder NE + CPU tracker"
     case gpu = "CPU + GPU"
+    case propagatorNeuralEngine = "GPU + NE propagator"
     case automatic = "Automatic"
     var id: String { rawValue }
+    var supportsMemoryFP16: Bool {
+        switch self {
+        case .cpu, .gpu, .propagatorNeuralEngine: return true
+        case .neuralEngine, .encoderNeuralEngine, .automatic: return false
+        }
+    }
     func units(for component: String) -> MLComputeUnits {
         switch self {
         case .cpu: return .cpuOnly
         case .neuralEngine: return .cpuAndNeuralEngine
         case .encoderNeuralEngine: return component == "ImageEncoder" ? .cpuAndNeuralEngine : .cpuOnly
         case .gpu: return .cpuAndGPU
+        case .propagatorNeuralEngine:
+            return component == "Propagator" ? .cpuAndNeuralEngine : .cpuAndGPU
         case .automatic: return .all
         }
     }
@@ -240,8 +249,8 @@ actor OwnedTemporalProbeRunner {
             guard fixture.diagnosticPropagator?.variant == expectedPropagatorVariant else {
                 throw OwnedTemporalError.invalid("Prepared fixture does not match the selected model variant.")
             }
-            if fixture.diagnosticPropagator != nil && mode != .cpu && mode != .gpu {
-                throw OwnedTemporalError.invalid("This candidate supports CPU only or CPU + GPU diagnostics.")
+            if fixture.diagnosticPropagator != nil && !mode.supportsMemoryFP16 {
+                throw OwnedTemporalError.invalid("This candidate supports CPU only, CPU + GPU, or GPU + NE propagator diagnostics.")
             }
             let expectedPrecision = fixture.diagnosticPropagator?.precisionPolicy ?? OwnedTemporalContract.precision
             report.precisionPolicy = expectedPrecision
@@ -646,10 +655,14 @@ struct OwnedTemporalProbeView: View {
                     ForEach(OwnedFixtureChoice.allCases) { Text($0.rawValue).tag($0) }
                 }.disabled(running)
                 Picker("Compute devices", selection: $mode) {
-                    ForEach(fixtureChoice == .original ? OwnedDeviceMode.allCases : [.cpu, .gpu]) {
+                    ForEach(OwnedDeviceMode.allCases.filter { fixtureChoice == .original || $0.supportsMemoryFP16 }) {
                         Text($0.rawValue).tag($0)
                     }
                 }.disabled(running)
+                if mode == .propagatorNeuralEngine {
+                    Text("Only the propagator changes to CPU + Neural Engine. The encoder and initialization keep CPU + GPU. Core ML chooses where operations run within those allowed devices.")
+                        .font(.footnote).foregroundStyle(.secondary)
+                }
                 Button("Run 20-frame comparison", action: start)
                     .buttonStyle(.borderedProminent).disabled(running)
                 Button("Inspect GPU/NE plans", action: startPlans)
@@ -694,7 +707,7 @@ struct OwnedTemporalProbeView: View {
             status = "Run the comparison in this mode."
         }
         .onChange(of: fixtureChoice) { _, _ in
-            if fixtureChoice != .original && mode != .cpu && mode != .gpu { mode = .gpu }
+            if fixtureChoice != .original && !mode.supportsMemoryFP16 { mode = .gpu }
             reportURL = nil
             planReportURL = nil
             preview = nil

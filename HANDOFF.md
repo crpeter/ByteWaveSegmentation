@@ -1,6 +1,33 @@
 # ByteWave segmentation: continuation handoff
 
-## Current step: FP16 profiling baseline complete; accuracy confirmed
+## Current step: isolate current FP16 propagator with Neural Engine permitted
+
+User chose to continue optimizing EdgeTAM and asked how the original Neural
+Engine goal fits. Keep the current working model and on-demand video architecture.
+The earlier iPhone 17 Pro original-model CPU_AND_NE propagation was much slower
+than CPU_AND_GPU (~345 versus ~67 ms); this does not measure the newer FP16
+attention candidate. Current FP16 GPU propagation is ~32–34 ms in short runs.
+No energy or GPU-contention benefit from using NE has been measured.
+
+OwnedTemporalProbe now adds `GPU + NE propagator`: only Propagator requests
+CPU_AND_NE; ImageEncoder, Initializer and InitialMemoryEncoder retain CPU_AND_GPU.
+It is available for the memoryfp16 fixture and original fixture. Candidate
+availability is shared between the picker, selection reset and runner guard.
+The existing report records the exact per-component compute-unit requests,
+fixture/model provenance, timings, accuracy and pre-call crash checkpoints.
+Allowing NE does not establish actual NE execution; CPU remains permitted.
+
+Next user check: current prepared memoryfp16 fixture on physical iPhone 17 Pro,
+Release, this one new mode. Share the temporal report (plan inspection remains
+original-only). No model export/preparation or Instruments recording is required.
+If correctness passes and timing is promising, compare against same-build GPU
+before any promotion; if slower or invalid, keep the current GPU baseline.
+This is a placement experiment, not a demonstrated speed improvement. The
+arbitrary-video screen stays CPU_AND_GPU; package bytes, comparison gates and
+bounded state are unchanged. Static review/diff checks only; no assistant builds,
+tests, conversion, inference or benchmarks. User instructions stay in chat.
+
+## Completed: FP16 profiling baseline; accuracy confirmed
 
 The user identified mixed tool versions: recording with Xcode/Instruments 26.6,
 Terminal using Xcode 27 beta. The 26.6 UI warning was “GPU Service reported
