@@ -1,6 +1,6 @@
 # ByteWave segmentation: continuation handoff
 
-## Next device comparison: original versus memoryfp16
+## iPhone 17 Pro comparison passed: original versus memoryfp16
 
 Added `Temporal/prepare_attention_device.py`: read-only verification and copying,
 no conversion or inference. Requires matching passed source run, CPU/GPU temporal
@@ -23,9 +23,18 @@ its diagnostic contract plus variant describes the explicit override. The normal
 exporter and installed baseline remain unchanged. These Swift/preparation changes
 have only static source/AST and diff review, no assistant tests or builds.
 
-Next user action: prepare the separate candidate folder, build the probe in Release
-on iPhone 17 Pro and run Original CPU+GPU and Memory FP16 candidate CPU+GPU with the
-same bundled reference. Request both reports; no phone speedup is established yet.
+The user built and ran both variants successfully on iPhone 17 Pro (iPhone18,1),
+iOS 27.0 (24A435), Release, CPU + GPU. All 20 frames pass in both runs with
+identical input hashes and matching original reference provenance. Thermal states
+are nominal and final banks are 7/16. Warm medians (frames 1–19): original versus
+memoryfp16 encoder 21.711/21.911 ms, propagator 66.509/32.329 ms, prediction and
+state 99.337/65.259 ms. Candidate latency reductions are 51.39% for propagation
+and 34.31% for prediction/state. Both minimum mask IoUs are 0.996804; candidate
+minimum pointer/memory cosines are 0.998931/0.996140. Full uploaded reports and
+summary are in Audit/iphone17pro-memoryfp16-*.json. These are separate short
+runs, original first; no sustained FPS or broader quality claim. Next: repeat
+candidate first then original with the same Release GPU setup to check order
+effects. Original normal export remains selected; no promotion yet.
 
 ## Mac pass: isolated memory-attention precision
 
@@ -49,7 +58,7 @@ the user now passed all three 20-frame comparisons and 76 paired GPU checks.
 Median Mac latency is 14.3839 ms original versus 13.7715 ms memoryfp16 (4.257%
 lower); both order strata agree. GPU mask/pointer/memory minima are
 0.996804/0.999023/0.996592, final banks 7/16. See
-`Audit/mac-attention-memoryfp16-summary.json`. No iPhone candidate result yet.
+`Audit/mac-attention-memoryfp16-summary.json`. iPhone results are recorded above.
 User commands remain in chat, not README.
 
 ## Completed Mac experiment: explicit FP32 memory attention
