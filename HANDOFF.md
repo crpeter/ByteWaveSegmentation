@@ -1,6 +1,37 @@
 # ByteWave segmentation: continuation handoff
 
-## Current decision: packed Q/K/V rejected on first CPU propagation
+## Current work: higher-resolution mask preview, awaiting visual/device check
+
+User approved preview improvement then broader subject/occlusion checks. Only
+OwnedVideoTracking.swift changes: Track a video now renders the existing validated
+high_res_mask[1,1,1024,1024], threshold >0, instead of magnifying a thresholded
+low_res_mask[1,1,256,256]. Pinned sam2_base upsamples logits with bilinear
+align_corners=False before output. This preserves sub-grid contour information
+relative to threshold-before-enlargement; it does not add model detail or matting.
+SwiftUI interpolation(.low) and CGImage interpolation enabled; same blue/opacity,
+same aspect and top-left orientation. Foreground fraction/empty-mask diagnostics
+still use low_res_mask for continuity; report now explicitly states their source.
+No model, state, pointer, selection, timing policy or fixed-fixture probe changes.
+
+Overlay now travels as owned sRGB RGBA8 CGImage, like the existing video preview,
+not PNG Data. CGDataProvider retains copied pixel data, never model tensor storage.
+RGBA transparent background is zero, foreground alpha255; one1024square overlay
+buffer is4MiB. Current frame only; no video mask cache. Larger rasterization has
+unmeasured cost, but avoids PNG compression/decode. Existing maskRendering timing
+covers bitmap/image construction; UIKit/SwiftUI presentation remains excluded.
+Report adds maskPreviewImplementation=high-res-threshold-cgimage.v1, maskPreview
+and foregroundFractionSource; transport/timing descriptions updated.
+
+Static source/diff/reference review only; no builds/tests/inference or video
+execution by assistant. User: git pull --ff-only and rebuild the same Release
+17Pro app, no model export/preparation. First view the same dog clip and share a
+screenshot plus Track a video report; assess contours/alignment/render time.
+Then try available person/other-moving-subject footage with brief occlusion;
+observe identity retention/recovery, background inclusion and thin edges. No
+need for another20-frame accuracy benchmark for this presentation-only edit.
+Working model remains memoryfp16projection; QKV candidate stays rejected.
+
+## Earlier decision: packed Q/K/V rejected on first CPU propagation
 
 User ran attention-qkv-01. Console reports unchanged-cpu, memoryfp16-cpu and
 memoryfp16-gpu all passed20frames. Candidate memoryfp16qkv-cpu fails at index1,

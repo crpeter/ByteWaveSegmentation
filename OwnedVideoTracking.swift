@@ -4,8 +4,6 @@ import AVFoundation
 import CoreImage
 import CoreML
 import CryptoKit
-import ImageIO
-import UniformTypeIdentifiers
 import Darwin
 
 private struct VideoTimingTotal: Encodable {
@@ -57,13 +55,16 @@ private struct VideoTrackingReport: Encodable {
     let swiftDebugCompilation = false
     #endif
     let scope = "On-demand sequential decoded frames from a user-selected video. One positive point per reset; no ground-truth parity or automatic quality pass. All model outputs retain shape/finiteness checks. No audio, frame dropping, pre-scan or full-video mask cache. Run tracking advances as requests finish, not on a real-time playback clock."
-    let timingScope = "Request time includes synchronous decode, orientation/resize, preview image rendering, prediction/state, mask PNG and small pre-prediction checkpoint writes. Excludes model loading, UI presentation, report saving and user pauses. Initialization uses the already prepared displayed frame. Warm totals exclude the first prediction after every reset. These are processing diagnostics, not sustained playback FPS."
+    let timingScope = "Request time includes synchronous decode, orientation/resize, preview image rendering, prediction/state, mask image creation and small pre-prediction checkpoint writes. Excludes model loading, UI presentation, report saving and user pauses. Initialization uses the already prepared displayed frame. Warm totals exclude the first prediction after every reset. These are processing diagnostics, not sustained playback FPS."
     let timingInstrumentation = "video-preparation-stages.v2"
     let sessionTimingInstrumentation = "session-stages.v1"
     let tensorCopyImplementation = OwnedTensor.copyImplementation
     let sessionTimingScope = "Input preparation, output copy/validation, before-prediction checkpoint hooks and state pack/commit are timed separately inside predictionAndStateMilliseconds. Stages exclude model calls and do not sum to the full session time; orchestration overhead remains. Warm totals exclude initialization after every reset."
-    let previewTransport = "Eager sRGB RGBA8 CGImage shared with UI; no preview PNG encoding or decoding. Mask overlay still uses PNG."
-    let preparationTimingScope = "Non-overlapping API wall times within decodeAndPreparationMilliseconds: sample acquisition, orientation graph setup, model buffer allocation, model input render and eager preview image creation. Preview rendering uses deferred=false before handing the image to the UI. These are API wall times, not hardware execution times. Sample acquisition includes waiting for decoded pixels, not isolated decoder execution. Small bookkeeping and autorelease cleanup are not separate stages. Initialization has an empty stage dictionary because it reuses the displayed frame. Warm preparation totals include only successful next-frame predictions; exclude open/seek previews and initialization. UI image construction, mask decoding, SwiftUI rendering and presentation remain outside request timing."
+    let previewTransport = "Video preview and mask overlay use owned sRGB RGBA8 CGImages shared with UI; no PNG encoding or decoding."
+    let maskPreviewImplementation = "high-res-threshold-cgimage.v1"
+    let maskPreview = "Existing high_res_mask [1,1,1024,1024], threshold > 0 after model upsampling; low-quality image interpolation for display, blue overlay opacity 0.45. Presentation only: no inference, state or selection change; not hair matting."
+    let foregroundFractionSource = "low_res_mask > 0; unchanged source for foregroundFraction and emptyMasks diagnostics."
+    let preparationTimingScope = "Non-overlapping API wall times within decodeAndPreparationMilliseconds: sample acquisition, orientation graph setup, model buffer allocation, model input render and eager preview image creation. Preview rendering uses deferred=false before handing the image to the UI. These are API wall times, not hardware execution times. Sample acquisition includes waiting for decoded pixels, not isolated decoder execution. Small bookkeeping and autorelease cleanup are not separate stages. Initialization has an empty stage dictionary because it reuses the displayed frame. Warm preparation totals include only successful next-frame predictions; exclude open/seek previews and initialization. UI image construction, SwiftUI rendering and presentation remain outside request timing."
     let imagePreparation = "Decoded BGRA; track presentation transform converted to Core Image coordinates; sRGB, stretched to 1024x1024. Preview keeps display aspect. Point is normalized top-left. Graph owns image scaling/normalization."
     let recentFrameLimit = 120
     var fixtureSHA256: String?
@@ -102,7 +103,7 @@ private struct VideoTrackingReport: Encodable {
 
 struct OwnedVideoDisplay: Sendable {
     let previewImage: CGImage
-    let overlayPNG: Data?
+    let overlayImage: CGImage?
     let seconds: Double
     let durationSeconds: Double
     let message: String
@@ -440,10 +441,11 @@ actor OwnedVideoRunner {
                     try checkpoint("Before prediction: \(component)", time: current.time)
                 }
                 let predictionMS = elapsed(start)
-                guard let mask = prediction.tensors["low_res_mask"], let score = prediction.tensors["object_score"],
+                guard let mask = prediction.tensors["low_res_mask"],
+                      let previewMask = prediction.tensors["high_res_mask"], let score = prediction.tensors["object_score"],
                       let iou = prediction.tensors["best_iou"] else { throw OwnedTemporalError.invalid("Incomplete prediction.") }
                 let maskStart = now()
-                let overlay = try maskPNG(mask.values)
+                let overlay = try maskImage(previewMask)
                 let maskMS = elapsed(maskStart)
                 try Task.checkCancellation()
                 let fraction = Double(mask.values.lazy.filter { $0 > 0 }.count) / Double(mask.values.count)
@@ -495,8 +497,8 @@ actor OwnedVideoRunner {
         report?.lastAction = "Stopped; new selection required"
     }
 
-    private func display(_ frame: PreparedFrame, overlay: Data?, message: String) -> OwnedVideoDisplay {
-        OwnedVideoDisplay(previewImage: frame.preview, overlayPNG: overlay, seconds: frame.time.seconds,
+    private func display(_ frame: PreparedFrame, overlay: CGImage?, message: String) -> OwnedVideoDisplay {
+        OwnedVideoDisplay(previewImage: frame.preview, overlayImage: overlay, seconds: frame.time.seconds,
                           durationSeconds: duration.seconds, message: message)
     }
     private func check(_ ticket: UInt64) throws {
@@ -526,27 +528,28 @@ actor OwnedVideoRunner {
         @unknown default: return "unknown"
         }
     }
-    private func png(_ image: CGImage) throws -> Data {
-        let data = NSMutableData()
-        guard let destination = CGImageDestinationCreateWithData(data as CFMutableData, UTType.png.identifier as CFString, 1, nil) else {
-            throw OwnedTemporalError.invalid("Could not create PNG.")
+    private func maskImage(_ mask: OwnedTensor) throws -> CGImage {
+        // Core ML already produced/validated the upsampled logits. Threshold
+        // those, rather than magnifying a thresholded 256-square bitmap.
+        // OwnedTensor validates finiteness; do not change model/state tensors.
+        guard mask.shape == [1, 1, 1024, 1024], mask.values.count == 1024 * 1024 else {
+            throw OwnedTemporalError.invalid("Unexpected preview mask shape.")
         }
-        CGImageDestinationAddImage(destination, image, nil)
-        guard CGImageDestinationFinalize(destination) else { throw OwnedTemporalError.invalid("Could not encode PNG.") }
-        return data as Data
-    }
-    private func maskPNG(_ values: [Float]) throws -> Data {
-        var bytes = [UInt8](repeating: 0, count: 256 * 256 * 4)
-        for i in values.indices where values[i] > 0 {
+        let side = 1024
+        var bytes = [UInt8](repeating: 0, count: side * side * 4)
+        for i in mask.values.indices where mask.values[i] > 0 {
             bytes[i * 4] = 90; bytes[i * 4 + 1] = 160; bytes[i * 4 + 2] = 255; bytes[i * 4 + 3] = 255
         }
+        // The provider owns its Data independently of Core ML output lifetimes.
+        // Pass the image directly: a larger mask must not add a PNG round-trip.
         guard let provider = CGDataProvider(data: Data(bytes) as CFData),
-              let image = CGImage(width: 256, height: 256, bitsPerComponent: 8, bitsPerPixel: 32, bytesPerRow: 1024,
-                  space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue),
-                  provider: provider, decode: nil, shouldInterpolate: false, intent: .defaultIntent) else {
+              let color = CGColorSpace(name: CGColorSpace.sRGB),
+              let image = CGImage(width: side, height: side, bitsPerComponent: 8, bitsPerPixel: 32, bytesPerRow: side * 4,
+                  space: color, bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue),
+                  provider: provider, decode: nil, shouldInterpolate: true, intent: .defaultIntent) else {
             throw OwnedTemporalError.invalid("Could not draw mask.")
         }
-        return try png(image)
+        return image
     }
 }
 
@@ -581,7 +584,7 @@ struct OwnedVideoTrackingView: View {
                     GeometryReader { geometry in
                         ZStack(alignment: .topLeading) {
                             Image(uiImage: preview).resizable()
-                            if showMask, let overlay { Image(uiImage: overlay).resizable().interpolation(.none).opacity(0.45) }
+                            if showMask, let overlay { Image(uiImage: overlay).resizable().interpolation(.low).opacity(0.45) }
                             if !tracking, let point {
                                 Circle().fill(.pink).overlay(Circle().stroke(.white, lineWidth: 2))
                                     .frame(width: 12, height: 12)
@@ -761,7 +764,7 @@ struct OwnedVideoTrackingView: View {
     private func apply(_ result: OwnedVideoDisplay) {
         guard !Task.isCancelled else { return }
         preview = UIImage(cgImage: result.previewImage, scale: 1, orientation: .up)
-        overlay = result.overlayPNG.flatMap { UIImage(data: $0) }
+        overlay = result.overlayImage.map { UIImage(cgImage: $0, scale: 1, orientation: .up) }
         seconds = result.seconds
         seekSeconds = min(result.seconds, max(result.durationSeconds - 0.001, 0))
         duration = result.durationSeconds
