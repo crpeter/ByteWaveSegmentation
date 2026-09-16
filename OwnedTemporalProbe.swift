@@ -15,7 +15,10 @@ enum OwnedDeviceMode: String, CaseIterable, Identifiable, Sendable {
     case propagatorNeuralEngine = "GPU + NE propagator"
     case automatic = "Automatic"
     var id: String { rawValue }
-    func supports(propagatorVariant: String?) -> Bool {
+    func supports(propagatorVariant: String?, encoderVariant: String? = nil) -> Bool {
+        if let encoderVariant {
+            return encoderVariant == "projection" && propagatorVariant == "memoryfp16" && (self == .cpu || self == .gpu)
+        }
         switch propagatorVariant {
         case nil: return true
         case .some("memoryfp16"): return self == .cpu || self == .gpu || self == .propagatorNeuralEngine
@@ -53,15 +56,42 @@ enum OwnedFixtureChoice: String, CaseIterable, Identifiable {
     case original = "Original"
     case memoryFP16 = "Memory FP16 candidate"
     case paddedMemoryFP16 = "Memory FP16 padded candidate"
+    case encoderProjection = "Memory FP16 + fused encoder"
     var id: String { rawValue }
     var folder: String {
         switch self {
         case .original: return "baseline"
         case .memoryFP16: return "memoryfp16"
         case .paddedMemoryFP16: return "memoryfp16k4096"
+        case .encoderProjection: return "memoryfp16projection"
         }
     }
-    var propagatorVariant: String? { self == .original ? nil : folder }
+    var propagatorVariant: String? {
+        switch self {
+        case .original: return nil
+        case .memoryFP16, .encoderProjection: return "memoryfp16"
+        case .paddedMemoryFP16: return "memoryfp16k4096"
+        }
+    }
+    var encoderVariant: String? { self == .encoderProjection ? "projection" : nil }
+}
+
+struct OwnedDiagnosticEncoder: Codable, Sendable {
+    let variant: String
+    let contract: String
+    let precisionPolicy: String
+    let baselineFixtureSHA256: String
+    let candidateReportSHA256: String
+    let pairedReportSHA256: String
+
+    func validate() throws {
+        let hashes = [baselineFixtureSHA256, candidateReportSHA256, pairedReportSHA256]
+        guard variant == "projection", contract == OwnedTemporalContract.encoderProjectionContract,
+              precisionPolicy == OwnedTemporalContract.encoderProjectionFP16Precision,
+              hashes.allSatisfy({ $0.count == 64 && $0.allSatisfy({ "0123456789abcdef".contains($0) }) }) else {
+            throw OwnedTemporalError.invalid("Incompatible diagnostic encoder provenance.")
+        }
+    }
 }
 
 struct OwnedDiagnosticPropagator: Codable, Sendable {
@@ -112,6 +142,7 @@ struct OwnedFixture: Decodable {
     let modelFiles: [String: String]
     let frames: [Frame]
     let diagnosticPropagator: OwnedDiagnosticPropagator?
+    let diagnosticEncoder: OwnedDiagnosticEncoder?
 }
 
 struct OwnedTensorComparison: Codable, Sendable {
@@ -142,6 +173,7 @@ struct OwnedDeviceReport: Encodable, Sendable {
     var precisionPolicy = OwnedTemporalContract.precision
     var modelVariant = "original"
     var diagnosticPropagator: OwnedDiagnosticPropagator?
+    var diagnosticEncoder: OwnedDiagnosticEncoder?
     let graphRevision = OwnedTemporalContract.graphRevision
     let timingInstrumentation = "session-stages.v1"
     let tensorCopyImplementation = OwnedTensor.copyImplementation
@@ -229,6 +261,7 @@ actor OwnedTemporalProbeRunner {
     private var running = false
 
     func run(root: URL, mode: OwnedDeviceMode, hardware: String, expectedPropagatorVariant: String? = nil,
+             expectedEncoderVariant: String? = nil,
              progress: @Sendable (OwnedProbeUpdate) async -> Void) async -> OwnedDeviceReport {
         var report = OwnedDeviceReport(hardware: hardware, mode: mode.rawValue, thermalStateAtStart: thermal())
         report.requestedComputeUnitsByComponent = mode.requestedUnitsByComponent
@@ -256,16 +289,22 @@ actor OwnedTemporalProbeRunner {
             let data = try Data(contentsOf: root.appendingPathComponent("fixture.json"))
             let fixture = try JSONDecoder().decode(OwnedFixture.self, from: data)
             try fixture.diagnosticPropagator?.validate()
-            guard fixture.diagnosticPropagator?.variant == expectedPropagatorVariant else {
+            try fixture.diagnosticEncoder?.validate()
+            guard fixture.diagnosticPropagator?.variant == expectedPropagatorVariant,
+                  fixture.diagnosticEncoder?.variant == expectedEncoderVariant else {
                 throw OwnedTemporalError.invalid("Prepared fixture does not match the selected model variant.")
             }
-            if !mode.supports(propagatorVariant: fixture.diagnosticPropagator?.variant) {
+            if !mode.supports(propagatorVariant: fixture.diagnosticPropagator?.variant,
+                              encoderVariant: fixture.diagnosticEncoder?.variant) {
                 throw OwnedTemporalError.invalid("This compute mode is not enabled for the selected model variant.")
             }
-            let expectedPrecision = fixture.diagnosticPropagator?.precisionPolicy ?? OwnedTemporalContract.precision
+            let expectedPrecision = fixture.diagnosticEncoder?.precisionPolicy
+                ?? fixture.diagnosticPropagator?.precisionPolicy ?? OwnedTemporalContract.precision
             report.precisionPolicy = expectedPrecision
-            report.modelVariant = fixture.diagnosticPropagator?.variant ?? "original"
+            report.modelVariant = fixture.diagnosticEncoder == nil
+                ? (fixture.diagnosticPropagator?.variant ?? "original") : "memoryfp16projection"
             report.diagnosticPropagator = fixture.diagnosticPropagator
+            report.diagnosticEncoder = fixture.diagnosticEncoder
             report.fixtureSHA256 = digest(data)
             report.sourceModelsManifestSHA256 = fixture.sourceModelsManifestSHA256
             report.sourceReportSHA256 = fixture.sourceReportSHA256
@@ -303,7 +342,8 @@ actor OwnedTemporalProbeRunner {
                 configuration.computeUnits = mode.units(for: component)
                 let model = try await MLModel.load(contentsOf: compiled, configuration: configuration)
                 try OwnedTemporalContract.validate(model, component: component,
-                                                   propagatorVariant: fixture.diagnosticPropagator?.variant)
+                                                   propagatorVariant: fixture.diagnosticPropagator?.variant,
+                                                   encoderVariant: fixture.diagnosticEncoder?.variant)
                 models[component] = model
                 report.compileAndLoadMilliseconds[component] = (ProcessInfo.processInfo.systemUptime - start) * 1000
             }
@@ -435,6 +475,7 @@ actor OwnedTemporalProbeRunner {
             let fixture = try JSONDecoder().decode(OwnedFixture.self, from: data)
             guard fixture.schema == "bytewave.temporal-device-fixture.v1",
                   fixture.diagnosticPropagator == nil,
+                  fixture.diagnosticEncoder == nil,
                   fixture.contract == OwnedTemporalContract.id,
                   fixture.graphRevision == OwnedTemporalContract.graphRevision,
                   fixture.precisionPolicy == OwnedTemporalContract.precision,
@@ -665,7 +706,9 @@ struct OwnedTemporalProbeView: View {
                     ForEach(OwnedFixtureChoice.allCases) { Text($0.rawValue).tag($0) }
                 }.disabled(running)
                 Picker("Compute devices", selection: $mode) {
-                    ForEach(OwnedDeviceMode.allCases.filter { $0.supports(propagatorVariant: fixtureChoice.propagatorVariant) }) {
+                    ForEach(OwnedDeviceMode.allCases.filter {
+                        $0.supports(propagatorVariant: fixtureChoice.propagatorVariant, encoderVariant: fixtureChoice.encoderVariant)
+                    }) {
                         Text($0.rawValue).tag($0)
                     }
                 }.disabled(running)
@@ -717,7 +760,8 @@ struct OwnedTemporalProbeView: View {
             status = "Run the comparison in this mode."
         }
         .onChange(of: fixtureChoice) { _, _ in
-            if !mode.supports(propagatorVariant: fixtureChoice.propagatorVariant) { mode = .gpu }
+            if !mode.supports(propagatorVariant: fixtureChoice.propagatorVariant,
+                              encoderVariant: fixtureChoice.encoderVariant) { mode = .gpu }
             reportURL = nil
             planReportURL = nil
             preview = nil
@@ -781,11 +825,13 @@ struct OwnedTemporalProbeView: View {
         overlay = nil
         let selectedMode = mode
         let selectedVariant = fixtureChoice.propagatorVariant
+        let selectedEncoderVariant = fixtureChoice.encoderVariant
         let hardware = hardwareIdentifier()
         job = Task {
             defer { running = false }
             let report = await runner.run(root: root, mode: selectedMode, hardware: hardware,
-                                          expectedPropagatorVariant: selectedVariant) { update in
+                                          expectedPropagatorVariant: selectedVariant,
+                                          expectedEncoderVariant: selectedEncoderVariant) { update in
                 await MainActor.run {
                     guard !Task.isCancelled else { return }
                     status = update.message

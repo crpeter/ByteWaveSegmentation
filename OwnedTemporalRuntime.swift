@@ -19,6 +19,8 @@ enum OwnedTemporalContract {
     static let attentionDiagnosticContract = "bytewave.propagator-attention.diagnostic.v1"
     static let memoryFP16Precision = "memory-sdpa-fp16-only.diagnostic.v1"
     static let paddedMemoryFP16Precision = "memory-sdpa-fp16-keypad4096.diagnostic.v1"
+    static let encoderProjectionContract = "bytewave.encoder-projection.diagnostic.v1"
+    static let encoderProjectionFP16Precision = "encoder-projection-memoryfp16.diagnostic.v1"
 
     static func diagnosticPrecision(for variant: String?) -> String? {
         switch variant {
@@ -58,17 +60,24 @@ enum OwnedTemporalContract {
         }
     }
 
-    static func validate(_ model: MLModel, component: String, propagatorVariant: String? = nil) throws {
+    static func validate(_ model: MLModel, component: String, propagatorVariant: String? = nil,
+                         encoderVariant: String? = nil) throws {
         let description = model.modelDescription
         let metadata = description.metadata[.creatorDefinedKey] as? [String: String] ?? [:]
         guard propagatorVariant == nil || diagnosticPrecision(for: propagatorVariant) != nil else {
             throw OwnedTemporalError.invalid("Unknown diagnostic propagator variant.")
         }
+        guard encoderVariant == nil || (encoderVariant == "projection" && propagatorVariant == "memoryfp16") else {
+            throw OwnedTemporalError.invalid("Unknown diagnostic encoder/propagator combination.")
+        }
         let diagnostic = component == "Propagator" && propagatorVariant != nil
+        let encoderDiagnostic = component == "ImageEncoder" && encoderVariant != nil
         // Diagnostic packages retain source precision metadata; the explicit
         // contract/variant identifies the attention precision/shape override.
-        guard metadata["bytewave.contract"] == (diagnostic ? attentionDiagnosticContract : id),
+        let expectedContract = encoderDiagnostic ? encoderProjectionContract : (diagnostic ? attentionDiagnosticContract : id)
+        guard metadata["bytewave.contract"] == expectedContract,
               (!diagnostic || metadata["bytewave.diagnostic.variant"] == propagatorVariant),
+              (!encoderDiagnostic || metadata["bytewave.diagnostic.variant"] == encoderVariant),
               metadata["bytewave.precision"] == precision,
               metadata["bytewave.graph"] == graphRevision,
               metadata["bytewave.upstream"] == upstream,

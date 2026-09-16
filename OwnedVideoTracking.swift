@@ -175,6 +175,7 @@ actor OwnedVideoRunner {
                   fixture.upstream == OwnedTemporalContract.upstream,
                   fixture.checkpointSHA256 == OwnedTemporalContract.checkpoint,
                   fixture.precisionPolicy == OwnedTemporalContract.memoryFP16Precision,
+                  fixture.diagnosticEncoder == nil,
                   fixture.diagnosticPropagator?.variant == "memoryfp16" else {
                 throw OwnedTemporalError.invalid("Prepare the validated Memory FP16 candidate before tracking video.")
             }

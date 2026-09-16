@@ -74,21 +74,8 @@ def paired_evidence(args, evidence):
     return report
 
 
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--run', type=Path, required=True)
-    parser.add_argument('--baseline', type=Path, required=True)
-    parser.add_argument('--candidate', type=Path, required=True)
-    parser.add_argument('--paired', type=Path, required=True)
-    parser.add_argument('--variant', choices=tuple(PRECISIONS), default='memoryfp16')
-    parser.add_argument('--output', type=Path, required=True, help='New directory only')
-    args = parser.parse_args()
-    args.inspection = None
-    status, source = verify(args)
-    evidence = candidate_evidence(args)
-    if evidence.get('contract') != CONTRACT or evidence.get('candidateVariant') != args.variant:
-        raise ValueError('Expected temporal validation for the selected attention variant')
-    paired_evidence(args, evidence)
+def verify_baseline(args, status, source, evidence):
+    """Verify original fixture, packages, saved pixels and finite reference tensors."""
     baseline_path = args.baseline / 'fixture.json'
     baseline = json.loads(baseline_path.read_text())
     preparation = json.loads((args.baseline / 'preparation-report.json').read_text())
@@ -100,6 +87,7 @@ def main():
             or baseline.get('upstream') != owned.UPSTREAM_REVISION
             or baseline.get('checkpointSHA256') != owned.CHECKPOINT_SHA256
             or baseline.get('diagnosticPropagator') is not None
+            or baseline.get('diagnosticEncoder') is not None
             or baseline.get('referenceComputeUnits') != 'CPU_ONLY'
             or baseline.get('sourceModelsManifestSHA256') != evidence['sourceManifestSHA256']
             or baseline.get('sourceReportSHA256') != evidence['sourceFrameReportSHA256']
@@ -140,6 +128,26 @@ def main():
                     or not np.isfinite(np.frombuffer(values, dtype='<f4')).all()):
                 raise ValueError(f'Invalid baseline reference tensor: {name}')
             copied_files[tensor['path']] = tensor['sha256']
+    return baseline, manifest, copied_files
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--run', type=Path, required=True)
+    parser.add_argument('--baseline', type=Path, required=True)
+    parser.add_argument('--candidate', type=Path, required=True)
+    parser.add_argument('--paired', type=Path, required=True)
+    parser.add_argument('--variant', choices=tuple(PRECISIONS), default='memoryfp16')
+    parser.add_argument('--output', type=Path, required=True, help='New directory only')
+    args = parser.parse_args()
+    args.inspection = None
+    status, source = verify(args)
+    evidence = candidate_evidence(args)
+    if evidence.get('contract') != CONTRACT or evidence.get('candidateVariant') != args.variant:
+        raise ValueError('Expected temporal validation for the selected attention variant')
+    paired_evidence(args, evidence)
+    baseline, manifest, copied_files = verify_baseline(args, status, source, evidence)
+    baseline_path = args.baseline / 'fixture.json'
     args.output.mkdir(parents=True, exist_ok=False)
     path = args.output / 'preparation-report.json'
     report = {'complete': False, 'deviceValidated': False, 'scope': __doc__,

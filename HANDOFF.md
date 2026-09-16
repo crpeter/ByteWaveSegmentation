@@ -1,6 +1,50 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: isolated encoder projection composition, awaiting Mac results
+## Current work: encoder projection passed Mac; isolated iPhone comparison prepared
+
+User pasted encoder-projection-01/report.json: unchanged CPU, composed CPU and
+composed GPU all pass all 20 frames with banks 7/16. GPU minima IoU 0.998153,
+pointer cosine 0.999664, memory cosine 0.999381. Eighty paired encoder GPU calls
+all pass: original median 9.38894 ms, candidate 8.71958 ms, 7.129% lower latency.
+Both first-model strata favor candidate (9.33825/8.87450 and 9.41542/8.25221 ms).
+This is Mac encoder-call timing, not measured iPhone benefit or playback FPS.
+Selected pasted evidence archived in Audit/mac-encoder-projection-summary.json;
+source explicitly marked transcribed, not original report bytes.
+
+prepare_encoder_projection_device.py verifies actual three child reports/hashes,
+twenty encoder feature checks per mode, 80 paired checks/warm-ups/order, source
+models and projection package hashes. Shares original-fixture verification with
+prepare_attention_device.py (existing workflow unchanged). Also verifies existing
+memoryfp16 Mac accuracy/package evidence and the prepared memoryfp16 fixture
+against original inputs/references and attention bytes. It creates a NEW fixture
+combining only the projection encoder with the unchanged existing FP16 tracker.
+It copies original reference tensors/input bytes unchanged and publishes
+fixture.json last. No conversion or inference during preparation.
+
+Swift adds optional diagnosticEncoder provenance, exact known encoder+propagator
+combination validation and a separate picker choice "Memory FP16 + fused encoder"
+(DeviceValidationData/memoryfp16projection). Supports CPU/GPU only. Report records
+both diagnostics, combined precision encoder-projection-memoryfp16.diagnostic.v1
+and modelVariant memoryfp16projection. Existing fixtures decode with nil encoder;
+original, memoryfp16 and padded choices retain behavior. Plan inspection stays
+original-only. Track a video stays on memoryfp16 and explicitly rejects an encoder
+diagnostic; no production or arbitrary-video adoption yet.
+
+User command inputs: --run .temporal-runs/dog-09 --baseline DeviceValidationData/baseline
+--fp16 DeviceValidationData/memoryfp16 --attention .temporal-runs/attention-fp16-01
+--candidate .temporal-runs/encoder-projection-01 --output DeviceValidationData/memoryfp16projection.
+Include cat preparation-report.json in chat. Then physical 17 Pro, Release, Metal
+API/Shader Validation off: current Memory FP16 candidate CPU + GPU, followed by
+Memory FP16 + fused encoder CPU + GPU. Share both TEMPORAL reports; no Instruments
+or plan report needed. If useful gain appears, reverse order before adoption.
+Comparison now tests combined encoder+FP16 tracker against unchanged original
+references. Do not imply the earlier Mac temporal test used FP16 tracking.
+
+Assistant performed static Python AST, Swift source/selection/provenance review,
+offline summary arithmetic and diff checks only; no builds/tests/inference or
+fixture preparation executed.
+
+## Earlier: isolated encoder projection composition, awaiting Mac results
 
 User authorized the next optimization after closing key padding. Target encoder
 (about 22 ms warm on 17 Pro), not another attention variation. Upstream pinned
