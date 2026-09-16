@@ -31,6 +31,7 @@ private struct VideoFrameRecord: Encodable {
     let objectScore: Float
     let predictedIoU: Float
     let modelMilliseconds: [String: Double]
+    let sessionStageMilliseconds: [String: Double]
     let decodeAndPreparationMilliseconds: Double
     let preparationStageMilliseconds: [String: Double]
     let predictionAndStateMilliseconds: Double
@@ -58,6 +59,9 @@ private struct VideoTrackingReport: Encodable {
     let scope = "On-demand sequential decoded frames from a user-selected video. One positive point per reset; no ground-truth parity or automatic quality pass. All model outputs retain shape/finiteness checks. No audio, frame dropping, pre-scan or full-video mask cache. Run tracking advances as requests finish, not on a real-time playback clock."
     let timingScope = "Request time includes synchronous decode, orientation/resize, preview image rendering, prediction/state, mask PNG and small pre-prediction checkpoint writes. Excludes model loading, UI presentation, report saving and user pauses. Initialization uses the already prepared displayed frame. Warm totals exclude the first prediction after every reset. These are processing diagnostics, not sustained playback FPS."
     let timingInstrumentation = "video-preparation-stages.v2"
+    let sessionTimingInstrumentation = "session-stages.v1"
+    let tensorCopyImplementation = OwnedTensor.copyImplementation
+    let sessionTimingScope = "Input preparation, output copy/validation, before-prediction checkpoint hooks and state pack/commit are timed separately inside predictionAndStateMilliseconds. Stages exclude model calls and do not sum to the full session time; orchestration overhead remains. Warm totals exclude initialization after every reset."
     let previewTransport = "Eager sRGB RGBA8 CGImage shared with UI; no preview PNG encoding or decoding. Mask overlay still uses PNG."
     let preparationTimingScope = "Non-overlapping API wall times within decodeAndPreparationMilliseconds: sample acquisition, orientation graph setup, model buffer allocation, model input render and eager preview image creation. Preview rendering uses deferred=false before handing the image to the UI. These are API wall times, not hardware execution times. Sample acquisition includes waiting for decoded pixels, not isolated decoder execution. Small bookkeeping and autorelease cleanup are not separate stages. Initialization has an empty stage dictionary because it reuses the displayed frame. Warm preparation totals include only successful next-frame predictions; exclude open/seek previews and initialization. UI image construction, mask decoding, SwiftUI rendering and presentation remain outside request timing."
     let imagePreparation = "Decoded BGRA; track presentation transform converted to Core Image coordinates; sRGB, stretched to 1024x1024. Preview keeps display aspect. Point is normalized top-left. Graph owns image scaling/normalization."
@@ -82,6 +86,7 @@ private struct VideoTrackingReport: Encodable {
     var emptyMasks = 0
     var recentFrames: [VideoFrameRecord] = []
     var warmModelTotals: [String: VideoTimingTotal] = [:]
+    var warmSessionStageTotals: [String: VideoTimingTotal] = [:]
     var warmRequestTotals = VideoTimingTotal()
     var warmPredictionAndStateTotals = VideoTimingTotal()
     var warmDecodeAndPreparationTotals = VideoTimingTotal()
@@ -440,7 +445,9 @@ actor OwnedVideoRunner {
                 let row = VideoFrameRecord(requestIndex: report?.framesPredicted ?? 0, segment: report?.segmentsStarted ?? 0,
                     ptsValue: current.time.value, ptsTimescale: current.time.timescale, initialized: initialized,
                     foregroundFraction: fraction, objectScore: score.values[0], predictedIoU: iou.values[0],
-                    modelMilliseconds: prediction.modelMilliseconds, decodeAndPreparationMilliseconds: preparationMS,
+                    modelMilliseconds: prediction.modelMilliseconds,
+                    sessionStageMilliseconds: prediction.sessionStageMilliseconds,
+                    decodeAndPreparationMilliseconds: preparationMS,
                     preparationStageMilliseconds: initialized ? [:] : current.preparationStages,
                     predictionAndStateMilliseconds: predictionMS, maskRenderingMilliseconds: maskMS,
                     requestMilliseconds: elapsed(requestStart), state: prediction.state)
@@ -451,6 +458,9 @@ actor OwnedVideoRunner {
                 if (report?.recentFrames.count ?? 0) > 120 { report?.recentFrames.removeFirst() }
                 if !initialized {
                     for (name, ms) in prediction.modelMilliseconds { report?.warmModelTotals[name, default: VideoTimingTotal()].add(ms) }
+                    for (name, ms) in prediction.sessionStageMilliseconds {
+                        report?.warmSessionStageTotals[name, default: VideoTimingTotal()].add(ms)
+                    }
                     report?.warmRequestTotals.add(row.requestMilliseconds)
                     report?.warmPredictionAndStateTotals.add(predictionMS)
                     report?.warmDecodeAndPreparationTotals.add(preparationMS)

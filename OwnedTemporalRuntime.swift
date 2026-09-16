@@ -88,6 +88,7 @@ enum OwnedTemporalContract {
 // Owned copies prevent subsequent Core ML calls from changing retained state.
 // Tensor storage is in logical row-major order even when model outputs are strided.
 struct OwnedTensor {
+    static let copyImplementation = "owned-float32-chunk-copy.v1"
     let shape: [Int]
     let values: [Float]
 
@@ -107,13 +108,33 @@ struct OwnedTensor {
         }
         let strides = array.strides.map(\.intValue)
         let pointer = array.dataPointer.assumingMemoryBound(to: Float.self)
-        var values = [Float](repeating: 0, count: array.count)
         var expectedStride = 1
         var contiguous = true
         for dimension in shape.indices.reversed() {
             if shape[dimension] > 1 && strides[dimension] != expectedStride { contiguous = false }
             expectedStride *= shape[dimension]
         }
+        if contiguous {
+            // Validate bounded chunks, then bulk-copy into independently owned
+            // storage. Avoid zero-filling and per-element writes/modulo checks
+            // for the large contiguous encoder outputs. No tensor is published
+            // until every value has passed the same finite-value check.
+            var values: [Float] = []
+            values.reserveCapacity(array.count)
+            for start in stride(from: 0, to: array.count, by: 16384) {
+                try Task.checkCancellation()
+                let chunk = UnsafeBufferPointer(start: pointer.advanced(by: start),
+                                                count: min(16384, array.count - start))
+                guard chunk.allSatisfy(\.isFinite) else {
+                    throw OwnedTemporalError.invalid("Non-finite output: \(name).")
+                }
+                values.append(contentsOf: chunk)
+            }
+            self.shape = shape
+            self.values = values
+            return
+        }
+        var values = [Float](repeating: 0, count: array.count)
         for index in values.indices {
             if index % 16384 == 0 { try Task.checkCancellation() }
             var offset = index

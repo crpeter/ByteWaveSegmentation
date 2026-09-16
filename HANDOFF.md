@@ -1,6 +1,38 @@
 # ByteWave segmentation: continuation handoff
 
-## Current step: direct preview timing improvement confirmed
+## Current step: validate contiguous tensor-copy optimization
+
+The user confirmed the direct preview looked identical to their eye. Retain it.
+Next bounded target is Swift model-output copying, not another model conversion.
+The existing `Audit/iphone17pro-memoryfp16-repeat-memoryfp16-report.json` has
+19 warm frames averaging 6.764 ms ImageEncoder.outputCopyAndValidation and
+1.598 ms Propagator.outputCopyAndValidation (8.362 ms combined). These are from
+the earlier fixed fixture, not stage measurements of the latest arbitrary clip.
+The latest video session averages 75.786 ms, with 66.343 ms in the model calls;
+its remaining ~9.44 ms has not yet been separated into session stages.
+
+`OwnedTensor.init(_:name:)` now checks the same strides, then validates and
+bulk-appends contiguous Float32 output in chunks of at most 16,384 values. It
+reserves owned Swift storage without first zero-filling it, avoiding individual
+destination writes and cancellation-modulo work on every value. Type/shape and
+finite-value checks remain; cancellation is checked before each chunk. Every
+logical value is copied exactly once, including short final chunks. Nothing is
+published until all values pass. The original strided fallback is unchanged.
+Source Core ML arrays are not retained as state or exposed as borrowed buffers.
+Model bytes, prediction math, thresholds, state pack/commit and scheduling are
+unchanged. This is an optimization candidate; speed is not yet measured.
+
+Both device report types identify `owned-float32-chunk-copy.v1`. Video reports
+now include the session's already-existing per-frame stage measurements and
+bounded warm totals: input preparation, output copy/validation, checkpoint hook,
+state pack and commit. Fixed-fixture reports already carry those timings.
+Next gates: the existing 20-frame Memory FP16 candidate / CPU + GPU comparison
+must pass unchanged; then repeat the same complete video to measure the actual
+effect. No model preparation/export required. Assistant only reviewed source,
+copy ownership, chunk boundaries, strided fallback and diffs; no tests, builds,
+decoding or inference were run. User-facing steps stay in chat.
+
+## Direct preview timing improvement confirmed
 
 The user's subsequent iPhone 17 Pro Release report confirms the v2 direct-image
 path completed 835 predictions and reached EOF, with one selection segment,
@@ -25,7 +57,8 @@ needed. The next performance target is inference/state; choose a bounded change
 from evidence rather than adding more preview micro-optimizations. UI render and
 presentation remain outside timing, so do not report 12.7 as measured playback
 FPS. The report alone cannot confirm visible color/orientation/mask alignment or
-ground-truth quality; the user has not yet explicitly supplied that visual check.
+ground-truth quality. The user subsequently confirmed that the preview looked
+identical to their eye; this is visual feedback, not numerical mask parity.
 This evidence-only update changes no Swift or model code. Assistant validation
 was JSON arithmetic, retained-row inspection and diff checks, not device execution.
 

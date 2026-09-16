@@ -125,6 +125,7 @@ struct OwnedDeviceReport: Encodable, Sendable {
     var diagnosticPropagator: OwnedDiagnosticPropagator?
     let graphRevision = OwnedTemporalContract.graphRevision
     let timingInstrumentation = "session-stages.v1"
+    let tensorCopyImplementation = OwnedTensor.copyImplementation
     #if DEBUG
     let swiftDebugCompilation = true
     #else
