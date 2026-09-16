@@ -1,6 +1,30 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: fused encoder video accepted; packed Q/K/V experiment prepared
+## Current decision: packed Q/K/V rejected on first CPU propagation
+
+User ran attention-qkv-01. Console reports unchanged-cpu, memoryfp16-cpu and
+memoryfp16-gpu all passed20frames. Candidate memoryfp16qkv-cpu fails at index1,
+its first propagator invocation; initialization index0 passed and no candidate
+propagation was committed. Final accepted state1/1/1. Mask IoU .987155 passes,
+but low-mask cosine .989440, pointer .596925 and memory .878520 fail .99.
+No runtime crash or nonfinite output reported: worker deliberately raises parity
+failure, parent stops before GPU. Full selected pasted metrics/provenance are in
+Audit/mac-attention-qkv-rejection-summary.json (transcription, not original bytes).
+
+Static review of packing found no obvious Q/K/V order, channel slice, weight/bias
+byte preservation or input-sharing error. This does not validate compiled
+execution or establish a Core ML bug. First-propagation failure excludes drift
+from earlier candidate propagations. Specific numerical cause remains unresolved.
+Reject current candidate; no speed benchmark, GPU bypass, gate relaxation or
+phone preparation. Retain diagnostic code for reproducibility. Keep working
+memoryfp16projection GPU video path and all validated packages unchanged.
+No additional user run required for this candidate; further localization would
+be a separate justified diagnostic, not another full temporal repeat. The next
+optimization is not selected yet. Preserve the measured gains and target actual
+remaining model cost; do not trade context/resolution/quality to inflate speed.
+Assistant performed source review and evidence transcription only, no execution.
+
+## Earlier: fused encoder video accepted; packed Q/K/V experiment prepared
 
 User supplied 076b4ee0-93be-4a17-bc20-3f16ef2a8f94.json and a screenshot of the
 rolling dog, reporting tracking looks good, not perfect. Selected exact report

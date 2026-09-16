@@ -1,0 +1,48 @@
+{
+  "scope": "Selected fields transcribed from user-pasted Mac accuracy report and console; not original report bytes. No assistant inference or tests.",
+  "candidateVariant": "memoryfp16qkv",
+  "decision": "Reject current candidate; do not benchmark, install, or relax gates. Keep memoryfp16projection video model.",
+  "controlsReportedPassed": [
+    "unchanged-cpu",
+    "memoryfp16-cpu",
+    "memoryfp16-gpu"
+  ],
+  "candidate": {
+    "passed": false,
+    "completed": false,
+    "propagatorComputeUnits": "CPU_ONLY",
+    "otherComponentsComputeUnits": "CPU_ONLY",
+    "framesReported": 2,
+    "failedFrameIndex": 1,
+    "firstPropagatorCall": true,
+    "maskIoUAgainstReference": 0.9871552701171137,
+    "sameObjectPresence": true,
+    "outputCosines": {
+      "low_res_mask": 0.9894395390124746,
+      "high_res_mask": 0.9916462916159869,
+      "object_pointer": 0.5969253287466325,
+      "memory_features": 0.8785200858810319
+    },
+    "maximumAbsoluteErrors": {
+      "low_res_mask": 17.838176727294922,
+      "object_pointer": 2.167494773864746,
+      "memory_features": 5.235562801361084
+    },
+    "stateAfterRejectedFrame": {
+      "acceptedFrames": 1,
+      "spatialEntries": 1,
+      "pointerEntries": 1
+    },
+    "error": "ValueError: Temporal parity failed at frame 1"
+  },
+  "sourceManifestSHA256": "47b7b85eef755ff7a440c0017f232a82ac7213af622d15d30a04f3487e07dd67",
+  "variantsSHA256": "ae0fca88fb396fbc045013ea3e0b248fbc2844af6e783df9831b7eff66b08e01",
+  "policy": {
+    "maskIoUMinimum": 0.95,
+    "cosineMinimum": 0.99
+  },
+  "interpretation": "Numerical parity failure on first propagation, not an execution crash or accumulated candidate-history drift. Mask overlap alone misses pointer/memory disagreement. Specific failing operation and runtime cause remain unknown; static rewrite review found no obvious ordering/slicing error.",
+  "candidateGPURun": false,
+  "speedBenchmarkRun": false,
+  "readyForDeviceValidation": false
+}
