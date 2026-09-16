@@ -26,7 +26,7 @@ import validate_export as v
 from diagnose_propagator_convs import file_hashes, verify
 from inspect_encoder_placement import sha, write_json
 from propagator_convs import CONTRACT
-from propagator_attention import CONTRACT as ATTENTION_CONTRACT
+from propagator_attention import CONTRACT as ATTENTION_CONTRACT, FP16_BASELINE_VARIANTS
 from state import TemporalState
 
 
@@ -50,11 +50,11 @@ def candidate_evidence(args):
                 report.get('sourceInspectionSHA256') != sha(args.inspection / 'report.json'))):
         raise ValueError('Expected a passed candidate comparison matching these source inputs')
     required = ['unchanged-cpu', f'{args.variant}-cpu', f'{args.variant}-gpu']
-    if args.variant == 'memoryfp16q1024':
+    if args.variant in FP16_BASELINE_VARIANTS:
         if (report.get('contract') != ATTENTION_CONTRACT
                 or report.get('candidateVariant') != args.variant
                 or report.get('performanceBaselineVariant') != 'memoryfp16'):
-            raise ValueError('Expected native query-chunk evidence with a memoryfp16 baseline')
+            raise ValueError('Expected matching attention candidate evidence with a memoryfp16 baseline')
         required.extend(['memoryfp16-cpu', 'memoryfp16-gpu'])
     if args.variant == 'conv2':
         required.append('conv2-ne')
@@ -72,7 +72,7 @@ def candidate_evidence(args):
     if variants['sourceManifestSHA256'] != report['sourceManifestSHA256']:
         raise ValueError('Candidate manifest differs')
     checked_variants = ['unchanged', args.variant]
-    if args.variant == 'memoryfp16q1024':
+    if args.variant in FP16_BASELINE_VARIANTS:
         checked_variants.append('memoryfp16')
     for variant in checked_variants:
         actual = file_hashes(args.candidate / f'{variant}.mlpackage')
@@ -85,7 +85,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--run', type=Path, required=True)
     parser.add_argument('--inspection', type=Path, help='Required for conv2')
-    parser.add_argument('--variant', choices=('conv2', 'chunk256', 'memoryfp16', 'memoryfp16q1024'), default='conv2')
+    parser.add_argument('--variant', choices=('conv2', 'chunk256', 'memoryfp16', *FP16_BASELINE_VARIANTS), default='conv2')
     parser.add_argument('--candidate', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--units', choices=('CPU_AND_GPU', 'CPU_AND_NE'), default='CPU_AND_GPU')
@@ -97,7 +97,7 @@ def main():
     if args.variant != 'conv2' and (args.units != 'CPU_AND_GPU' or args.inspection is not None):
         parser.error('Attention candidates require CPU_AND_GPU and no linear inspection')
     candidate_contract = CONTRACT if args.variant == 'conv2' else ATTENTION_CONTRACT
-    baseline = 'memoryfp16' if args.variant == 'memoryfp16q1024' else 'original'
+    baseline = 'memoryfp16' if args.variant in FP16_BASELINE_VARIANTS else 'original'
     scope = __doc__.replace('conv2', args.variant)
     if baseline != 'original':
         scope = scope.replace('original and validated', f'{baseline} and validated')

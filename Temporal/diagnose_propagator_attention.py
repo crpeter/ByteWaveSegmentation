@@ -2,7 +2,8 @@
 """Compare an isolated memory-attention candidate on the saved fixture.
 
 Unchanged CPU reconversion control, then candidate CPU/GPU against original
-PyTorch over all 20 frames. Every query still attends to every original key.
+PyTorch over all 20 frames; FP16-derived experiments also rebuild/check the FP16
+CPU/GPU baseline. Every query still attends to every original key.
 Diagnostic only: no normal exporter, installed model or correctness gate changes.
 """
 from __future__ import annotations
@@ -15,7 +16,7 @@ import torch
 
 from diagnose_propagator_convs import file_hashes, run_worker, verify, worker
 from inspect_encoder_placement import sha, write_json
-from propagator_attention import CONTRACT, VARIANTS, make_variant
+from propagator_attention import CONTRACT, FP16_BASELINE_VARIANTS, VARIANTS, make_variant
 
 
 def main():
@@ -24,7 +25,7 @@ def main():
     parser.add_argument('--run', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--experiment', choices=VARIANTS[1:], default='chunk256',
-                        help='Explicit FP32 chunks, memory FP16, or native FP16 SDPA with 1024-query chunks')
+                        help='Explicit FP32 chunks, memory FP16, native 1024-query chunks, or excluded cross-key padding to 4096')
     parser.add_argument('--candidate', type=Path, help=argparse.SUPPRESS)
     parser.add_argument('--variant', choices=VARIANTS, help=argparse.SUPPRESS)
     parser.add_argument('--units', choices=('CPU_ONLY', 'CPU_AND_GPU'), help=argparse.SUPPRESS)
@@ -47,12 +48,20 @@ def main():
               'sourceManifestSHA256': sha(args.run / 'models/manifest.json'),
               'sourceFrameReportSHA256': sha(args.run / 'coreml/report.json'),
               'variants': {}, 'runs': {}}
-    controls = ('unchanged', 'memoryfp16') if args.experiment == 'memoryfp16q1024' else ('unchanged',)
-    if args.experiment == 'memoryfp16q1024':
+    controls = ('unchanged', 'memoryfp16') if args.experiment in FP16_BASELINE_VARIANTS else ('unchanged',)
+    if args.experiment in FP16_BASELINE_VARIANTS:
         report['performanceBaselineVariant'] = 'memoryfp16'
+    if args.experiment == 'memoryfp16q1024':
         report['experimentScope'] = ('Four native 1024-query FP16 SDPA calls replace each full-query memory SDPA. '
                                     'All keys/values and broadcast masks remain; not the closed explicit FP32 chunk256 rewrite. '
                                     'Accuracy checks precede a separate paired GPU benchmark against memoryfp16.')
+    elif args.experiment == 'memoryfp16k4096':
+        report['experimentScope'] = ('Append 448 zero key/value rows with negative-infinity additive mask to each '
+                                    '3648-key cross-attention, after rotary/validity construction. Original keys, values, '
+                                    'query order and mask entries remain; self-attention stays at baseline FP16. '
+                                    'Hypothesis only: a 4096-key shape may change GPU dispatch or boundary handling. '
+                                    'Shader names do not prove exact operation attribution or a speed benefit. '
+                                    'No query chunking, context reduction, normal export or fixture installation.')
     try:
         for variant in (*controls, args.experiment):
             report['stage'] = f'Preparing {variant}'
@@ -65,7 +74,7 @@ def main():
         write_json(args.output / 'variants.json', {'sourceManifestSHA256': report['sourceManifestSHA256'],
                                                   'variants': report['variants']})
         runs = [('unchanged-cpu', 'unchanged', 'CPU_ONLY')]
-        if args.experiment == 'memoryfp16q1024':
+        if args.experiment in FP16_BASELINE_VARIANTS:
             runs.extend([('memoryfp16-cpu', 'memoryfp16', 'CPU_ONLY'),
                          ('memoryfp16-gpu', 'memoryfp16', 'CPU_AND_GPU')])
         runs.extend([(f'{args.experiment}-cpu', args.experiment, 'CPU_ONLY'),

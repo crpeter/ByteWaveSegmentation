@@ -1,7 +1,7 @@
 """Isolated memory-attention diagnostics; no normal export changes.
 
-MIL SDPA semantics: softmax(Q K^T / sqrt(d) + mask) V. Each query chunk
-still attends to every key. Only the four 4096-query memory attentions change.
+MIL SDPA semantics: softmax(Q K^T / sqrt(d) + mask) V. Every original query
+and key is retained. Only the four 4096-query memory attentions change.
 https://apple.github.io/coremltools/source/coremltools.converters.mil.mil.ops.defs.html
 """
 from __future__ import annotations
@@ -16,7 +16,10 @@ from propagator_convs import signatures
 CONTRACT = 'bytewave.propagator-attention.diagnostic.v1'
 CHUNK = 256
 NATIVE_QUERY_CHUNK = 1024
-VARIANTS = ('unchanged', 'chunk256', 'memoryfp16', 'memoryfp16q1024')
+PADDED_KEY_COUNT = 4096
+FP16_BASELINE_VARIANTS = ('memoryfp16q1024', 'memoryfp16k4096')
+FP16_VARIANTS = ('memoryfp16', *FP16_BASELINE_VARIANTS)
+VARIANTS = ('unchanged', 'chunk256', *FP16_VARIANTS)
 
 
 def make_variant(package, destination, variant):
@@ -102,7 +105,7 @@ def make_variant(package, destination, variant):
                                     'queryChunkSize': CHUNK, 'chunks': 4096 // CHUNK,
                                     'keysPerChunk': key_count,
                                     'scoreTensorBytesPerChunk': CHUNK * key_count * 4})
-        elif variant in ('memoryfp16', 'memoryfp16q1024'):
+        elif variant in FP16_VARIANTS:
             with function:
                 for index, op in enumerate(selected):
                     old = op.outputs[0]
@@ -113,6 +116,27 @@ def make_variant(package, destination, variant):
                         value = getattr(op, key)
                         if value is not None:
                             inputs[key] = mb.cast(x=value, dtype='fp16', name=f'{prefix}_{key}', before_op=op)
+                    if variant == 'memoryfp16k4096' and key_count == 3648:
+                        # Append AFTER rotary/validity construction. Original keys,
+                        # values, and additive mask remain in the same order. The
+                        # extra score columns are -inf, so they have zero softmax
+                        # probability for finite queries and valid original keys.
+                        # This is a GPU shape experiment; faster dispatch is not
+                        # guaranteed and additional keys/copies can cost more.
+                        count = PADDED_KEY_COUNT - key_count
+                        zeros = mb.const(val=np.zeros((1, 1, count, 256), dtype=np.float16),
+                                         name=prefix + '_padding_zeros', before_op=op)
+                        excluded = mb.const(val=np.full((1, 1, 1, count), -np.inf, dtype=np.float16),
+                                            name=prefix + '_padding_mask', before_op=op)
+                        for key in ('key', 'value'):
+                            inputs[key] = mb.concat(values=[inputs[key], zeros], axis=2,
+                                                    name=f'{prefix}_{key}_padded', before_op=op)
+                        inputs['attn_mask'] = mb.concat(values=[inputs['attn_mask'], excluded], axis=3,
+                                                       name=prefix + '_mask_padded', before_op=op)
+                        if (any(tuple(inputs[key].shape) != (1, 1, PADDED_KEY_COUNT, 256)
+                                for key in ('key', 'value'))
+                                or tuple(inputs['attn_mask'].shape) != (1, 1, 1, PADDED_KEY_COUNT)):
+                            raise ValueError('Cross-attention padding shape changed')
                     if variant == 'memoryfp16q1024':
                         # SDPA normalizes over keys, independently for each query.
                         # Keep the fused operation, all keys/values, and the exact
@@ -147,6 +171,15 @@ def make_variant(package, destination, variant):
                                            chunks=4096 // NATIVE_QUERY_CHUNK,
                                            keysPerChunk=key_count,
                                            nativeSDPARetained=True)
+                    if variant == 'memoryfp16k4096':
+                        changes[-1].update(originalKeyCount=key_count,
+                                           paddedKeyCount=PADDED_KEY_COUNT,
+                                           appendedExcludedKeys=PADDED_KEY_COUNT - key_count,
+                                           paddingMask='negativeInfinity' if key_count == 3648 else None,
+                                           originalKeyOrderPreserved=True,
+                                           queryChunking=False, nativeSDPARetained=True)
+            if variant == 'memoryfp16k4096' and sorted(c['appendedExcludedKeys'] for c in changes) != [0, 0, 448, 448]:
+                raise ValueError('Expected padding only for the two cross-attentions')
         added_names = {op.outputs[0].name for op in function.operations
                        if op.op_type != 'const' and op.outputs[0].name not in before}
         # Freeze the intended graph for conversion: preserve every unrelated op,
@@ -178,7 +211,7 @@ def make_variant(package, destination, variant):
         for op in after_function.operations:
             name = op.outputs[0].name
             if name in added_names:
-                expected_dtype = (types.fp16 if variant in ('memoryfp16', 'memoryfp16q1024') and not name.endswith('_restore')
+                expected_dtype = (types.fp16 if variant in FP16_VARIANTS and not name.endswith('_restore')
                                   else types.fp32)
                 if any(v.dtype != expected_dtype for v in op.outputs):
                     raise ValueError(f'Replacement precision changed: {name}')
@@ -193,7 +226,10 @@ def make_variant(package, destination, variant):
         candidate.save(str(destination))
         return {'variant': variant, 'inspectedAttentions': descriptions, 'modifications': changes,
                 'unrelatedOperationsPreserved': True, 'externalInterfacesPreserved': True,
-                'attentionPrecision': 'fp16' if variant in ('memoryfp16', 'memoryfp16q1024') else 'fp32',
-                'memoryNote': 'Score tensor size is per chunk, not a measured or guaranteed peak allocation.'}
+                'attentionPrecision': 'fp16' if variant in FP16_VARIANTS else 'fp32',
+                'memoryNote': ('Padding adds 448 excluded key/value rows per cross-attention; no history is removed. '
+                               'Peak memory, kernel selection and speed are not established.'
+                               if variant == 'memoryfp16k4096' else
+                               'Score tensor size is per chunk, not a measured or guaranteed peak allocation.')}
     finally:
         sys.setrecursionlimit(previous)

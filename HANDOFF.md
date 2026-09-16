@@ -1,6 +1,46 @@
 # ByteWave segmentation: continuation handoff
 
-## Current decision: retain FP16 GPU; NE placement experiment closed
+## Current step: isolated FP16 cross-attention key-padding experiment
+
+User asked to continue optimization after the NE placement result. New diagnostic
+variant `memoryfp16k4096` extends only the two 3648-key memory cross-attentions
+to 4096 keys: append 448 zero key/value rows and negative-infinity additive mask
+entries after rotary/validity construction. All original keys, values, query
+order, original mask entries and history remain. Self-attention retains baseline
+FP16 semantics. No query chunking. With finite queries and valid original keys,
+the appended scores are -inf and contribute zero probability under documented
+SDPA semantics. Floating-point/kernel differences still require validation.
+
+Motivation is a bounded shape hypothesis: current iPhone GPU trace includes
+sdpa_tile_fwd_16x16x16_doEdgeCheck and noEdgeCheck shader families. Their exact
+MIL attribution and reason for dispatch are not established. Padding may change
+kernel selection/boundary work, or be slower because it adds keys and copies.
+Do not claim alignment is the proven bottleneck or any improvement before data.
+MIL mask semantics verified against Apple's operation reference:
+https://apple.github.io/coremltools/source/coremltools.converters.mil.mil.ops.defs.html
+
+The isolated converter requires Core ML Tools 9.0 and the four expected source
+attention signatures; verifies 0/0/448/448 appended rows, replacement shapes,
+unrelated operations/constants/precisions and external interfaces. Original
+weights, initializer/decoder safeguards, normal export and iPhone fixtures stay
+unchanged. Explicit ignored padding is not input/output non-finite sanitization.
+
+diagnose_propagator_attention.py prepares unchanged, memoryfp16 and the candidate
+and runs the existing five 20-frame CPU/GPU/original-PyTorch comparisons with
+unchanged gates and bounded independent histories. benchmark_propagator_convs.py
+requires their complete passing evidence/package hashes and compares candidate
+against rebuilt memoryfp16 using 76 balanced-order pairs, checked warm-ups and
+identical CPU-owned state inputs. No normal export/promotion/device readiness.
+The existing native-query experiment remains available but closed; its behavior
+is unchanged by sharing the FP16-baseline variant list with this new experiment.
+
+Next user run uses dog-09 and .temporal-runs/attention-key-padding-01. If all
+accuracy gates pass, the paired output is .temporal-runs/attention-key-padding-paired-01.
+No new iPhone run until the Mac evidence is assessed. Static AST parsing, graph
+construction/source review and diff checks only; no assistant tests, compilation,
+conversion, inference or benchmarks. User commands/report-reading steps in chat.
+
+## Previous decision: retain FP16 GPU; NE placement experiment closed
 
 The user's Release rerun (5298e4db-6f91-44b3-b261-1ef869654aed.json) passes all
 20 frames on iPhone18,1 / iOS 27.0 (24A435). Raw bytes archived as
