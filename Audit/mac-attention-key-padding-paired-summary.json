@@ -1,0 +1,58 @@
+{
+  "provenance": "Selected fields transcribed from user-pasted paired Mac summary. Hashes are user-reported; candidate/baseline package hash dictionaries match the preceding archived accuracy report. Raw paired report and child files remain on the user Mac and are checked by device preparation.",
+  "scope": "76 alternating-order paired Mac CPU_AND_GPU propagator calls using identical original-CPU temporal inputs. Every timed output passed existing numerical checks. Not an iPhone measurement, sustained FPS or established statistical significance.",
+  "completed": true,
+  "passed": true,
+  "readyForDeviceValidation": false,
+  "candidateVariant": "memoryfp16k4096",
+  "baselineVariant": "memoryfp16",
+  "computeUnits": "CPU_AND_GPU",
+  "macOS": "26.5.2",
+  "machine": "arm64",
+  "coremltoolsVersion": "9.0",
+  "pairsPerFrame": 4,
+  "warmupCallsPerModel": 1,
+  "sourceManifestSHA256": "47b7b85eef755ff7a440c0017f232a82ac7213af622d15d30a04f3487e07dd67",
+  "sourceFrameReportSHA256": "8768eab4331ad57994782ee244861b64f3c3eb27fa6c970cc881a843618af9a6",
+  "candidateReportSHA256": "986cd57b5ab407456c28288c320b80703128f5724cae86b1afbac171e9315bf9",
+  "candidateFiles": {
+    "Manifest.json": "c5df6f66bd204979392ddaacfa9c6b7f9cf62fd61617d57faed5c26ad26c7296",
+    "Data/com.apple.CoreML/model.mlmodel": "418db478331710a167f9cbaf15b5763a8d3a7e6bb36c4369f925d9589d69ebc6",
+    "Data/com.apple.CoreML/weights/weight.bin": "1fa1ac9db873a8f9825f32007dba68826945c39b5dfd3ba32a7604094e75f736"
+  },
+  "baselineFiles": {
+    "Manifest.json": "9f040fc707bcfda1ac1a1f3edf02445fd489e614291ab0599c53035d2aeaca74",
+    "Data/com.apple.CoreML/model.mlmodel": "66d9b59e9231840bc5190b2e1e5438ebed7f807dc73abc6bb430f296b9f5df0c",
+    "Data/com.apple.CoreML/weights/weight.bin": "3e679bfdc49fc43e895434b8c8bb6e75bad20a2cad37fd0aa2d5019cd186386e"
+  },
+  "pointNormalizedTopLeft": [
+    0.4912,
+    0.4706
+  ],
+  "loadMilliseconds": {
+    "memoryfp16": 438.85137513279915,
+    "memoryfp16k4096": 414.1995410900563
+  },
+  "summary": {
+    "measuredPairs": 76,
+    "medianMilliseconds": {
+      "memoryfp16": 13.802021043375134,
+      "memoryfp16k4096": 13.646812993101776
+    },
+    "ratioOfMediansBaselineOverCandidate": 1.0113732085543938,
+    "medianPairedRatioBaselineOverCandidate": 1.0121057608994422,
+    "medianLatencyReductionPercent": 1.1245313261412315,
+    "allMeasuredOutputsPassed": true,
+    "medianMillisecondsByFirstModel": {
+      "memoryfp16": {
+        "memoryfp16": 13.854333432391286,
+        "memoryfp16k4096": 13.58299981802702
+      },
+      "memoryfp16k4096": {
+        "memoryfp16": 13.750479090958834,
+        "memoryfp16k4096": 13.695749337784946
+      }
+    }
+  },
+  "decision": "Small Mac difference is insufficient for promotion. Prepare an isolated CPU/GPU device fixture to compare current memoryfp16 and padded candidate on physical iPhone17Pro. Keep Track a video on current memoryfp16."
+}

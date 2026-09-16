@@ -15,10 +15,12 @@ enum OwnedDeviceMode: String, CaseIterable, Identifiable, Sendable {
     case propagatorNeuralEngine = "GPU + NE propagator"
     case automatic = "Automatic"
     var id: String { rawValue }
-    var supportsMemoryFP16: Bool {
-        switch self {
-        case .cpu, .gpu, .propagatorNeuralEngine: return true
-        case .neuralEngine, .encoderNeuralEngine, .automatic: return false
+    func supports(propagatorVariant: String?) -> Bool {
+        switch propagatorVariant {
+        case nil: return true
+        case .some("memoryfp16"): return self == .cpu || self == .gpu || self == .propagatorNeuralEngine
+        case .some("memoryfp16k4096"): return self == .cpu || self == .gpu
+        default: return false
         }
     }
     func units(for component: String) -> MLComputeUnits {
@@ -50,9 +52,16 @@ enum OwnedDeviceMode: String, CaseIterable, Identifiable, Sendable {
 enum OwnedFixtureChoice: String, CaseIterable, Identifiable {
     case original = "Original"
     case memoryFP16 = "Memory FP16 candidate"
+    case paddedMemoryFP16 = "Memory FP16 padded candidate"
     var id: String { rawValue }
-    var folder: String { self == .original ? "baseline" : "memoryfp16" }
-    var propagatorVariant: String? { self == .original ? nil : "memoryfp16" }
+    var folder: String {
+        switch self {
+        case .original: return "baseline"
+        case .memoryFP16: return "memoryfp16"
+        case .paddedMemoryFP16: return "memoryfp16k4096"
+        }
+    }
+    var propagatorVariant: String? { self == .original ? nil : folder }
 }
 
 struct OwnedDiagnosticPropagator: Codable, Sendable {
@@ -65,8 +74,9 @@ struct OwnedDiagnosticPropagator: Codable, Sendable {
 
     func validate() throws {
         let hashes = [baselineFixtureSHA256, candidateReportSHA256, pairedReportSHA256]
-        guard variant == "memoryfp16", contract == OwnedTemporalContract.attentionDiagnosticContract,
-              precisionPolicy == OwnedTemporalContract.memoryFP16Precision,
+        guard let expectedPrecision = OwnedTemporalContract.diagnosticPrecision(for: variant),
+              contract == OwnedTemporalContract.attentionDiagnosticContract,
+              precisionPolicy == expectedPrecision,
               hashes.allSatisfy({ $0.count == 64 && $0.allSatisfy({ "0123456789abcdef".contains($0) }) }) else {
             throw OwnedTemporalError.invalid("Incompatible diagnostic propagator provenance.")
         }
@@ -249,8 +259,8 @@ actor OwnedTemporalProbeRunner {
             guard fixture.diagnosticPropagator?.variant == expectedPropagatorVariant else {
                 throw OwnedTemporalError.invalid("Prepared fixture does not match the selected model variant.")
             }
-            if fixture.diagnosticPropagator != nil && !mode.supportsMemoryFP16 {
-                throw OwnedTemporalError.invalid("This candidate supports CPU only, CPU + GPU, or GPU + NE propagator diagnostics.")
+            if !mode.supports(propagatorVariant: fixture.diagnosticPropagator?.variant) {
+                throw OwnedTemporalError.invalid("This compute mode is not enabled for the selected model variant.")
             }
             let expectedPrecision = fixture.diagnosticPropagator?.precisionPolicy ?? OwnedTemporalContract.precision
             report.precisionPolicy = expectedPrecision
@@ -655,7 +665,7 @@ struct OwnedTemporalProbeView: View {
                     ForEach(OwnedFixtureChoice.allCases) { Text($0.rawValue).tag($0) }
                 }.disabled(running)
                 Picker("Compute devices", selection: $mode) {
-                    ForEach(OwnedDeviceMode.allCases.filter { fixtureChoice == .original || $0.supportsMemoryFP16 }) {
+                    ForEach(OwnedDeviceMode.allCases.filter { $0.supports(propagatorVariant: fixtureChoice.propagatorVariant) }) {
                         Text($0.rawValue).tag($0)
                     }
                 }.disabled(running)
@@ -707,7 +717,7 @@ struct OwnedTemporalProbeView: View {
             status = "Run the comparison in this mode."
         }
         .onChange(of: fixtureChoice) { _, _ in
-            if fixtureChoice != .original && !mode.supportsMemoryFP16 { mode = .gpu }
+            if !mode.supports(propagatorVariant: fixtureChoice.propagatorVariant) { mode = .gpu }
             reportURL = nil
             planReportURL = nil
             preview = nil

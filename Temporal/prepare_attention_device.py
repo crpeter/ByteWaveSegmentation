@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prepare a separate memoryfp16 device fixture from validated existing files.
+"""Prepare a separate FP16 attention device fixture from validated existing files.
 
 Copies the original device reference tensors and inputs unchanged; substitutes
 only the verified diagnostic Propagator package. No conversion or inference.
@@ -24,7 +24,10 @@ from inspect_encoder_placement import sha, write_json
 from prepare_device import TENSORS
 from propagator_attention import CONTRACT
 
-PRECISION = 'memory-sdpa-fp16-only.diagnostic.v1'
+PRECISIONS = {
+    'memoryfp16': 'memory-sdpa-fp16-only.diagnostic.v1',
+    'memoryfp16k4096': 'memory-sdpa-fp16-keypad4096.diagnostic.v1',
+}
 
 
 def safe_file(root, relative):
@@ -38,25 +41,31 @@ def safe_file(root, relative):
 
 def paired_evidence(args, evidence):
     report = json.loads((args.paired / 'report.json').read_text())
+    baseline = 'original' if args.variant == 'memoryfp16' else 'memoryfp16'
+    labels = {baseline, args.variant}
     frames = report.get('frames', [])
     if (report.get('passed') is not True or report.get('completed') is not True
-            or report.get('candidateVariant') != 'memoryfp16' or report.get('computeUnits') != 'CPU_AND_GPU'
+            or report.get('candidateVariant') != args.variant or report.get('computeUnits') != 'CPU_AND_GPU'
             or report.get('sourceManifestSHA256') != evidence['sourceManifestSHA256']
             or report.get('sourceFrameReportSHA256') != evidence['sourceFrameReportSHA256']
             or report.get('candidateReportSHA256') != sha(args.candidate / 'report.json')
-            or report.get('candidateFiles') != evidence['variants']['memoryfp16']['files']
+            or report.get('candidateFiles') != evidence['variants'][args.variant]['files']
             or len(frames) != 20):
         raise ValueError('Expected a complete paired GPU report for these exact candidate bytes')
+    if baseline != 'original' and (
+            report.get('baselineVariant') != baseline
+            or report.get('baselineFiles') != evidence['variants'][baseline]['files']):
+        raise ValueError('Paired report does not match the rebuilt FP16 baseline')
     pairs = []
     for index, frame in enumerate(frames):
         current = frame.get('pairs', [])
         if frame.get('index') != index or len(current) != (0 if index == 0 else 4):
             raise ValueError('Paired report frame or pair count changed')
-        if index == 1 and (set(frame.get('warmupChecks', {})) != {'original', 'memoryfp16'}
+        if index == 1 and (set(frame.get('warmupChecks', {})) != labels
                            or not all(c.get('passed') is True for c in frame['warmupChecks'].values())):
             raise ValueError('Paired warm-up evidence missing')
         for pair in current:
-            if (set(pair.get('checks', {})) != {'original', 'memoryfp16'}
+            if (set(pair.get('checks', {})) != labels
                     or not all(c.get('passed') is True for c in pair['checks'].values())):
                 raise ValueError('Paired numerical checks did not pass')
         pairs.extend(current)
@@ -71,13 +80,14 @@ def main():
     parser.add_argument('--baseline', type=Path, required=True)
     parser.add_argument('--candidate', type=Path, required=True)
     parser.add_argument('--paired', type=Path, required=True)
+    parser.add_argument('--variant', choices=tuple(PRECISIONS), default='memoryfp16')
     parser.add_argument('--output', type=Path, required=True, help='New directory only')
     args = parser.parse_args()
-    args.inspection, args.variant = None, 'memoryfp16'
+    args.inspection = None
     status, source = verify(args)
     evidence = candidate_evidence(args)
-    if evidence.get('contract') != CONTRACT or evidence.get('candidateVariant') != 'memoryfp16':
-        raise ValueError('Expected memoryfp16 temporal validation')
+    if evidence.get('contract') != CONTRACT or evidence.get('candidateVariant') != args.variant:
+        raise ValueError('Expected temporal validation for the selected attention variant')
     paired_evidence(args, evidence)
     baseline_path = args.baseline / 'fixture.json'
     baseline = json.loads(baseline_path.read_text())
@@ -133,7 +143,7 @@ def main():
     args.output.mkdir(parents=True, exist_ok=False)
     path = args.output / 'preparation-report.json'
     report = {'complete': False, 'deviceValidated': False, 'scope': __doc__,
-              'variant': 'memoryfp16', 'frames': 20, 'baselineFixtureSHA256': sha(baseline_path),
+              'variant': args.variant, 'frames': 20, 'baselineFixtureSHA256': sha(baseline_path),
               'candidateReportSHA256': sha(args.candidate / 'report.json'),
               'pairedReportSHA256': sha(args.paired / 'report.json')}
     write_json(path, report)
@@ -148,18 +158,18 @@ def main():
         fixture['modelFiles'] = {}
         for component in v.INPUTS:
             name = f'BWTemporal{component}.mlpackage'
-            package = (args.candidate / 'memoryfp16.mlpackage' if component == 'Propagator'
+            package = (args.candidate / f'{args.variant}.mlpackage' if component == 'Propagator'
                        else args.baseline / 'models' / name)
-            expected = (evidence['variants']['memoryfp16']['files'] if component == 'Propagator'
+            expected = (evidence['variants'][args.variant]['files'] if component == 'Propagator'
                         else manifest['models'][component]['files'])
             destination = args.output / 'models' / name
             shutil.copytree(package, destination)
             if file_hashes(destination) != expected:
                 raise ValueError(f'Copied {component} package failed verification')
             fixture['modelFiles'].update({f'models/{name}/{key}': digest for key, digest in expected.items()})
-        fixture['precisionPolicy'] = PRECISION
+        fixture['precisionPolicy'] = PRECISIONS[args.variant]
         fixture['diagnosticPropagator'] = {
-            'variant': 'memoryfp16', 'contract': CONTRACT, 'precisionPolicy': PRECISION,
+            'variant': args.variant, 'contract': CONTRACT, 'precisionPolicy': PRECISIONS[args.variant],
             'baselineFixtureSHA256': report['baselineFixtureSHA256'],
             'candidateReportSHA256': report['candidateReportSHA256'],
             'pairedReportSHA256': report['pairedReportSHA256']}

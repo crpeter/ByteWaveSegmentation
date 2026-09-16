@@ -1,6 +1,44 @@
 # ByteWave segmentation: continuation handoff
 
-## Current step: key-padding accuracy passed; paired GPU timing pending
+## Current step: small Mac padding difference; isolated iPhone comparison prepared
+
+User's inline paired Mac summary reports all 76 pairs passing accuracy. Selected
+fields/provenance are archived as `Audit/mac-attention-key-padding-paired-summary.json`.
+Median memoryfp16 13.8020 ms, memoryfp16k4096 13.6468 ms (1.1245% lower); both
+call-order strata favor the candidate, but the small difference is not established
+statistically or an iPhone result. Candidate/baseline file hash dictionaries match
+the archived full accuracy evidence. Candidate report hash is user-reported;
+the local Mac preparation step verifies it against the original bytes.
+
+An isolated iPhone comparison is justified because the hypothesis came from the
+17 Pro shader profile and earlier FP16 gains differed markedly between Mac and
+iPhone. This is not promotion. `prepare_attention_device.py --variant memoryfp16k4096`
+now verifies all five accuracy runs, original fixture inputs/references and exact
+package hashes, plus all 76 paired checks against rebuilt memoryfp16. It copies
+only into a new directory; no conversion/inference or baseline overwrite. Default
+memoryfp16 preparation stays supported with its original-vs-candidate evidence.
+
+Swift adds `Memory FP16 padded candidate`, folder DeviceValidationData/memoryfp16k4096,
+precision identity memory-sdpa-fp16-keypad4096.diagnostic.v1. Metadata validation
+requires the exact selected diagnostic variant and known matching precision.
+The padded option supports CPU only / CPU + GPU; existing memoryfp16 keeps its
+prior modes. Picker, mode reset and runner use the same variant-aware eligibility.
+Original fixture/modes remain supported. Track a video still explicitly requires
+memoryfp16; it cannot silently load the padded candidate. Report/checkpoint/schema,
+state limits and accuracy gates are unchanged. DeviceValidationData is already a
+folder resource so no project-file change is needed.
+
+Next: prepare from dog-09, DeviceValidationData/baseline, attention-key-padding-01
+and attention-key-padding-paired-01 into DeviceValidationData/memoryfp16k4096.
+Then physical 17 Pro, Release, Metal API/Shader Validation off: current Memory FP16
+candidate CPU + GPU followed by Memory FP16 padded candidate CPU + GPU. Share
+each temporal report. No Instruments/plan report or arbitrary-video promotion yet.
+If a useful device benefit appears, verify reverse order before adoption; otherwise
+close this padding experiment. Static Python AST, Swift source/selection review,
+JSON provenance and diff checks only; no assistant builds/tests/inference or
+preparation executed. User commands/report-reading steps remain in chat.
+
+## Earlier: key-padding accuracy passed; paired GPU timing pending
 
 User supplied Pasted text(20260916-125744).txt containing the complete parent
 report, source paste SHA256

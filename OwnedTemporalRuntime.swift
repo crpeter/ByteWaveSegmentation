@@ -18,6 +18,15 @@ enum OwnedTemporalContract {
     static let checkpoint = "ed2d4850b8792c239689b043c47046ec239b6e808a3d9b6ae676c803fd8780df"
     static let attentionDiagnosticContract = "bytewave.propagator-attention.diagnostic.v1"
     static let memoryFP16Precision = "memory-sdpa-fp16-only.diagnostic.v1"
+    static let paddedMemoryFP16Precision = "memory-sdpa-fp16-keypad4096.diagnostic.v1"
+
+    static func diagnosticPrecision(for variant: String?) -> String? {
+        switch variant {
+        case .some("memoryfp16"): return memoryFP16Precision
+        case .some("memoryfp16k4096"): return paddedMemoryFP16Precision
+        default: return nil
+        }
+    }
     static let components = ["ImageEncoder", "Initializer", "InitialMemoryEncoder", "Propagator"]
     static let imageOutputs = ["raw_vision_features", "initial_vision_features", "high_res_feature_0", "high_res_feature_1"]
     static let maskOutputs = ["low_res_mask", "high_res_mask", "best_iou", "object_pointer", "object_score"]
@@ -52,14 +61,14 @@ enum OwnedTemporalContract {
     static func validate(_ model: MLModel, component: String, propagatorVariant: String? = nil) throws {
         let description = model.modelDescription
         let metadata = description.metadata[.creatorDefinedKey] as? [String: String] ?? [:]
-        guard propagatorVariant == nil || propagatorVariant == "memoryfp16" else {
+        guard propagatorVariant == nil || diagnosticPrecision(for: propagatorVariant) != nil else {
             throw OwnedTemporalError.invalid("Unknown diagnostic propagator variant.")
         }
-        let diagnostic = component == "Propagator" && propagatorVariant == "memoryfp16"
+        let diagnostic = component == "Propagator" && propagatorVariant != nil
         // Diagnostic packages retain source precision metadata; the explicit
-        // contract/variant identifies the four attention operations overridden.
+        // contract/variant identifies the attention precision/shape override.
         guard metadata["bytewave.contract"] == (diagnostic ? attentionDiagnosticContract : id),
-              (!diagnostic || metadata["bytewave.diagnostic.variant"] == "memoryfp16"),
+              (!diagnostic || metadata["bytewave.diagnostic.variant"] == propagatorVariant),
               metadata["bytewave.precision"] == precision,
               metadata["bytewave.graph"] == graphRevision,
               metadata["bytewave.upstream"] == upstream,
