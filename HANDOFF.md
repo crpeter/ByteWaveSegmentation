@@ -1,6 +1,26 @@
 # ByteWave segmentation: continuation handoff
 
-## Current step: paired timing after native query-batching accuracy passed
+## Current step: native query-batching closed; retain memoryfp16
+
+User completed the paired Mac CPU_AND_GPU comparison. All 76 measured pairs
+pass the unchanged accuracy gates. Median calls are 13.7671 ms memoryfp16 and
+16.0043 ms memoryfp16q1024: candidate latency is 16.25% higher (2.2373 ms).
+Both balanced call-order strata favor the baseline. No useful Mac speed benefit;
+close this diagnostic without promotion. This is not an iPhone result or a
+statistical significance claim. Summary/provenance selected from the user's
+inline report is archived in `Audit/mac-attention-native-query-paired-summary.json`.
+Package hashes match the preceding accuracy report; the original report's hash
+is preserved as user-reported, not independently verified from inline text.
+
+Keep the existing working FP16 model, direct previews and bounded bulk copies.
+No further repeats or device fixture changes for this candidate. Next useful
+step is a fresh Instruments capture of current memoryfp16 on iPhone 17 Pro;
+the archived shader trace was taken before FP16 and cannot identify today's
+remaining model costs. Choose further model work from current observations.
+Evidence/handoff only: no runtime/model changes, no assistant tests, builds,
+conversions, inference or benchmarks. User-facing instructions remain in chat.
+
+## Native query-batching accuracy evidence (paired result above)
 
 User supplied the Mac diagnostic report for `memoryfp16q1024`; normalized JSON is
 archived in `Audit/mac-attention-native-query-report.json`. Source terminal paste:
