@@ -1,6 +1,52 @@
 # ByteWave segmentation: continuation handoff
 
-## Current step: bulk-copy optimization validated on both model variants
+## Current step: native FP16 attention query-batching diagnostic
+
+User authorized further model-speed work. Prepared `memoryfp16q1024` in the
+existing attention diagnostic, keeping the current working memoryfp16 model and
+iPhone app unchanged. For each of the four 4096-query memory attentions, cast Q,
+K, V and cross-attention mask exactly as the working FP16 baseline, split only Q
+into four ordered 1024-row slices, call native MIL scaled_dot_product_attention
+on each slice with the entire original K/V and broadcast validity mask, concat
+the four results in query order, then restore FP32 output as before. No context
+entries, queries or model weights are dropped. Decoder/initializer FP32 guards,
+interfaces and every unrelated graph operation remain checked and unchanged.
+
+Hypothesis: smaller native SDPA query batches may change GPU scheduling/kernel
+behavior favorably. This is not a proven current bottleneck attribution or speed
+gain: the archived Instruments shader capture predates memoryfp16. It is also
+not the closed chunk256 experiment, which expanded FP32 attention into explicit
+matmul/softmax operations and regressed. The new candidate retains native FP16
+SDPA, preserves full attention context and has no assumed memory-saving claim.
+Apple's [MIL SDPA definition](https://apple.github.io/coremltools/source/coremltools.converters.mil.mil.ops.defs.html)
+normalizes over keys independently for each query, supporting the row split;
+finite-precision backend differences still require numerical validation.
+
+`diagnose_propagator_attention.py --experiment memoryfp16q1024` produces three
+new diagnostic packages: unchanged reconversion, memoryfp16 control, and candidate.
+It runs the unchanged CPU control, then baseline CPU/GPU and candidate CPU/GPU
+20-frame comparisons against the original pinned PyTorch reference. It stops
+on any failed gate. Original reference history is independent, candidate history
+uses the existing bounded banks, and original thresholds are retained. Models,
+saved frames and transformation signatures are verified by the existing checks.
+Suggested new output root: `.temporal-runs/attention-native-query-01` using dog-09.
+
+The paired benchmark now accepts this variant and automatically compares it to
+memoryfp16 (NOT the slower original FP32 model). It requires both baseline and
+candidate CPU/GPU evidence and hashes, alternates four pairs per propagated
+frame, excludes warm-up and checks all outputs against identical-input original
+CPU. Summary labels explicitly identify the baseline; historical original-based
+fields remain for existing experiments. Candidate/baseline own histories are
+checked in the preceding temporal comparisons, not in paired timing. Later paired
+output root can be `.temporal-runs/attention-native-query-paired-01`.
+
+No normal export, device fixture, Swift code or installed model changes. Candidate
+is not accepted by the existing device preparer/app yet. Device preparation is a
+later step only if evidence supports it. Assistant validation: static source and
+graph-rewrite review, Python AST parsing, diff checks only; no tests, conversions,
+model loading, inference or benchmark executed. User-facing commands stay in chat.
+
+## Bulk-copy optimization validated on both model variants
 
 The requested Memory FP16 candidate / CPU + GPU report is now received and
 archived in `Audit/iphone17pro-chunk-copy-memoryfp16-report.json` with a companion

@@ -15,7 +15,7 @@ import torch
 
 from diagnose_propagator_convs import file_hashes, run_worker, verify, worker
 from inspect_encoder_placement import sha, write_json
-from propagator_attention import CONTRACT, make_variant
+from propagator_attention import CONTRACT, VARIANTS, make_variant
 
 
 def main():
@@ -23,10 +23,10 @@ def main():
     parser.add_argument('--upstream', type=Path, required=True)
     parser.add_argument('--run', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
-    parser.add_argument('--experiment', choices=('chunk256', 'memoryfp16'), default='chunk256',
-                        help='Explicit FP32 chunks, or FP16 only for four memory SDPA operations')
+    parser.add_argument('--experiment', choices=VARIANTS[1:], default='chunk256',
+                        help='Explicit FP32 chunks, memory FP16, or native FP16 SDPA with 1024-query chunks')
     parser.add_argument('--candidate', type=Path, help=argparse.SUPPRESS)
-    parser.add_argument('--variant', choices=('unchanged', 'chunk256', 'memoryfp16'), help=argparse.SUPPRESS)
+    parser.add_argument('--variant', choices=VARIANTS, help=argparse.SUPPRESS)
     parser.add_argument('--units', choices=('CPU_ONLY', 'CPU_AND_GPU'), help=argparse.SUPPRESS)
     args = parser.parse_args()
     args.inspection = None  # This experiment inspects its own four SDPA inputs.
@@ -47,8 +47,14 @@ def main():
               'sourceManifestSHA256': sha(args.run / 'models/manifest.json'),
               'sourceFrameReportSHA256': sha(args.run / 'coreml/report.json'),
               'variants': {}, 'runs': {}}
+    controls = ('unchanged', 'memoryfp16') if args.experiment == 'memoryfp16q1024' else ('unchanged',)
+    if args.experiment == 'memoryfp16q1024':
+        report['performanceBaselineVariant'] = 'memoryfp16'
+        report['experimentScope'] = ('Four native 1024-query FP16 SDPA calls replace each full-query memory SDPA. '
+                                    'All keys/values and broadcast masks remain; not the closed explicit FP32 chunk256 rewrite. '
+                                    'Accuracy checks precede a separate paired GPU benchmark against memoryfp16.')
     try:
-        for variant in ('unchanged', args.experiment):
+        for variant in (*controls, args.experiment):
             report['stage'] = f'Preparing {variant}'
             write_json(path, report)
             print(report['stage'], flush=True)
@@ -58,9 +64,13 @@ def main():
             report['variants'][variant] = row
         write_json(args.output / 'variants.json', {'sourceManifestSHA256': report['sourceManifestSHA256'],
                                                   'variants': report['variants']})
-        for label, variant, units in (('unchanged-cpu', 'unchanged', 'CPU_ONLY'),
-                                      (f'{args.experiment}-cpu', args.experiment, 'CPU_ONLY'),
-                                      (f'{args.experiment}-gpu', args.experiment, 'CPU_AND_GPU')):
+        runs = [('unchanged-cpu', 'unchanged', 'CPU_ONLY')]
+        if args.experiment == 'memoryfp16q1024':
+            runs.extend([('memoryfp16-cpu', 'memoryfp16', 'CPU_ONLY'),
+                         ('memoryfp16-gpu', 'memoryfp16', 'CPU_AND_GPU')])
+        runs.extend([(f'{args.experiment}-cpu', args.experiment, 'CPU_ONLY'),
+                     (f'{args.experiment}-gpu', args.experiment, 'CPU_AND_GPU')])
+        for label, variant, units in runs:
             report['stage'] = label
             write_json(path, report)
             row = report['runs'][label] = run_worker(args, label, variant, units, script_path=__file__)

@@ -50,6 +50,12 @@ def candidate_evidence(args):
                 report.get('sourceInspectionSHA256') != sha(args.inspection / 'report.json'))):
         raise ValueError('Expected a passed candidate comparison matching these source inputs')
     required = ['unchanged-cpu', f'{args.variant}-cpu', f'{args.variant}-gpu']
+    if args.variant == 'memoryfp16q1024':
+        if (report.get('contract') != ATTENTION_CONTRACT
+                or report.get('candidateVariant') != args.variant
+                or report.get('performanceBaselineVariant') != 'memoryfp16'):
+            raise ValueError('Expected native query-chunk evidence with a memoryfp16 baseline')
+        required.extend(['memoryfp16-cpu', 'memoryfp16-gpu'])
     if args.variant == 'conv2':
         required.append('conv2-ne')
     for label in required:
@@ -65,7 +71,10 @@ def candidate_evidence(args):
     variants = json.loads((args.candidate / 'variants.json').read_text())
     if variants['sourceManifestSHA256'] != report['sourceManifestSHA256']:
         raise ValueError('Candidate manifest differs')
-    for variant in ('unchanged', args.variant):
+    checked_variants = ['unchanged', args.variant]
+    if args.variant == 'memoryfp16q1024':
+        checked_variants.append('memoryfp16')
+    for variant in checked_variants:
         actual = file_hashes(args.candidate / f'{variant}.mlpackage')
         if actual != report['variants'][variant]['files'] or actual != variants['variants'][variant]['files']:
             raise ValueError(f'Candidate package bytes changed: {variant}')
@@ -76,7 +85,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--run', type=Path, required=True)
     parser.add_argument('--inspection', type=Path, help='Required for conv2')
-    parser.add_argument('--variant', choices=('conv2', 'chunk256', 'memoryfp16'), default='conv2')
+    parser.add_argument('--variant', choices=('conv2', 'chunk256', 'memoryfp16', 'memoryfp16q1024'), default='conv2')
     parser.add_argument('--candidate', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--units', choices=('CPU_AND_GPU', 'CPU_AND_NE'), default='CPU_AND_GPU')
@@ -88,12 +97,16 @@ def main():
     if args.variant != 'conv2' and (args.units != 'CPU_AND_GPU' or args.inspection is not None):
         parser.error('Attention candidates require CPU_AND_GPU and no linear inspection')
     candidate_contract = CONTRACT if args.variant == 'conv2' else ATTENTION_CONTRACT
+    baseline = 'memoryfp16' if args.variant == 'memoryfp16q1024' else 'original'
     scope = __doc__.replace('conv2', args.variant)
+    if baseline != 'original':
+        scope = scope.replace('original and validated', f'{baseline} and validated')
     torch.set_num_threads(1)
     torch.set_num_interop_threads(1)
     args.output.mkdir(parents=True, exist_ok=False)
     path = args.output / 'report.json'
     report = {'scope': scope, 'candidateVariant': args.variant, 'completed': False, 'passed': False, 'readyForDeviceValidation': False,
+              'baselineVariant': baseline,
               'passedMeaning': 'All accuracy checks completed; does not imply a speed improvement.',
               'computeUnits': args.units, 'macOS': platform.mac_ver()[0], 'machine': platform.machine(),
               'pairsPerFrame': 4, 'warmupCallsPerModel': 1, 'frames': [],
@@ -113,6 +126,8 @@ def main():
                       sourceFrameReportSHA256=evidence['sourceFrameReportSHA256'],
                       candidateFiles=evidence['variants'][args.variant]['files'],
                       pointNormalizedTopLeft=status['pointNormalizedTopLeft'])
+        if baseline != 'original':
+            report['baselineFiles'] = evidence['variants'][baseline]['files']
         import coremltools as ct
         report['coremltoolsVersion'] = ct.__version__
         report['stage'] = 'Load CPU reference and paired models'
@@ -120,8 +135,10 @@ def main():
         reference = v.CoreMLBackend(args.run / 'models', graph_revision=owned.GRAPH_REVISION)
         models = {}
         report['loadMilliseconds'] = {}
+        baseline_package = (args.run / 'models/BWTemporalPropagator.mlpackage' if baseline == 'original'
+                            else args.candidate / f'{baseline}.mlpackage')
         for label, package in (
-                ('original', args.run / 'models/BWTemporalPropagator.mlpackage'),
+                (baseline, baseline_package),
                 (args.variant, args.candidate / f'{args.variant}.mlpackage')):
             start = time.perf_counter()
             models[label] = ct.models.MLModel(str(package), compute_units=getattr(ct.ComputeUnit, args.units))
@@ -130,7 +147,7 @@ def main():
             if models[label].user_defined_metadata.get('bytewave.contract') != expected_contract:
                 raise ValueError(f'Unexpected {label} model contract')
             if (label != 'original' and
-                    models[label].user_defined_metadata.get('bytewave.diagnostic.variant') != args.variant):
+                    models[label].user_defined_metadata.get('bytewave.diagnostic.variant') != label):
                 raise ValueError('Unexpected candidate variant')
         state = TemporalState()
         point = [min(max(float(n) * 1024, 0), 1023) for n in status['pointNormalizedTopLeft']]
@@ -183,7 +200,7 @@ def main():
                             raise ValueError(f'{label} warm-up parity failed')
                 report['stage'] = 'Measured pairs'
                 for repetition in range(4):
-                    order = ['original', args.variant] if (index + repetition) % 2 == 0 else [args.variant, 'original']
+                    order = [baseline, args.variant] if (index + repetition) % 2 == 0 else [args.variant, baseline]
                     report['activeRepetition'] = repetition
                     pair = {'order': order, 'milliseconds': {}, 'checks': {}}
                     row['pairs'].append(pair)
@@ -204,17 +221,20 @@ def main():
             raise ValueError('Full bounded temporal state was not exercised')
         pairs = [p for f in report['frames'] for p in f['pairs']]
         medians = {label: statistics.median(p['milliseconds'][label] for p in pairs) for label in models}
-        ratio = medians['original'] / medians[args.variant]
+        ratio = medians[baseline] / medians[args.variant]
         report['summary'] = {
             'measuredPairs': len(pairs), 'medianMilliseconds': medians,
-            'ratioOfMediansOriginalOverCandidate': ratio,
-            'medianPairedRatioOriginalOverCandidate': statistics.median(
-                p['milliseconds']['original'] / p['milliseconds'][args.variant] for p in pairs),
-            'medianLatencyReductionPercent': 100 * (1 - medians[args.variant] / medians['original']),
+            'ratioOfMediansBaselineOverCandidate': ratio,
+            'medianPairedRatioBaselineOverCandidate': statistics.median(
+                p['milliseconds'][baseline] / p['milliseconds'][args.variant] for p in pairs),
+            'medianLatencyReductionPercent': 100 * (1 - medians[args.variant] / medians[baseline]),
             'allMeasuredOutputsPassed': True,
             'medianMillisecondsByFirstModel': {
                 first: {label: statistics.median(p['milliseconds'][label] for p in pairs if p['order'][0] == first)
                         for label in models} for first in models}}
+        if baseline == 'original':
+            report['summary']['ratioOfMediansOriginalOverCandidate'] = ratio
+            report['summary']['medianPairedRatioOriginalOverCandidate'] = report['summary']['medianPairedRatioBaselineOverCandidate']
         if args.variant == 'conv2':
             report['summary']['ratioOfMediansOriginalOverConv2'] = report['summary']['ratioOfMediansOriginalOverCandidate']
             report['summary']['medianPairedRatioOriginalOverConv2'] = report['summary']['medianPairedRatioOriginalOverCandidate']

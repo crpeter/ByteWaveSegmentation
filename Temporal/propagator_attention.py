@@ -15,6 +15,8 @@ from propagator_convs import signatures
 
 CONTRACT = 'bytewave.propagator-attention.diagnostic.v1'
 CHUNK = 256
+NATIVE_QUERY_CHUNK = 1024
+VARIANTS = ('unchanged', 'chunk256', 'memoryfp16', 'memoryfp16q1024')
 
 
 def make_variant(package, destination, variant):
@@ -22,7 +24,7 @@ def make_variant(package, destination, variant):
     from coremltools.converters.mil.frontend.milproto.load import load
     from coremltools.converters.mil.mil import Builder as mb, types
 
-    if variant not in ('unchanged', 'chunk256', 'memoryfp16') or ct.__version__ != '9.0':
+    if variant not in VARIANTS or ct.__version__ != '9.0':
         raise ValueError('Requires Core ML Tools 9.0 and a known variant')
     original = ct.models.MLModel(str(package), skip_model_load=True)
     spec = original.get_spec()
@@ -100,17 +102,34 @@ def make_variant(package, destination, variant):
                                     'queryChunkSize': CHUNK, 'chunks': 4096 // CHUNK,
                                     'keysPerChunk': key_count,
                                     'scoreTensorBytesPerChunk': CHUNK * key_count * 4})
-        elif variant == 'memoryfp16':
+        elif variant in ('memoryfp16', 'memoryfp16q1024'):
             with function:
                 for index, op in enumerate(selected):
                     old = op.outputs[0]
-                    prefix = f'bwmemoryfp16_{index}'
+                    key_count = int(op.key.shape[-2])
+                    prefix = f'bw{variant}_{index}'
                     inputs = {}
                     for key in ('query', 'key', 'value', 'attn_mask'):
                         value = getattr(op, key)
                         if value is not None:
                             inputs[key] = mb.cast(x=value, dtype='fp16', name=f'{prefix}_{key}', before_op=op)
-                    half = mb.scaled_dot_product_attention(**inputs, name=prefix + '_attention', before_op=op)
+                    if variant == 'memoryfp16q1024':
+                        # SDPA normalizes over keys, independently for each query.
+                        # Keep the fused operation, all keys/values, and the exact
+                        # broadcast mask/FP16 casts used by the working baseline.
+                        # This changes GPU scheduling opportunities, not context.
+                        chunks = []
+                        for begin in range(0, 4096, NATIVE_QUERY_CHUNK):
+                            name = f'{prefix}_{begin // NATIVE_QUERY_CHUNK}'
+                            query = mb.slice_by_size(
+                                x=inputs['query'], begin=[0, 0, begin, 0],
+                                size=[1, 1, NATIVE_QUERY_CHUNK, 256],
+                                name=name + '_query', before_op=op)
+                            chunks.append(mb.scaled_dot_product_attention(
+                                **{**inputs, 'query': query}, name=name + '_attention', before_op=op))
+                        half = mb.concat(values=chunks, axis=2, name=prefix + '_concat', before_op=op)
+                    else:
+                        half = mb.scaled_dot_product_attention(**inputs, name=prefix + '_attention', before_op=op)
                     replacement = mb.cast(x=half, dtype='fp32', name=prefix + '_restore', before_op=op)
                     if replacement.shape != old.shape or replacement.dtype != old.dtype:
                         raise ValueError('Attention output interface changed')
@@ -121,6 +140,13 @@ def make_variant(package, destination, variant):
                                     'attentionPrecision': 'fp16', 'outputInterface': 'fp32',
                                     'maskCast': 'fp16' if 'attn_mask' in inputs else None,
                                     'allQueriesAndKeysRetained': True})
+                    if variant == 'memoryfp16q1024':
+                        changes[-1].update(queryChunkSize=NATIVE_QUERY_CHUNK,
+                                           queryRanges=[[b, b + NATIVE_QUERY_CHUNK]
+                                                        for b in range(0, 4096, NATIVE_QUERY_CHUNK)],
+                                           chunks=4096 // NATIVE_QUERY_CHUNK,
+                                           keysPerChunk=key_count,
+                                           nativeSDPARetained=True)
         added_names = {op.outputs[0].name for op in function.operations
                        if op.op_type != 'const' and op.outputs[0].name not in before}
         # Freeze the intended graph for conversion: preserve every unrelated op,
@@ -152,7 +178,7 @@ def make_variant(package, destination, variant):
         for op in after_function.operations:
             name = op.outputs[0].name
             if name in added_names:
-                expected_dtype = (types.fp16 if variant == 'memoryfp16' and not name.endswith('_restore')
+                expected_dtype = (types.fp16 if variant in ('memoryfp16', 'memoryfp16q1024') and not name.endswith('_restore')
                                   else types.fp32)
                 if any(v.dtype != expected_dtype for v in op.outputs):
                     raise ValueError(f'Replacement precision changed: {name}')
@@ -167,7 +193,7 @@ def make_variant(package, destination, variant):
         candidate.save(str(destination))
         return {'variant': variant, 'inspectedAttentions': descriptions, 'modifications': changes,
                 'unrelatedOperationsPreserved': True, 'externalInterfacesPreserved': True,
-                'attentionPrecision': 'fp16' if variant == 'memoryfp16' else 'fp32',
+                'attentionPrecision': 'fp16' if variant in ('memoryfp16', 'memoryfp16q1024') else 'fp32',
                 'memoryNote': 'Score tensor size is per chunk, not a measured or guaranteed peak allocation.'}
     finally:
         sys.setrecursionlimit(previous)
