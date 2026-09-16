@@ -1,6 +1,27 @@
 # ByteWave segmentation: continuation handoff
 
-## Current step: requested video frames (first new-video run completed)
+## Current step: measure video frame-preparation overhead
+
+The new-video and seek/reselection checks below are complete. The seek report
+averages 65.584 ms prediction/state and 95.150 ms total request across 176 warm
+predictions. The roughly 29.6 ms difference is not yet attributed to one stage.
+`OwnedVideoTracking.swift` now adds `video-preparation-stages.v1` instrumentation:
+sample acquisition, orientation graph setup, model buffer allocation, model-input
+render, preview CGImage creation and preview PNG encoding. Recent records retain
+these stage times; incremental warm aggregates also include total preparation
+and mask rendering. The 120-record bound is unchanged. Initialization has no
+preparation stages because it reuses the current prepared image; open/seek preview
+work is excluded from warm totals. These are API wall times, with possible lazy
+Core Image work, not isolated hardware timings. UI decoding/rendering remains
+outside request timing. Model bytes, pixels, state policy and scheduling are
+unchanged. This is measurement instrumentation, not a claimed speed improvement.
+
+Next evidence: one uninterrupted run of the same clip on iPhone 17 Pro Release,
+then the video tracking report. No repeat seek test or model preparation needed.
+Assistant review for this change is static source/diff inspection only; no build,
+test, decoding or inference was run. User-facing steps stay in chat.
+
+## Requested video frames
 
 `OwnedVideoTracking.swift` adds a separate **Track a video** screen using the
 existing verified `DeviceValidationData/memoryfp16` packages with CPU + GPU.

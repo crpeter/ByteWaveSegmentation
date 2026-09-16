@@ -32,6 +32,7 @@ private struct VideoFrameRecord: Encodable {
     let predictedIoU: Float
     let modelMilliseconds: [String: Double]
     let decodeAndPreparationMilliseconds: Double
+    let preparationStageMilliseconds: [String: Double]
     let predictionAndStateMilliseconds: Double
     let maskRenderingMilliseconds: Double
     let requestMilliseconds: Double
@@ -56,6 +57,8 @@ private struct VideoTrackingReport: Encodable {
     #endif
     let scope = "On-demand sequential decoded frames from a user-selected video. One positive point per reset; no ground-truth parity or automatic quality pass. All model outputs retain shape/finiteness checks. No audio, frame dropping, pre-scan or full-video mask cache. Run tracking advances as requests finish, not on a real-time playback clock."
     let timingScope = "Request time includes synchronous decode, orientation/resize, PNG preview, prediction/state, mask PNG and small pre-prediction checkpoint writes. Excludes model loading, UI presentation, report saving and user pauses. Initialization uses the already prepared displayed frame. Warm totals exclude the first prediction after every reset. These are processing diagnostics, not sustained playback FPS."
+    let timingInstrumentation = "video-preparation-stages.v1"
+    let preparationTimingScope = "Non-overlapping API wall times within decodeAndPreparationMilliseconds: sample acquisition, orientation graph setup, model buffer allocation, model input render, preview image creation and preview PNG encoding. Core Image can defer work across API boundaries; these are not hardware execution times. Sample acquisition includes waiting for decoded pixels, not isolated decoder execution. Small bookkeeping and autorelease cleanup are not separate stages. Initialization has an empty stage dictionary because it reuses the displayed frame. Warm preparation totals include only successful next-frame predictions; exclude open/seek previews and initialization. UI image decoding, SwiftUI rendering and presentation remain outside request timing."
     let imagePreparation = "Decoded BGRA; track presentation transform converted to Core Image coordinates; sRGB, stretched to 1024x1024. Preview keeps display aspect. Point is normalized top-left. Graph owns image scaling/normalization."
     let recentFrameLimit = 120
     var fixtureSHA256: String?
@@ -80,6 +83,9 @@ private struct VideoTrackingReport: Encodable {
     var warmModelTotals: [String: VideoTimingTotal] = [:]
     var warmRequestTotals = VideoTimingTotal()
     var warmPredictionAndStateTotals = VideoTimingTotal()
+    var warmDecodeAndPreparationTotals = VideoTimingTotal()
+    var warmPreparationStageTotals: [String: VideoTimingTotal] = [:]
+    var warmMaskRenderingTotals = VideoTimingTotal()
     var reachedEnd = false
     var lastError: String?
     var lastAction = "Opening"
@@ -104,6 +110,7 @@ actor OwnedVideoRunner {
         let preview: Data
         let time: CMTime
         let preparationMS: Double
+        let preparationStages: [String: Double]
     }
     private let context = CIContext(options: [.cacheIntermediates: false])
     private var generation: UInt64 = 0
@@ -340,12 +347,17 @@ actor OwnedVideoRunner {
     private func readFrame(notBefore: CMTime? = nil) throws -> PreparedFrame? {
         guard let reader, let output else { throw OwnedTemporalError.invalid("The decoder is not ready.") }
         let start = now()
+        var stages: [String: Double] = [:]
         while true {
             try Task.checkCancellation()
             var skippedPreroll = false
             // Temporary native buffers and rendering intermediates leave this pool.
             let decoded: PreparedFrame? = try autoreleasepool {
-                guard let sample = output.copyNextSampleBuffer() else { return nil }
+                let sampleStart = now()
+                let nextSample = output.copyNextSampleBuffer()
+                stages["sampleAcquisition", default: 0] += elapsed(sampleStart)
+                guard let sample = nextSample else { return nil }
+                let orientationStart = now()
                 let time = CMSampleBufferGetPresentationTimeStamp(sample)
                 guard time.isNumeric, time.epoch == 0, time.timescale > 0 else {
                     throw OwnedTemporalError.invalid("Invalid decoded presentation timestamp.")
@@ -368,19 +380,30 @@ actor OwnedVideoRunner {
                 report?.lastDisplaySize = [Double(bounds.width), Double(bounds.height)]
                 let normalized = presented.transformed(by: CGAffineTransform(translationX: -bounds.minX, y: -bounds.minY))
                 let oriented = normalized.transformed(by: CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: 0, ty: bounds.height))
+                stages["orientationGraphSetup"] = elapsed(orientationStart)
+                let allocationStart = now()
                 var input: CVPixelBuffer?
                 let code = CVPixelBufferCreate(kCFAllocatorDefault, 1024, 1024, kCVPixelFormatType_32BGRA,
                                               [kCVPixelBufferIOSurfacePropertiesKey: [:]] as CFDictionary, &input)
                 guard code == kCVReturnSuccess, let input else { throw OwnedTemporalError.invalid("Could not allocate the model image.") }
+                stages["modelBufferAllocation"] = elapsed(allocationStart)
+                let renderStart = now()
                 let color = CGColorSpace(name: CGColorSpace.sRGB)!
                 let square = oriented.transformed(by: CGAffineTransform(scaleX: 1024 / bounds.width, y: 1024 / bounds.height))
                 context.render(square, to: input, bounds: CGRect(x: 0, y: 0, width: 1024, height: 1024), colorSpace: color)
+                stages["modelInputRender"] = elapsed(renderStart)
+                let previewStart = now()
                 let scale = min(1, 1024 / max(bounds.width, bounds.height))
                 let preview = oriented.transformed(by: CGAffineTransform(scaleX: scale, y: scale))
                 guard let image = context.createCGImage(preview, from: preview.extent, format: .RGBA8, colorSpace: color) else {
                     throw OwnedTemporalError.invalid("Could not prepare the video preview.")
                 }
-                return PreparedFrame(buffer: input, preview: try png(image), time: time, preparationMS: elapsed(start))
+                stages["previewImageCreation"] = elapsed(previewStart)
+                let pngStart = now()
+                let previewPNG = try png(image)
+                stages["previewPNGEncoding"] = elapsed(pngStart)
+                return PreparedFrame(buffer: input, preview: previewPNG, time: time,
+                                     preparationMS: elapsed(start), preparationStages: stages)
             }
             if let decoded { return decoded }
             switch reader.status {
@@ -417,6 +440,7 @@ actor OwnedVideoRunner {
                     ptsValue: current.time.value, ptsTimescale: current.time.timescale, initialized: initialized,
                     foregroundFraction: fraction, objectScore: score.values[0], predictedIoU: iou.values[0],
                     modelMilliseconds: prediction.modelMilliseconds, decodeAndPreparationMilliseconds: preparationMS,
+                    preparationStageMilliseconds: initialized ? [:] : current.preparationStages,
                     predictionAndStateMilliseconds: predictionMS, maskRenderingMilliseconds: maskMS,
                     requestMilliseconds: elapsed(requestStart), state: prediction.state)
                 report?.framesPredicted += 1
@@ -428,6 +452,11 @@ actor OwnedVideoRunner {
                     for (name, ms) in prediction.modelMilliseconds { report?.warmModelTotals[name, default: VideoTimingTotal()].add(ms) }
                     report?.warmRequestTotals.add(row.requestMilliseconds)
                     report?.warmPredictionAndStateTotals.add(predictionMS)
+                    report?.warmDecodeAndPreparationTotals.add(preparationMS)
+                    for (name, ms) in row.preparationStageMilliseconds {
+                        report?.warmPreparationStageTotals[name, default: VideoTimingTotal()].add(ms)
+                    }
+                    report?.warmMaskRenderingTotals.add(maskMS)
                 }
                 report?.lastAction = "Predicted frame at \(current.time.seconds) seconds"
                 let message = String(format: "%.3f s · mask %.1f%% · prediction %.1f ms · state %d/7 + %d/16",
