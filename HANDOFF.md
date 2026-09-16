@@ -1,6 +1,29 @@
 # ByteWave segmentation: continuation handoff
 
-## Current step: native query-batching closed; retain memoryfp16
+## Current step: FP16 trace received; shader timing export empty
+
+User recorded current memoryfp16 on iPhone 17 Pro, Release CPU + GPU. Device
+report completes/passes all 20 frames with bounded 7/16 banks, nominal thermal
+snapshots and current chunk-copy implementation. Raw report and offline trace
+summary archived in `Audit/iphone17pro-instruments-memoryfp16-{device-report,summary}.json`.
+Trace Run 1 / PID 7794 spans 07:49:22.873–07:49:47.925 -04:00 on September 16;
+report timestamp 11:49:40Z lies within it. Counts match (20 encoder, 19 propagator,
+one initializer and initial memory encoder), but no shared run ID proves identity.
+
+Excluding first call of each model, encoder median prediction/GPU-active union
+is 22.390/20.937 ms; propagator 33.200/28.184 ms. GPU work overlaps prediction,
+not additional time. Original archived trace had 67.497 ms warm propagation;
+new trace is consistent with retained FP16 gains, not a new paired benchmark.
+
+Shader Timeline was enabled, but metal-shader-profiler-intervals export has ZERO
+rows. Shader list has names only and cannot establish operation costs. Next:
+export gpu-shader-profiler-interval and ShaderTimeline signpost/arguments from
+this SAME saved trace, before requesting any repeat recording. No model changes.
+User moved the trace into project folder after Desktop access errors. Do not
+request privacy permission changes; the original cause was not established.
+Static/offline parsing only; no assistant builds, tests, inference or profiling.
+
+## Native query-batching closed; retain memoryfp16
 
 User completed the paired Mac CPU_AND_GPU comparison. All 76 measured pairs
 pass the unchanged accuracy gates. Median calls are 13.7671 ms memoryfp16 and
