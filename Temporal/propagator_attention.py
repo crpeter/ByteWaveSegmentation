@@ -17,7 +17,7 @@ CONTRACT = 'bytewave.propagator-attention.diagnostic.v1'
 CHUNK = 256
 NATIVE_QUERY_CHUNK = 1024
 PADDED_KEY_COUNT = 4096
-FP16_BASELINE_VARIANTS = ('memoryfp16q1024', 'memoryfp16k4096')
+FP16_BASELINE_VARIANTS = ('memoryfp16q1024', 'memoryfp16k4096', 'memoryfp16qkv')
 FP16_VARIANTS = ('memoryfp16', *FP16_BASELINE_VARIANTS)
 VARIANTS = ('unchanged', 'chunk256', *FP16_VARIANTS)
 
@@ -180,6 +180,11 @@ def make_variant(package, destination, variant):
                                            queryChunking=False, nativeSDPARetained=True)
             if variant == 'memoryfp16k4096' and sorted(c['appendedExcludedKeys'] for c in changes) != [0, 0, 448, 448]:
                 raise ValueError('Expected padding only for the two cross-attentions')
+        if variant == 'memoryfp16qkv':
+            from propagator_qkv import pack_self_qkv
+            packed_changes, packed_aliases = pack_self_qkv(function)
+            changes.extend(packed_changes)
+            aliases.update(packed_aliases)
         added_names = {op.outputs[0].name for op in function.operations
                        if op.op_type != 'const' and op.outputs[0].name not in before}
         # Freeze the intended graph for conversion: preserve every unrelated op,
@@ -227,7 +232,9 @@ def make_variant(package, destination, variant):
         return {'variant': variant, 'inspectedAttentions': descriptions, 'modifications': changes,
                 'unrelatedOperationsPreserved': True, 'externalInterfacesPreserved': True,
                 'attentionPrecision': 'fp16' if variant in FP16_VARIANTS else 'fp32',
-                'memoryNote': ('Padding adds 448 excluded key/value rows per cross-attention; no history is removed. '
+                'memoryNote': ('Q/K/V packing adds slices; peak allocation and speed are not established.'
+                               if variant == 'memoryfp16qkv' else
+                               'Padding adds 448 excluded key/value rows per cross-attention; no history is removed. '
                                'Peak memory, kernel selection and speed are not established.'
                                if variant == 'memoryfp16k4096' else
                                'Score tensor size is per chunk, not a measured or guaranteed peak allocation.')}

@@ -25,7 +25,7 @@ def main():
     parser.add_argument('--run', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--experiment', choices=VARIANTS[1:], default='chunk256',
-                        help='Explicit FP32 chunks, memory FP16, native 1024-query chunks, or excluded cross-key padding to 4096')
+                        help='Memory attention precision/layout experiment; memoryfp16qkv packs self-attention projections')
     parser.add_argument('--candidate', type=Path, help=argparse.SUPPRESS)
     parser.add_argument('--variant', choices=VARIANTS, help=argparse.SUPPRESS)
     parser.add_argument('--units', choices=('CPU_ONLY', 'CPU_AND_GPU'), help=argparse.SUPPRESS)
@@ -51,7 +51,14 @@ def main():
     controls = ('unchanged', 'memoryfp16') if args.experiment in FP16_BASELINE_VARIANTS else ('unchanged',)
     if args.experiment in FP16_BASELINE_VARIANTS:
         report['performanceBaselineVariant'] = 'memoryfp16'
-    if args.experiment == 'memoryfp16q1024':
+    if args.experiment == 'memoryfp16qkv':
+        report['experimentScope'] = ('Pack Q/K/V in each of the two memory self-attention layers into one FP16 '
+                                    'linear and three slices, on top of the existing memoryfp16 attention. '
+                                    'Require identical input variable and preserve every source weight/bias byte. '
+                                    'Cross projections, rotary operations, query/key counts and validity masks stay unchanged. '
+                                    'Hypothesis: fewer projection dispatches may help; slices/larger GEMMs can cost more. '
+                                    'Compare against memoryfp16 before any device preparation or adoption.')
+    elif args.experiment == 'memoryfp16q1024':
         report['experimentScope'] = ('Four native 1024-query FP16 SDPA calls replace each full-query memory SDPA. '
                                     'All keys/values and broadcast masks remain; not the closed explicit FP32 chunk256 rewrite. '
                                     'Accuracy checks precede a separate paired GPU benchmark against memoryfp16.')

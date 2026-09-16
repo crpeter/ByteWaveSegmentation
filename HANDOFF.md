@@ -1,6 +1,54 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: reverse-order encoder gain confirmed; Track a video uses fused encoder
+## Current work: fused encoder video accepted; packed Q/K/V experiment prepared
+
+User supplied 076b4ee0-93be-4a17-bc20-3f16ef2a8f94.json and a screenshot of the
+rolling dog, reporting tracking looks good, not perfect. Selected exact report
+fields and attachment SHA256 are in Audit/iphone17pro-video-encoder-projection-summary.json.
+Report confirms memoryfp16projection, matching encoder/propagator packages,
+physical iPhone18,1 / iOS27.0(24A435), Release CPU_AND_GPU. 1,079 predictions,
+4 seeks, 4 segments, no empty masks/error recorded, final state 48/7/16.
+Snapshot reachedEnd=false after seeking, not a new uninterrupted EOF proof.
+Across 1,075 warm requests, MEANS: encoder20.2773 ms, propagator34.7614 ms,
+prediction/state59.7133 ms, request62.8766 ms. Thermal start/snapshot nominal.
+No ground-truth quality pass; predictedIoU is confidence. Screenshot blockiness
+is partly the thresholded256x256 low_res_mask enlarged without interpolation;
+smoothing cannot recover missing fur. Keep this working video model unchanged.
+
+Next isolated optimization: memoryfp16qkv. Pinned owned.FixedMemoryLayer feeds
+the same normalized tensor to Q/K/V in each of two self-attention layers.
+Temporal/propagator_qkv.py requires exactly these six semantic weight/bias names,
+shared input Var identity, shapes[1,4096,256], finite FP16 weights[256,256]/biases.
+Pack each trio by concatenating constant rows in Q/K/V order (byte-exact checks),
+replace three linears with one[256->768]linear and three256-channel slices.
+Same real-arithmetic expression, potentially different floating-point accumulation
+and scheduling; no speed or bitwise accuracy claim. No context/resolution loss,
+no new precision lowering, cross-projection/rotary/mask changes, or attention
+chunking. Added slices/larger GEMMs might negate any benefit. Apple's MIL linear
+and slice API documentation checked; native execution remains user-run.
+
+The existing attention diagnostic adds memoryfp16qkv on top of memoryfp16,
+with unchanged CPU reconversion and rebuilt memoryfp16 CPU/GPU controls, then
+candidate CPU/GPU independent-history20-frame comparisons against original PyTorch.
+Original CPU encoder and other tracker components isolate this experiment; it
+is not yet the fused encoder plus candidate device combination. Structural checks
+freeze all unrelated ops/constants/interfaces and all new ops through conversion.
+Paired benchmark automatically accepts the new variant only after all five
+comparisons pass; baseline is memoryfp16,76balanced pairs with original CPU state,
+checked warm-ups and unchanged numerical gates. No normal export, phone fixture,
+Swift selection, video renderer or production change. If accuracy/shape guards
+fail, stop and inspect report; no permissive fallback. No device preparation yet.
+
+User commands: diagnose_propagator_attention.py --experiment memoryfp16qkv
+--upstream .upstream-edgetam --run .temporal-runs/dog-09
+--output .temporal-runs/attention-qkv-01. Only on success, benchmark_propagator_convs.py
+--variant memoryfp16qkv --run .temporal-runs/dog-09
+--candidate .temporal-runs/attention-qkv-01 --output .temporal-runs/attention-qkv-paired-01.
+Provide cat for both report.json and paired summary.json in chat. Assistant
+performed AST parsing, static source/diff review and offline JSON extraction only;
+no builds/tests/conversion/inference/benchmark execution. Preserve prior models.
+
+## Earlier: reverse-order encoder gain confirmed; Track a video uses fused encoder
 
 User supplied b4819aee-62df-4b9f-b400-058e9ec838fd.json (fused encoder first,
 2026-09-16T18:16:03Z) and c36a47e6-b05f-496a-8802-ea8ae63e701d.json (memoryfp16
