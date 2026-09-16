@@ -1,6 +1,35 @@
 # ByteWave segmentation: continuation handoff
 
-## Current step: validate direct preview image transport
+## Current step: direct preview timing improvement confirmed
+
+The user's subsequent iPhone 17 Pro Release report confirms the v2 direct-image
+path completed 835 predictions and reached EOF, with one selection segment,
+zero seeks/empty masks, no reported error and final bounded 7/16 state. Nominal
+thermal snapshots at start/end. Raw report and comparison are archived in
+`Audit/iphone17pro-video-direct-preview-report.json` and its companion summary.
+All 834 warm counts match; retained 120 rows advance timestamps and state with
+bounded banks. Hardware, OS, model file hashes, fixture, video size/duration and
+orientation match the preceding PNG run. Selected points differ slightly, so
+these are successive-run timing results, not paired timings or mask parity.
+
+Mean preparation fell 30.902 -> 2.523 ms (91.83% reduction); total request fell
+108.035 -> 78.809 ms (27.05% reduction). The measured preparation saving of
+28.378 ms matches the removed PNG encoding cost. Eager preview creation is still
+only 0.903 ms. Prediction/state averaged 75.786 ms (previously 76.595), accounting
+for 96.16% of the new request time. Encoder/propagator means are 26.353/39.990 ms;
+do not interpret their individual run-to-run shifts as model implementation
+changes. Model bytes and inference/state implementation are unchanged.
+
+Retain direct preview transport. No repeat of this same preparation test is
+needed. The next performance target is inference/state; choose a bounded change
+from evidence rather than adding more preview micro-optimizations. UI render and
+presentation remain outside timing, so do not report 12.7 as measured playback
+FPS. The report alone cannot confirm visible color/orientation/mask alignment or
+ground-truth quality; the user has not yet explicitly supplied that visual check.
+This evidence-only update changes no Swift or model code. Assistant validation
+was JSON arithmetic, retained-row inspection and diff checks, not device execution.
+
+## Direct preview implementation and baseline
 
 The instrumented iPhone 17 Pro Release run completed the same 27.838-second clip:
 835 predictions, one segment, no seeks, zero empty masks, no reported error and
@@ -27,10 +56,9 @@ checks, bounded state and request scheduling are unchanged.
 
 Reports identify `video-preparation-stages.v2` and `previewTransport`. The PNG
 stage is absent; eager preview creation is measured under previewImageCreation.
-Actual savings are pending a device run; do not subtract 28.378 ms and present
-that estimate as a measured result. UI construction/rendering is still excluded.
-Next evidence is the same complete clip and its video tracking report, plus user
-confirmation that preview orientation, color and mask alignment remain correct.
+The completed device timing comparison is recorded above. UI construction and
+rendering are still excluded. Visual color/orientation/alignment confirmation is
+not encoded by either report.
 Static source/diff review only here; no tests, build, decoding or inference run.
 User-facing build/report steps belong in chat, not README.
 
