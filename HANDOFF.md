@@ -1,6 +1,6 @@
 # ByteWave segmentation: continuation handoff
 
-## Current step: requested video frames (implementation awaiting user build)
+## Current step: requested video frames (first new-video run completed)
 
 `OwnedVideoTracking.swift` adds a separate **Track a video** screen using the
 existing verified `DeviceValidationData/memoryfp16` packages with CPU + GPU.
@@ -34,16 +34,44 @@ prediction checkpoint files overwrite fixed names instead of accumulating files.
 
 Assistant validation: static source/lifecycle/ownership review, project source
 registration and diff checks only. No Swift compiler/Apple SDK is available here;
-no tests, builds, decoding, inference or conversion were run. User validation is
-next: Release iPhone 17 Pro build, dog clip visual orientation/subject/step/run,
-then pause/seek/reselect and share **video tracking report** plus a mask screenshot.
-A portrait clip with an off-center subject is useful for transform/point mapping.
+no tests, builds, decoding, inference or conversion were run by the assistant.
+The user has now built and run this path on a new portrait video of the same dog
+and reports that tracking looked good. See the result immediately below.
+Seek/reset still needs device validation; the supplied run has zero seeks.
 Setup and report-sharing instructions belong in chat, not README.
 
 API references checked: Apple [decoded sample ordering and EOF status](https://developer.apple.com/documentation/avfoundation/avassetreaderoutput/copynextsamplebuffer%28%29),
 [reader time range](https://developer.apple.com/documentation/avfoundation/avassetreader/timerange),
 and [track presentation transform](https://developer.apple.com/documentation/avfoundation/avassettrack/preferredtransform).
 These support the decoder design, not device validation of this new path.
+
+## First arbitrary-video result: new dog clip
+
+`Audit/iphone17pro-new-dog-video-report.json` preserves the user report; the
+companion summary records derived statistics and limitations. iPhone18,1,
+iOS 27.0 (24A435), Release CPU + GPU, matching validated memoryfp16 fixture.
+The 27.838-second video reached EOF: 836 predictions, two subject-selection
+segments, zero empty masks and no reported error. Last segment accepted 821
+frames; final banks remain 7 spatial / 16 pointer entries. Only the latest 120
+frame records are retained, with strictly increasing timestamps and bounded
+states. Thermals are nominal at start/snapshot. The report has zero seeks.
+Do not call this 836 unique frames or a numerical quality/parity pass.
+
+Across 834 warm predictions, mean encoder/propagator/prediction-state/request
+costs are 29.521/33.971/73.358/104.363 ms. Request includes decode, orientation,
+resize, PNG preview and mask rendering, but excludes UI presentation and pauses.
+The final 120 records average 34.867 ms decode/preparation, 80.956 ms prediction/
+state, 0.426 ms mask rendering and 116.379 ms total request. No timing attribution
+within preparation or cause for the later increase is established. These are
+processing measurements, not sustained playback FPS.
+
+User says this NEW video looked good. In the supplied portrait screenshot, the
+blue mask broadly covers the dog and excludes most grass; edges are stepped in
+the nearest-neighbor low-resolution diagnostic overlay. Do not claim fine-edge
+quality or all-frame accuracy from one screenshot. Next device check: pause,
+seek backward, select the subject anew, run briefly and share the video report.
+Then investigate preparation/display overhead and broader visual tracking quality.
+No inference implementation or model bytes changed while recording this result.
 
 ## iPhone 17 Pro comparison passed: original versus memoryfp16
 
