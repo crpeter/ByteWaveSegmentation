@@ -1,6 +1,37 @@
 # ByteWave segmentation: continuation handoff
 
-## Current step: validate contiguous tensor-copy optimization
+## Current step: Memory FP16 fixed comparison still needed after copy change
+
+User supplied two reports after `903c940`. The 20-frame numerical comparison
+passed all gates, but its modelVariant is Original, not Memory FP16 candidate.
+Archive: `Audit/iphone17pro-chunk-copy-original-report.json`. Relative to the
+same Original fixture in the earlier repeat report, warm output copy/validation
+averages 8.627 -> 2.136 ms (75.25% reduction, 6.492 ms saved). All 20 input hashes
+match that baseline; all state counts are correct. Minimum mask IoU 0.996804,
+pointer cosine 0.998976, memory cosine 0.995975. Separate runs, not paired timing.
+Do not mark the candidate's post-change numerical comparison complete yet.
+
+`Audit/iphone17pro-chunk-copy-short-video-report.json` is a 3.717-second clip,
+112 predictions, one segment, no seeks, EOF reached, zero empty masks/no error.
+It uses Memory FP16 candidate and the new copy implementation. All rows fit
+within the 120-row bound and have increasing timestamps/correct bounded state.
+111 warm frames average 63.504 ms request, 60.557 ms prediction/state and
+2.174 ms combined encoder/propagator output copy/validation. Device is iPhone
+17 Pro Release CPU + GPU, nominal thermal snapshots. This is a shorter source
+than the earlier 27.838-second clip; do not claim a 78.8 -> 63.5 ms same-video
+speed improvement. The companion `Audit/iphone17pro-chunk-copy-summary.json`
+records arithmetic, provenance and limitations.
+
+User reports the dog approaches the camera and is patted, and the tracking mask
+successfully excludes their hand. Preserve this useful qualitative interaction/
+occlusion observation without claiming annotated accuracy or general robustness.
+
+Next smallest gate: existing Test temporal tracking, Memory FP16 candidate,
+CPU + GPU, share temporal report. No rebuild/model preparation is required to
+switch that model choice. No further implementation change was made this turn;
+assistant only parsed reports, checked arithmetic/state and archived evidence.
+
+## Contiguous tensor-copy implementation
 
 The user confirmed the direct preview looked identical to their eye. Retain it.
 Next bounded target is Swift model-output copying, not another model conversion.
@@ -20,7 +51,8 @@ logical value is copied exactly once, including short final chunks. Nothing is
 published until all values pass. The original strided fallback is unchanged.
 Source Core ML arrays are not retained as state or exposed as borrowed buffers.
 Model bytes, prediction math, thresholds, state pack/commit and scheduling are
-unchanged. This is an optimization candidate; speed is not yet measured.
+unchanged. Original-fixture timing gains are now measured above; the candidate's
+fixed numerical comparison remains pending.
 
 Both device report types identify `owned-float32-chunk-copy.v1`. Video reports
 now include the session's already-existing per-frame stage measurements and
