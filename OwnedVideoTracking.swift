@@ -56,9 +56,10 @@ private struct VideoTrackingReport: Encodable {
     let swiftDebugCompilation = false
     #endif
     let scope = "On-demand sequential decoded frames from a user-selected video. One positive point per reset; no ground-truth parity or automatic quality pass. All model outputs retain shape/finiteness checks. No audio, frame dropping, pre-scan or full-video mask cache. Run tracking advances as requests finish, not on a real-time playback clock."
-    let timingScope = "Request time includes synchronous decode, orientation/resize, PNG preview, prediction/state, mask PNG and small pre-prediction checkpoint writes. Excludes model loading, UI presentation, report saving and user pauses. Initialization uses the already prepared displayed frame. Warm totals exclude the first prediction after every reset. These are processing diagnostics, not sustained playback FPS."
-    let timingInstrumentation = "video-preparation-stages.v1"
-    let preparationTimingScope = "Non-overlapping API wall times within decodeAndPreparationMilliseconds: sample acquisition, orientation graph setup, model buffer allocation, model input render, preview image creation and preview PNG encoding. Core Image can defer work across API boundaries; these are not hardware execution times. Sample acquisition includes waiting for decoded pixels, not isolated decoder execution. Small bookkeeping and autorelease cleanup are not separate stages. Initialization has an empty stage dictionary because it reuses the displayed frame. Warm preparation totals include only successful next-frame predictions; exclude open/seek previews and initialization. UI image decoding, SwiftUI rendering and presentation remain outside request timing."
+    let timingScope = "Request time includes synchronous decode, orientation/resize, preview image rendering, prediction/state, mask PNG and small pre-prediction checkpoint writes. Excludes model loading, UI presentation, report saving and user pauses. Initialization uses the already prepared displayed frame. Warm totals exclude the first prediction after every reset. These are processing diagnostics, not sustained playback FPS."
+    let timingInstrumentation = "video-preparation-stages.v2"
+    let previewTransport = "Eager sRGB RGBA8 CGImage shared with UI; no preview PNG encoding or decoding. Mask overlay still uses PNG."
+    let preparationTimingScope = "Non-overlapping API wall times within decodeAndPreparationMilliseconds: sample acquisition, orientation graph setup, model buffer allocation, model input render and eager preview image creation. Preview rendering uses deferred=false before handing the image to the UI. These are API wall times, not hardware execution times. Sample acquisition includes waiting for decoded pixels, not isolated decoder execution. Small bookkeeping and autorelease cleanup are not separate stages. Initialization has an empty stage dictionary because it reuses the displayed frame. Warm preparation totals include only successful next-frame predictions; exclude open/seek previews and initialization. UI image construction, mask decoding, SwiftUI rendering and presentation remain outside request timing."
     let imagePreparation = "Decoded BGRA; track presentation transform converted to Core Image coordinates; sRGB, stretched to 1024x1024. Preview keeps display aspect. Point is normalized top-left. Graph owns image scaling/normalization."
     let recentFrameLimit = 120
     var fixtureSHA256: String?
@@ -94,7 +95,7 @@ private struct VideoTrackingReport: Encodable {
 }
 
 struct OwnedVideoDisplay: Sendable {
-    let previewPNG: Data
+    let previewImage: CGImage
     let overlayPNG: Data?
     let seconds: Double
     let durationSeconds: Double
@@ -107,7 +108,7 @@ struct OwnedVideoDisplay: Sendable {
 actor OwnedVideoRunner {
     private struct PreparedFrame {
         let buffer: CVPixelBuffer
-        let preview: Data
+        let preview: CGImage
         let time: CMTime
         let preparationMS: Double
         let preparationStages: [String: Double]
@@ -395,14 +396,14 @@ actor OwnedVideoRunner {
                 let previewStart = now()
                 let scale = min(1, 1024 / max(bounds.width, bounds.height))
                 let preview = oriented.transformed(by: CGAffineTransform(scaleX: scale, y: scale))
-                guard let image = context.createCGImage(preview, from: preview.extent, format: .RGBA8, colorSpace: color) else {
+                // Finish preview rendering on this actor. Sharing the immutable
+                // CGImage avoids compressing and decoding a PNG for every frame.
+                guard let image = context.createCGImage(preview, from: preview.extent, format: .RGBA8,
+                                                       colorSpace: color, deferred: false) else {
                     throw OwnedTemporalError.invalid("Could not prepare the video preview.")
                 }
                 stages["previewImageCreation"] = elapsed(previewStart)
-                let pngStart = now()
-                let previewPNG = try png(image)
-                stages["previewPNGEncoding"] = elapsed(pngStart)
-                return PreparedFrame(buffer: input, preview: previewPNG, time: time,
+                return PreparedFrame(buffer: input, preview: image, time: time,
                                      preparationMS: elapsed(start), preparationStages: stages)
             }
             if let decoded { return decoded }
@@ -480,7 +481,7 @@ actor OwnedVideoRunner {
     }
 
     private func display(_ frame: PreparedFrame, overlay: Data?, message: String) -> OwnedVideoDisplay {
-        OwnedVideoDisplay(previewPNG: frame.preview, overlayPNG: overlay, seconds: frame.time.seconds,
+        OwnedVideoDisplay(previewImage: frame.preview, overlayPNG: overlay, seconds: frame.time.seconds,
                           durationSeconds: duration.seconds, message: message)
     }
     private func check(_ ticket: UInt64) throws {
@@ -740,7 +741,7 @@ struct OwnedVideoTrackingView: View {
 
     private func apply(_ result: OwnedVideoDisplay) {
         guard !Task.isCancelled else { return }
-        preview = UIImage(data: result.previewPNG)
+        preview = UIImage(cgImage: result.previewImage, scale: 1, orientation: .up)
         overlay = result.overlayPNG.flatMap { UIImage(data: $0) }
         seconds = result.seconds
         seekSeconds = min(result.seconds, max(result.durationSeconds - 0.001, 0))

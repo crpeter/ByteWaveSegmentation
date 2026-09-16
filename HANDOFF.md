@@ -1,6 +1,44 @@
 # ByteWave segmentation: continuation handoff
 
-## Current step: measure video frame-preparation overhead
+## Current step: validate direct preview image transport
+
+The instrumented iPhone 17 Pro Release run completed the same 27.838-second clip:
+835 predictions, one segment, no seeks, zero empty masks, no reported error and
+EOF reached. Final state is 835 accepted frames with bounded 7/16 banks; thermal
+snapshots are nominal. Raw evidence and derived arithmetic are preserved in
+`Audit/iphone17pro-video-preparation-report.json` and its companion summary.
+All warm counters agree at 834; the retained 120 rows advance timestamps/state
+and stay within bank limits. This is not a ground-truth quality pass.
+
+Warm means: preparation 30.902 ms, prediction/state 76.595 ms, mask rendering
+0.414 ms, total request 108.035 ms. Preview PNG encoding alone averages 28.378 ms,
+91.83% of preparation. Sample acquisition is 0.279 ms, orientation setup 0.022 ms,
+buffer allocation 0.128 ms, model-input render 1.163 ms and preview creation
+0.929 ms. These are API wall times, not isolated CPU/GPU execution costs.
+
+`OwnedVideoTracking.swift` now passes a retained CGImage directly to the UI,
+which wraps it in UIImage at scale 1, orientation up. The already applied track
+transform, sRGB/RGBA8 preview, aspect ratio and dimensions stay the same. Preview
+creation explicitly uses deferred=false so rendering completes before actor
+handoff. CGImage uses the SDK Sendable conformance; no unchecked wrapper is added.
+Only the current/in-flight/displayed images are retained, not a video-wide cache.
+The small mask PNG path remains. Model input rendering, package bytes, numerical
+checks, bounded state and request scheduling are unchanged.
+
+Reports identify `video-preparation-stages.v2` and `previewTransport`. The PNG
+stage is absent; eager preview creation is measured under previewImageCreation.
+Actual savings are pending a device run; do not subtract 28.378 ms and present
+that estimate as a measured result. UI construction/rendering is still excluded.
+Next evidence is the same complete clip and its video tracking report, plus user
+confirmation that preview orientation, color and mask alignment remain correct.
+Static source/diff review only here; no tests, build, decoding or inference run.
+User-facing build/report steps belong in chat, not README.
+
+API references: Apple [CGImage Sendable conformance](https://developer.apple.com/documentation/coregraphics/cgimage),
+[eager preview rendering](https://developer.apple.com/documentation/coreimage/cicontext/createcgimage%28_%3Afrom%3Aformat%3Acolorspace%3Adeferred%3A%29),
+and [UIImage wrapping](https://developer.apple.com/documentation/uikit/uiimage/init%28cgimage%3Ascale%3Aorientation%3A%29-2ouhh).
+
+## Preparation instrumentation background (completed)
 
 The new-video and seek/reselection checks below are complete. The seek report
 averages 65.584 ms prediction/state and 95.150 ms total request across 176 warm
@@ -16,8 +54,7 @@ Core Image work, not isolated hardware timings. UI decoding/rendering remains
 outside request timing. Model bytes, pixels, state policy and scheduling are
 unchanged. This is measurement instrumentation, not a claimed speed improvement.
 
-Next evidence: one uninterrupted run of the same clip on iPhone 17 Pro Release,
-then the video tracking report. No repeat seek test or model preparation needed.
+That instrumented device run is now recorded above.
 Assistant review for this change is static source/diff inspection only; no build,
 test, decoding or inference was run. User-facing steps stay in chat.
 
