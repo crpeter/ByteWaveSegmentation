@@ -1,0 +1,78 @@
+{
+  "scope": "Qualitative visual review of three user-uploaded memory-probe preview TIFFs. No model inference.",
+  "sourceReportSHA256": "9ed19a4ecad97e5160d7b833cfdcb65a7ffe784a04eafdc147c1641880c32024",
+  "panelOrder": [
+    "normalGPU",
+    "conditioningOnly",
+    "retainedBank"
+  ],
+  "imageSize": [
+    3072,
+    1064
+  ],
+  "coordinateMeaning": "Bounding boxes from differing RGB pixels against normal panel, excluding 40-pixel header, per 1024-square panel. They locate overlays, not annotated subject boundaries.",
+  "frames": [
+    {
+      "sourceFrame": 115,
+      "ptsSeconds": 3.835,
+      "uploadedSHA256": "8fafcca1d7721289501374109d6129bb71b9ed22ca8abf708ee322ed22999ec7",
+      "normalGPU": "empty",
+      "conditioningOnly": "empty",
+      "retainedBank": "Overlay on rubble at the top/left edge of the pile behind the bucket. Qualitative false-positive mask, not visible worker segmentation.",
+      "overlayBounds": {
+        "retainedBank": [
+          265,
+          578,
+          386,
+          619
+        ]
+      }
+    },
+    {
+      "sourceFrame": 148,
+      "ptsSeconds": 4.935,
+      "uploadedSHA256": "ddfec0fc1e5efe1341f098aaeb23b56337c192da66b44fa48e206e51df5195e4",
+      "normalGPU": "empty",
+      "conditioningOnly": "Overlay on a pale rubble patch to the right of the orange marker, away from the intended worker. Qualitative false-positive mask.",
+      "retainedBank": "empty",
+      "overlayBounds": {
+        "conditioningOnly": [
+          589,
+          574,
+          675,
+          595
+        ]
+      }
+    },
+    {
+      "sourceFrame": 175,
+      "ptsSeconds": 5.835,
+      "uploadedSHA256": "dcabe05ac778ac38dd74a11daa397cecc591ce4f77fc2472529e53999f574efa",
+      "normalGPU": "empty despite visible worker upper body",
+      "conditioningOnly": "Highlights the intended worker's visible upper body below the raised bucket.",
+      "retainedBank": "Highlights the intended worker's visible upper body below the raised bucket.",
+      "overlayBounds": {
+        "conditioningOnly": [
+          142,
+          581,
+          213,
+          619
+        ],
+        "retainedBank": [
+          142,
+          581,
+          213,
+          619
+        ]
+      }
+    }
+  ],
+  "conclusions": [
+    "Both memory probes can reacquire the visible worker at the reviewed return frame without a new tap.",
+    "Each probe also produces a visually incorrect rubble mask at one of the earlier reviewed frames. Nonempty masks cannot by themselves authorize recovery or memory updates.",
+    "Identical overlay bounding boxes at 175 do not imply pixel-identical masks. This is three-frame qualitative evidence, not a complete sequence annotation.",
+    "Report states experimental outputs never enter history and frozen slots retain capture-time age semantics. This is not validation of an online recovery policy.",
+    "Next proposed diagnostic should evaluate recovery acceptance and subsequent tracking with feedback, while preserving time advancement and checking false positives. Confidence or consecutive-frame heuristics require independent validation and do not guarantee identity."
+  ],
+  "productionChanges": false
+}

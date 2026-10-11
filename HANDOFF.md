@@ -1,5 +1,39 @@
 # ByteWave segmentation: continuation handoff
 
+## Current work: memory-probe previews confirm reacquisition AND rubble false positives
+
+User supplied three 3072x1064 TIFF previews from the memory probe.
+Evidence and image hashes: Audit/worker-memory-probe-visual-review.json.
+Inspected full panels and source-resolution crops; RGB differences locate
+overlays against the unmasked normal panel, excluding the 40-pixel header.
+
+Frame 175 (5.835 s): BOTH probes highlight the intended worker's visible upper
+body below the raised bucket; normal GPU remains empty. This is visual evidence
+of reacquisition without a new tap at this frame.
+
+Frame 115 (3.835 s): retained-bank mask lies on rubble behind the bucket.
+Normal GPU and conditioning-only are empty. Qualitative false positive.
+Frame 148 (4.935 s): conditioning-only mask lies on a pale rubble patch to the
+RIGHT of the orange marker, away from the worker. Normal and retained-bank are
+empty. Qualitative false positive. This small overlay was outside the initial
+worker-centered crop; full-panel pixel differences identified its location.
+
+Therefore both memory alternatives show useful recovery ability and erroneous
+masks. Do NOT promote a policy accepting any nonempty mask, equate positive
+object score with identity, or claim all 31 return frames are visually validated.
+Frame 175 overlay bounds match, but masks need not be pixel-identical.
+
+Next proposed research: controlled recovery acceptance and subsequent tracking
+with feedback, preserving actual frame-clock semantics and explicitly reviewing
+false positives. A consecutive-frame/confidence check is a candidate heuristic,
+not proof of identity, and needs separate evaluation on other occlusion clips.
+No new policy implemented this turn; no app/model/gate change. The current
+experiment's stale slot ages, retrospective start boundary and discarded side
+outputs still limit what can be inferred about an online tracker.
+
+Only offline image inspection, TIFF decoding/crops for analysis, and evidence/
+HANDOFF archival performed. No inference, tests, builds or conversions of models.
+
 ## Current work: memory probes return masks without another tap; visual review pending
 
 Completed user-run report SHA256:
