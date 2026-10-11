@@ -1,5 +1,43 @@
 # ByteWave segmentation: continuation handoff
 
+## Current result: shared-input GPU checks pass; history sensitivity remains
+
+User completed worker-occlusion-inputs-01 (49 frames replayed, 25 inspected:
+1,5,26..48). Selected report evidence and SHA are in
+Audit/mac-worker-occlusion-inputs-summary.json. All current original observations
+match prior original observations exactly on inspected frames; model/source
+identities and decoded-pixel/PTS checks passed.
+
+All GPU same-input comparisons pass: minimum low-resolution mask IoU 1.0,
+pointer cosine .9999816, memory cosine .9980992. GPU encoder substitution through
+FP32 also passes all25. Combined GPU encoder/propagator with original memory
+passes all25 against original (min IoU .9905660, pointer .9991920, memory .9979450).
+18 of these frames failed in the prior independent-history experiment. The
+shared-memory intervention supports history sensitivity; it does NOT distinguish
+initial conditioning differences from recurrent accumulation, locate a specific
+memory tensor, or prove a universal GPU correctness/recovery result.
+
+CPU_ONLY propagator fails27,39,44,48 on the SAME FP32 features/original memory.
+Minimum IoU .892157, pointer .972849, memory .981545. Do not switch to CPU as a
+presumed accuracy fix. Compute-unit settings do not establish actual placement.
+FP32 packing control fails only frame5 memory_features pointwise float32Close:
+max abs .00195503235, cosine .999999999694. All low-res mask IoUs1 and all presence
+decisions match. Strict FP32 parity is not universally passed.
+
+Next proposed diagnostic (not yet implemented): two GPU histories, identical GPU
+features per frame. Normal history starts from GPU initializer/initial memory;
+second history is seeded ONCE with original frame0 memory/pointer, then both
+advance independently. Original reference remains independent. Compare early
+drift and initial outputs, preserving exact bytes/input provenance and gates.
+This separates a conditioning-seed contribution from errors accumulated during
+later propagation without continuously correcting either history. A seed effect
+would still need finer separation of the pinned anchor from its downstream
+history effects. Avoid changing runtime memory policy or reducing precision
+until these mechanisms are distinguished. No new user command is required for
+archiving this result. Existing upstream occlusion-recovery limitation remains
+a separate issue. No model/runtime code changed; assistant only analyzed JSON
+and reviewed source, no builds/tests/inference.
+
 ## Current update: worker comparison complete; shared-input localization prepared
 
 User completed worker-occlusion-trim-01 on the confirmed bent-over-worker prompt:
