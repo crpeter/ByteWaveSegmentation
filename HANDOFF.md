@@ -1,5 +1,58 @@
 # ByteWave segmentation: continuation handoff
 
+## Current work: one-frame candidate-choice intervention prepared
+
+User approved the next experiment. New Temporal/diagnose_mask_choice_override.py
+and Temporal/mask_choice_override.py implement a diagnostic-only fork at frame26
+(default replay49). Requires the completed original occlusion comparison plus
+completed mask-choice report, matching video/prompt/model identities, reference
+length, exact decoded pixels/PTS, and previously controlled choice disagreement.
+
+Both separate bounded states receive the SAME installed GPU outputs through
+frame25. At frame26, verify both packs equal and input tensor hashes reproduce
+the tapped report. Read-only original decoder hook reproduces its score/index.
+Unmodified GPU remains baseline. Prepare a tapped copy and ONE override model
+with an added int32[1] input replacing all uses of the candidate argmax index.
+Keep original scores/argmax exposed. Static operation signatures, normal inputs
+and outputs must be unchanged after accounting for that single input substitution.
+Verify override ancestry to low/high masks, pointer and memory_features.
+
+At the fork, tapped and override model fed normal index2 must reproduce ALL seven
+installed outputs EXACTLY; original/tapped scores, indices and prior comparisons
+must reproduce. Same override model then receives original-reference index1 on
+identical inputs. Its scores, natural argmax, best_iou, object_score and
+memory_positions must stay EXACTLY unchanged. Any failed control stops before
+alternate state is committed and retains the partial report/error. No relaxed gate.
+
+Only frame26 commits the alternate prediction. Thereafter both branches use the
+UNMODIFIED installed GPU propagator and their own bounded histories; shared GPU
+encoder runs once per frame, propagator order alternates. No original-reference
+tensor enters GPU state. best_iou remains maximum natural score (not forced-score
+reporting); it does not feed TemporalState. This is the joint effect on mask,
+pointer and generated memory, not a separate isolation of any one contribution.
+Original candidate index is a diagnostic oracle, not a deployable recovery policy.
+
+Reports record exact normal-baseline reproduction, per-frame unchanged accuracy
+gates, before/after input hashes, branch states, controls, resolved/new failures,
+and three-panel previews. interpretationAllowed requires completion, all controls
+and baseline reproduction. Default49 prefix precedes occlusion; no recovery,
+identity, speed or device-readiness claim. App/models/exporter untouched.
+Static syntax/API/source review only; NO model conversion, inference, builds or
+tests executed by assistant. Runtime validation remains user-run on Mac.
+
+Run from /Users/petercody/Documents/Projects/ByteWaveSegmentation with per-shell
+DEVELOPER_DIR=/Applications/Xcode-beta.app/Contents/Developer:
+.venv-temporal/bin/python Temporal/diagnose_mask_choice_override.py
+  --upstream .upstream-edgetam
+  --video assets/worker-occlusion.mov
+  --phone-report Audit/iphone17pro-worker-occlusion-report.json
+  --fixture DeviceValidationData/memoryfp16projection
+  --comparison .temporal-runs/worker-occlusion-trim-01/report.json
+  --choice-report .temporal-runs/worker-mask-choice-01/report.json
+  --output .temporal-runs/worker-mask-choice-override-01
+Then share report.json and inspect previews in that output directory.
+Output directory must be fresh. Do not rerun/overwrite an existing diagnostic.
+
 ## Current work: candidate-mask choice results received
 
 Completed Mac diagnostic report SHA256:
