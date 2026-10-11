@@ -1,5 +1,54 @@
 # ByteWave segmentation: continuation handoff
 
+## Current work: candidate-mask choice diagnostic prepared
+
+User approved inspecting candidate scores/selection after the seed experiment.
+New Temporal/diagnose_mask_choice.py and Temporal/mask_choice_taps.py prepare two
+diagnostic-only propagator copies from exact installed package bytes: unchanged
+reconversion, and the same graph with existing three-score and argmax variables
+exposed as extra outputs. coremltools9.0 required. Validate unique [1,3] FP32
+reduce_argmax, int32 index, axis and ancestry to low_res_mask/object_pointer and
+scores to best_iou. Reject unexpected topology rather than guessing tensor names.
+Static nonconstant operation signatures (including consumer constants), original
+input/output interfaces and dtypes must survive reconversion unchanged. Existing
+outputs remain; all packages live under the fresh diagnostic output directory.
+
+Default replay0..48; inspect1,5,24..48. Original dynamic reference keeps full prior
+num_frames=276. A read-only sam_mask_decoder forward hook captures three original
+candidate IoUs and token count. validate_export.reference_step calls the head
+twice; require identical scores and three tokens in both calls. No head-output
+replacement or choice-policy change. Pinned edgetam.yaml confirms multimask
+tracking and use_multimask_token_for_obj_ptr=true. Upstream selects highest IoU
+candidate and corresponding token; originalChoice uses equivalent first argmax.
+
+Unmodified installed GPU owns independent state. On inspected frames, unchanged
+and tapped side calls receive private copies of identical installed features and
+pre-commit GPU memory. Side outputs never enter state. Both side calls must match
+ALL seven installed outputs EXACTLY before interpreting the tapped index. Record
+normal numerical comparisons too, but do not relax exact instrumentation control
+to obtain an answer. Also require tapped index selects max score and best_iou
+equals max exposed score. Failed controls are reported per frame, not promoted.
+Matching final outputs cannot prove every internal operation executed identically.
+
+Report contains per-candidate scores, winner, top-two margin/ties, different-choice
+and parity-failure overlap, control results, source/model/diagnostic package/input
+hashes, original and installed-baseline reproducibility checks against prior report.
+Different choices may explain a pointer jump but cannot alone prove why histories
+initially drifted. Same choices with failed parity would point elsewhere. Prefix
+does not test occlusion recovery; no speed/device placement or ground-truth claim.
+No production models, selection/state policies, thresholds or precision changed.
+
+Next user: full project path and session Xcode-beta DEVELOPER_DIR, then:
+.venv-temporal/bin/python Temporal/diagnose_mask_choice.py
+--upstream .upstream-edgetam --video assets/worker-occlusion.mov
+--phone-report Audit/iphone17pro-worker-occlusion-report.json
+--fixture DeviceValidationData/memoryfp16projection
+--comparison .temporal-runs/worker-occlusion-trim-01/report.json
+--output .temporal-runs/worker-mask-choice-01
+Cat summary.json and share report.json. This prepares diagnostic copies on Mac,
+does not install them, and needs no phone rebuild. Assistant performed static
+source/AST/API review only, no builds/tests/conversion/inference.
+
 ## Current result: original seed alters drift but does not fix it
 
 User completed worker-occlusion-seed-01:49frames,48propagations. Evidence:
