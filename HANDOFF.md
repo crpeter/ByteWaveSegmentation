@@ -1,5 +1,48 @@
 # ByteWave segmentation: continuation handoff
 
+## Current work: one-time original-seed comparison prepared
+
+User approved the next isolation after the shared-input results. New
+Temporal/diagnose_occlusion_seed.py replays 49 frames by default, comparing the
+original dynamic tracker with two independent GPU states:
+- normalGPU: GPU initializer and GPU initial-memory encoder seed frame0.
+- originalSeedGPU: frame0 memory_features/positions/object_pointer copied from
+  original PyTorch once. Frame0 is explicitly a reference intervention, not a GPU
+  prediction. Frames1 onward use only this branch's own GPU outputs for commits.
+Both receive one shared GPU encoder result per frame and use the exact same
+installed packages. Propagator call order alternates, private arrays are passed
+to each call, both state packs precede either commit, and state.commit copies
+tensors into separate histories. Initial anchor remains pinned under the normal
+policy; this intervention measures total seed effects, not direct-anchor versus
+downstream recent-history contributions.
+
+Uses completed worker-occlusion-trim-01/report.json for exact source/model hashes,
+prompt and per-frame decoded pixels/rational PTS. Original reference preserves
+num_frames=276. Initialization comparison is reported separately; propagation
+summary excludes frame0. Existing Core ML numerical gates are unchanged; failures
+recorded while continuing, invalid shapes/nonfinite stop. No model changes,
+exports, runtime memory changes, speed claims or device promotion. CPU_AND_GPU
+names allowed compute units, not measured hardware placement.
+
+Reports include first failed frame, failed-frame lists, minimum mask/pointer/
+memory agreement, seed and input hashes, initial-output comparison, independent
+state counts, prior-run observation comparisons and previews. Observation equality
+is not proof of full tensor equality. Interpret seeded improvement only if the
+normal branch reasonably reproduces the prior failing baseline. Remaining seed
+branch drift would not prove initialization has no effect. Neither outcome by
+itself fixes the upstream occlusion-recovery limitation.
+
+Next user (full project path + session DEVELOPER_DIR required):
+.venv-temporal/bin/python Temporal/diagnose_occlusion_seed.py
+--upstream .upstream-edgetam --video assets/worker-occlusion.mov
+--phone-report Audit/iphone17pro-worker-occlusion-report.json
+--fixture DeviceValidationData/memoryfp16projection
+--comparison .temporal-runs/worker-occlusion-trim-01/report.json
+--frames 49 --output .temporal-runs/worker-occlusion-seed-01
+Then cat summary.json, open output and share report.json. No iPhone rebuild.
+Assistant: static source/AST review only, no builds/tests/inference. Runtime
+validation awaits this Mac run.
+
 ## Current result: shared-input GPU checks pass; history sensitivity remains
 
 User completed worker-occlusion-inputs-01 (49 frames replayed, 25 inspected:
