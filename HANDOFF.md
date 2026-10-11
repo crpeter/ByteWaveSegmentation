@@ -1,5 +1,57 @@
 # ByteWave segmentation: continuation handoff
 
+## Current work: fresh mask visually confirmed; memory probes prepared
+
+Fresh source-frame 175 preview uploaded and inspected. Both fresh original/GPU
+masks cover the intended worker's visible upper body below the bucket, with no
+obvious excavator/rubble spill at displayed scale. Lower body remains obscured.
+Single-frame qualitative review, not ground truth for the full restart.
+Evidence: Audit/worker-reappearance-fresh-visual-review.json.
+
+New Temporal/diagnose_occlusion_memory.py runs the exact installed packages on
+the same 276-frame source and original frame-0 point. Original PyTorch advances
+independent history; normal GPU advances unchanged bounded state, including
+absence. Each frame's normal comparison dictionary plus original/GPU observations
+must exactly reproduce the completed original occlusion report. Any mismatch
+stops the diagnostic before interpreting side calls.
+
+Snapshot boundary is derived from the first empty normal GPU mask in the prior
+report: frame 112. Capture the normal input bank BEFORE committing 112:
+frame-0 conditioning plus spatial frames 106–111 and pointer frames 111–97.
+This is a retrospective diagnostic boundary, not a deployed absence detector;
+the latest pre-absence entries may already contain partially occluded masks.
+
+From 112 onward, two side calls use shared current encoder features:
+- conditioningOnly: preserve only frame-0 spatial/position/pointer and valid slots.
+- retainedBank: preserve the entire captured pre-absence packed bank.
+Side predictions never enter history. No reference tensors, new prompts, argmax
+override, model conversion or app changes. Duplicate full-bank call at capture
+must match all seven normal outputs exactly. Every call receives array copies;
+frozen bank hashes checked each frame and at end. Source indices and actual ages
+are recorded, baseline clock/PTS continue normally.
+
+CRITICAL LIMIT: frozen packed slots keep capture-time relative-age semantics.
+This intentionally tests stale banks, NOT an age-correct retention policy.
+Do not conclude that a positive result proves memory contamination, isolates
+tensor content from temporal encoding, or supplies a deployable recovery rule.
+Likewise a negative result only rejects these particular frozen-bank probes.
+All existing comparison gates remain unchanged. Probe/reference metrics are
+descriptive; the original itself loses the worker. Nonempty masks need visual
+identity review, including the obstruction period to catch false positives.
+
+Three-panel previews for every probed frame: normal GPU, initial memory only,
+retained pre-absence bank. Summary includes nonempty frame lists and the known
+visual-review interval 175–205; this interval affects reporting only.
+No automatic quality-passed or device-readiness claim.
+
+Static Python AST and existing helper/source review completed by assistant;
+no inference, tests, builds, conversions or benchmark run. User runs on Mac:
+Temporal/diagnose_occlusion_memory.py with existing upstream/video/phone-report/
+fixture/comparison arguments, --frames 276 --review-range 175 205,
+fresh output .temporal-runs/worker-memory-probe-01.
+Share report.json and previews/frame-0175.png (plus any surprising mask).
+Always explicit project cd and per-shell Xcode-beta DEVELOPER_DIR.
+
 ## Current work: fresh reappearance restart passed; visual confirmation pending
 
 Completed user-run report SHA256:

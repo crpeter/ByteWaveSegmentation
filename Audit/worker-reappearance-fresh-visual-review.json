@@ -1,0 +1,15 @@
+{
+  "scope": "Visual review of fresh worker selection at source frame 175; no new inference.",
+  "sourceRestartReportSHA256": "0cf1b42618af2d019dd15fd26c18f35a72a1f89daadf661593c2a97f975edfd4",
+  "uploadedPreviewSHA256": "2fb8c4fa19bdb0e8ec740a2a452dd7d97a3944b036c45e05caa00f10232a9bf3",
+  "sourceVideoSHA256": "a8a9d3fd5b85fbdf2770027353d6d19971845c13f83ffdcc6058ae5e6a0b1833",
+  "sourceFrame": 175,
+  "sourcePTSSeconds": 5.835,
+  "panels": [
+    "fresh original",
+    "fresh GPU"
+  ],
+  "observation": "Both displayed masks cover the visible upper body of the intended bent-over worker below the raised bucket. No obvious inclusion of excavator or surrounding rubble at displayed scale. Lower body remains occluded.",
+  "limits": "Single-frame qualitative review, not pixel-annotated ground truth or proof of all 31 frames. Fresh prompting is not automatic recovery and changes both prompt and history.",
+  "nextExperiment": "Diagnostic-only conditioning-only versus frozen pre-absence bank side calls, with unchanged normal tracking control. No new selection and no experimental outputs committed."
+}
