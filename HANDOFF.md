@@ -1,5 +1,68 @@
 # ByteWave segmentation: continuation handoff
 
+## Current work: causal confirmed-recovery diagnostic prepared
+
+User approved testing confirmation across frames followed by ordinary tracking
+with feedback. New Temporal/diagnose_occlusion_recovery.py uses exact installed
+GPU packages and the original frame-0 selection; no model conversion or app edit.
+
+Two bounded GPU histories: unchanged baseline and experimental recovery.
+Original PyTorch also advances its independent reference history. Shared current
+encoder features. Before first acceptance, packed bank hashes must match and
+both histories receive the same ordinary GPU outputs. After acceptance, separate
+ordinary propagator calls use their respective histories. Every baseline frame
+must reproduce prior original/GPU observations and comparison dictionary exactly.
+
+Exploratory default rule, fixed before this run:
+- Enter search after 3 consecutive absent ordinary predictions.
+- Search with original conditioning-only bank, no new point.
+- A candidate needs positive object score, nonempty low/high masks and predicted
+  IoU >=0.8; require 3 consecutive qualified candidates.
+- Consecutive binary low-resolution masks must overlap with IoU >=0.5.
+  A failed confidence/nonempty check clears the streak; failed overlap starts
+  a new streak at the current qualifying candidate.
+- While searching, suppress display; do not commit pending search candidates.
+  Ordinary outputs still advance the experimental state once per source frame.
+- Upon confirmation only: clear recent spatial/pointer entries, retain the
+  original conditioning, generation, absolute frame index and previous PTS,
+  then commit the CURRENT search output at its actual source index/PTS.
+- Resume ordinary propagation on the next frame. Re-enter search if later lost.
+  No backfill, new initializer, cached-mask shortcut or relative-age relabeling.
+
+This removes the prior frozen-bank timing limitation for this candidate:
+the search bank has ONLY original conditioning, while accepted recent entries
+retain real source indices and naturally occupy their correct lag slots.
+Conditioning tensor hashes checked throughout. Search calls reproduce archived
+conditioning-only probe comparisons/observations wherever available, otherwise
+report prior control unavailable. Linked reports, source pixels/PTS, model and
+fixture bytes checked. Prior report/review frames affect controls and summaries
+only, not recovery decisions. Duplicate original report gates are unchanged.
+
+Limits: these are exploratory thresholds informed by the same development clip,
+NOT calibrated identity confidence. Stable wrong masks may pass; fast motion
+may fail unaligned consecutive-mask IoU. Require independent occlusion clips
+before promotion. Original reference itself loses the subject, so recovery/
+reference comparisons are descriptive, not ground-truth success/failure.
+No claimed improvement until user-run report and previews are reviewed.
+
+Three panels: normal GPU; raw search candidate (blank when not queried);
+confirmed recovery output. Display-only blank masks NEVER enter numerical
+comparisons or state. Full report logs mode changes, acceptance frame and
+confirmation start, scores, overlap, held-back candidates, state size and PTS.
+Summary lists acceptance events and display results over the existing visual
+review interval. Check first accepted frame and subsequent tracking, obstruction
+false positives and exit. App/models/selection UX remain unchanged.
+
+Static Python AST and helper/state/API source review only. No tests, inference,
+conversion, builds or benchmarks run by assistant. User runs on Mac with explicit
+project cd and per-shell Xcode-beta DEVELOPER_DIR:
+Temporal/diagnose_occlusion_recovery.py, usual upstream/video/phone-report/
+fixture/comparison, --memory-probe .temporal-runs/worker-memory-probe-01/report.json,
+--frames 276 --missing-frames 3 --confirmation-frames 3
+--minimum-predicted-iou 0.8 --minimum-temporal-iou 0.5,
+fresh output .temporal-runs/worker-confirmed-recovery-01.
+Share report.json and previews/frame-0175.png; summary identifies first acceptance.
+
 ## Current work: memory-probe previews confirm reacquisition AND rubble false positives
 
 User supplied three 3072x1064 TIFF previews from the memory probe.
