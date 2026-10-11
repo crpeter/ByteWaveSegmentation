@@ -1,0 +1,1258 @@
+{
+  "contract": "bytewave.mask-choice.diagnostic.v1",
+  "completed": true,
+  "readyForDeviceValidation": false,
+  "sourceVideoSHA256": "a8a9d3fd5b85fbdf2770027353d6d19971845c13f83ffdcc6058ae5e6a0b1833",
+  "sourceFileBytes": 10796435,
+  "phoneReportSHA256": "7c807a77903c90fc90d23dcad387e82bb454a315f690acb1d517bf8b73c4dc65",
+  "fixtureSHA256": "760dd45c6eed6972f434dd324920b74dbfa262fb6648983606c2872581430a61",
+  "modelFiles": {
+    "models/BWTemporalImageEncoder.mlpackage/Manifest.json": "df20c1178e37ef2d4587281d5feca5979f2db8b859ffe7357161e4d5b51c254f",
+    "models/BWTemporalImageEncoder.mlpackage/Data/com.apple.CoreML/model.mlmodel": "a3046d4fbd83b7974d0b01d92ca30a55adad08aca218789b97034245023bbeba",
+    "models/BWTemporalImageEncoder.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "90e112d95a98e30486b768a2397f253766ceaa95bfd3cdb5a31a8db0341f61c3",
+    "models/BWTemporalInitializer.mlpackage/Data/com.apple.CoreML/model.mlmodel": "a70da7906ee21086122e9c24479b149308337f49609854455ae9cf65f790625f",
+    "models/BWTemporalInitializer.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "9409edf81128013f2ff61ef2565832f0a35782304e7adc54466e0396b5ab94c2",
+    "models/BWTemporalInitializer.mlpackage/Manifest.json": "d2311a29bb658bd6f16e801e91893985eb5aea3f7a6587f718e3e93539bc3068",
+    "models/BWTemporalInitialMemoryEncoder.mlpackage/Data/com.apple.CoreML/model.mlmodel": "613c7a310f1fae1b698aaba6e5a70c3afb842f459d3ec96cf9e0f4b6b4b9438a",
+    "models/BWTemporalInitialMemoryEncoder.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "21ae511f368835d55fe519b9b4ae9032bf9256cdb3cc0e91fdf5b4c467311563",
+    "models/BWTemporalInitialMemoryEncoder.mlpackage/Manifest.json": "64fb8412cf6229dda7ec7227113c7c8cf1a5278a96b62b94e2a0a76f6d790b52",
+    "models/BWTemporalPropagator.mlpackage/Manifest.json": "aec4bf7ef5dafc3816e3a645f93b134824268f4b0e8184170452e10c8c5618c1",
+    "models/BWTemporalPropagator.mlpackage/Data/com.apple.CoreML/model.mlmodel": "dec2227edc7d22832a3726a68237b6789f2d79ede1a5b0cc6f76d400c69d08d9",
+    "models/BWTemporalPropagator.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "3e679bfdc49fc43e895434b8c8bb6e75bad20a2cad37fd0aa2d5019cd186386e"
+  },
+  "upstream": "7711e012a30a2402c4eaab637bdb00a521302c91",
+  "checkpointSHA256": "ed2d4850b8792c239689b043c47046ec239b6e808a3d9b6ae676c803fd8780df",
+  "sourceComparisonSHA256": "29ff27150c14715aca3375a82e9336eb3ff9628ae523b88bcfd2cc16a5d67fd3",
+  "pointNormalizedTopLeft": [
+    0.6468468468468468,
+    0.5888513513513512
+  ],
+  "referenceNumFrames": 276,
+  "torchThreads": {
+    "intraOp": 1,
+    "interOp": 1
+  },
+  "computeUnits": "CPU_AND_GPU",
+  "policy": {
+    "maskIoUMinimum": 0.95,
+    "cosineMinimum": 0.99,
+    "float32Atol": 0.001,
+    "float32Rtol": 0.001,
+    "tapInterpretationRequiresExactOriginalOutputs": true
+  },
+  "selectedFrames": [
+    1,
+    5,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48
+  ],
+  "variants": {
+    "unchanged": {
+      "mapping": {
+        "scores": "ious",
+        "index": "best_iou_inds",
+        "argmaxOperation": "best_iou_inds",
+        "scoreShape": [
+          1,
+          3
+        ],
+        "feedsLowMaskAndPointer": true,
+        "feedsBestIoU": true
+      },
+      "operationsPreserved": true,
+      "originalInterfacesPreserved": true,
+      "files": {
+        "Data/com.apple.CoreML/model.mlmodel": "41d4200b1df2d30c7e0053e8a8c6b00500759456154e93ba6f4a750e0400dc47",
+        "Data/com.apple.CoreML/weights/weight.bin": "3e679bfdc49fc43e895434b8c8bb6e75bad20a2cad37fd0aa2d5019cd186386e",
+        "Manifest.json": "7987a279b704b1490fc0ada973290cac4a836b7d44ff13e4d9cff854d304e309"
+      }
+    },
+    "tapped": {
+      "mapping": {
+        "scores": "ious",
+        "index": "best_iou_inds",
+        "argmaxOperation": "best_iou_inds",
+        "scoreShape": [
+          1,
+          3
+        ],
+        "feedsLowMaskAndPointer": true,
+        "feedsBestIoU": true
+      },
+      "operationsPreserved": true,
+      "originalInterfacesPreserved": true,
+      "files": {
+        "Data/com.apple.CoreML/model.mlmodel": "3b97b4163d3e7117f6795f385279bb0d58f45e59420cdc9ab69e8d1f28a79020",
+        "Data/com.apple.CoreML/weights/weight.bin": "3e679bfdc49fc43e895434b8c8bb6e75bad20a2cad37fd0aa2d5019cd186386e",
+        "Manifest.json": "70c05cafb744aae67e95257377bbbebf9b972f135d7a573e7ffb1a968b9b04d9"
+      }
+    }
+  },
+  "versions": {
+    "torch": "2.7.0",
+    "coremltools": "9.0",
+    "numpy": "1.26.4",
+    "av": "15.0.0",
+    "Pillow": "11.2.1"
+  },
+  "interpretation": "Different candidate choices may explain abrupt pointer changes but do not prove the source of earlier drift. Histories differ intentionally. Exact side-call controls are required; matching final outputs still cannot prove identical internal execution. Tied scores are reported explicitly.",
+  "memoryOwner": "Only unmodified installed GPU outputs advance GPU state; original PyTorch has its own independent history.",
+  "summary": {
+    "framesReplayed": 49,
+    "framesInspected": 27,
+    "interpretableFrames": [
+      1,
+      5,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48
+    ],
+    "controlFailureFrames": [],
+    "differentChoiceFrames": [
+      26,
+      33,
+      35,
+      37,
+      38,
+      40,
+      43,
+      48
+    ],
+    "differentChoiceAndParityFailureFrames": [
+      26,
+      33,
+      35,
+      37,
+      38,
+      40,
+      43,
+      48
+    ],
+    "sameChoiceButParityFailureFrames": [
+      27,
+      28,
+      30,
+      32,
+      34,
+      36,
+      41,
+      42,
+      45,
+      47
+    ],
+    "originalMinimumScoreMargin": 0.00022745132446289062,
+    "interpretableGPUMinimumScoreMargin": 6.967782974243164e-05,
+    "normalGPUPriorComparisonMismatchFrames": [],
+    "originalPriorObservationMismatchFrames": []
+  },
+  "uploadedReportSHA256": "8fcce19a32a6573c97760258f3f50d5194634ba035aab0ecaa95ba420e4fc71a",
+  "interpretationNotes": [
+    "Both reconversion controls preserve all seven installed outputs exactly on all 27 inspected frames. Normal GPU comparisons and original observations reproduce prior evidence.",
+    "Eight inspected frames have different candidate indices; all eight fail existing accuracy gates. Ten further failing frames retain the same candidate index.",
+    "Frame 26 is the first numerical failure in this replay and has a close ranking reversal. Earlier untapped frames prevent claiming this is the first-ever choice disagreement.",
+    "Indices refer to candidates within each model invocation, not stable subject identities. Candidate scores are not identity probabilities.",
+    "Frame 35 has a large candidate-0 score difference after independent histories diverged; not all subsequent switches can be attributed directly to tiny score rounding.",
+    "Observed association does not establish that the frame-26 switch causes later drift or failure to recover after occlusion. This prefix precedes the occlusion.",
+    "Next proposed diagnostic: fork at frame 26, compare normal index 2 with a one-time override to original index 1, then independently propagate unchanged GPU histories. Require same-input same-index rewrite control before interpretation. Not implemented or promoted."
+  ],
+  "inspectedFrames": [
+    {
+      "index": 1,
+      "ptsSeconds": 0.03333333333333333,
+      "originalChoice": {
+        "scores": [
+          0.914844274520874,
+          0.9206740260124207,
+          0.9215864539146423
+        ],
+        "selectedIndex": 2,
+        "topTwoMargin": 0.0009124279022216797,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 2
+      },
+      "gpuChoice": {
+        "scores": [
+          0.9148069024085999,
+          0.9204953908920288,
+          0.9214767217636108
+        ],
+        "selectedIndex": 2,
+        "topTwoMargin": 0.0009813308715820312,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 2
+      },
+      "controlsAllOutputsExact": {
+        "unchanged": true,
+        "tapped": true
+      },
+      "interpretationAllowed": true,
+      "bestIoUMatchesScores": true,
+      "choiceDiffersFromOriginal": false,
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.9998526141965224,
+      "memoryCosine": 0.9982243639709842
+    },
+    {
+      "index": 5,
+      "ptsSeconds": 0.16666666666666666,
+      "originalChoice": {
+        "scores": [
+          0.7467768788337708,
+          0.9331725239753723,
+          0.9326038956642151
+        ],
+        "selectedIndex": 1,
+        "topTwoMargin": 0.0005686283111572266,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 1
+      },
+      "gpuChoice": {
+        "scores": [
+          0.7361851334571838,
+          0.9326717257499695,
+          0.9322193264961243
+        ],
+        "selectedIndex": 1,
+        "topTwoMargin": 0.00045239925384521484,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 1
+      },
+      "controlsAllOutputsExact": {
+        "unchanged": true,
+        "tapped": true
+      },
+      "interpretationAllowed": true,
+      "bestIoUMatchesScores": true,
+      "choiceDiffersFromOriginal": false,
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.9997191439711709,
+      "memoryCosine": 0.9987703305100731
+    },
+    {
+      "index": 24,
+      "ptsSeconds": 0.8,
+      "originalChoice": {
+        "scores": [
+          0.9106550216674805,
+          0.9241271615028381,
+          0.9231523871421814
+        ],
+        "selectedIndex": 1,
+        "topTwoMargin": 0.0009747743606567383,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 1
+      },
+      "gpuChoice": {
+        "scores": [
+          0.9096342325210571,
+          0.9235156774520874,
+          0.9225466847419739
+        ],
+        "selectedIndex": 1,
+        "topTwoMargin": 0.0009689927101135254,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 1
+      },
+      "controlsAllOutputsExact": {
+        "unchanged": true,
+        "tapped": true
+      },
+      "interpretationAllowed": true,
+      "bestIoUMatchesScores": true,
+      "choiceDiffersFromOriginal": false,
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.9999322852513962,
+      "memoryCosine": 0.9981824044592109
+    },
+    {
+      "index": 25,
+      "ptsSeconds": 0.8333333333333334,
+      "originalChoice": {
+        "scores": [
+          0.9098005890846252,
+          0.9189971685409546,
+          0.9242046475410461
+        ],
+        "selectedIndex": 2,
+        "topTwoMargin": 0.005207479000091553,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 2
+      },
+      "gpuChoice": {
+        "scores": [
+          0.908828616142273,
+          0.9186739921569824,
+          0.9241694808006287
+        ],
+        "selectedIndex": 2,
+        "topTwoMargin": 0.00549548864364624,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 2
+      },
+      "controlsAllOutputsExact": {
+        "unchanged": true,
+        "tapped": true
+      },
+      "interpretationAllowed": true,
+      "bestIoUMatchesScores": true,
+      "choiceDiffersFromOriginal": false,
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.999960195094062,
+      "memoryCosine": 0.9990040010170739
+    },
+    {
+      "index": 26,
+      "ptsSeconds": 0.8666666666666667,
+      "originalChoice": {
+        "scores": [
+          0.914826512336731,
+          0.926173985004425,
+          0.9258070588111877
+        ],
+        "selectedIndex": 1,
+        "topTwoMargin": 0.0003669261932373047,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 1
+      },
+      "gpuChoice": {
+        "scores": [
+          0.9144673347473145,
+          0.9259235262870789,
+          0.9260018467903137
+        ],
+        "selectedIndex": 2,
+        "topTwoMargin": 7.832050323486328e-05,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 2
+      },
+      "controlsAllOutputsExact": {
+        "unchanged": true,
+        "tapped": true
+      },
+      "interpretationAllowed": true,
+      "bestIoUMatchesScores": true,
+      "choiceDiffersFromOriginal": true,
+      "passed": false,
+      "maskIoU": 0.968421052631579,
+      "pointerCosine": 0.9842180570405579,
+      "memoryCosine": 0.9586199705161454
+    },
+    {
+      "index": 27,
+      "ptsSeconds": 0.9,
+      "originalChoice": {
+        "scores": [
+          0.9337030053138733,
+          0.9291548728942871,
+          0.9270266890525818
+        ],
+        "selectedIndex": 0,
+        "topTwoMargin": 0.004548132419586182,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 0
+      },
+      "gpuChoice": {
+        "scores": [
+          0.9369738698005676,
+          0.9280071258544922,
+          0.9253620505332947
+        ],
+        "selectedIndex": 0,
+        "topTwoMargin": 0.00896674394607544,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 0
+      },
+      "controlsAllOutputsExact": {
+        "unchanged": true,
+        "tapped": true
+      },
+      "interpretationAllowed": true,
+      "bestIoUMatchesScores": true,
+      "choiceDiffersFromOriginal": false,
+      "passed": false,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.9779055964793838,
+      "memoryCosine": 0.9218135149941749
+    },
+    {
+      "index": 28,
+      "ptsSeconds": 0.9333333333333333,
+      "originalChoice": {
+        "scores": [
+          0.00333894370123744,
+          0.9156879186630249,
+          0.9224494099617004
+        ],
+        "selectedIndex": 2,
+        "topTwoMargin": 0.006761491298675537,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 2
+      },
+      "gpuChoice": {
+        "scores": [
+          0.00012883267481811345,
+          0.9070512652397156,
+          0.9203124046325684
+        ],
+        "selectedIndex": 2,
+        "topTwoMargin": 0.013261139392852783,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 2
+      },
+      "controlsAllOutputsExact": {
+        "unchanged": true,
+        "tapped": true
+      },
+      "interpretationAllowed": true,
+      "bestIoUMatchesScores": true,
+      "choiceDiffersFromOriginal": false,
+      "passed": false,
+      "maskIoU": 0.978494623655914,
+      "pointerCosine": 0.9888671756243207,
+      "memoryCosine": 0.9993493362180835
+    },
+    {
+      "index": 29,
+      "ptsSeconds": 0.9666666666666667,
+      "originalChoice": {
+        "scores": [
+          0.6376715898513794,
+          0.9209291338920593,
+          0.9223539233207703
+        ],
+        "selectedIndex": 2,
+        "topTwoMargin": 0.0014247894287109375,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 2
+      },
+      "gpuChoice": {
+        "scores": [
+          0.00045992081868462265,
+          0.9184368252754211,
+          0.9223576188087463
+        ],
+        "selectedIndex": 2,
+        "topTwoMargin": 0.003920793533325195,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 2
+      },
+      "controlsAllOutputsExact": {
+        "unchanged": true,
+        "tapped": true
+      },
+      "interpretationAllowed": true,
+      "bestIoUMatchesScores": true,
+      "choiceDiffersFromOriginal": false,
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.9921639995447677,
+      "memoryCosine": 0.99554570804127
+    },
+    {
+      "index": 30,
+      "ptsSeconds": 1.0,
+      "originalChoice": {
+        "scores": [
+          0.01910260319709778,
+          0.9278284311294556,
+          0.9227505326271057
+        ],
+        "selectedIndex": 1,
+        "topTwoMargin": 0.0050778985023498535,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 1
+      },
+      "gpuChoice": {
+        "scores": [
+          0.0002673000271897763,
+          0.9260844588279724,
+          0.9235411882400513
+        ],
+        "selectedIndex": 1,
+        "topTwoMargin": 0.0025432705879211426,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 1
+      },
+      "controlsAllOutputsExact": {
+        "unchanged": true,
+        "tapped": true
+      },
+      "interpretationAllowed": true,
+      "bestIoUMatchesScores": true,
+      "choiceDiffersFromOriginal": false,
+      "passed": false,
+      "maskIoU": 0.9801980198019802,
+      "pointerCosine": 0.9978246935259621,
+      "memoryCosine": 0.9794246756023667
+    },
+    {
+      "index": 31,
+      "ptsSeconds": 1.0333333333333334,
+      "originalChoice": {
+        "scores": [
+          0.002164306351915002,
+          0.9179311394691467,
+          0.9184437394142151
+        ],
+        "selectedIndex": 2,
+        "topTwoMargin": 0.0005125999450683594,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 2
+      },
+      "gpuChoice": {
+        "scores": [
+          0.00020245288033038378,
+          0.9078875780105591,
+          0.9207419157028198
+        ],
+        "selectedIndex": 2,
+        "topTwoMargin": 0.012854337692260742,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 2
+      },
+      "controlsAllOutputsExact": {
+        "unchanged": true,
+        "tapped": true
+      },
+      "interpretationAllowed": true,
+      "bestIoUMatchesScores": true,
+      "choiceDiffersFromOriginal": false,
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.9973824286153715,
+      "memoryCosine": 0.9986980958392966
+    },
+    {
+      "index": 32,
+      "ptsSeconds": 1.0666666666666667,
+      "originalChoice": {
+        "scores": [
+          0.9086899161338806,
+          0.9182169437408447,
+          0.9097397923469543
+        ],
+        "selectedIndex": 1,
+        "topTwoMargin": 0.00847715139389038,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 1
+      },
+      "gpuChoice": {
+        "scores": [
+          0.001280707074329257,
+          0.9128332734107971,
+          0.9039020538330078
+        ],
+        "selectedIndex": 1,
+        "topTwoMargin": 0.008931219577789307,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 1
+      },
+      "controlsAllOutputsExact": {
+        "unchanged": true,
+        "tapped": true
+      },
+      "interpretationAllowed": true,
+      "bestIoUMatchesScores": true,
+      "choiceDiffersFromOriginal": false,
+      "passed": false,
+      "maskIoU": 0.9803921568627451,
+      "pointerCosine": 0.9954235705327787,
+      "memoryCosine": 0.9069983400457936
+    },
+    {
+      "index": 33,
+      "ptsSeconds": 1.1,
+      "originalChoice": {
+        "scores": [
+          0.922332227230072,
+          0.9284257292747498,
+          0.9244295954704285
+        ],
+        "selectedIndex": 1,
+        "topTwoMargin": 0.003996133804321289,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 1
+      },
+      "gpuChoice": {
+        "scores": [
+          0.0004044575907755643,
+          0.9166023135185242,
+          0.9167019128799438
+        ],
+        "selectedIndex": 2,
+        "topTwoMargin": 9.959936141967773e-05,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 2
+      },
+      "controlsAllOutputsExact": {
+        "unchanged": true,
+        "tapped": true
+      },
+      "interpretationAllowed": true,
+      "bestIoUMatchesScores": true,
+      "choiceDiffersFromOriginal": true,
+      "passed": false,
+      "maskIoU": 0.9223300970873787,
+      "pointerCosine": 0.980561937418199,
+      "memoryCosine": 0.8883007485803838
+    },
+    {
+      "index": 34,
+      "ptsSeconds": 1.1333333333333333,
+      "originalChoice": {
+        "scores": [
+          0.34159642457962036,
+          0.9292201399803162,
+          0.9216667413711548
+        ],
+        "selectedIndex": 1,
+        "topTwoMargin": 0.007553398609161377,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 1
+      },
+      "gpuChoice": {
+        "scores": [
+          0.15652596950531006,
+          0.9273397922515869,
+          0.9197137355804443
+        ],
+        "selectedIndex": 1,
+        "topTwoMargin": 0.007626056671142578,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 1
+      },
+      "controlsAllOutputsExact": {
+        "unchanged": true,
+        "tapped": true
+      },
+      "interpretationAllowed": true,
+      "bestIoUMatchesScores": true,
+      "choiceDiffersFromOriginal": false,
+      "passed": false,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.9969816427420588,
+      "memoryCosine": 0.9885914829380021
+    },
+    {
+      "index": 35,
+      "ptsSeconds": 1.1666666666666667,
+      "originalChoice": {
+        "scores": [
+          0.10622351616621017,
+          0.9269784688949585,
+          0.9273996353149414
+        ],
+        "selectedIndex": 2,
+        "topTwoMargin": 0.00042116641998291016,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 2
+      },
+      "gpuChoice": {
+        "scores": [
+          0.9337995648384094,
+          0.9318144917488098,
+          0.927600622177124
+        ],
+        "selectedIndex": 0,
+        "topTwoMargin": 0.0019850730895996094,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 0
+      },
+      "controlsAllOutputsExact": {
+        "unchanged": true,
+        "tapped": true
+      },
+      "interpretationAllowed": true,
+      "bestIoUMatchesScores": true,
+      "choiceDiffersFromOriginal": true,
+      "passed": false,
+      "maskIoU": 0.9369369369369369,
+      "pointerCosine": 0.7770946660179124,
+      "memoryCosine": 0.8584682294053531
+    },
+    {
+      "index": 36,
+      "ptsSeconds": 1.2,
+      "originalChoice": {
+        "scores": [
+          0.08941728621721268,
+          0.9202085137367249,
+          0.92389315366745
+        ],
+        "selectedIndex": 2,
+        "topTwoMargin": 0.0036846399307250977,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 2
+      },
+      "gpuChoice": {
+        "scores": [
+          0.0025822522584348917,
+          0.9197425246238708,
+          0.9198122024536133
+        ],
+        "selectedIndex": 2,
+        "topTwoMargin": 6.967782974243164e-05,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 2
+      },
+      "controlsAllOutputsExact": {
+        "unchanged": true,
+        "tapped": true
+      },
+      "interpretationAllowed": true,
+      "bestIoUMatchesScores": true,
+      "choiceDiffersFromOriginal": false,
+      "passed": false,
+      "maskIoU": 0.9896907216494846,
+      "pointerCosine": 0.9842533231374667,
+      "memoryCosine": 0.9996750815040597
+    },
+    {
+      "index": 37,
+      "ptsSeconds": 1.2333333333333334,
+      "originalChoice": {
+        "scores": [
+          0.09523456543684006,
+          0.9226601123809814,
+          0.9290040135383606
+        ],
+        "selectedIndex": 2,
+        "topTwoMargin": 0.00634390115737915,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 2
+      },
+      "gpuChoice": {
+        "scores": [
+          0.005595058668404818,
+          0.9258127808570862,
+          0.923445463180542
+        ],
+        "selectedIndex": 1,
+        "topTwoMargin": 0.0023673176765441895,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 1
+      },
+      "controlsAllOutputsExact": {
+        "unchanged": true,
+        "tapped": true
+      },
+      "interpretationAllowed": true,
+      "bestIoUMatchesScores": true,
+      "choiceDiffersFromOriginal": true,
+      "passed": false,
+      "maskIoU": 0.8571428571428571,
+      "pointerCosine": 0.9796397748331561,
+      "memoryCosine": 0.9917488081226228
+    },
+    {
+      "index": 38,
+      "ptsSeconds": 1.2666666666666666,
+      "originalChoice": {
+        "scores": [
+          0.07949922233819962,
+          0.9215151071548462,
+          0.9244782328605652
+        ],
+        "selectedIndex": 2,
+        "topTwoMargin": 0.002963125705718994,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 2
+      },
+      "gpuChoice": {
+        "scores": [
+          0.06850238144397736,
+          0.9282387495040894,
+          0.9237163662910461
+        ],
+        "selectedIndex": 1,
+        "topTwoMargin": 0.004522383213043213,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 1
+      },
+      "controlsAllOutputsExact": {
+        "unchanged": true,
+        "tapped": true
+      },
+      "interpretationAllowed": true,
+      "bestIoUMatchesScores": true,
+      "choiceDiffersFromOriginal": true,
+      "passed": false,
+      "maskIoU": 0.89,
+      "pointerCosine": 0.9810274877023436,
+      "memoryCosine": 0.980691459363078
+    },
+    {
+      "index": 39,
+      "ptsSeconds": 1.3,
+      "originalChoice": {
+        "scores": [
+          0.003545851446688175,
+          0.928652822971344,
+          0.9284253716468811
+        ],
+        "selectedIndex": 1,
+        "topTwoMargin": 0.00022745132446289062,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 1
+      },
+      "gpuChoice": {
+        "scores": [
+          0.03107602708041668,
+          0.9315926432609558,
+          0.9284839034080505
+        ],
+        "selectedIndex": 1,
+        "topTwoMargin": 0.0031087398529052734,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 1
+      },
+      "controlsAllOutputsExact": {
+        "unchanged": true,
+        "tapped": true
+      },
+      "interpretationAllowed": true,
+      "bestIoUMatchesScores": true,
+      "choiceDiffersFromOriginal": false,
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.9921769868724029,
+      "memoryCosine": 0.9940200691856768
+    },
+    {
+      "index": 40,
+      "ptsSeconds": 1.3333333333333333,
+      "originalChoice": {
+        "scores": [
+          0.9147363305091858,
+          0.9261488318443298,
+          0.9242098331451416
+        ],
+        "selectedIndex": 1,
+        "topTwoMargin": 0.0019389986991882324,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 1
+      },
+      "gpuChoice": {
+        "scores": [
+          0.007930509746074677,
+          0.9246208667755127,
+          0.9249248504638672
+        ],
+        "selectedIndex": 2,
+        "topTwoMargin": 0.0003039836883544922,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 2
+      },
+      "controlsAllOutputsExact": {
+        "unchanged": true,
+        "tapped": true
+      },
+      "interpretationAllowed": true,
+      "bestIoUMatchesScores": true,
+      "choiceDiffersFromOriginal": true,
+      "passed": false,
+      "maskIoU": 0.9361702127659575,
+      "pointerCosine": 0.9709027581029687,
+      "memoryCosine": 0.9214658714863667
+    },
+    {
+      "index": 41,
+      "ptsSeconds": 1.3666666666666667,
+      "originalChoice": {
+        "scores": [
+          0.9108518958091736,
+          0.9248601198196411,
+          0.9211410880088806
+        ],
+        "selectedIndex": 1,
+        "topTwoMargin": 0.003719031810760498,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 1
+      },
+      "gpuChoice": {
+        "scores": [
+          0.011348861269652843,
+          0.9240873456001282,
+          0.919560432434082
+        ],
+        "selectedIndex": 1,
+        "topTwoMargin": 0.004526913166046143,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 1
+      },
+      "controlsAllOutputsExact": {
+        "unchanged": true,
+        "tapped": true
+      },
+      "interpretationAllowed": true,
+      "bestIoUMatchesScores": true,
+      "choiceDiffersFromOriginal": false,
+      "passed": false,
+      "maskIoU": 0.9381443298969072,
+      "pointerCosine": 0.9865423924305644,
+      "memoryCosine": 0.9297940468859048
+    },
+    {
+      "index": 42,
+      "ptsSeconds": 1.4,
+      "originalChoice": {
+        "scores": [
+          0.9185037016868591,
+          0.9250404238700867,
+          0.9219790697097778
+        ],
+        "selectedIndex": 1,
+        "topTwoMargin": 0.003061354160308838,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 1
+      },
+      "gpuChoice": {
+        "scores": [
+          0.904988169670105,
+          0.9232345819473267,
+          0.9196836352348328
+        ],
+        "selectedIndex": 1,
+        "topTwoMargin": 0.0035509467124938965,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 1
+      },
+      "controlsAllOutputsExact": {
+        "unchanged": true,
+        "tapped": true
+      },
+      "interpretationAllowed": true,
+      "bestIoUMatchesScores": true,
+      "choiceDiffersFromOriginal": false,
+      "passed": false,
+      "maskIoU": 0.9894736842105263,
+      "pointerCosine": 0.9930924703416122,
+      "memoryCosine": 0.9788287367540082
+    },
+    {
+      "index": 43,
+      "ptsSeconds": 1.4333333333333333,
+      "originalChoice": {
+        "scores": [
+          0.07478608936071396,
+          0.9081598520278931,
+          0.9144863486289978
+        ],
+        "selectedIndex": 2,
+        "topTwoMargin": 0.006326496601104736,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 2
+      },
+      "gpuChoice": {
+        "scores": [
+          0.898282527923584,
+          0.9140363335609436,
+          0.9093677997589111
+        ],
+        "selectedIndex": 1,
+        "topTwoMargin": 0.004668533802032471,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 1
+      },
+      "controlsAllOutputsExact": {
+        "unchanged": true,
+        "tapped": true
+      },
+      "interpretationAllowed": true,
+      "bestIoUMatchesScores": true,
+      "choiceDiffersFromOriginal": true,
+      "passed": false,
+      "maskIoU": 0.8846153846153846,
+      "pointerCosine": 0.9758776356421548,
+      "memoryCosine": 0.9799267012155052
+    },
+    {
+      "index": 44,
+      "ptsSeconds": 1.4666666666666666,
+      "originalChoice": {
+        "scores": [
+          0.060104452073574066,
+          0.9095837473869324,
+          0.9091292023658752
+        ],
+        "selectedIndex": 1,
+        "topTwoMargin": 0.0004545450210571289,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 1
+      },
+      "gpuChoice": {
+        "scores": [
+          0.9102538228034973,
+          0.9163935780525208,
+          0.9075111150741577
+        ],
+        "selectedIndex": 1,
+        "topTwoMargin": 0.0061397552490234375,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 1
+      },
+      "controlsAllOutputsExact": {
+        "unchanged": true,
+        "tapped": true
+      },
+      "interpretationAllowed": true,
+      "bestIoUMatchesScores": true,
+      "choiceDiffersFromOriginal": false,
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.9953966754852591,
+      "memoryCosine": 0.9979149949943642
+    },
+    {
+      "index": 45,
+      "ptsSeconds": 1.5,
+      "originalChoice": {
+        "scores": [
+          0.04385587200522423,
+          0.9151502847671509,
+          0.9116175174713135
+        ],
+        "selectedIndex": 1,
+        "topTwoMargin": 0.0035327672958374023,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 1
+      },
+      "gpuChoice": {
+        "scores": [
+          0.9050021767616272,
+          0.9211322069168091,
+          0.9124552607536316
+        ],
+        "selectedIndex": 1,
+        "topTwoMargin": 0.00867694616317749,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 1
+      },
+      "controlsAllOutputsExact": {
+        "unchanged": true,
+        "tapped": true
+      },
+      "interpretationAllowed": true,
+      "bestIoUMatchesScores": true,
+      "choiceDiffersFromOriginal": false,
+      "passed": false,
+      "maskIoU": 0.9732142857142857,
+      "pointerCosine": 0.9974118652524775,
+      "memoryCosine": 0.9784405643193597
+    },
+    {
+      "index": 46,
+      "ptsSeconds": 1.5333333333333334,
+      "originalChoice": {
+        "scores": [
+          0.0868583619594574,
+          0.9174837470054626,
+          0.9081804156303406
+        ],
+        "selectedIndex": 1,
+        "topTwoMargin": 0.00930333137512207,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 1
+      },
+      "gpuChoice": {
+        "scores": [
+          0.31230807304382324,
+          0.920701265335083,
+          0.9104436039924622
+        ],
+        "selectedIndex": 1,
+        "topTwoMargin": 0.01025766134262085,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 1
+      },
+      "controlsAllOutputsExact": {
+        "unchanged": true,
+        "tapped": true
+      },
+      "interpretationAllowed": true,
+      "bestIoUMatchesScores": true,
+      "choiceDiffersFromOriginal": false,
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.9975232987086435,
+      "memoryCosine": 0.9976137056248812
+    },
+    {
+      "index": 47,
+      "ptsSeconds": 1.5666666666666667,
+      "originalChoice": {
+        "scores": [
+          0.9166879653930664,
+          0.9244410991668701,
+          0.91764897108078
+        ],
+        "selectedIndex": 1,
+        "topTwoMargin": 0.006792128086090088,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 1
+      },
+      "gpuChoice": {
+        "scores": [
+          0.2488638460636139,
+          0.9187443256378174,
+          0.9101247787475586
+        ],
+        "selectedIndex": 1,
+        "topTwoMargin": 0.008619546890258789,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 1
+      },
+      "controlsAllOutputsExact": {
+        "unchanged": true,
+        "tapped": true
+      },
+      "interpretationAllowed": true,
+      "bestIoUMatchesScores": true,
+      "choiceDiffersFromOriginal": false,
+      "passed": false,
+      "maskIoU": 0.9905660377358491,
+      "pointerCosine": 0.9918863134347679,
+      "memoryCosine": 0.9694411003268945
+    },
+    {
+      "index": 48,
+      "ptsSeconds": 1.6,
+      "originalChoice": {
+        "scores": [
+          0.9058108329772949,
+          0.9094404578208923,
+          0.9081927537918091
+        ],
+        "selectedIndex": 1,
+        "topTwoMargin": 0.001247704029083252,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 1
+      },
+      "gpuChoice": {
+        "scores": [
+          0.7210990190505981,
+          0.9053056836128235,
+          0.9065561294555664
+        ],
+        "selectedIndex": 2,
+        "topTwoMargin": 0.00125044584274292,
+        "exactTopTie": false,
+        "indexSelectsMaximum": true,
+        "numpyFirstArgmax": 2
+      },
+      "controlsAllOutputsExact": {
+        "unchanged": true,
+        "tapped": true
+      },
+      "interpretationAllowed": true,
+      "bestIoUMatchesScores": true,
+      "choiceDiffersFromOriginal": true,
+      "passed": false,
+      "maskIoU": 0.9306930693069307,
+      "pointerCosine": 0.9672987532629135,
+      "memoryCosine": 0.9845668795376225
+    }
+  ]
+}

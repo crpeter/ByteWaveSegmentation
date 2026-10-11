@@ -1,5 +1,46 @@
 # ByteWave segmentation: continuation handoff
 
+## Current work: candidate-mask choice results received
+
+Completed Mac diagnostic report SHA256:
+8fcce19a32a6573c97760258f3f50d5194634ba035aab0ecaa95ba420e4fc71a.
+Archived selected evidence in Audit/mac-worker-mask-choice-summary.json.
+
+49 frames replayed; 27 inspected (1,5,24..48). Unchanged reconversion and tapped
+copies preserve ALL seven installed outputs EXACTLY on every inspected frame.
+All normal GPU comparison dictionaries and original observations reproduce the
+prior comparison. No control failures; all 27 tapped frames interpretable.
+
+Eight candidate-index disagreements: 26,33,35,37,38,40,43,48. All fail existing
+accuracy gates. Ten other failing frames retain the same candidate index:
+27,28,30,32,34,36,41,42,45,47. These are candidate indices, not subject identities.
+
+At first numerical failure frame26 (0.866667s), original selects index1:
+scores [0.9148265123,0.9261739850,0.9258070588], top margin 0.0003669262.
+GPU selects index2: [0.9144673347,0.9259235263,0.9260018468],
+top margin 0.0000783205. Neither has an exact tie; both correctly choose their
+own maximum. Mask IoU 0.968421 passes, pointer cosine 0.984218 and memory cosine
+0.958620 fail. Selection scores are already FP32. Do not blame argmax precision.
+Earlier untapped frames mean this is NOT proven to be the first choice disagreement.
+
+Frame35 shows much larger candidate-score differences after independent histories
+diverged (candidate0 original 0.106224 vs GPU 0.933800). Do not explain every later
+switch as small rounding. Same-index failures and earlier seed/shared-input
+results remain relevant. This prefix precedes occlusion; no recovery or identity
+improvement has been demonstrated.
+
+Next proposed experiment (NOT implemented): diagnostic-only fork at frame26,
+normal GPU index2 versus one-time forced original index1, then both branches
+advance independent histories using unchanged GPU thereafter. Require an
+identical-input forced-index2 control to preserve all installed outputs before
+interpreting the index1 intervention. Keep exact source/model guards, unchanged
+accuracy gates, and original reference. This tests causal contribution of that
+one choice, not a deployable oracle or recovery policy. No app/model promotion,
+selection UX, confidence filtering, or production ByteWave changes.
+
+Only offline report analysis and evidence/documentation edits performed here.
+Mac inference remains user-run.
+
 ## Current work: candidate-mask choice diagnostic prepared
 
 User approved inspecting candidate scores/selection after the seed experiment.
