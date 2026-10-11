@@ -1,5 +1,46 @@
 # ByteWave segmentation: continuation handoff
 
+## Current work: full-clip choice intervention completed; recovery unchanged
+
+Completed276-frame report SHA256
+918db23c64a80763fe756da5d87597cfd5ac3dbeb73ba8bd6c596e86b26844e0.
+Evidence: Audit/mac-worker-mask-choice-override-full-summary.json.
+All controls exact, interpretationAllowed true, no normal baseline or original
+observation mismatches across276. First49 comparison dictionaries exactly
+reproduce previous short intervention report.
+
+Normal GPU fails20 frames; one-time override fails8:
+27,28,32,33,41,42,43,118. Twelve normal failures resolved including26 and110;
+no new overall failing frames. Frame27 still locally worse, so not uniform
+improvement. Frame110 mask IoU 0.926829 -> 0.951220 crosses the existing gate.
+All gates unchanged. No installed model or app change.
+
+Recovery result: NO improvement from this intervention.
+All three streams empty112..116 (3.735..3.868333s), nonempty117 (3.901667s).
+Both normal and override GPU empty118..275 (3.935..9.17s), never return.
+Original empty119..275 (3.968333..9.17s), never returns.
+At118 original object score +0.02268797 vs normal -0.01001740 and override
+-0.00635147. Same presence mismatch remains; pointer/memory minima arise here.
+Both GPU states end276 accepted,7 spatial,16 pointer entries.
+
+Conclusion: frame26 candidate choice contributes to earlier numerical divergence,
+but correcting that one choice is insufficient for recovery on this clip.
+Do not claim all precision/selection effects excluded, or call original masks
+ground truth. Original reference also remains empty. Need visible reappearance
+landmark before interpreting masks as missed recovery.
+
+Next step uses EXISTING previews, not another inference run: ask user for the
+first frame where the selected worker clearly reappears after the obstruction
+(or confirm he remains out of view until clip ends). Folder:
+.temporal-runs/worker-mask-choice-override-full-01/previews.
+After landmark, proposed diagnostic is fresh initialization on that visible
+frame versus continuing lost tracking, to distinguish fresh segmentation ability
+from temporal recovery. Prompt/landmark must be explicit. No recovery heuristic,
+memory freezing, selection change or model promotion implemented.
+
+This turn: offline report analysis and evidence/HANDOFF only. All inference
+remains on user's Mac. Continue explicit project paths and per-shell Xcode-beta.
+
 ## Current work: one-frame choice intervention completed; full clip next
 
 User supplied completed 49-frame report SHA256:
