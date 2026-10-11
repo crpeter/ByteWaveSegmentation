@@ -1,5 +1,34 @@
 # ByteWave segmentation: continuation handoff
 
+## Current update: explicitly support the user's shortened worker clip
+
+The user shortened the original source. The first invocation failed on a missing
+file; the second found it and correctly rejected its changed byte count before
+any inference. Do not alter archived phone evidence to make the edited file pass.
+
+diagnose_occlusion.py now supports --new-video, with explicit --point X Y required
+for inference. This mode keeps exact model/fixture hash verification and numerical
+gates, but labels video/PTS/selection identity with the old phone run as unasserted.
+New clip size/SHA and explicit prompt are recorded. It counts up to --frames before
+inference and uses the available prefix (at least20 frames), avoiding an EOF error
+when a trimmed clip is shorter than300 frames. The default matched-source mode
+retains its byte/dimension/duration/initialPTS guards and original point.
+
+--preview-only saves initial-selection.png without loading models or inference.
+With --new-video and no --point, it marks the old phone point as tentative, for
+visual inspection on the edited first frame. Trimming the start or cropping can
+require a different prompt. Preview reports remain completed=false and explicitly
+previewOnly/inferencePerformed=false; previewSaved=true on success. Use a separate
+fresh output directory for the subsequent actual comparison.
+
+Next: user pulls, runs --new-video --preview-only on assets/worker-occlusion.mov
+into .temporal-runs/worker-occlusion-trim-preview-01, opens initial-selection.png.
+Confirm marker is on the intended bent-over worker before issuing actual inference
+with --new-video --point (old coordinates only if still appropriate).
+Per-command project path and per-session Xcode-beta DEVELOPER_DIR still required.
+No assistant builds/tests/inference; static diff and AST review only.
+
+
 ## Current work: worker occlusion diagnostic prepared, awaiting original-video Mac run
 
 User prioritizes occlusion/identity testing before selection changes or ByteWave
