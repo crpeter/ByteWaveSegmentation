@@ -60,13 +60,13 @@ def write_json(path, value):
     temporary.replace(path)
 
 
-def video_frames(path):
+def video_frames(path, *, count=COUNT):
     with av.open(str(path)) as container:
         stream = container.streams.video[0]
         if stream.sample_aspect_ratio not in (None, Fraction(1, 1)):
             raise ValueError("Use a square-pixel video for this comparison.")
         previous = None
-        count = 0
+        decoded = 0
         for frame in container.decode(stream):
             if frame.pts is None or frame.time_base is None:
                 raise ValueError("Frame has no presentation timestamp.")
@@ -87,11 +87,11 @@ def video_frames(path):
             image = image.resize((1024, 1024), Image.Resampling.BILINEAR)
             pixels = np.asarray(image)
             value = pixels.astype(np.float32).transpose(2, 0, 1)[None] / 255.0
-            yield count, timestamp, image, value, hashlib.sha256(pixels.tobytes()).hexdigest()
-            count += 1
-            if count == COUNT:
+            yield decoded, timestamp, image, value, hashlib.sha256(pixels.tobytes()).hexdigest()
+            decoded += 1
+            if decoded == count:
                 return
-        raise ValueError(f"Need at least {COUNT} decoded frames; found {count}.")
+        raise ValueError(f"Need at least {count} decoded frames; found {decoded}.")
 
 
 class TorchBackend:
@@ -167,24 +167,24 @@ def compare(reference, actual, coreml):
             "sameObjectPresence": same_presence, "outputs": checks}
 
 
-def reference_step(model, image_tensor, point, index, history):
+def reference_step(model, image_tensor, point, index, history, *, num_frames=COUNT):
     output = model.forward_image(owned.normalize(image_tensor))
     _, features, positions, sizes = model._prepare_backbone_features(output)
     prompts = {"point_coords": torch.tensor([[point]], dtype=torch.float32),
                "point_labels": torch.ones((1, 1), dtype=torch.int32)} if index == 0 else None
     # Original dynamic memory selection and original complex-valued RoPE.
     result = model.track_step(index, index == 0, features, positions, sizes,
-                              prompts, None, history, num_frames=COUNT)
+                              prompts, None, history, num_frames=num_frames)
     # track_step does not expose IoU; obtain the SAM head result independently from
     # its _track_step helper, with the same pre-commit history. No state mutation.
     _, sam, _, _ = model._track_step(index, index == 0, features, positions, sizes,
-                                   prompts, None, history, COUNT, False, None)
+                                   prompts, None, history, num_frames, False, None)
     reference = {"low_res_mask": result["pred_masks"], "high_res_mask": result["pred_masks_high_res"],
                  "object_pointer": result["obj_ptr"], "object_score": result["object_score_logits"],
                  "best_iou": sam[2].max(dim=-1).values,
                  "memory_features": result["maskmem_features"],
                  "memory_positions": result["maskmem_pos_enc"][0]}
-    # Reference keeps all 20 entries so its history selection is independent of
+    # Reference keeps the requested entries so its history selection is independent of
     # the candidate's bounded ring. It does not retain full-resolution masks.
     bucket = "cond_frame_outputs" if index == 0 else "non_cond_frame_outputs"
     history[bucket][index] = {key: result[key] for key in ("maskmem_features", "maskmem_pos_enc", "obj_ptr")}
@@ -432,3 +432,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

@@ -1,0 +1,208 @@
+{
+  "scope": "Selected fields from user-run phone reports. Replay diagnostics exclude pacing/UI; visual quality is user observation, no ground-truth pass.",
+  "runs": [
+    {
+      "uploadName": "video-tracking-last-run(1).json",
+      "uploadSHA256": "c4b7b794b2e8e6c4942efabf170a176de312ec75b8b9e2ef971656f3cd064a70",
+      "createdAt": "2026-10-11T01:58:50Z",
+      "clipID": "73F64169-96FE-47BA-B9DC-A457314D3559",
+      "modelVariant": "memoryfp16projection",
+      "hardware": "iPhone18,1",
+      "requestedComputeUnits": "CPU_AND_GPU",
+      "videoDurationSeconds": 22.808333333333334,
+      "framesPredicted": 684,
+      "segmentsStarted": 1,
+      "seeks": 0,
+      "emptyMasks": 0,
+      "reachedEnd": true,
+      "lastState": {
+        "acceptedFrames": 684,
+        "pointerEntries": 16,
+        "spatialEntries": 7
+      },
+      "cachedMaskFrames": 684,
+      "cachedMaskBytes": 89653248,
+      "cachedStartSeconds": 0,
+      "cachedEndSeconds": 22.775,
+      "cacheLimitReached": false,
+      "cacheWriteTotals": {
+        "count": 684,
+        "maximumMilliseconds": 3.1415416742675006,
+        "meanMilliseconds": 0.4547793620151307,
+        "totalMilliseconds": 311.0690836183494
+      },
+      "replayFrames": 684,
+      "replayRuns": 1,
+      "replayRequestTotals": {
+        "count": 684,
+        "maximumMilliseconds": 24.39470833633095,
+        "meanMilliseconds": 6.934268335227674,
+        "totalMilliseconds": 4743.03954129573
+      },
+      "lastReplayFramesRead": 684,
+      "lastReplayPredictionCountBefore": 684,
+      "lastReplayPredictionCountAfter": 684,
+      "lastReplayStateBefore": {
+        "acceptedFrames": 684,
+        "pointerEntries": 16,
+        "spatialEntries": 7
+      },
+      "lastReplayStateAfter": {
+        "acceptedFrames": 684,
+        "pointerEntries": 16,
+        "spatialEntries": 7
+      }
+    },
+    {
+      "uploadName": "video-tracking-last-run 2(1).json",
+      "uploadSHA256": "c179b293a533132e2702c7f20d5bd9ac57b5f0b3bee172cf6d8f1b9f5f028cc4",
+      "createdAt": "2026-10-11T01:58:50Z",
+      "clipID": "73F64169-96FE-47BA-B9DC-A457314D3559",
+      "modelVariant": "memoryfp16projection",
+      "hardware": "iPhone18,1",
+      "requestedComputeUnits": "CPU_AND_GPU",
+      "videoDurationSeconds": 22.808333333333334,
+      "framesPredicted": 1048,
+      "segmentsStarted": 2,
+      "seeks": 1,
+      "emptyMasks": 0,
+      "reachedEnd": false,
+      "lastState": {
+        "acceptedFrames": 364,
+        "pointerEntries": 16,
+        "spatialEntries": 7
+      },
+      "cachedMaskFrames": 364,
+      "cachedMaskBytes": 47710208,
+      "cachedStartSeconds": 0,
+      "cachedEndSeconds": 12.103333333333333,
+      "cacheLimitReached": false,
+      "cacheWriteTotals": {
+        "count": 1048,
+        "maximumMilliseconds": 3.1415416742675006,
+        "meanMilliseconds": 0.45198843067286193,
+        "totalMilliseconds": 473.6838753451593
+      },
+      "replayFrames": 1004,
+      "replayRuns": 2,
+      "replayRequestTotals": {
+        "count": 1004,
+        "maximumMilliseconds": 28.980250004678965,
+        "meanMilliseconds": 6.923634710885048,
+        "totalMilliseconds": 6951.3292497285875
+      },
+      "lastReplayFramesRead": 320,
+      "lastReplayPredictionCountBefore": 1004,
+      "lastReplayPredictionCountAfter": 1004,
+      "lastReplayStateBefore": {
+        "acceptedFrames": 320,
+        "pointerEntries": 16,
+        "spatialEntries": 7
+      },
+      "lastReplayStateAfter": {
+        "acceptedFrames": 320,
+        "pointerEntries": 16,
+        "spatialEntries": 7
+      }
+    },
+    {
+      "uploadName": "video-tracking-last-run(2).json",
+      "uploadSHA256": "5ddeb4fec35262dff25a3db4f385d4d8be85d94e200255c482092f0fa5d4776b",
+      "createdAt": "2026-10-11T02:11:58Z",
+      "clipID": "AE04B79E-EF53-4723-94C9-2AD84EDBE02A",
+      "modelVariant": "memoryfp16projection",
+      "hardware": "iPhone18,1",
+      "requestedComputeUnits": "CPU_AND_GPU",
+      "videoDurationSeconds": 71.91833333333334,
+      "framesPredicted": 2157,
+      "segmentsStarted": 1,
+      "seeks": 0,
+      "emptyMasks": 47,
+      "reachedEnd": true,
+      "lastState": {
+        "acceptedFrames": 2157,
+        "pointerEntries": 16,
+        "spatialEntries": 7
+      },
+      "cachedMaskFrames": 2048,
+      "cachedMaskBytes": 268435456,
+      "cachedStartSeconds": 0,
+      "cachedEndSeconds": 68.24333333333334,
+      "cacheLimitReached": true,
+      "cacheWriteTotals": {
+        "count": 2048,
+        "maximumMilliseconds": 3.798249992541969,
+        "meanMilliseconds": 0.5371821694808432,
+        "totalMilliseconds": 1100.1490830967668
+      },
+      "replayFrames": 1012,
+      "replayRuns": 1,
+      "replayRequestTotals": {
+        "count": 1012,
+        "maximumMilliseconds": 24.456500002997927,
+        "meanMilliseconds": 6.828025650220262,
+        "totalMilliseconds": 6909.961958022905
+      },
+      "lastReplayFramesRead": 1012,
+      "lastReplayPredictionCountBefore": 2157,
+      "lastReplayPredictionCountAfter": 2157,
+      "lastReplayStateBefore": {
+        "acceptedFrames": 2157,
+        "pointerEntries": 16,
+        "spatialEntries": 7
+      },
+      "lastReplayStateAfter": {
+        "acceptedFrames": 2157,
+        "pointerEntries": 16,
+        "spatialEntries": 7
+      }
+    },
+    {
+      "uploadName": "video-tracking-last-run 2(2).json",
+      "uploadSHA256": "cd9c74f6070bbefcc3f96edb0ab20a86980d246d988a6de3058b9d3e38e4f774",
+      "createdAt": "2026-10-11T02:32:57Z",
+      "clipID": "3BE73EDE-5AF0-4421-99C7-AC27F2D8D98E",
+      "modelVariant": "memoryfp16projection",
+      "hardware": "iPhone18,1",
+      "requestedComputeUnits": "CPU_AND_GPU",
+      "videoDurationSeconds": 9.065,
+      "framesPredicted": 272,
+      "segmentsStarted": 1,
+      "seeks": 0,
+      "emptyMasks": 0,
+      "reachedEnd": true,
+      "lastState": {
+        "acceptedFrames": 272,
+        "pointerEntries": 16,
+        "spatialEntries": 7
+      },
+      "cachedMaskFrames": 272,
+      "cachedMaskBytes": 35651584,
+      "cachedStartSeconds": 0,
+      "cachedEndSeconds": 9.033333333333333,
+      "cacheLimitReached": false,
+      "cacheWriteTotals": {
+        "count": 272,
+        "maximumMilliseconds": 1.3872499985154718,
+        "meanMilliseconds": 0.4051830574633855,
+        "totalMilliseconds": 110.20979163004085
+      },
+      "replayFrames": 0,
+      "replayRuns": 0,
+      "replayRequestTotals": {
+        "count": 0,
+        "maximumMilliseconds": 0,
+        "meanMilliseconds": 0,
+        "totalMilliseconds": 0
+      },
+      "lastReplayFramesRead": 0
+    }
+  ],
+  "observations": [
+    "User reports smooth full cached replay of construction clip. Inference counts and state unchanged across replay.",
+    "Pause/replay/resume report is cumulative: 320-frame replay preserved accepted state320; 44 subsequent predictions advanced it to364.",
+    "Dog clip: user reports recovery after full pillar occlusion over one second and brief hand occlusion, while excluding carried pizza box. 47 empty masks cannot be individually aligned to those events from retained rows.",
+    "Dog cache hit2048-frame cap; remaining109 predicted frames were not cached. This is intended bounded-prefix behavior, not full-clip caching.",
+    "User reports a couple of crossing-subject tests looked strong. Latest9.065-second report has272 predictions and0empty masks; no replay run."
+  ]
+}

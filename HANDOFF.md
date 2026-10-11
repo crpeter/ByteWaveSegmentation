@@ -1,5 +1,62 @@
 # ByteWave segmentation: continuation handoff
 
+## Current work: worker occlusion diagnostic prepared, awaiting original-video Mac run
+
+User prioritizes occlusion/identity testing before selection changes or ByteWave
+integration. Cached replay has now been user-validated: full684-frame replay
+preserved prediction/state counts; separate pause/replay/resume advanced44more
+frames without reset after replay. Dog2157-frame clip recovered visually after
+>1s pillar occlusion and brief hand occlusion, excluded carried pizza box. Cache
+hit documented2048-frame/256MiB cap; last109frames were tracked but not cached.
+A couple of crossing-subject tests looked strong to user;272-frame report has
+no empty masks. Selected metrics/hashes: Audit/iphone17pro-cache-occlusion-review.json.
+These are user visual checks and diagnostic counters, not ground-truth passes.
+
+New failure: bent-over distant construction worker selected in a73.2967s clip.
+Phone ran only236frames/7.8367s,124empty masks; last120all empty. Sampled recording
+shows mask initially follows worker, bucket obscures him, visible shirt returns
+without highlight. No switch to machine observed in sampled frames. Preserve
+this as a regression case. Selected phone report including exact installed model
+hashes and prompt is Audit/iphone17pro-worker-occlusion-report.json.
+
+Static source audit: initial condition/pointer stay pinned until reset. Recent
+six spatial/fifteen pointer entries advance even when absent, consistent with
+pinned original EdgeTAM's stride-one policy and explicit no-object encoding.
+Do NOT silently freeze memory or describe this as a proven state bug.
+Details: Audit/worker-occlusion-source-audit.md.
+
+Temporal/diagnose_occlusion.py runs300frames locally on user Mac: original
+PyTorch dynamic track_step, owned FP32 graph, exact installed Core ML GPU
+packages; independent histories and identical Mac pixels/prompt. Original
+history keeps all requested entries, bounded states retain normal7/16 banks.
+Records unchanged numerical gates on every frame, continuing after mismatches
+solely to observe recovery; invalid/nonfinite outputs still stop. No promotion,
+normal exporter change, phone build, confidence threshold or recovery policy.
+validate_export helpers accept optional count/num_frames, preserving20defaults.
+
+Needs ORIGINAL worker source on Mac, not uploaded screen recording; expected
+122642940bytes,1920x1080encoded,73.2967s. Size/dimensions/duration/firstPTS guard
+wrong clips; no original phone source hash exists so content identity is not
+proven. Mac preprocessing differs from Core Image; phone-only failures need a
+later exact-input/device investigation. Mac summary/previews distinguish stages,
+not automatically establish identity or root cause. initial-selection.png is
+for checking exact prompt/orientation. previews/ contains three labeled panels
+every15frames and empty/nonempty transitions. Reports checkpoint each stream.
+No assistant builds/tests/inference. AST and static review only.
+
+Next user: full project path EVERY terminal command; per-session DEVELOPER_DIR
+/Applications/Xcode-beta.app/Contents/Developer, never global xcode-select.
+Save original video as assets/worker-occlusion.mov then run:
+.venv-temporal/bin/python Temporal/diagnose_occlusion.py
+--upstream .upstream-edgetam --video assets/worker-occlusion.mov
+--phone-report Audit/iphone17pro-worker-occlusion-report.json
+--fixture DeviceValidationData/memoryfp16projection --frames 300
+--output .temporal-runs/worker-occlusion-01
+Provide cat summary.json and open output folder inline. Share summary plus
+initial-selection.png, then targeted preview frames as needed. No iPhone rebuild
+or model export/preparation needed. Do not rerun rejected QKV optimization.
+
+
 ## Hotfix: report exclusivity trap on first cached prediction
 
 User built c2f2be2 and hit Swift's simultaneous-access runtime trap after
