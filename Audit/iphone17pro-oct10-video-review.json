@@ -1,0 +1,244 @@
+{
+  "scope": "Selected fields from user-supplied iPhone video reports, plus user observation and sampled screen-recording review. No ground-truth accuracy pass or controlled speed comparison.",
+  "reports": [
+    {
+      "attachment": "video-tracking-last-run.json",
+      "sha256": "22c19d54cf2a34a21d9476dd8c95f0da6c233485fdf571c9602d7f56075c9e4e",
+      "createdAt": "2026-10-11T01:23:32Z",
+      "clipID": "CAB2F1CB-4B1D-40C1-B0E1-0358D25AB2CE",
+      "hardware": "iPhone18,1",
+      "operatingSystem": "Version 27.2 (Build 24B5089g)",
+      "swiftDebugCompilation": false,
+      "requestedComputeUnits": "CPU_AND_GPU",
+      "modelVariant": "memoryfp16projection",
+      "maskPreviewImplementation": "high-res-threshold-cgimage.v1",
+      "videoDurationSeconds": 18.641666666666666,
+      "sourceFileBytes": 21186808,
+      "framesPredicted": 559,
+      "emptyMasks": 0,
+      "seeks": 0,
+      "segmentsStarted": 1,
+      "lastState": {
+        "acceptedFrames": 559,
+        "pointerEntries": 16,
+        "spatialEntries": 7
+      },
+      "reachedEnd": true,
+      "thermalStateAtStart": "nominal",
+      "thermalStateAtSnapshot": "nominal",
+      "warmRequestTotals": {
+        "count": 558,
+        "maximumMilliseconds": 1468.050374998711,
+        "meanMilliseconds": 65.65115897503483,
+        "totalMilliseconds": 36633.34670806944
+      },
+      "warmModelTotals": {
+        "ImageEncoder": {
+          "count": 558,
+          "maximumMilliseconds": 126.80937499681022,
+          "meanMilliseconds": 20.510589007981284,
+          "totalMilliseconds": 11444.908666453557
+        },
+        "Propagator": {
+          "count": 558,
+          "maximumMilliseconds": 1402.6029583328636,
+          "meanMilliseconds": 37.353454599665824,
+          "totalMilliseconds": 20843.22766661353
+        }
+      },
+      "warmMaskRenderingTotals": {
+        "count": 558,
+        "maximumMilliseconds": 0.795791667769663,
+        "meanMilliseconds": 0.4184688620876828,
+        "totalMilliseconds": 233.505625044927
+      },
+      "retainedFrames": {
+        "count": 120,
+        "firstSeconds": 14.64,
+        "lastSeconds": 18.608333333333334,
+        "emptyMasks": 0
+      }
+    },
+    {
+      "attachment": "video-tracking-last-run 2.json",
+      "sha256": "6aebb93e49f8aa5ad42970db70c08421b141e2ec99cee82a89034222ac604f97",
+      "createdAt": "2026-10-11T01:27:19Z",
+      "clipID": "76000B53-4E1A-4DB6-8773-5D7439D8F801",
+      "hardware": "iPhone18,1",
+      "operatingSystem": "Version 27.2 (Build 24B5089g)",
+      "swiftDebugCompilation": false,
+      "requestedComputeUnits": "CPU_AND_GPU",
+      "modelVariant": "memoryfp16projection",
+      "maskPreviewImplementation": "high-res-threshold-cgimage.v1",
+      "videoDurationSeconds": 22.808333333333334,
+      "sourceFileBytes": 39378409,
+      "framesPredicted": 684,
+      "emptyMasks": 454,
+      "seeks": 0,
+      "segmentsStarted": 1,
+      "lastState": {
+        "acceptedFrames": 684,
+        "pointerEntries": 16,
+        "spatialEntries": 7
+      },
+      "reachedEnd": true,
+      "thermalStateAtStart": "nominal",
+      "thermalStateAtSnapshot": "nominal",
+      "warmRequestTotals": {
+        "count": 683,
+        "maximumMilliseconds": 243.33670832857024,
+        "meanMilliseconds": 62.44810480719206,
+        "totalMilliseconds": 42652.055583312176
+      },
+      "warmModelTotals": {
+        "ImageEncoder": {
+          "count": 683,
+          "maximumMilliseconds": 38.69462500733789,
+          "meanMilliseconds": 20.309059419124633,
+          "totalMilliseconds": 13871.087583262124
+        },
+        "Propagator": {
+          "count": 683,
+          "maximumMilliseconds": 172.80116665642709,
+          "meanMilliseconds": 34.691592545265955,
+          "totalMilliseconds": 23694.357708416646
+        }
+      },
+      "warmMaskRenderingTotals": {
+        "count": 683,
+        "maximumMilliseconds": 0.562291665119119,
+        "meanMilliseconds": 0.4039300881523235,
+        "totalMilliseconds": 275.884250208037
+      },
+      "retainedFrames": {
+        "count": 120,
+        "firstSeconds": 18.80666666666667,
+        "lastSeconds": 22.775,
+        "emptyMasks": 120
+      }
+    },
+    {
+      "attachment": "video-tracking-last-run 3.json",
+      "sha256": "d28c9755a47adb124b60729ae825105ec291ca3b55cba877b8857bb9822c7294",
+      "createdAt": "2026-10-11T01:27:19Z",
+      "clipID": "76000B53-4E1A-4DB6-8773-5D7439D8F801",
+      "hardware": "iPhone18,1",
+      "operatingSystem": "Version 27.2 (Build 24B5089g)",
+      "swiftDebugCompilation": false,
+      "requestedComputeUnits": "CPU_AND_GPU",
+      "modelVariant": "memoryfp16projection",
+      "maskPreviewImplementation": "high-res-threshold-cgimage.v1",
+      "videoDurationSeconds": 22.808333333333334,
+      "sourceFileBytes": 39378409,
+      "framesPredicted": 1372,
+      "emptyMasks": 454,
+      "seeks": 1,
+      "segmentsStarted": 6,
+      "lastState": {
+        "acceptedFrames": 684,
+        "pointerEntries": 16,
+        "spatialEntries": 7
+      },
+      "reachedEnd": true,
+      "thermalStateAtStart": "nominal",
+      "thermalStateAtSnapshot": "nominal",
+      "warmRequestTotals": {
+        "count": 1366,
+        "maximumMilliseconds": 243.33670832857024,
+        "meanMilliseconds": 63.57604572353235,
+        "totalMilliseconds": 86844.87845834519
+      },
+      "warmModelTotals": {
+        "ImageEncoder": {
+          "count": 1366,
+          "maximumMilliseconds": 103.96241667331196,
+          "meanMilliseconds": 20.712222577986957,
+          "totalMilliseconds": 28292.896041530184
+        },
+        "Propagator": {
+          "count": 1366,
+          "maximumMilliseconds": 172.80116665642709,
+          "meanMilliseconds": 35.31756719759182,
+          "totalMilliseconds": 48243.79679191043
+        }
+      },
+      "warmMaskRenderingTotals": {
+        "count": 1366,
+        "maximumMilliseconds": 1.7113749927375466,
+        "meanMilliseconds": 0.40781231728778866,
+        "totalMilliseconds": 557.0716254151193
+      },
+      "retainedFrames": {
+        "count": 120,
+        "firstSeconds": 18.80666666666667,
+        "lastSeconds": 22.775,
+        "emptyMasks": 0
+      }
+    },
+    {
+      "attachment": "video-tracking-last-run 4(1).json",
+      "sha256": "70575f3fb4be8e5d87de104568c00fde1ffda1e582d9c03b2a9e5311abdf7c66",
+      "createdAt": "2026-10-11T01:27:19Z",
+      "clipID": "76000B53-4E1A-4DB6-8773-5D7439D8F801",
+      "hardware": "iPhone18,1",
+      "operatingSystem": "Version 27.2 (Build 24B5089g)",
+      "swiftDebugCompilation": false,
+      "requestedComputeUnits": "CPU_AND_GPU",
+      "modelVariant": "memoryfp16projection",
+      "maskPreviewImplementation": "high-res-threshold-cgimage.v1",
+      "videoDurationSeconds": 22.808333333333334,
+      "sourceFileBytes": 39378409,
+      "framesPredicted": 2755,
+      "emptyMasks": 454,
+      "seeks": 6,
+      "segmentsStarted": 10,
+      "lastState": {
+        "acceptedFrames": 684,
+        "pointerEntries": 16,
+        "spatialEntries": 7
+      },
+      "reachedEnd": true,
+      "thermalStateAtStart": "nominal",
+      "thermalStateAtSnapshot": "nominal",
+      "warmRequestTotals": {
+        "count": 2745,
+        "maximumMilliseconds": 266.85629166604485,
+        "meanMilliseconds": 66.75188164854379,
+        "totalMilliseconds": 183233.91512525268
+      },
+      "warmModelTotals": {
+        "ImageEncoder": {
+          "count": 2745,
+          "maximumMilliseconds": 213.52404165372718,
+          "meanMilliseconds": 22.14068167870809,
+          "totalMilliseconds": 60776.17120805371
+        },
+        "Propagator": {
+          "count": 2745,
+          "maximumMilliseconds": 212.04624998790678,
+          "meanMilliseconds": 36.84417073477487,
+          "totalMilliseconds": 101137.24866695702
+        }
+      },
+      "warmMaskRenderingTotals": {
+        "count": 2745,
+        "maximumMilliseconds": 2.879124993341975,
+        "meanMilliseconds": 0.4316828934707338,
+        "totalMilliseconds": 1184.9695425771642
+      },
+      "retainedFrames": {
+        "count": 120,
+        "firstSeconds": 18.80666666666667,
+        "lastSeconds": 22.775,
+        "emptyMasks": 0
+      }
+    }
+  ],
+  "observations": [
+    "User reports the sharper highlight looks good. Dog, distant person, and excavator arm are new visual tests.",
+    "Person leaves during the first half; empty tail is consistent with absence but first-loss time cannot be established from retained tail.",
+    "Excavator arm selection expands to body and briefly includes background inside bent arm. Sampled recording shows background spill clears while some body inclusion persists. No internal cause established.",
+    "Reports 2, 3, and 4 share a clip/report session. Prediction, timing and empty-mask totals accumulate across selections/seeks. Do not label them arm-only measurements.",
+    "Requested future capability: add/remove selection points and correction, distinct from separately tracked multiple subjects."
+  ]
+}

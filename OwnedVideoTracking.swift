@@ -54,9 +54,9 @@ private struct VideoTrackingReport: Encodable {
     #else
     let swiftDebugCompilation = false
     #endif
-    let scope = "On-demand sequential decoded frames from a user-selected video. One positive point per reset; no ground-truth parity or automatic quality pass. All model outputs retain shape/finiteness checks. No audio, frame dropping, pre-scan or full-video mask cache. Run tracking advances as requests finish, not on a real-time playback clock."
-    let timingScope = "Request time includes synchronous decode, orientation/resize, preview image rendering, prediction/state, mask image creation and small pre-prediction checkpoint writes. Excludes model loading, UI presentation, report saving and user pauses. Initialization uses the already prepared displayed frame. Warm totals exclude the first prediction after every reset. These are processing diagnostics, not sustained playback FPS."
-    let timingInstrumentation = "video-preparation-stages.v2"
+    let scope = "On-demand sequential decoded frames from a user-selected video. One positive point per reset; no ground-truth parity or automatic quality pass. All model outputs retain shape/finiteness checks. No audio, frame dropping or pre-scan. Bounded current-selection mask cache supports separate replay. Run tracking advances as requests finish; cached replay is paced by source timestamps."
+    let timingScope = "Request time includes synchronous decode, orientation/resize, preview image rendering, prediction/state, mask image creation, mask packing/hash/disk write and small pre-prediction checkpoint writes. Excludes model loading, UI presentation, report saving and user pauses. Initialization uses the already prepared displayed frame. Warm totals exclude initialization after every reset. Replay is measured separately. These are processing diagnostics, not sustained playback FPS."
+    let timingInstrumentation = "video-mask-cache.v1"
     let sessionTimingInstrumentation = "session-stages.v1"
     let tensorCopyImplementation = OwnedTensor.copyImplementation
     let sessionTimingScope = "Input preparation, output copy/validation, before-prediction checkpoint hooks and state pack/commit are timed separately inside predictionAndStateMilliseconds. Stages exclude model calls and do not sum to the full session time; orchestration overhead remains. Warm totals exclude initialization after every reset."
@@ -94,6 +94,26 @@ private struct VideoTrackingReport: Encodable {
     var warmDecodeAndPreparationTotals = VideoTimingTotal()
     var warmPreparationStageTotals: [String: VideoTimingTotal] = [:]
     var warmMaskRenderingTotals = VideoTimingTotal()
+    let maskCacheImplementation = "selection-bitmask-replay.v1"
+    let maskCacheScope = "Current selection only; exact source PTS, lossless packed high_res_mask > 0. Up to 256 MiB of mask payload on temporary disk. No model tensors, persistent project cache, audio or export integration. Seeking/reselecting clears the cache. Replay uses a separate decoder and never advances tracking state or calls models."
+    var cachedMaskFrames = 0
+    var cachedMaskBytes = 0
+    var cacheSelectionSegment: Int?
+    var cachedStartSeconds: Double?
+    var cachedEndSeconds: Double?
+    var cacheLimitReached = false
+    var cacheError: String?
+    var cacheWriteTotals = VideoTimingTotal()
+    var replayFrames = 0
+    var replayRuns = 0
+    var lastReplayPredictionCountBefore: Int?
+    var lastReplayPredictionCountAfter: Int?
+    var lastReplayStateBefore: OwnedStateSummary?
+    var lastReplayStateAfter: OwnedStateSummary?
+    var lastReplayFramesRead = 0
+    var replayError: String?
+    var replayRequestTotals = VideoTimingTotal()
+    let replayTimingScope = "Replay request includes video decode/orientation/preview, disk mask read/hash verification and overlay construction. Excludes presentation pacing, UI rendering and report saving. Inference totals exclude replay."
     var reachedEnd = false
     var lastError: String?
     var lastAction = "Opening"
@@ -107,14 +127,17 @@ struct OwnedVideoDisplay: Sendable {
     let seconds: Double
     let durationSeconds: Double
     let message: String
+    let cachedFrames: Int
+    let cacheNotice: String?
 }
 
 // Owns decoding and inference on one actor. Each next() finishes before another
 // sample is requested. Only the current prepared frame and bounded model state
 // survive a request; Core ML output tensors are released after rendering.
+// A bounded disk cache keeps thresholded masks for the current selection only.
 actor OwnedVideoRunner {
     private struct PreparedFrame {
-        let buffer: CVPixelBuffer
+        let buffer: CVPixelBuffer?
         let preview: CGImage
         let time: CMTime
         let preparationMS: Double
@@ -135,6 +158,20 @@ actor OwnedVideoRunner {
     private var point: [Double]?
     private var report: VideoTrackingReport?
     private var checkpointURL: URL?
+    private struct CachedMask {
+        let time: CMTime
+        let sha256: String
+    }
+    private static let maskByteCount = 1024 * 1024 / 8
+    private static let maximumCachedFrames = 2048 // 256 MiB payload, bounded metadata.
+    private var cacheDirectory: URL?
+    private var cacheWriter: FileHandle?
+    private var cachedMasks: [CachedMask] = []
+    private var currentOverlay: CGImage?
+    private var replayReader: AVAssetReader?
+    private var replayOutput: AVAssetReaderTrackOutput?
+    private var replayFile: FileHandle?
+    private var replayIndex = 0
 
     // Takes ownership of the ProbeMovie temporary import, including on failure.
     func open(url: URL, modelsRoot: URL, hardware: String,
@@ -253,6 +290,8 @@ actor OwnedVideoRunner {
         guard selected.count == 2, selected.allSatisfy({ $0.isFinite && (0...1).contains($0) }),
               current != nil, let session else { throw OwnedTemporalError.invalid("Choose a frame and tap the subject.") }
         session.reset()
+        resetMaskCache(create: true)
+        currentOverlay = nil
         point = selected
         report?.segmentsStarted += 1
         report?.lastResetReason = "subject selection on current frame"
@@ -286,6 +325,8 @@ actor OwnedVideoRunner {
             throw OwnedTemporalError.invalid("Choose a time before the end of the video.")
         }
         session?.reset()
+        resetMaskCache(create: false)
+        currentOverlay = nil
         point = nil
         current = nil
         report?.seeks += 1
@@ -304,6 +345,162 @@ actor OwnedVideoRunner {
         } catch {
             invalidatePrediction(error)
             throw error
+        }
+    }
+
+    // Replay has its own decoder and reads only completed cache entries. The
+    // inference decoder, current frame, point and temporal banks stay untouched.
+    func beginReplay() throws {
+        stopReplay()
+        guard let first = cachedMasks.first, let cacheDirectory else {
+            throw OwnedTemporalError.invalid("Track some frames before replaying cached masks.")
+        }
+        do {
+            let pair = try makeReader(at: first.time)
+            replayReader = pair.0
+            replayOutput = pair.1
+            replayFile = try FileHandle(forReadingFrom: cacheDirectory.appendingPathComponent("masks.bin"))
+            replayIndex = 0
+            report?.replayRuns += 1
+            report?.replayError = nil
+            report?.lastReplayPredictionCountBefore = report?.framesPredicted
+            report?.lastReplayPredictionCountAfter = nil
+            report?.lastReplayStateBefore = report?.lastState
+            report?.lastReplayStateAfter = nil
+            report?.lastReplayFramesRead = 0
+        } catch {
+            stopReplay()
+            report?.replayError = error.localizedDescription
+            throw error
+        }
+    }
+
+    func nextReplay() throws -> OwnedVideoDisplay? {
+        guard replayIndex < cachedMasks.count else { return nil }
+        guard let replayReader, let replayOutput, let replayFile else {
+            throw OwnedTemporalError.invalid("Cached replay is not open.")
+        }
+        let start = now()
+        do {
+            return try autoreleasepool {
+                try Task.checkCancellation()
+                let entry = cachedMasks[replayIndex]
+                guard let frame = try readFrame(reader: replayReader, output: replayOutput,
+                                                notBefore: replayIndex == 0 ? entry.time : nil,
+                                                prepareModel: false),
+                      CMTimeCompare(frame.time, entry.time) == 0 else {
+                    throw OwnedTemporalError.invalid("Cached mask and decoded frame timestamps do not match. Replay stopped.")
+                }
+                try replayFile.seek(toOffset: UInt64(replayIndex * Self.maskByteCount))
+                guard let data = try replayFile.read(upToCount: Self.maskByteCount),
+                      data.count == Self.maskByteCount, digest(data) == entry.sha256 else {
+                    throw OwnedTemporalError.invalid("Cached mask is missing or damaged. Replay stopped.")
+                }
+                let overlay = try maskImage(packed: data)
+                try Task.checkCancellation()
+                replayIndex += 1
+                report?.replayFrames += 1
+                report?.lastReplayFramesRead = replayIndex
+                report?.replayRequestTotals.add(elapsed(start))
+                return display(frame, overlay: overlay,
+                               message: "Cached replay · \(replayIndex)/\(cachedMasks.count) frames · no model predictions")
+            }
+        } catch {
+            stopReplay()
+            report?.replayError = error.localizedDescription
+            throw error
+        }
+    }
+
+    func finishReplay() -> OwnedVideoDisplay? {
+        stopReplay()
+        report?.lastReplayPredictionCountAfter = report?.framesPredicted
+        report?.lastReplayStateAfter = report?.lastState
+        guard let current else { return nil }
+        return display(current, overlay: currentOverlay,
+                       message: "Replay finished. Returned to your latest tracked frame.")
+    }
+
+    private func stopReplay() {
+        replayReader?.cancelReading()
+        replayReader = nil
+        replayOutput = nil
+        try? replayFile?.close()
+        replayFile = nil
+        replayIndex = 0
+    }
+
+    private func resetMaskCache(create: Bool) {
+        stopReplay()
+        try? cacheWriter?.close()
+        cacheWriter = nil
+        cachedMasks.removeAll()
+        report?.cachedMaskFrames = 0
+        report?.cachedMaskBytes = 0
+        report?.cacheSelectionSegment = nil
+        report?.cachedStartSeconds = nil
+        report?.cachedEndSeconds = nil
+        report?.cacheLimitReached = false
+        report?.cacheError = nil
+        if let directory = cacheDirectory {
+            do { try FileManager.default.removeItem(at: directory) }
+            catch {
+                // Keep the directory identity for another cleanup attempt;
+                // don't accumulate more caches when deletion fails.
+                report?.cacheError = error.localizedDescription
+                return
+            }
+        }
+        cacheDirectory = nil
+        guard create else { return }
+        let directory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("ByteWaveMaskReplay-\(UUID().uuidString)", isDirectory: true)
+        do {
+            try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+            cacheDirectory = directory
+            let file = directory.appendingPathComponent("masks.bin")
+            guard FileManager.default.createFile(atPath: file.path, contents: nil) else {
+                throw OwnedTemporalError.invalid("Could not create mask cache.")
+            }
+            cacheWriter = try FileHandle(forWritingTo: file)
+        } catch {
+            report?.cacheError = error.localizedDescription
+        }
+    }
+
+    private func cacheMask(_ mask: OwnedTensor, at time: CMTime) {
+        guard let cacheWriter else { return }
+        guard cachedMasks.count < Self.maximumCachedFrames else {
+            report?.cacheLimitReached = true
+            return
+        }
+        let start = now()
+        defer { report?.cacheWriteTotals.add(elapsed(start)) }
+        do {
+            guard mask.shape == [1, 1, 1024, 1024], mask.values.count == 1024 * 1024,
+                  cachedMasks.last.map({ CMTimeCompare(time, $0.time) > 0 }) ?? true else {
+                throw OwnedTemporalError.invalid("Invalid mask cache shape or timestamp order.")
+            }
+            // Lossless relative to the displayed binary mask, not to logits.
+            var packed = [UInt8](repeating: 0, count: Self.maskByteCount)
+            for i in mask.values.indices where mask.values[i] > 0 {
+                packed[i >> 3] |= UInt8(1 << (i & 7))
+            }
+            let data = Data(packed)
+            let hash = digest(data)
+            try cacheWriter.write(contentsOf: data)
+            // Publish only after the complete write succeeds. A failed partial
+            // tail is never indexed/read, and no later appends are attempted.
+            cachedMasks.append(CachedMask(time: time, sha256: hash))
+            report?.cachedMaskFrames = cachedMasks.count
+            report?.cachedMaskBytes = cachedMasks.count * Self.maskByteCount
+            report?.cacheSelectionSegment = report?.segmentsStarted
+            report?.cachedStartSeconds = cachedMasks.first?.time.seconds
+            report?.cachedEndSeconds = time.seconds
+        } catch {
+            report?.cacheError = error.localizedDescription
+            try? cacheWriter.close()
+            self.cacheWriter = nil
         }
     }
 
@@ -326,6 +523,8 @@ actor OwnedVideoRunner {
     }
 
     private func releaseResources() {
+        resetMaskCache(create: false)
+        currentOverlay = nil
         reader?.cancelReading()
         reader = nil
         output = nil
@@ -343,8 +542,14 @@ actor OwnedVideoRunner {
     }
 
     private func startReader(at time: CMTime) throws {
-        guard let asset, let track else { throw OwnedTemporalError.invalid("No video is open.") }
         reader?.cancelReading()
+        let pair = try makeReader(at: time)
+        reader = pair.0
+        output = pair.1
+    }
+
+    private func makeReader(at time: CMTime) throws -> (AVAssetReader, AVAssetReaderTrackOutput) {
+        guard let asset, let track else { throw OwnedTemporalError.invalid("No video is open.") }
         let nextReader = try AVAssetReader(asset: asset)
         let nextOutput = AVAssetReaderTrackOutput(track: track, outputSettings: [kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA])
         nextOutput.alwaysCopiesSampleData = false
@@ -352,12 +557,16 @@ actor OwnedVideoRunner {
         nextReader.add(nextOutput)
         nextReader.timeRange = CMTimeRange(start: time, duration: CMTimeSubtract(duration, time))
         guard nextReader.startReading() else { throw nextReader.error ?? OwnedTemporalError.invalid("Video decoding could not start.") }
-        reader = nextReader
-        output = nextOutput
+        return (nextReader, nextOutput)
     }
 
     private func readFrame(notBefore: CMTime? = nil) throws -> PreparedFrame? {
         guard let reader, let output else { throw OwnedTemporalError.invalid("The decoder is not ready.") }
+        return try readFrame(reader: reader, output: output, notBefore: notBefore, prepareModel: true)
+    }
+
+    private func readFrame(reader: AVAssetReader, output: AVAssetReaderTrackOutput,
+                           notBefore: CMTime?, prepareModel: Bool) throws -> PreparedFrame? {
         let start = now()
         var stages: [String: Double] = [:]
         while true {
@@ -388,22 +597,26 @@ actor OwnedVideoRunner {
                 guard !bounds.isInfinite, !bounds.isNull, bounds.width > 0, bounds.height > 0 else {
                     throw OwnedTemporalError.invalid("Invalid display-oriented frame size.")
                 }
-                report?.lastDecodedSize = [CVPixelBufferGetWidth(buffer), CVPixelBufferGetHeight(buffer)]
-                report?.lastDisplaySize = [Double(bounds.width), Double(bounds.height)]
+                if prepareModel {
+                    report?.lastDecodedSize = [CVPixelBufferGetWidth(buffer), CVPixelBufferGetHeight(buffer)]
+                    report?.lastDisplaySize = [Double(bounds.width), Double(bounds.height)]
+                }
                 let normalized = presented.transformed(by: CGAffineTransform(translationX: -bounds.minX, y: -bounds.minY))
                 let oriented = normalized.transformed(by: CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: 0, ty: bounds.height))
                 stages["orientationGraphSetup"] = elapsed(orientationStart)
-                let allocationStart = now()
                 var input: CVPixelBuffer?
-                let code = CVPixelBufferCreate(kCFAllocatorDefault, 1024, 1024, kCVPixelFormatType_32BGRA,
-                                              [kCVPixelBufferIOSurfacePropertiesKey: [:]] as CFDictionary, &input)
-                guard code == kCVReturnSuccess, let input else { throw OwnedTemporalError.invalid("Could not allocate the model image.") }
-                stages["modelBufferAllocation"] = elapsed(allocationStart)
-                let renderStart = now()
                 let color = CGColorSpace(name: CGColorSpace.sRGB)!
-                let square = oriented.transformed(by: CGAffineTransform(scaleX: 1024 / bounds.width, y: 1024 / bounds.height))
-                context.render(square, to: input, bounds: CGRect(x: 0, y: 0, width: 1024, height: 1024), colorSpace: color)
-                stages["modelInputRender"] = elapsed(renderStart)
+                if prepareModel {
+                    let allocationStart = now()
+                    let code = CVPixelBufferCreate(kCFAllocatorDefault, 1024, 1024, kCVPixelFormatType_32BGRA,
+                                                  [kCVPixelBufferIOSurfacePropertiesKey: [:]] as CFDictionary, &input)
+                    guard code == kCVReturnSuccess, let input else { throw OwnedTemporalError.invalid("Could not allocate the model image.") }
+                    stages["modelBufferAllocation"] = elapsed(allocationStart)
+                    let renderStart = now()
+                    let square = oriented.transformed(by: CGAffineTransform(scaleX: 1024 / bounds.width, y: 1024 / bounds.height))
+                    context.render(square, to: input, bounds: CGRect(x: 0, y: 0, width: 1024, height: 1024), colorSpace: color)
+                    stages["modelInputRender"] = elapsed(renderStart)
+                }
                 let previewStart = now()
                 let scale = min(1, 1024 / max(bounds.width, bounds.height))
                 let preview = oriented.transformed(by: CGAffineTransform(scaleX: scale, y: scale))
@@ -433,11 +646,11 @@ actor OwnedVideoRunner {
     }
 
     private func predictCurrent(initialized: Bool, requestStart: Double, preparationMS: Double) throws -> OwnedVideoDisplay {
-        guard let current, let session, let point else { throw OwnedTemporalError.invalid("Select a subject first.") }
+        guard let current, let buffer = current.buffer, let session, let point else { throw OwnedTemporalError.invalid("Select a subject first.") }
         do {
             return try autoreleasepool {
                 let start = now()
-                let prediction = try session.predict(image: current.buffer, at: current.time, initialPoint: point) { component in
+                let prediction = try session.predict(image: buffer, at: current.time, initialPoint: point) { component in
                     try checkpoint("Before prediction: \(component)", time: current.time)
                 }
                 let predictionMS = elapsed(start)
@@ -448,6 +661,8 @@ actor OwnedVideoRunner {
                 let overlay = try maskImage(previewMask)
                 let maskMS = elapsed(maskStart)
                 try Task.checkCancellation()
+                cacheMask(previewMask, at: current.time)
+                currentOverlay = overlay
                 let fraction = Double(mask.values.lazy.filter { $0 > 0 }.count) / Double(mask.values.count)
                 let row = VideoFrameRecord(requestIndex: report?.framesPredicted ?? 0, segment: report?.segmentsStarted ?? 0,
                     ptsValue: current.time.value, ptsTimescale: current.time.timescale, initialized: initialized,
@@ -490,6 +705,8 @@ actor OwnedVideoRunner {
 
     private func invalidatePrediction(_ error: Error) {
         session?.reset()
+        resetMaskCache(create: false)
+        currentOverlay = nil
         point = nil
         report?.lastState = nil
         report?.lastResetReason = "error or cancellation"
@@ -499,7 +716,9 @@ actor OwnedVideoRunner {
 
     private func display(_ frame: PreparedFrame, overlay: CGImage?, message: String) -> OwnedVideoDisplay {
         OwnedVideoDisplay(previewImage: frame.preview, overlayImage: overlay, seconds: frame.time.seconds,
-                          durationSeconds: duration.seconds, message: message)
+                          durationSeconds: duration.seconds, message: message, cachedFrames: cachedMasks.count,
+                          cacheNotice: report?.cacheError.map { "Mask cache unavailable: \($0)" }
+                              ?? (report?.cacheLimitReached == true ? "Cache full. Replay covers the first \(cachedMasks.count) tracked frames." : nil))
     }
     private func check(_ ticket: UInt64) throws {
         try Task.checkCancellation()
@@ -540,6 +759,25 @@ actor OwnedVideoRunner {
         for i in mask.values.indices where mask.values[i] > 0 {
             bytes[i * 4] = 90; bytes[i * 4 + 1] = 160; bytes[i * 4 + 2] = 255; bytes[i * 4 + 3] = 255
         }
+        return try overlayImage(bytes: bytes)
+    }
+
+    private func maskImage(packed: Data) throws -> CGImage {
+        guard packed.count == Self.maskByteCount else {
+            throw OwnedTemporalError.invalid("Unexpected cached mask size.")
+        }
+        var bytes = [UInt8](repeating: 0, count: 1024 * 1024 * 4)
+        for (byteIndex, bits) in packed.enumerated() where bits != 0 {
+            for bit in 0..<8 where bits & UInt8(1 << bit) != 0 {
+                let i = (byteIndex * 8 + bit) * 4
+                bytes[i] = 90; bytes[i + 1] = 160; bytes[i + 2] = 255; bytes[i + 3] = 255
+            }
+        }
+        return try overlayImage(bytes: bytes)
+    }
+
+    private func overlayImage(bytes: [UInt8]) throws -> CGImage {
+        let side = 1024
         // The provider owns its Data independently of Core ML output lifetimes.
         // Pass the image directly: a larger mask must not add a PNG round-trip.
         guard let provider = CGDataProvider(data: Data(bytes) as CFData),
@@ -574,6 +812,9 @@ struct OwnedVideoTrackingView: View {
     @State private var seekSeconds = 0.0
     @State private var status = "Choose a video, then tap the subject."
     @State private var reportURL: URL?
+    @State private var cachedFrames = 0
+    @State private var cacheNotice: String?
+    @State private var replaying = false
 
     var body: some View {
         ScrollView {
@@ -598,6 +839,7 @@ struct OwnedVideoTrackingView: View {
                             point = CGPoint(x: min(max(location.x / geometry.size.width, 0), 1),
                                             y: min(max(location.y / geometry.size.height, 0), 1))
                             tracking = false
+                            cachedFrames = 0
                             overlay = nil
                             reportURL = nil
                             status = "Tap Track selected subject to start a fresh selection here."
@@ -606,6 +848,7 @@ struct OwnedVideoTrackingView: View {
                     }.aspectRatio(preview.size.width / preview.size.height, contentMode: .fit)
                     Button("Use center point") {
                         point = CGPoint(x: 0.5, y: 0.5); tracking = false; overlay = nil; reportURL = nil
+                        cachedFrames = 0
                     }.disabled(busy)
                     Button("Track selected subject") { initialize() }
                         .buttonStyle(.borderedProminent).disabled(busy || point == nil || tracking)
@@ -615,6 +858,15 @@ struct OwnedVideoTrackingView: View {
                             if playing { pauseRequested = true } else { advance(continuous: true) }
                         }.disabled(playing ? pauseRequested : (busy || !tracking || ended))
                     }.buttonStyle(.bordered)
+                    Button(replaying ? "Stop replay" : "Replay cached masks") {
+                        if replaying { pauseRequested = true } else { replay() }
+                    }
+                    .buttonStyle(.bordered)
+                    .disabled(replaying ? pauseRequested : (busy || !tracking || cachedFrames == 0))
+                    if cachedFrames > 0 {
+                        Text("\(cachedFrames) frames cached for this selection").font(.footnote)
+                    }
+                    if let cacheNotice { Text(cacheNotice).font(.footnote).foregroundStyle(.secondary) }
                     Toggle("Show mask", isOn: $showMask)
                 }
                 if duration > 0 {
@@ -624,7 +876,7 @@ struct OwnedVideoTrackingView: View {
                         Button(String(format: "Seek to %.2f s", seekSeconds)) { seek(to: seekSeconds) }
                         Button("Restart") { seek(to: 0) }
                     }.disabled(busy)
-                    Text("Seeking resets tracking. Select the subject again at the new time.").font(.footnote)
+                    Text("Seeking starts a new track and clears cached masks. Use Replay cached masks to review this selection.").font(.footnote)
                 }
                 if busy { ProgressView() }
                 Text(status).textSelection(.enabled)
@@ -643,6 +895,9 @@ struct OwnedVideoTrackingView: View {
             job?.cancel()
             busy = false
             playing = false
+            replaying = false
+            cachedFrames = 0
+            cacheNotice = nil
             tracking = false
             preview = nil
             overlay = nil
@@ -665,6 +920,7 @@ struct OwnedVideoTrackingView: View {
         }
         let ticket = lifecycle
         busy = true; preview = nil; overlay = nil; point = nil; tracking = false; ended = false
+        cachedFrames = 0; cacheNotice = nil
         duration = 0; reportURL = nil; status = "Opening video…"
         job = Task {
             defer { if ticket == lifecycle { busy = false; selection = nil } }
@@ -709,6 +965,7 @@ struct OwnedVideoTrackingView: View {
     private func seek(to value: Double) {
         guard !busy else { return }
         preview = nil; overlay = nil; point = nil; tracking = false; ended = false
+        cachedFrames = 0; cacheNotice = nil
         perform { apply(try await runner.seek(seconds: value)) }
     }
 
@@ -735,6 +992,61 @@ struct OwnedVideoTrackingView: View {
         }
     }
 
+    private func replay() {
+        guard !busy, tracking, cachedFrames > 0 else { return }
+        let ticket = lifecycle
+        busy = true
+        replaying = true
+        pauseRequested = false
+        reportURL = nil
+        job = Task {
+            defer { if ticket == lifecycle { busy = false; replaying = false } }
+            var failure: String?
+            do {
+                try Task.checkCancellation()
+                try await runner.beginReplay()
+                var firstPTS: Double?
+                var wallStart = 0.0
+                while !pauseRequested {
+                    try Task.checkCancellation()
+                    guard let frame = try await runner.nextReplay() else { break }
+                    try Task.checkCancellation()
+                    guard ticket == lifecycle else { return }
+                    if firstPTS == nil {
+                        firstPTS = frame.seconds
+                        wallStart = ProcessInfo.processInfo.systemUptime
+                    }
+                    let deadline = wallStart + frame.seconds - (firstPTS ?? frame.seconds)
+                    // No dropped frames. Slow decode/render makes replay late;
+                    // the processing report excludes this presentation pacing.
+                    while !pauseRequested {
+                        let remaining = deadline - ProcessInfo.processInfo.systemUptime
+                        if remaining <= 0 { break }
+                        try await Task.sleep(for: .seconds(min(remaining, 0.05)))
+                    }
+                    if pauseRequested { break }
+                    apply(frame)
+                    await Task.yield()
+                }
+            } catch {
+                failure = error.localizedDescription
+            }
+            guard ticket == lifecycle, !Task.isCancelled else { return }
+            // Restore the inference position before allowing selection/Next.
+            // Displaying an old cached frame must never imply old model state.
+            let restored = await runner.finishReplay()
+            guard ticket == lifecycle, !Task.isCancelled else { return }
+            if let restored { apply(restored) }
+            if let failure { status = "Replay stopped: \(failure) Returned to your tracked frame." }
+            do {
+                let saved = try await runner.saveReport()
+                if ticket == lifecycle, !Task.isCancelled { reportURL = saved }
+            } catch {
+                if ticket == lifecycle, !Task.isCancelled { status += " Report could not be saved: \(error.localizedDescription)" }
+            }
+        }
+    }
+
     private func perform(_ action: @escaping @MainActor () async throws -> Void) {
         let ticket = lifecycle
         busy = true
@@ -749,6 +1061,7 @@ struct OwnedVideoTrackingView: View {
                 // The actor may already hold the next decoded frame. Hide the
                 // previous image rather than permit selection on stale pixels.
                 preview = nil; overlay = nil; point = nil; tracking = false
+                cachedFrames = 0
                 status = "\(error.localizedDescription) Use Restart or seek to recover."
             }
             guard ticket == lifecycle, !Task.isCancelled else { return }
@@ -769,6 +1082,8 @@ struct OwnedVideoTrackingView: View {
         seekSeconds = min(result.seconds, max(result.durationSeconds - 0.001, 0))
         duration = result.durationSeconds
         status = result.message
+        cachedFrames = result.cachedFrames
+        cacheNotice = result.cacheNotice
     }
     private func hardware() -> String {
         var size: size_t = 0
@@ -778,3 +1093,4 @@ struct OwnedVideoTrackingView: View {
         return String(cString: bytes)
     }
 }
+

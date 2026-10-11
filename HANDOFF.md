@@ -1,5 +1,67 @@
 # ByteWave segmentation: continuation handoff
 
+## Current work: bounded cached-mask replay, awaiting phone build/validation
+
+User reviewed new dog/person/excavator footage on Oct10 and said the sharper
+highlight looks good. Selected report fields/hashes and visual observations:
+Audit/iphone17pro-oct10-video-review.json. Person/arm reports share one clip
+session and accumulate counts/timings across selections; do not treat the
+aggregate timing/454 empty masks as an arm-only run. Arm selection briefly
+expands onto machine body and background inside bent arm; sampled recording
+shows background spill resolves but body inclusion partly remains. This is
+a regression clip for future add/remove prompts and correction, not proof of
+general accuracy. No model rewrite or selection correction is included here.
+
+OwnedVideoTracking.swift adds a first, session-local cache/replay step:
+- Same high_res_mask >0 at 1024x1024, packed losslessly relative to the binary
+  displayed mask (not logits) at 128KiB/frame. Shared RGBA overlay construction
+  keeps color, alpha, threshold, geometry and interpolation unchanged.
+- One actor-owned temporary masks.bin, at most2048 entries /256MiB payload;
+  bounded in-memory PTS/hash index, no tensors or full-video previews retained.
+  Writes publish index only after success. Failed writes stop further appends
+  and leave completed prefix readable; cache failures don't fail inference.
+  Cap retains cached prefix and reports truncation while tracking can continue.
+- Identity is confined to this owned immutable imported video, verified models,
+  transform and current selection. No reuse across imports/model loads/process
+  restart. Initialization/reselection, seek, errors and close clear the cache.
+  Normal close removes files; crashes may leave OS-managed temporary files.
+- Replay cached masks uses an independent AVAssetReader and the existing
+  orientation/preview path with model-buffer allocation/rendering disabled.
+  Each decoded source PTS must exactly equal the indexed CMTime; each payload
+  must have exact length and SHA256. Mismatch stops visibly, no nearest-frame
+  substitution and no inference fallback.
+- Replay never calls session.predict/reset or changes the inference decoder,
+  current prepared frame, selected point or temporal banks. Stop/completion
+  restores the latest tracked frame before enabling tracking/selection again.
+  It replays the current cached prefix from its beginning, paced by source PTS,
+  with no frame dropping/audio. This is not random-access seek/state resume.
+- Reports separate replay processing and cache-write times, cache segment/range,
+  byte/frame counts, errors and inference counts/state before/after last replay.
+  Inference request times now include cache packing/hash/write; old request
+  timings are therefore not strictly like-for-like. UI pacing/presentation
+  excluded; replayFrames counts decoded/verified frames, including a final
+  prefetched frame if the user stops before it is displayed.
+- No production integration, export support, persistent project cache, temporal
+  checkpoints, multi-point prompts or multi-subject tracking yet. Cached masks
+  reproduce segmentation mistakes too. Working memoryfp16projection unchanged.
+
+Static source/diff/ownership/bit-layout review only. No assistant builds, tests,
+model inference or benchmarks. Apple AVAssetReader timeRange and decoded sample
+presentation-order docs checked. Phone compilation and behavior unverified.
+
+Next user: full project path in EVERY terminal command; use
+/Applications/Xcode-beta.app/Contents/Developer via DEVELOPER_DIR, not global
+xcode-select (another experiment uses the other Xcode).
+Pull --ff-only, rebuild same physical17Pro Release with existing prepared models.
+Track the short construction clip once, then Replay cached masks (not Restart),
+share the video tracking report and visual alignment/smoothness observation.
+Expected: masks including the known glitch match, replayFrames advances while
+lastReplayPredictionCountBefore/After and state agree, no cache/replay errors.
+Also pause tracking partway, replay/stop, then Next frame to check restoration
+before extending tracking. No new model export/preparation or 20-frame parity
+benchmark is requested for this cache-only change. Actual replay benefit and
+first-pass cache cost await these measurements.
+
 ## Current work: higher-resolution mask preview, awaiting visual/device check
 
 User approved preview improvement then broader subject/occlusion checks. Only
