@@ -1,0 +1,759 @@
+{
+  "contract": "bytewave.occlusion-recovery.diagnostic.v1",
+  "completed": true,
+  "readyForDeviceValidation": false,
+  "sourceVideoSHA256": "a8a9d3fd5b85fbdf2770027353d6d19971845c13f83ffdcc6058ae5e6a0b1833",
+  "sourceFileBytes": 10796435,
+  "phoneReportSHA256": "7c807a77903c90fc90d23dcad387e82bb454a315f690acb1d517bf8b73c4dc65",
+  "fixtureSHA256": "760dd45c6eed6972f434dd324920b74dbfa262fb6648983606c2872581430a61",
+  "modelFiles": {
+    "models/BWTemporalImageEncoder.mlpackage/Manifest.json": "df20c1178e37ef2d4587281d5feca5979f2db8b859ffe7357161e4d5b51c254f",
+    "models/BWTemporalImageEncoder.mlpackage/Data/com.apple.CoreML/model.mlmodel": "a3046d4fbd83b7974d0b01d92ca30a55adad08aca218789b97034245023bbeba",
+    "models/BWTemporalImageEncoder.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "90e112d95a98e30486b768a2397f253766ceaa95bfd3cdb5a31a8db0341f61c3",
+    "models/BWTemporalInitializer.mlpackage/Data/com.apple.CoreML/model.mlmodel": "a70da7906ee21086122e9c24479b149308337f49609854455ae9cf65f790625f",
+    "models/BWTemporalInitializer.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "9409edf81128013f2ff61ef2565832f0a35782304e7adc54466e0396b5ab94c2",
+    "models/BWTemporalInitializer.mlpackage/Manifest.json": "d2311a29bb658bd6f16e801e91893985eb5aea3f7a6587f718e3e93539bc3068",
+    "models/BWTemporalInitialMemoryEncoder.mlpackage/Data/com.apple.CoreML/model.mlmodel": "613c7a310f1fae1b698aaba6e5a70c3afb842f459d3ec96cf9e0f4b6b4b9438a",
+    "models/BWTemporalInitialMemoryEncoder.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "21ae511f368835d55fe519b9b4ae9032bf9256cdb3cc0e91fdf5b4c467311563",
+    "models/BWTemporalInitialMemoryEncoder.mlpackage/Manifest.json": "64fb8412cf6229dda7ec7227113c7c8cf1a5278a96b62b94e2a0a76f6d790b52",
+    "models/BWTemporalPropagator.mlpackage/Manifest.json": "aec4bf7ef5dafc3816e3a645f93b134824268f4b0e8184170452e10c8c5618c1",
+    "models/BWTemporalPropagator.mlpackage/Data/com.apple.CoreML/model.mlmodel": "dec2227edc7d22832a3726a68237b6789f2d79ede1a5b0cc6f76d400c69d08d9",
+    "models/BWTemporalPropagator.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "3e679bfdc49fc43e895434b8c8bb6e75bad20a2cad37fd0aa2d5019cd186386e"
+  },
+  "upstream": "7711e012a30a2402c4eaab637bdb00a521302c91",
+  "checkpointSHA256": "ed2d4850b8792c239689b043c47046ec239b6e808a3d9b6ae676c803fd8780df",
+  "sourceComparisonSHA256": "29ff27150c14715aca3375a82e9336eb3ff9628ae523b88bcfd2cc16a5d67fd3",
+  "sourceMemoryProbeSHA256": "9ed19a4ecad97e5160d7b833cfdcb65a7ffe784a04eafdc147c1641880c32024",
+  "pointNormalizedTopLeft": [
+    0.6468468468468468,
+    0.5888513513513512
+  ],
+  "referenceNumFrames": 276,
+  "requestedFrames": 276,
+  "computeUnits": "CPU_AND_GPU",
+  "visualReviewRange": [
+    175,
+    205
+  ],
+  "recoveryRule": {
+    "missingFrames": 3,
+    "confirmationFrames": 3,
+    "minimumPredictedIoU": 0.8,
+    "minimumConsecutiveMaskIoU": 0.5,
+    "positiveObjectScoreRequired": true,
+    "nonemptyLowAndHighMaskRequired": true
+  },
+  "ruleLimit": "Exploratory thresholds informed by this development clip, not calibrated identity confidence. Consecutive-mask IoU has no motion compensation. Stable wrong masks may pass; fast correct subjects may fail. Validate on independent clips before promotion.",
+  "policy": {
+    "maskIoUMinimum": 0.95,
+    "cosineMinimum": 0.99,
+    "float32Atol": 0.001,
+    "float32Rtol": 0.001
+  },
+  "memoryPolicy": "Two bounded states retain original conditioning. Normal state always commits its own prediction. Recovery state commits ordinary output while searching, but does not display it. Only upon confirmation clear recent spatial/pointer entries and commit current search output. Pending candidates never enter memory. Absolute frame indices and source PTS advance once per frame, without reset or relabeling.",
+  "controlMeaning": "Baseline comparison and observations must exactly reproduce prior report. Conditioning-only search calls must reproduce prior probe where available. Prior reports and review interval are control/summary data, never recovery-decision inputs. Recovery/reference comparisons are descriptive; original reference loses the worker.",
+  "torchThreads": {
+    "intraOp": 1,
+    "interOp": 1
+  },
+  "versions": {
+    "torch": "2.7.0",
+    "coremltools": "9.0",
+    "numpy": "1.26.4",
+    "av": "15.0.0",
+    "Pillow": "11.2.1"
+  },
+  "conditioningUnchangedAtEnd": true,
+  "summary": {
+    "framesReplayed": 276,
+    "events": [
+      {
+        "type": "searchStarted",
+        "frame": 114,
+        "ptsSeconds": 3.8016666666666667
+      },
+      {
+        "type": "recoveryAccepted",
+        "frame": 169,
+        "ptsSeconds": 5.635,
+        "confirmationStartFrame": 167,
+        "confirmedFrames": 3,
+        "stateBeforeClear": {
+          "acceptedFrames": 169,
+          "spatialEntries": 7,
+          "pointerEntries": 16
+        }
+      },
+      {
+        "type": "searchStarted",
+        "frame": 219,
+        "ptsSeconds": 7.303333333333334
+      }
+    ],
+    "recoveryAcceptanceFrames": [
+      169
+    ],
+    "normalNonemptyInVisualReviewRange": [],
+    "policyDisplayedInVisualReviewRange": [
+      175,
+      176,
+      177,
+      178,
+      179,
+      180,
+      181,
+      182,
+      183,
+      184,
+      185,
+      186,
+      187,
+      188,
+      189,
+      190,
+      191,
+      192,
+      193,
+      194,
+      195,
+      196,
+      197,
+      198,
+      199,
+      200,
+      201,
+      202,
+      203,
+      204,
+      205
+    ],
+    "baselineMismatchFrames": [],
+    "searchProbeMismatchFrames": [],
+    "heldBackNonemptySearchFrames": [
+      148,
+      150,
+      154,
+      155,
+      156,
+      157,
+      158,
+      159,
+      160,
+      161,
+      162,
+      163,
+      164,
+      165,
+      166,
+      167,
+      168
+    ],
+    "interpretationAllowed": true,
+    "qualityMeaning": "Acceptance and nonempty masks are heuristic decisions, not ground-truth identity. Inspect first acceptance, subsequent propagation, obstruction, and exit. No generalization or device-readiness claim."
+  },
+  "evidenceReportSHA256": "53ee51c569af2681e0d5701618e9a9c2d20b38f1c492c96a3caa58a688d013e9",
+  "evidenceMeaning": "User-run Mac diagnostic; offline report and preview review only. Not device validation, calibrated identity confidence, or production promotion.",
+  "reviewedFrames": [
+    {
+      "index": 148,
+      "ptsSeconds": 4.935,
+      "modeBefore": "searching",
+      "modeAfter": "searching",
+      "ordinarySharedWithBaseline": true,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -3.4224066734313965,
+          "predictedIoU": 3.237027207630551e-31
+        },
+        "normalGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -3.494140625,
+          "predictedIoU": 1.7024129849625602e-31
+        },
+        "recoveryOrdinary": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -3.494140625,
+          "predictedIoU": 1.7024129849625602e-31
+        },
+        "searchCandidate": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.001129150390625,
+          "objectScore": 0.1099853515625,
+          "predictedIoU": 0.6780577301979065
+        },
+        "committedRecovery": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -3.494140625,
+          "predictedIoU": 1.7024129849625602e-31
+        }
+      },
+      "search": {
+        "candidatePresent": true,
+        "qualifiedThisFrame": false,
+        "consecutiveMaskIoU": null,
+        "confirmationStreak": 0,
+        "confirmationStartFrame": null,
+        "priorProbeReproduced": true,
+        "priorProbeAvailable": true
+      },
+      "displayMaskNonempty": false,
+      "recoveryAccepted": false,
+      "normalStateAfter": {
+        "acceptedFrames": 149,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      },
+      "recoveryStateAfter": {
+        "acceptedFrames": 149,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      }
+    },
+    {
+      "index": 150,
+      "ptsSeconds": 5.001666666666667,
+      "modeBefore": "searching",
+      "modeAfter": "searching",
+      "ordinarySharedWithBaseline": true,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -3.1704647541046143,
+          "predictedIoU": 9.53551613432233e-31
+        },
+        "normalGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -3.21875,
+          "predictedIoU": 5.8767683382919055e-31
+        },
+        "recoveryOrdinary": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -3.21875,
+          "predictedIoU": 5.8767683382919055e-31
+        },
+        "searchCandidate": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0011138916015625,
+          "objectScore": 0.279541015625,
+          "predictedIoU": 0.7196155786514282
+        },
+        "committedRecovery": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -3.21875,
+          "predictedIoU": 5.8767683382919055e-31
+        }
+      },
+      "search": {
+        "candidatePresent": true,
+        "qualifiedThisFrame": false,
+        "consecutiveMaskIoU": null,
+        "confirmationStreak": 0,
+        "confirmationStartFrame": null,
+        "priorProbeReproduced": true,
+        "priorProbeAvailable": true
+      },
+      "displayMaskNonempty": false,
+      "recoveryAccepted": false,
+      "normalStateAfter": {
+        "acceptedFrames": 151,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      },
+      "recoveryStateAfter": {
+        "acceptedFrames": 151,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      }
+    },
+    {
+      "index": 167,
+      "ptsSeconds": 5.568333333333333,
+      "modeBefore": "searching",
+      "modeAfter": "searching",
+      "ordinarySharedWithBaseline": true,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -1.957205057144165,
+          "predictedIoU": 1.589153284948793e-19
+        },
+        "normalGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -1.9755859375,
+          "predictedIoU": 1.0490927498796326e-19
+        },
+        "recoveryOrdinary": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -1.9755859375,
+          "predictedIoU": 1.0490927498796326e-19
+        },
+        "searchCandidate": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0013275146484375,
+          "objectScore": 0.564453125,
+          "predictedIoU": 0.8421915769577026
+        },
+        "committedRecovery": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -1.9755859375,
+          "predictedIoU": 1.0490927498796326e-19
+        }
+      },
+      "search": {
+        "candidatePresent": true,
+        "qualifiedThisFrame": true,
+        "consecutiveMaskIoU": null,
+        "confirmationStreak": 1,
+        "confirmationStartFrame": 167,
+        "priorProbeReproduced": true,
+        "priorProbeAvailable": true
+      },
+      "displayMaskNonempty": false,
+      "recoveryAccepted": false,
+      "normalStateAfter": {
+        "acceptedFrames": 168,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      },
+      "recoveryStateAfter": {
+        "acceptedFrames": 168,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      }
+    },
+    {
+      "index": 168,
+      "ptsSeconds": 5.601666666666667,
+      "modeBefore": "searching",
+      "modeAfter": "searching",
+      "ordinarySharedWithBaseline": true,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -1.7527756690979004,
+          "predictedIoU": 4.641861978482549e-20
+        },
+        "normalGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -1.8046875,
+          "predictedIoU": 1.1880202217620998e-20
+        },
+        "recoveryOrdinary": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -1.8046875,
+          "predictedIoU": 1.1880202217620998e-20
+        },
+        "searchCandidate": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0014495849609375,
+          "objectScore": 0.580078125,
+          "predictedIoU": 0.8573537468910217
+        },
+        "committedRecovery": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -1.8046875,
+          "predictedIoU": 1.1880202217620998e-20
+        }
+      },
+      "search": {
+        "candidatePresent": true,
+        "qualifiedThisFrame": true,
+        "consecutiveMaskIoU": 0.7169811320754716,
+        "confirmationStreak": 2,
+        "confirmationStartFrame": 167,
+        "priorProbeReproduced": true,
+        "priorProbeAvailable": true
+      },
+      "displayMaskNonempty": false,
+      "recoveryAccepted": false,
+      "normalStateAfter": {
+        "acceptedFrames": 169,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      },
+      "recoveryStateAfter": {
+        "acceptedFrames": 169,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      }
+    },
+    {
+      "index": 169,
+      "ptsSeconds": 5.635,
+      "modeBefore": "searching",
+      "modeAfter": "tracking",
+      "ordinarySharedWithBaseline": true,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -1.5874154567718506,
+          "predictedIoU": 2.1622699735483156e-18
+        },
+        "normalGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -1.5888671875,
+          "predictedIoU": 2.799583684198984e-18
+        },
+        "recoveryOrdinary": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -1.5888671875,
+          "predictedIoU": 2.799583684198984e-18
+        },
+        "searchCandidate": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.00146484375,
+          "objectScore": 0.6083984375,
+          "predictedIoU": 0.864743173122406
+        },
+        "committedRecovery": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.00146484375,
+          "objectScore": 0.6083984375,
+          "predictedIoU": 0.864743173122406
+        }
+      },
+      "search": {
+        "candidatePresent": true,
+        "qualifiedThisFrame": true,
+        "consecutiveMaskIoU": 0.6902654867256637,
+        "confirmationStreak": 3,
+        "confirmationStartFrame": 167,
+        "priorProbeReproduced": true,
+        "priorProbeAvailable": true
+      },
+      "displayMaskNonempty": true,
+      "recoveryAccepted": true,
+      "normalStateAfter": {
+        "acceptedFrames": 170,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      },
+      "recoveryStateAfter": {
+        "acceptedFrames": 170,
+        "spatialEntries": 2,
+        "pointerEntries": 2
+      }
+    },
+    {
+      "index": 175,
+      "ptsSeconds": 5.835,
+      "modeBefore": "tracking",
+      "modeAfter": "tracking",
+      "ordinarySharedWithBaseline": false,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -1.5627802610397339,
+          "predictedIoU": 7.753791711544456e-18
+        },
+        "normalGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -1.5654296875,
+          "predictedIoU": 8.752109375389805e-18
+        },
+        "recoveryOrdinary": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0018310546875,
+          "objectScore": 0.53515625,
+          "predictedIoU": 0.8971874713897705
+        },
+        "committedRecovery": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0018310546875,
+          "objectScore": 0.53515625,
+          "predictedIoU": 0.8971874713897705
+        }
+      },
+      "displayMaskNonempty": true,
+      "recoveryAccepted": false,
+      "normalStateAfter": {
+        "acceptedFrames": 176,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      },
+      "recoveryStateAfter": {
+        "acceptedFrames": 176,
+        "spatialEntries": 7,
+        "pointerEntries": 8
+      }
+    },
+    {
+      "index": 205,
+      "ptsSeconds": 6.836666666666667,
+      "modeBefore": "tracking",
+      "modeAfter": "tracking",
+      "ordinarySharedWithBaseline": false,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -0.9872884750366211,
+          "predictedIoU": 2.1817425643888555e-09
+        },
+        "normalGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -0.9951171875,
+          "predictedIoU": 2.2308586089536675e-09
+        },
+        "recoveryOrdinary": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0016021728515625,
+          "objectScore": 3.80078125,
+          "predictedIoU": 0.9182201623916626
+        },
+        "committedRecovery": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0016021728515625,
+          "objectScore": 3.80078125,
+          "predictedIoU": 0.9182201623916626
+        }
+      },
+      "displayMaskNonempty": true,
+      "recoveryAccepted": false,
+      "normalStateAfter": {
+        "acceptedFrames": 206,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      },
+      "recoveryStateAfter": {
+        "acceptedFrames": 206,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      }
+    },
+    {
+      "index": 216,
+      "ptsSeconds": 7.203333333333333,
+      "modeBefore": "tracking",
+      "modeAfter": "tracking",
+      "ordinarySharedWithBaseline": false,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -2.417963743209839,
+          "predictedIoU": 6.880780081222384e-26
+        },
+        "normalGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -2.419921875,
+          "predictedIoU": 5.947599538581517e-26
+        },
+        "recoveryOrdinary": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 9.1552734375e-05,
+          "objectScore": 2.505859375,
+          "predictedIoU": 0.7929151654243469
+        },
+        "committedRecovery": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 9.1552734375e-05,
+          "objectScore": 2.505859375,
+          "predictedIoU": 0.7929151654243469
+        }
+      },
+      "displayMaskNonempty": true,
+      "recoveryAccepted": false,
+      "normalStateAfter": {
+        "acceptedFrames": 217,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      },
+      "recoveryStateAfter": {
+        "acceptedFrames": 217,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      }
+    },
+    {
+      "index": 217,
+      "ptsSeconds": 7.236666666666666,
+      "modeBefore": "tracking",
+      "modeAfter": "tracking",
+      "ordinarySharedWithBaseline": false,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -3.3854727745056152,
+          "predictedIoU": 1.875778888502624e-31
+        },
+        "normalGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -3.390625,
+          "predictedIoU": 2.162750678676778e-31
+        },
+        "recoveryOrdinary": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -0.167236328125,
+          "predictedIoU": 0.003773145144805312
+        },
+        "committedRecovery": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -0.167236328125,
+          "predictedIoU": 0.003773145144805312
+        }
+      },
+      "displayMaskNonempty": false,
+      "recoveryAccepted": false,
+      "normalStateAfter": {
+        "acceptedFrames": 218,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      },
+      "recoveryStateAfter": {
+        "acceptedFrames": 218,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      }
+    },
+    {
+      "index": 219,
+      "ptsSeconds": 7.303333333333334,
+      "modeBefore": "tracking",
+      "modeAfter": "searching",
+      "ordinarySharedWithBaseline": false,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -3.5439131259918213,
+          "predictedIoU": 2.0239034018474807e-31
+        },
+        "normalGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -3.552734375,
+          "predictedIoU": 2.2940477552907434e-31
+        },
+        "recoveryOrdinary": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -6.1484375,
+          "predictedIoU": 7.663649912975141e-36
+        },
+        "searchCandidate": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -3.1875,
+          "predictedIoU": 1.1353804325542013e-16
+        },
+        "committedRecovery": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -6.1484375,
+          "predictedIoU": 7.663649912975141e-36
+        }
+      },
+      "search": {
+        "candidatePresent": false,
+        "qualifiedThisFrame": false,
+        "consecutiveMaskIoU": null,
+        "confirmationStreak": 0,
+        "confirmationStartFrame": null,
+        "priorProbeReproduced": true,
+        "priorProbeAvailable": true
+      },
+      "displayMaskNonempty": false,
+      "recoveryAccepted": false,
+      "normalStateAfter": {
+        "acceptedFrames": 220,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      },
+      "recoveryStateAfter": {
+        "acceptedFrames": 220,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      }
+    }
+  ],
+  "derivedDisplayIntervalAfterFirstSearch": {
+    "firstFrame": 169,
+    "lastFrame": 216,
+    "frameCount": 48,
+    "firstPTSSeconds": 5.635,
+    "lastPTSSeconds": 7.203333333333333,
+    "interpretation": "Continuous nonempty displayed output, not visual identity verification for all frames."
+  },
+  "visualReview": {
+    "frame": 175,
+    "imageSHA256": "5f89be08bb5ca464f17b7ffea49e82abba8cc2aadef22bc14f32e6c295990b2f",
+    "observation": "Confirmed-recovery panel highlights the intended worker visible below the raised bucket. Normal GPU is empty. Search was not queried: the mask comes from resumed ordinary propagation six frames after acceptance. No obvious machine or rubble spill at this inspected frame.",
+    "limits": "Only frame 175 from this run was supplied for visual review. First acceptance 169 and later propagation/exit 205, 216, 217 remain unreviewed. Prior reviewed rubble false positive at frame 148 is rejected by the new rule; frame 150 is also rejected but has no visual annotation."
+  },
+  "nextStep": "Inspect recovery previews 169, 205, 216 and 217, then validate the unchanged exploratory rule on an independent occlusion clip before any app integration."
+}

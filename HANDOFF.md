@@ -1,6 +1,47 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: causal confirmed-recovery diagnostic prepared
+## Current work: confirmed recovery completed; visual review in progress
+
+User ran all 276 frames of the causal confirmed-recovery diagnostic.
+Evidence: Audit/mac-worker-confirmed-recovery-summary.json.
+Report SHA256: 53ee51c569af2681e0d5701618e9a9c2d20b38f1c492c96a3caa58a688d013e9.
+All baseline and available search-probe controls reproduced exactly.
+Original conditioning hashes remained unchanged. No model/app changes.
+
+Search started at frame 114 (3.801667 s). One recovery was accepted at frame
+169 (5.635 s), following qualifying candidates 167-169 with consecutive-mask
+IoUs 0.71698 and 0.69027. No new tap or initializer. Recent banks were cleared
+only upon acceptance; state then held original conditioning plus current output.
+Ordinary propagation resumed from that output and its own subsequent history.
+
+The previously visually confirmed rubble false positive at 148 was rejected
+(predicted IoU 0.67806 < 0.8), never displayed or committed as a candidate.
+Frame 150 was also rejected (0.71962), but lacks visual identity annotation.
+Seventeen nonempty search candidates were held back, including 154-168:
+confirmation imposes a recovery delay; no claim of immediate reacquisition.
+
+Displayed masks were continuously nonempty from 169 through 216 (48 frames).
+At 175, supplied preview visually confirms the intended worker's visible upper
+body below the bucket, without obvious machine/rubble spill. Search is not
+queried on this frame: it is ordinary propagation six frames after acceptance.
+Normal GPU is empty. Across review interval 175-205, recovery displays 31/31
+frames while normal displays 0/31. Nonempty counts alone do not verify identity.
+
+Frame 216 has only six low-resolution foreground pixels. Frame 217 is empty,
+and search resumes at 219; no further acceptance or displayed masks to 275.
+Do NOT describe this as a verified clean exit until previews are inspected.
+Only frame 175 from this run has been visually reviewed. Next: request previews
+169, 205, 216 and 217 to inspect first acceptance, later propagation and ending.
+Then test this fixed exploratory rule on an independent occlusion clip before
+app integration. It remains development-clip evidence, not general identity
+validation or iPhone readiness. Original-reference mismatches are descriptive,
+since the unchanged original model itself loses the worker here.
+
+Assistant performed offline JSON/image review only, no inference, tests,
+builds, export, benchmark or model changes. Mac output:
+.temporal-runs/worker-confirmed-recovery-01.
+
+## Prior step: causal confirmed-recovery diagnostic prepared
 
 User approved testing confirmation across frames followed by ordinary tracking
 with feedback. New Temporal/diagnose_occlusion_recovery.py uses exact installed
