@@ -1,5 +1,45 @@
 # ByteWave segmentation: continuation handoff
 
+## Current work: one-frame choice intervention completed; full clip next
+
+User supplied completed 49-frame report SHA256:
+f35d013d27ef57631c6acbfb4e755ef5e20b2c41ca2dff78800263748e610df7.
+Evidence: Audit/mac-worker-mask-choice-intervention-summary.json.
+
+All fork controls passed EXACTLY: tapped and normal-index override preserve all
+seven installed outputs; alternate index leaves scores, natural argmax, best_iou,
+object_score and memory_positions exact. Fork input hashes match prior tapped
+report. Normal GPU comparison dictionaries and original observations reproduce
+all prior frames exactly. Pre-fork branch comparisons identical. Interpretation
+allowed true; completed true; readyForDeviceValidation false.
+
+At frame26 only, index2 -> original-reference index1. Immediate mask IoU becomes
+1.0, pointer cosine 0.9999147303, memory cosine 0.9950305352: all gates pass.
+Across 23 frames26..48, normal fails18 and intervention fails7:
+27,28,32,33,41,42,43. Eleven failures resolved including fork (10 later frames);
+no previously passing frame becomes an overall failure. Worst mask IoU
+0.8571428571 -> 0.9405940594; worst memory cosine 0.8584682294 -> 0.9294400092.
+Mask-IoU failures normal [33,35,37,38,40,41,43,48], intervention [27].
+
+Crucial limitation: improvement is NOT uniform. Frame27 pointer cosine worsens
+0.9779055965 -> 0.7853672910 and its mask now fails. Normal worst pointer is
+0.7770946660 at35; intervention worst 0.7853672910 at27. Seven failures remain.
+This controlled intervention demonstrates a contribution of one choice to later
+numerical divergence on this prefix, not correct identity or a usable recovery
+policy. Reference choice remains an oracle; do not hard-code index1 or assume
+candidate indices represent stable subjects. Neither speed nor deployed quality
+changed. The prefix ends before occlusion.
+
+Next: existing diagnose_mask_choice_override.py with --frames276, same linked
+reports/model/video/prompt/fork26, fresh output
+.temporal-runs/worker-mask-choice-override-full-01. This extends the same
+intervention through occlusion to measure absence/recovery; inspect three-panel
+previews for identity rather than equating nonempty masks with correct recovery.
+No further code is required. Share report.json. Keep app/models/gates unchanged.
+Only offline report analysis and evidence/HANDOFF edits performed this turn;
+all inference remains user-run on Mac with explicit project path and per-shell
+Xcode-beta DEVELOPER_DIR.
+
 ## Current work: one-frame candidate-choice intervention prepared
 
 User approved the next experiment. New Temporal/diagnose_mask_choice_override.py
