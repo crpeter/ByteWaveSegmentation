@@ -1,0 +1,64 @@
+{
+  "contract": "bytewave.occlusion-recovery.visual-review.v1",
+  "sourceReportSHA256": "53ee51c569af2681e0d5701618e9a9c2d20b38f1c492c96a3caa58a688d013e9",
+  "diagnosticCommit": "29f23a0e1229733979dba2d69c732d90cc5f23b7",
+  "method": "Offline inspection of uploaded triptych TIFFs, full panels and enlarged crops. Pixel differences between normal and recovered panels locate overlays below the 40-pixel header. No inference, tests, build or export.",
+  "coordinateSystem": "Overlay bounds inclusive, in 1024x1024 image coordinates excluding header.",
+  "frames": [
+    {
+      "frame": 169,
+      "ptsSeconds": 5.635,
+      "sha256": "2cf0120d6fd486bbc2948743072858d1bd4d56f6ecd54c778bd4c7138a748435",
+      "overlayBounds": [
+        173,
+        584,
+        239,
+        620
+      ],
+      "changedPreviewPixels": 1535,
+      "observation": "First accepted candidate and displayed recovery mask cover the intended worker's visible upper body below the bucket, behind rubble. Normal GPU is empty. No obvious machine/rubble spill at this inspected frame."
+    },
+    {
+      "frame": 205,
+      "ptsSeconds": 6.836666666666667,
+      "sha256": "b8f14c34e8b982ebee3bcfbe4ce26b7256f513c45956eac61d6b539c96de9cd1",
+      "overlayBounds": [
+        3,
+        576,
+        73,
+        609
+      ],
+      "changedPreviewPixels": 1644,
+      "observation": "Ordinary recovered propagation remains on the visible worker near the left image boundary. No search queried. Normal GPU remains empty. Visible upper body masked without obvious switch to machine/rubble."
+    },
+    {
+      "frame": 216,
+      "ptsSeconds": 7.203333333333333,
+      "sha256": "dbc25abf528063047a60a733b5aadb5d8c381eac7e9429d60d28990e11000aba",
+      "overlayBounds": [
+        0,
+        572,
+        7,
+        589
+      ],
+      "changedPreviewPixels": 112,
+      "observation": "Small mask at the extreme left image boundary aligns with the remaining visible sliver of the worker. Report has six low-resolution foreground pixels; changed preview-pixel count is a different measure."
+    },
+    {
+      "frame": 217,
+      "ptsSeconds": 7.236666666666666,
+      "sha256": "3fe62c6da0890c257469fe0756764f1f11fa00838bb3df41c8ea89adc2ee0624",
+      "overlayBounds": null,
+      "changedPreviewPixels": 0,
+      "observation": "Recovery display is empty and matches the normal source panel. An extremely small light/yellow-green sliver appears to remain at the left boundary, consistent with a slight early cutoff near exit. Do not claim pixel-perfect exit or complete subject absence."
+    }
+  ],
+  "conclusion": "Together with previously reviewed frame 175, sampled previews support correct automatic reacquisition and subsequent ordinary tracking toward the image boundary. Earlier known rubble candidate 148 was rejected per report. No visible identity switch in inspected samples; this does not establish all-frame accuracy.",
+  "limits": [
+    "No ground-truth masks or exhaustive video review.",
+    "Development clip used to inform exploratory thresholds; no independent-clip generalization.",
+    "Tiny edge sliver missed at frame 217.",
+    "No device validation or production promotion."
+  ],
+  "nextStep": "Keep recovery thresholds fixed and evaluate a separate occlusion clip, preferably the existing dog/pillar example, including its visible periods, obstruction, reappearance and any exit."
+}

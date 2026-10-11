@@ -1,6 +1,32 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: confirmed recovery completed; visual review in progress
+## Current work: confirmed recovery visual spot checks completed
+
+Evidence: Audit/worker-confirmed-recovery-visual-review.json, linked to the
+276-frame confirmed-recovery report and preceding numerical summary.
+User supplied previews 169, 205, 216 and 217. Full panels and enlarged crops
+reviewed; uploaded TIFF hashes and overlay bounds recorded.
+
+169: first acceptance correctly masks the intended worker's visible upper body
+below the bucket. 205: resumed ordinary propagation still masks that worker,
+now at the left image boundary. 216: tiny remaining mask aligns with his visible
+edge sliver (six low-resolution foreground pixels in the report). 217: empty
+display; an extremely small light/yellow-green sliver appears still visible at
+the boundary. This is a slight early cutoff near exit, NOT pixel-perfect exit.
+
+Together with frame 175, these samples support correct automatic reacquisition
+and continued ordinary tracking on this development clip, without an observed
+switch to rubble/machine in inspected samples. This is not an exhaustive visual
+review or identity benchmark. The known rubble candidate 148 was rejected.
+Do not equate all 48 nonempty frames with visually verified correctness.
+
+Next: keep thresholds fixed and test an independent occlusion clip, preferably
+the already discussed dog/pillar example. Need its actual local source path and
+selection/fixture inputs before giving executable inference commands. Do not
+retune on this clip or integrate into the app yet. No assistant inference,
+tests, builds or exports; this update only archives offline visual evidence.
+
+## Prior step: confirmed recovery report reviewed; previews requested
 
 User ran all 276 frames of the causal confirmed-recovery diagnostic.
 Evidence: Audit/mac-worker-confirmed-recovery-summary.json.
