@@ -1,5 +1,46 @@
 # ByteWave segmentation: continuation handoff
 
+## Current work: reappearance visually located; fresh-prompt diagnostic prepared
+
+User uploaded previews.zip from the full choice-intervention run. Extracted252
+PNGs and inspected source-panel overview plus close crops around135..190.
+Evidence and exact preview hashes: Audit/worker-reappearance-visual-review.json.
+The selected worker is the bent-over subject initially right of the bucket,
+not the standing worker at left. Bright shirt starts emerging around155
+(5.168333s); approximate visual landmark, NOT exhaustive first-visible annotation.
+At175 (5.835s), upper body clearly visible below raised bucket; lower body still
+behind rubble. All original/normal/override masks are absent. Thus this clip
+contains visible reappearance with failed ongoing tracking. Later camera pan
+takes worker toward the left boundary; avoid confusing that exit with occlusion.
+
+New Temporal/diagnose_occlusion_restart.py tests fresh segmentation on175 and
+30 following frames (175..205). Explicit point [180,595] in1024-square decoded
+image, normalized [0.17578125,0.5810546875], inside bright upper back.
+Preview header40px is excluded from coordinates. No app selection change.
+
+Requires completed original occlusion comparison and exact source video/model/
+fixture/upstream/checkpoint identities. Decode sequentially and verify all
+source pixels/PTS including skipped prefix. No inference before selected175.
+Original and installed GPU both start empty independent histories and fresh point
+at local0; original num_frames=276-175=101; requested comparison31frames.
+Original source PTS preserved; GPU bounded state unchanged. No old tracking
+memory copied and no candidate-index override. No conversion, export or promotion.
+Compare fresh streams with existing .95IoU/.99cos gates; record failures without
+stopping except invalid shape/nonfinite errors. Prior ongoing observations are
+stored report context only, not live recomputation or same-prompt parity.
+Save marked initial-selection.png, two-panel fresh-original/GPU previews,
+full report and summary. Human mask review still required. Fresh prompting
+does NOT establish automatic identity recovery or a deployable correction policy.
+
+Static syntax and existing API/source review only; no inference, conversion,
+tests or builds run by assistant. Run on Mac with explicit project path and
+per-shell DEVELOPER_DIR=/Applications/Xcode-beta.app/Contents/Developer.
+Command script Temporal/diagnose_occlusion_restart.py, existing upstream/video/
+phone-report/fixture/comparison arguments, --start-frame175 --frames31,
+--point0.17578125 0.5810546875,
+fresh output .temporal-runs/worker-reappearance-restart-01.
+Share report.json plus first preview if fresh selection needs visual confirmation.
+
 ## Current work: full-clip choice intervention completed; recovery unchanged
 
 Completed276-frame report SHA256

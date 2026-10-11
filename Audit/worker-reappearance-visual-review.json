@@ -1,0 +1,57 @@
+{
+  "scope": "Visual review of uploaded full-clip diagnostic previews; no inference performed.",
+  "previewsZIP_SHA256": "2d4453d876d19f9030477c32545ba95014f7369aff5f6cfaf564f74d418be15f",
+  "linkedReportSHA256": "918db23c64a80763fe756da5d87597cfd5ac3dbeb73ba8bd6c596e86b26844e0",
+  "previewDimensions": [
+    3072,
+    1064
+  ],
+  "panelDimensions": [
+    1024,
+    1064
+  ],
+  "headerHeight": 40,
+  "findings": [
+    "The selected subject starts bent over to the right of the bucket, distinct from the standing worker on the left.",
+    "Bucket/rubble/dust obstruct the subject. Bright shirt starts emerging around frame155; this is an approximate visual landmark, not an exhaustive first-visible-frame annotation.",
+    "At frame175 the bent-over upper body is clearly visible below the raised bucket. All three model panels have no subject mask. Lower body remains obscured by rubble.",
+    "The worker stays visibly bent over in later sampled frames180..190 and approaches the left image boundary as the camera pans."
+  ],
+  "chosenRestart": {
+    "sourceFrame": 175,
+    "sourcePTSSeconds": 5.835,
+    "pointPixelsIn1024Image": [
+      180,
+      595
+    ],
+    "pointNormalizedTopLeft": [
+      0.17578125,
+      0.5810546875
+    ],
+    "pointMeaning": "Interior of visible bright upper-back shirt; coordinates exclude the 40-pixel preview header.",
+    "sourceImageSHA256": "c0de0dfacd1f80c508654f34ec5de1400853eae6f6142876840046062b0ed4c7",
+    "rangeSourceFrames": [
+      175,
+      205
+    ],
+    "referenceMeaning": "Fresh explicit prompt, not automatic identity recovery."
+  },
+  "inspectedPreviewFiles": {
+    "frame-0000.png": "62ab110d14705b52b854152fb6994acc3e20a91fadca7d687e77db9bb6928032",
+    "frame-0135.png": "c50204ba99d9840a0e79bc98254101345589a26aab3562de1d09eaf55b49898a",
+    "frame-0145.png": "ae952aa15a0ab421f55ddcc5da9f02f27c1c5c89fef1c9ac03390382964e9331",
+    "frame-0150.png": "56763374983f0f41bce0cf61216f24f4fd2968ce058cc8552d3fdb423c30b6b3",
+    "frame-0155.png": "296d5245c4785649419fb0aeccee9f7826d0b98424a9251d2c1fd360e4242ccc",
+    "frame-0160.png": "aa5c0bbc618587189d1cec6873f3f75eb264cedecc2f5f3272154487bbf99279",
+    "frame-0165.png": "321570a3847a6cbd92e8040ade4017440621a1de909f7930adf354158ac0b276",
+    "frame-0170.png": "b7cac1c17dc981ee1abf8e2722cb6f034b53143a5ca16bb1467360ee31204995",
+    "frame-0175.png": "3943e2d6fee7fa67f15691f5f2695e6e2bae86377d41cbbac5f6e12c39e11dce",
+    "frame-0180.png": "6c301353760a760733ebb947df7ecaf50fe089e0cca336d8e6120389a3aeff2b",
+    "frame-0185.png": "cf68ed61293093a7349ca015ad1439921a7fcdc5a6ff54dab3dc38356c250115",
+    "frame-0190.png": "ded52d6c0246c3e35789ee91e99655a597c475f2e4469a8417f46603bc2f6762",
+    "frame-0205.png": "ac038ec87c4c5595fc758ca42b3ad062489e793844d7e81349a0efcefccbba99",
+    "frame-0215.png": "49bb8310cedf49ca95ee0fd55426f17976151ef96b9121e911365cf2d1ba5097",
+    "frame-0275.png": "1e84c9b23f7684dcddc4f57e37c7554fac798be8c89aa17daec08e4c4c2c978d"
+  },
+  "nextDiagnostic": "Temporal/diagnose_occlusion_restart.py; no conversion, policy changes or app promotion. Reinitialize original and installed GPU at175 using same new prompt; independent fresh histories, unchanged gates, exact source/model guards, source PTS retained."
+}
