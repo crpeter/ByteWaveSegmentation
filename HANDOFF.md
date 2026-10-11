@@ -1,5 +1,33 @@
 # ByteWave segmentation: continuation handoff
 
+## Current work: fresh reappearance restart passed; visual confirmation pending
+
+Completed user-run report SHA256:
+0cf1b42618af2d019dd15fd26c18f35a72a1f89daadf661593c2a97f975edfd4.
+Evidence: Audit/mac-worker-reappearance-restart-summary.json.
+
+Both original PyTorch and installed GPU start with empty histories and the new
+explicit point at source frame 175 (5.835 s). All 31 frames, 175–205 inclusive,
+produce nonempty low- and high-resolution masks in both fresh streams. Every
+fresh GPU/original comparison passes unchanged gates. Minimum mask IoU:
+0.9741379310; pointer cosine: 0.9997481282; memory cosine: 0.9938067560.
+Stored ongoing original/GPU observations remain empty on all those frames.
+
+This supports fresh prompted segmentation capability at reappearance. It does
+not establish correct identity from numerical agreement, automatic recovery,
+or whether resetting history versus the new prompt caused the difference.
+Requested fresh preview previews/frame-0175.png has NOT been uploaded.
+The earlier previews.zip is the old choice-intervention run, not this restart.
+
+Next: visually confirm the fresh mask covers the intended bent-over worker.
+Open the existing preview on the user's Mac; no repeat inference needed.
+After confirmation, investigate pre-occlusion memory retention in isolation.
+Do not change production memory policy or implement selection UI yet.
+
+Only offline JSON analysis and evidence/HANDOFF archival this turn. No inference,
+conversion, builds, benchmarks, or tests run by assistant. Installed models,
+app behavior, and correctness gates unchanged.
+
 ## Current work: reappearance visually located; fresh-prompt diagnostic prepared
 
 User uploaded previews.zip from the full choice-intervention run. Extracted252
