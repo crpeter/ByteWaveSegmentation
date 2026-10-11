@@ -1,5 +1,60 @@
 # ByteWave segmentation: continuation handoff
 
+## Current update: worker comparison complete; shared-input localization prepared
+
+User completed worker-occlusion-trim-01 on the confirmed bent-over-worker prompt:
+276 frames, edited source SHA a8a9d3fd5b85fbdf2770027353d6d19971845c13f83ffdcc6058ae5e6a0b1833.
+Selected actual report metrics and source report SHA are archived in
+Audit/mac-worker-occlusion-trim-summary.json. This supersedes the pending-run
+instructions below. The original and owned FP32 thresholded LOW-resolution masks
+agree exactly on all276frames, including absence. Their36 failures are existing
+pointwise FP32 tolerances; do not call full numerical parity passed or infer
+high-resolution binary-mask equality. Both become empty112..116 and119..275.
+Core ML is empty112..116 and118..275. At118, original score +.022688 vs GPU -.010017
+crosses the presence boundary. All three remain empty119 through the end.
+This supports a recovery limitation also present upstream, not just conversion.
+It does not establish visible-subject identity from empty/nonempty flags alone.
+
+Separate issue: Core ML fails20frames; before first absence, minimum mask IoU
+.857143, pointer cosine .777095, memory cosine .858468. Do not dismiss these as
+only a one-frame threshold difference. Independent histories mix immediate
+backend error with accumulated drift. User approved isolating this next.
+
+New Temporal/diagnose_occlusion_inputs.py reads the completed comparison and
+verifies exact video/model/fixture/report identities, point, decoded pixel hashes
+and rational timestamps. Default replay0..48, inspections1,5,26..48. Original
+dynamic reference retains the prior num_frames=276; only its outputs advance
+bounded memory. Current-frame output is committed AFTER experimental calls.
+Experimental outputs never enter state. Private copies prevent input mutation
+across backends; shared/substituted input tensor shape/dtype/hashes are recorded.
+
+Checks per inspected frame:
+- FP32 encoder/propagator on packed original history vs original dynamic tracker
+  with existing strict FP32 gates (packing/control check, not new tolerance).
+- Exact installed CPU_ONLY and CPU_AND_GPU propagator packages on identical
+  FP32 features and original memory, each vs FP32 and GPU vs CPU.
+- CPU/GPU encoder feature metrics on the same image; descriptive, no new gate.
+- Substitute GPU encoder features into FP32 propagation, then GPU propagation,
+  keeping original memory fixed, to separate current encoder/propagator effects.
+All mask/output checks reuse validate_export.compare unchanged. Numerical fails
+are recorded while continuing; shape/nonfinite errors stop. completed means
+execution finished, not accuracy acceptance. No initializer localization at0,
+no speed/device-placement assertion, and no recovery/promotion/export changes.
+Four-panel previews and summary.json accompany fullreport. Prior independent
+history metrics are context, explicitly NOT an identical-input comparison.
+
+Next user command from /Users/petercody/Documents/Projects/ByteWaveSegmentation,
+with DEVELOPER_DIR=/Applications/Xcode-beta.app/Contents/Developer:
+.venv-temporal/bin/python Temporal/diagnose_occlusion_inputs.py
+--upstream .upstream-edgetam --video assets/worker-occlusion.mov
+--phone-report Audit/iphone17pro-worker-occlusion-report.json
+--fixture DeviceValidationData/memoryfp16projection
+--comparison .temporal-runs/worker-occlusion-trim-01/report.json
+--output .temporal-runs/worker-occlusion-inputs-01
+Then cat summary.json and share report.json. No iPhone rebuild required.
+Assistant performed offline report extraction, static source review and AST
+parsing only; no builds, tests or inference. Runtime validation awaits user.
+
 ## Current update: explicitly support the user's shortened worker clip
 
 The user shortened the original source. The first invocation failed on a missing
@@ -1543,3 +1598,4 @@ Cody supplied `BackgroundRemovalSource.swift` as a pasted attachment. That app s
 4. Evaluate mask edges, hair, occlusion/reappearance, fast motion, tracking drift, latency, and sustained performance before integrating woven text.
 
 The user authorized pushing this project to `crpeter/ByteWaveSegmentation`. The initial GitHub permission issue was fixed by granting repository access. No ByteWave production files have been changed. The previous downloadable ZIP failed to expand on macOS; use this repository instead.
+

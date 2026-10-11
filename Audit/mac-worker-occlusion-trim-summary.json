@@ -1,0 +1,456 @@
+{
+  "contract": "bytewave.occlusion-comparison.diagnostic.v1",
+  "completed": true,
+  "sourceVideoSHA256": "a8a9d3fd5b85fbdf2770027353d6d19971845c13f83ffdcc6058ae5e6a0b1833",
+  "sourceFileBytes": 10796435,
+  "phoneReportSHA256": "7c807a77903c90fc90d23dcad387e82bb454a315f690acb1d517bf8b73c4dc65",
+  "fixtureSHA256": "760dd45c6eed6972f434dd324920b74dbfa262fb6648983606c2872581430a61",
+  "modelFiles": {
+    "models/BWTemporalImageEncoder.mlpackage/Manifest.json": "df20c1178e37ef2d4587281d5feca5979f2db8b859ffe7357161e4d5b51c254f",
+    "models/BWTemporalImageEncoder.mlpackage/Data/com.apple.CoreML/model.mlmodel": "a3046d4fbd83b7974d0b01d92ca30a55adad08aca218789b97034245023bbeba",
+    "models/BWTemporalImageEncoder.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "90e112d95a98e30486b768a2397f253766ceaa95bfd3cdb5a31a8db0341f61c3",
+    "models/BWTemporalInitializer.mlpackage/Data/com.apple.CoreML/model.mlmodel": "a70da7906ee21086122e9c24479b149308337f49609854455ae9cf65f790625f",
+    "models/BWTemporalInitializer.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "9409edf81128013f2ff61ef2565832f0a35782304e7adc54466e0396b5ab94c2",
+    "models/BWTemporalInitializer.mlpackage/Manifest.json": "d2311a29bb658bd6f16e801e91893985eb5aea3f7a6587f718e3e93539bc3068",
+    "models/BWTemporalInitialMemoryEncoder.mlpackage/Data/com.apple.CoreML/model.mlmodel": "613c7a310f1fae1b698aaba6e5a70c3afb842f459d3ec96cf9e0f4b6b4b9438a",
+    "models/BWTemporalInitialMemoryEncoder.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "21ae511f368835d55fe519b9b4ae9032bf9256cdb3cc0e91fdf5b4c467311563",
+    "models/BWTemporalInitialMemoryEncoder.mlpackage/Manifest.json": "64fb8412cf6229dda7ec7227113c7c8cf1a5278a96b62b94e2a0a76f6d790b52",
+    "models/BWTemporalPropagator.mlpackage/Manifest.json": "aec4bf7ef5dafc3816e3a645f93b134824268f4b0e8184170452e10c8c5618c1",
+    "models/BWTemporalPropagator.mlpackage/Data/com.apple.CoreML/model.mlmodel": "dec2227edc7d22832a3726a68237b6789f2d79ede1a5b0cc6f76d400c69d08d9",
+    "models/BWTemporalPropagator.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "3e679bfdc49fc43e895434b8c8bb6e75bad20a2cad37fd0aa2d5019cd186386e"
+  },
+  "upstream": "7711e012a30a2402c4eaab637bdb00a521302c91",
+  "checkpointSHA256": "ed2d4850b8792c239689b043c47046ec239b6e808a3d9b6ae676c803fd8780df",
+  "effectiveFrames": 276,
+  "pointNormalizedTopLeft": [
+    0.6468468468468468,
+    0.5888513513513512
+  ],
+  "sourceMode": "new-video",
+  "phoneComparisonLimit": "Edited/new source: phone video identity, timing and selection equivalence are NOT asserted. Phone report is used only to identify exact model packages. All three Mac streams receive the same newly decoded pixels and selection point; previews may use a tentative phone point. No phone parity claim.",
+  "memoryPolicy": "Initial conditioning frame retained; all validated outputs, including absent frames, enter recent memory. No confidence filtering or recovery modification.",
+  "summary": {
+    "framesCompared": 276,
+    "streams": {
+      "original": {
+        "emptyFrames": 162,
+        "emptyIntervals": [
+          {
+            "firstFrame": 112,
+            "firstPTSSeconds": 3.735,
+            "frames": 5,
+            "lastFrame": 116,
+            "lastPTSSeconds": 3.868333333333333,
+            "nextNonemptyFrame": 117
+          },
+          {
+            "firstFrame": 119,
+            "firstPTSSeconds": 3.9683333333333333,
+            "frames": 157,
+            "lastFrame": 275,
+            "lastPTSSeconds": 9.17,
+            "nextNonemptyFrame": null
+          }
+        ]
+      },
+      "ownedFP32": {
+        "emptyFrames": 162,
+        "emptyIntervals": [
+          {
+            "firstFrame": 112,
+            "firstPTSSeconds": 3.735,
+            "frames": 5,
+            "lastFrame": 116,
+            "lastPTSSeconds": 3.868333333333333,
+            "nextNonemptyFrame": 117
+          },
+          {
+            "firstFrame": 119,
+            "firstPTSSeconds": 3.9683333333333333,
+            "frames": 157,
+            "lastFrame": 275,
+            "lastPTSSeconds": 9.17,
+            "nextNonemptyFrame": null
+          }
+        ]
+      },
+      "coremlGPU": {
+        "emptyFrames": 163,
+        "emptyIntervals": [
+          {
+            "firstFrame": 112,
+            "firstPTSSeconds": 3.735,
+            "frames": 5,
+            "lastFrame": 116,
+            "lastPTSSeconds": 3.868333333333333,
+            "nextNonemptyFrame": 117
+          },
+          {
+            "firstFrame": 118,
+            "firstPTSSeconds": 3.935,
+            "frames": 158,
+            "lastFrame": 275,
+            "lastPTSSeconds": 9.17,
+            "nextNonemptyFrame": null
+          }
+        ]
+      }
+    },
+    "comparisons": {
+      "ownedFP32AgainstOriginal": {
+        "failedFrames": 36,
+        "firstFailedFrame": 5,
+        "allFramesWithinExistingGates": false
+      },
+      "coremlGPUAgainstOriginal": {
+        "failedFrames": 20,
+        "firstFailedFrame": 26,
+        "allFramesWithinExistingGates": false
+      }
+    }
+  },
+  "scope": "Selected metrics from user-supplied completed Mac worker-occlusion-trim-01 report. Not ground-truth identity, model promotion or phone parity.",
+  "sourceReportSHA256": "29ff27150c14715aca3375a82e9336eb3ff9628ae523b88bcfd2cc16a5d67fd3",
+  "readyForDeviceValidation": false,
+  "numericalDetails": {
+    "ownedFP32AgainstOriginal": {
+      "failedFrames": [
+        5,
+        6,
+        7,
+        18,
+        26,
+        29,
+        32,
+        33,
+        34,
+        35,
+        36,
+        39,
+        40,
+        41,
+        42,
+        47,
+        48,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        68,
+        110,
+        117
+      ],
+      "minimumLowResolutionMaskIoU": 1.0,
+      "presenceMismatchFrames": [],
+      "outputs": {
+        "low_res_mask": {
+          "minimumCosine": 0.9999999978576083,
+          "maximumAbsoluteError": 0.0557708740234375,
+          "float32CloseFailureFrames": [
+            33,
+            34,
+            35,
+            36,
+            60,
+            64,
+            117
+          ]
+        },
+        "high_res_mask": {
+          "minimumCosine": 0.9999999982895468,
+          "maximumAbsoluteError": 0.053134918212890625,
+          "float32CloseFailureFrames": [
+            33,
+            34,
+            35,
+            60,
+            64,
+            117
+          ]
+        },
+        "best_iou": {
+          "minimumCosine": 1.0,
+          "maximumAbsoluteError": 0.00015491247177124023,
+          "float32CloseFailureFrames": []
+        },
+        "object_pointer": {
+          "minimumCosine": 0.9999999887908604,
+          "maximumAbsoluteError": 0.0003377199172973633,
+          "float32CloseFailureFrames": []
+        },
+        "object_score": {
+          "minimumCosine": 1.0,
+          "maximumAbsoluteError": 0.00019550323486328125,
+          "float32CloseFailureFrames": []
+        },
+        "memory_features": {
+          "minimumCosine": 0.9999994216322656,
+          "maximumAbsoluteError": 0.08850955963134766,
+          "float32CloseFailureFrames": [
+            5,
+            6,
+            7,
+            18,
+            26,
+            29,
+            32,
+            33,
+            34,
+            39,
+            40,
+            41,
+            42,
+            47,
+            48,
+            50,
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57,
+            58,
+            60,
+            61,
+            62,
+            63,
+            64,
+            65,
+            66,
+            68,
+            110,
+            117
+          ]
+        },
+        "memory_positions": {
+          "minimumCosine": 1.0000000000000002,
+          "maximumAbsoluteError": 0.0,
+          "float32CloseFailureFrames": []
+        }
+      }
+    },
+    "coremlGPUAgainstOriginal": {
+      "failedFrames": [
+        26,
+        27,
+        28,
+        30,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        40,
+        41,
+        42,
+        43,
+        45,
+        47,
+        48,
+        110,
+        118
+      ],
+      "minimumLowResolutionMaskIoU": 0.0,
+      "presenceMismatchFrames": [
+        118
+      ],
+      "outputs": {
+        "low_res_mask": {
+          "minimumCosine": 0.9820180332812964,
+          "maximumAbsoluteError": 1044.3577880859375,
+          "float32CloseFailureCount": 114
+        },
+        "high_res_mask": {
+          "minimumCosine": 0.9873859847093791,
+          "maximumAbsoluteError": 1042.8348388671875,
+          "float32CloseFailureCount": 114
+        },
+        "best_iou": {
+          "minimumCosine": 1.0,
+          "maximumAbsoluteError": 0.01811090111732483,
+          "float32CloseFailureCount": 36
+        },
+        "object_pointer": {
+          "minimumCosine": 0.030685750003227576,
+          "maximumAbsoluteError": 2.066551685333252,
+          "float32CloseFailureCount": 114
+        },
+        "object_score": {
+          "minimumCosine": -1.0,
+          "maximumAbsoluteError": 1.2339489459991455,
+          "float32CloseFailureCount": 250
+        },
+        "memory_features": {
+          "minimumCosine": 0.7151932804494229,
+          "maximumAbsoluteError": 6.217615127563477,
+          "float32CloseFailureCount": 276
+        },
+        "memory_positions": {
+          "minimumCosine": 0.9999999999999993,
+          "maximumAbsoluteError": 5.960464477539063e-08,
+          "float32CloseFailureCount": 0
+        }
+      },
+      "beforeFirstEmptyInterval": {
+        "minimumLowResolutionMaskIoU": 0.8571428571428571,
+        "minimumPointerCosine": 0.7770946660179124,
+        "minimumMemoryCosine": 0.8584682294053531
+      }
+    }
+  },
+  "presenceBoundaryFrame": {
+    "index": 118,
+    "ptsNumerator": 787,
+    "ptsDenominator": 200,
+    "ptsSeconds": 3.935,
+    "imageSHA256": "766237738a542ee470a0db63fb7cabc9614d7e5422e02d7d2898c8a229fcebf2",
+    "streams": {
+      "original": {
+        "lowMaskEmpty": false,
+        "highMaskEmpty": false,
+        "foregroundFraction": 0.0003509521484375,
+        "objectScore": 0.022687971591949463,
+        "predictedIoU": 0.49249520897865295
+      },
+      "ownedFP32": {
+        "lowMaskEmpty": false,
+        "highMaskEmpty": false,
+        "foregroundFraction": 0.0003509521484375,
+        "objectScore": 0.022763043642044067,
+        "predictedIoU": 0.4926501214504242
+      },
+      "coremlGPU": {
+        "lowMaskEmpty": true,
+        "highMaskEmpty": true,
+        "foregroundFraction": 0.0,
+        "objectScore": -0.01001739501953125,
+        "predictedIoU": 0.48831722140312195
+      }
+    },
+    "comparisons": {
+      "ownedFP32AgainstOriginal": {
+        "passed": true,
+        "maskIoUAgainstReference": 1.0,
+        "sameObjectPresence": true,
+        "outputs": {
+          "low_res_mask": {
+            "maximumAbsoluteError": 0.004230499267578125,
+            "cosineSimilarity": 0.9999999999581755,
+            "float32Close": true
+          },
+          "high_res_mask": {
+            "maximumAbsoluteError": 0.00356292724609375,
+            "cosineSimilarity": 0.9999999999658228,
+            "float32Close": true
+          },
+          "best_iou": {
+            "maximumAbsoluteError": 0.00015491247177124023,
+            "cosineSimilarity": 1.0,
+            "float32Close": true
+          },
+          "object_pointer": {
+            "maximumAbsoluteError": 6.520748138427734e-05,
+            "cosineSimilarity": 0.9999999994679678,
+            "float32Close": true
+          },
+          "object_score": {
+            "maximumAbsoluteError": 7.507205009460449e-05,
+            "cosineSimilarity": 1.0,
+            "float32Close": true
+          },
+          "memory_features": {
+            "maximumAbsoluteError": 0.0007775425910949707,
+            "cosineSimilarity": 0.9999999997296884,
+            "float32Close": true
+          },
+          "memory_positions": {
+            "maximumAbsoluteError": 0.0,
+            "cosineSimilarity": 1.0000000000000002,
+            "float32Close": true
+          }
+        }
+      },
+      "coremlGPUAgainstOriginal": {
+        "passed": false,
+        "maskIoUAgainstReference": 0.0,
+        "sameObjectPresence": false,
+        "outputs": {
+          "low_res_mask": {
+            "maximumAbsoluteError": 1044.3577880859375,
+            "cosineSimilarity": 0.9820180332812964,
+            "float32Close": false
+          },
+          "high_res_mask": {
+            "maximumAbsoluteError": 1042.8348388671875,
+            "cosineSimilarity": 0.9873859847093791,
+            "float32Close": false
+          },
+          "best_iou": {
+            "maximumAbsoluteError": 0.004177987575531006,
+            "cosineSimilarity": 1.0,
+            "float32Close": false
+          },
+          "object_pointer": {
+            "maximumAbsoluteError": 2.066551685333252,
+            "cosineSimilarity": 0.030685750003227576,
+            "float32Close": false
+          },
+          "object_score": {
+            "maximumAbsoluteError": 0.03270536661148071,
+            "cosineSimilarity": -1.0,
+            "float32Close": false
+          },
+          "memory_features": {
+            "maximumAbsoluteError": 5.770079612731934,
+            "cosineSimilarity": 0.7151932804494229,
+            "float32Close": false
+          },
+          "memory_positions": {
+            "maximumAbsoluteError": 5.960464477539063e-08,
+            "cosineSimilarity": 0.9999999999999993,
+            "float32Close": true
+          }
+        }
+      }
+    },
+    "states": {
+      "ownedFP32": {
+        "acceptedFrames": 119,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      },
+      "coremlGPU": {
+        "acceptedFrames": 119,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      }
+    },
+    "originalHistoryEntries": {
+      "cond_frame_outputs": 1,
+      "non_cond_frame_outputs": 118
+    },
+    "preview": "previews/frame-0118.png"
+  },
+  "interpretation": [
+    "Original and owned FP32 thresholded low-resolution masks agree on all 276 frames; this does not establish high-resolution binary-mask equality.",
+    "36 FP32 failures are existing pointwise numerical tolerances, with no low-resolution mask or presence disagreement.",
+    "Core ML has substantive pointer/memory differences before occlusion, separately from the near-zero presence boundary at frame 118.",
+    "All streams remain empty from frame 119 through the clip end. Empty masks alone do not prove visible-subject identity or a specific cause of failed recovery.",
+    "Independent histories mix immediate numerical error and accumulated drift. Next diagnostic uses original-only history and identical propagator inputs."
+  ]
+}
