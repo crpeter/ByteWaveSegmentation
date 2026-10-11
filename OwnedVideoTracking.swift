@@ -361,11 +361,15 @@ actor OwnedVideoRunner {
             replayOutput = pair.1
             replayFile = try FileHandle(forReadingFrom: cacheDirectory.appendingPathComponent("masks.bin"))
             replayIndex = 0
+            // Read report values before optional-chained mutation opens a
+            // write access to the whole optional struct (Swift exclusivity).
+            let predictionCount = report?.framesPredicted
+            let state = report?.lastState
             report?.replayRuns += 1
             report?.replayError = nil
-            report?.lastReplayPredictionCountBefore = report?.framesPredicted
+            report?.lastReplayPredictionCountBefore = predictionCount
             report?.lastReplayPredictionCountAfter = nil
-            report?.lastReplayStateBefore = report?.lastState
+            report?.lastReplayStateBefore = state
             report?.lastReplayStateAfter = nil
             report?.lastReplayFramesRead = 0
         } catch {
@@ -414,8 +418,10 @@ actor OwnedVideoRunner {
 
     func finishReplay() -> OwnedVideoDisplay? {
         stopReplay()
-        report?.lastReplayPredictionCountAfter = report?.framesPredicted
-        report?.lastReplayStateAfter = report?.lastState
+        let predictionCount = report?.framesPredicted
+        let state = report?.lastState
+        report?.lastReplayPredictionCountAfter = predictionCount
+        report?.lastReplayStateAfter = state
         guard let current else { return nil }
         return display(current, overlay: currentOverlay,
                        message: "Replay finished. Returned to your latest tracked frame.")
@@ -492,9 +498,10 @@ actor OwnedVideoRunner {
             // Publish only after the complete write succeeds. A failed partial
             // tail is never indexed/read, and no later appends are attempted.
             cachedMasks.append(CachedMask(time: time, sha256: hash))
+            let selectionSegment = report?.segmentsStarted
             report?.cachedMaskFrames = cachedMasks.count
             report?.cachedMaskBytes = cachedMasks.count * Self.maskByteCount
-            report?.cacheSelectionSegment = report?.segmentsStarted
+            report?.cacheSelectionSegment = selectionSegment
             report?.cachedStartSeconds = cachedMasks.first?.time.seconds
             report?.cachedEndSeconds = time.seconds
         } catch {

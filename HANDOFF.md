@@ -1,5 +1,16 @@
 # ByteWave segmentation: continuation handoff
 
+## Hotfix: report exclusivity trap on first cached prediction
+
+User built c2f2be2 and hit Swift's simultaneous-access runtime trap after
+Track selected subject, at report?.cacheSelectionSegment = report?.segmentsStarted.
+Optional-chained mutation holds a write access to the optional report struct
+while the RHS reads the same storage. Fixed that assignment and the four
+matching replay count/state assignments by reading into local constants before
+mutation. Reviewed all report access sites; no same-report RHS assignment remains.
+Source review only; no assistant build/tests/inference. Pull/rebuild and repeat
+the same short tracking + cached replay check. Model/cache format unchanged.
+
 ## Current work: bounded cached-mask replay, awaiting phone build/validation
 
 User reviewed new dog/person/excavator footage on Oct10 and said the sharper
