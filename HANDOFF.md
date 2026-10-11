@@ -1,6 +1,44 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: confirmed recovery visual spot checks completed
+## Current work: independent dog/pillar baseline completed; previews needed
+
+User ran diagnose_occlusion.py on assets/dog-occlusion.mov with --new-video,
+--point 0.45 0.27, --frames 600 into .temporal-runs/dog-pillar-comparison-01.
+Source 117721190 bytes, SHA256
+48df10abcbcd12df835d8f91edcf5fd8863506a40f190a4788e338ce1e460bce.
+Initial uploaded preview showed dog carrying pizza box; point is inside torso.
+Existing worker phone report identifies exact memoryfp16projection packages only.
+
+Report SHA256 f1bd9abde3a424f7c5bbfefff1ed0b40284602470b021a078d8f3c2a20b62102.
+Evidence: Audit/mac-dog-pillar-comparison-summary.json.
+Completed 600 frames spanning 0 through 19.966667 seconds. This may be a prefix,
+not confirmed whole-video completion. No recovery-policy modification applied.
+
+All three streams have identical low-mask empty intervals: 48-84 (1.6-2.8 s)
+and 241-246 (8.0333-8.2 s), with nonempty output returning at 85 and 247.
+No GPU/reference or owned-FP32/reference object-presence mismatches.
+Do not equate nonempty returns with identity until previews are inspected.
+
+Owned FP32 fails strict gates on 119 frames, all including memory_features
+allclose failures; low/high masks also fail allclose on 5/8 frames respectively.
+Minimum mask IoU 0.99990427 at 116, minimum pointer cosine 0.9999999857.
+GPU fails 45/600 frames: six mask-IoU failures at 174,175,200,201,330,331;
+minimum 0.32560834 at 331 (11.0333 s). Pointer cosine minimum 0.84204773
+at 373; memory cosine minimum 0.87646953 at 331. No full parity pass.
+This is independent history evidence; do not assign the differences to a
+specific precision/backend operation without shared-input controls.
+
+Next request zip of existing previews (45 PNGs) without rerunning inference.
+Inspect initial selection, absence/return pairs and frame330 neighborhood.
+Baseline already resumes masks after both gaps: fixed recovery should be
+evaluated for regression as well as possible improvement. Keep worker rule
+3 missing / 3 confirmation / predicted IoU .8 / consecutive-mask IoU .5 fixed.
+No app integration or tuning on this second clip. Recovery diagnostic currently
+requires linked completed comparison AND memory-probe report; dog probe/recovery
+have not run. Do not pass worker probe to dog recovery or invent linked reports.
+Assistant performed offline JSON review only; no tests, models or benchmarks.
+
+## Prior step: worker confirmed recovery visual spot checks completed
 
 Evidence: Audit/worker-confirmed-recovery-visual-review.json, linked to the
 276-frame confirmed-recovery report and preceding numerical summary.
