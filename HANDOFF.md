@@ -1,5 +1,48 @@
 # ByteWave segmentation: continuation handoff
 
+## Current work: memory probes return masks without another tap; visual review pending
+
+Completed user-run report SHA256:
+9ed19a4ecad97e5160d7b833cfdcb65a7ffe784a04eafdc147c1641880c32024.
+Evidence: Audit/mac-worker-memory-probe-summary.json.
+276 frames replayed, 164 frames probed (112–275). Every baseline observation
+and comparison reproduces prior report exactly. Capture-time duplicate outputs
+all exact; frozen bank hashes unchanged. interpretationAllowed true.
+
+Known return interval 175–205:
+- original and normal GPU: 0/31 nonempty.
+- conditioningOnly and retainedBank: 31/31 nonempty, both low/high masks.
+No new tap, no reference tensors, no side predictions enter memory.
+
+All nonempty intervals after snapshot:
+- original: 117–118; normal GPU: 117 only.
+- conditioningOnly: 148, 150, then 154–214 continuously.
+- retainedBank: 113–117, then 154–215 continuously.
+Both probes empty from 216 through 275. Do not label that as correct exit
+handling without checking imagery; previous visual review noted a later pan.
+At 175: conditioning-only mask 105 low-resolution pixels, score 1.543945;
+retained bank 109 pixels, score 3.007812; normal GPU empty, score -1.565430.
+
+Interpretation: original conditioning alone can produce masks during the return
+interval when recent slots are removed. Full pre-absence bank does so as well.
+This supports memory-input sensitivity without needing a fresh prompt, but does
+not yet establish the masks identify the worker or isolate a unique cause.
+New probe previews have NOT been uploaded. The previous fresh-restart preview
+cannot validate these different outputs.
+
+Next, inspect EXISTING probe previews:
+.temporal-runs/worker-memory-probe-01/previews/frame-0175.png
+plus frame-0115.png (retained-bank early mask) and frame-0148.png
+(conditioning-only early mask). Early masks may be visible subject fragments
+or false positives; no ground-truth assertion from nonempty flags or scores.
+No rerun required. After visual review, consider a controlled online recovery
+branch, with explicit temporal semantics and identity/false-positive checks.
+
+These remain frozen-bank side probes: retrospective boundary, captured relative
+slot ages, no feedback of experimental outputs. No production policy, model,
+gate, app or selection UI change. Assistant performed offline report analysis
+and evidence archival only; all inference stays user-run on Mac.
+
 ## Current work: fresh mask visually confirmed; memory probes prepared
 
 Fresh source-frame 175 preview uploaded and inspected. Both fresh original/GPU
