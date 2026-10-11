@@ -1,0 +1,664 @@
+{
+  "contract": "bytewave.occlusion-seed.diagnostic.v1",
+  "completed": true,
+  "readyForDeviceValidation": false,
+  "sourceVideoSHA256": "a8a9d3fd5b85fbdf2770027353d6d19971845c13f83ffdcc6058ae5e6a0b1833",
+  "sourceFileBytes": 10796435,
+  "phoneReportSHA256": "7c807a77903c90fc90d23dcad387e82bb454a315f690acb1d517bf8b73c4dc65",
+  "fixtureSHA256": "760dd45c6eed6972f434dd324920b74dbfa262fb6648983606c2872581430a61",
+  "modelFiles": {
+    "models/BWTemporalImageEncoder.mlpackage/Manifest.json": "df20c1178e37ef2d4587281d5feca5979f2db8b859ffe7357161e4d5b51c254f",
+    "models/BWTemporalImageEncoder.mlpackage/Data/com.apple.CoreML/model.mlmodel": "a3046d4fbd83b7974d0b01d92ca30a55adad08aca218789b97034245023bbeba",
+    "models/BWTemporalImageEncoder.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "90e112d95a98e30486b768a2397f253766ceaa95bfd3cdb5a31a8db0341f61c3",
+    "models/BWTemporalInitializer.mlpackage/Data/com.apple.CoreML/model.mlmodel": "a70da7906ee21086122e9c24479b149308337f49609854455ae9cf65f790625f",
+    "models/BWTemporalInitializer.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "9409edf81128013f2ff61ef2565832f0a35782304e7adc54466e0396b5ab94c2",
+    "models/BWTemporalInitializer.mlpackage/Manifest.json": "d2311a29bb658bd6f16e801e91893985eb5aea3f7a6587f718e3e93539bc3068",
+    "models/BWTemporalInitialMemoryEncoder.mlpackage/Data/com.apple.CoreML/model.mlmodel": "613c7a310f1fae1b698aaba6e5a70c3afb842f459d3ec96cf9e0f4b6b4b9438a",
+    "models/BWTemporalInitialMemoryEncoder.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "21ae511f368835d55fe519b9b4ae9032bf9256cdb3cc0e91fdf5b4c467311563",
+    "models/BWTemporalInitialMemoryEncoder.mlpackage/Manifest.json": "64fb8412cf6229dda7ec7227113c7c8cf1a5278a96b62b94e2a0a76f6d790b52",
+    "models/BWTemporalPropagator.mlpackage/Manifest.json": "aec4bf7ef5dafc3816e3a645f93b134824268f4b0e8184170452e10c8c5618c1",
+    "models/BWTemporalPropagator.mlpackage/Data/com.apple.CoreML/model.mlmodel": "dec2227edc7d22832a3726a68237b6789f2d79ede1a5b0cc6f76d400c69d08d9",
+    "models/BWTemporalPropagator.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "3e679bfdc49fc43e895434b8c8bb6e75bad20a2cad37fd0aa2d5019cd186386e"
+  },
+  "upstream": "7711e012a30a2402c4eaab637bdb00a521302c91",
+  "checkpointSHA256": "ed2d4850b8792c239689b043c47046ec239b6e808a3d9b6ae676c803fd8780df",
+  "sourceComparisonSHA256": "29ff27150c14715aca3375a82e9336eb3ff9628ae523b88bcfd2cc16a5d67fd3",
+  "versions": {
+    "torch": "2.7.0",
+    "numpy": "1.26.4",
+    "av": "15.0.0",
+    "Pillow": "11.2.1",
+    "coremltools": "9.0"
+  },
+  "torchThreads": {
+    "intraOp": 1,
+    "interOp": 1
+  },
+  "computeUnits": "CPU_AND_GPU",
+  "referenceNumFrames": 276,
+  "requestedFrames": 49,
+  "pointNormalizedTopLeft": [
+    0.6468468468468468,
+    0.5888513513513512
+  ],
+  "memoryPolicy": "Normal bounded 7 spatial/16 pointer slots; initial condition pinned. All finite valid outputs including absent frames committed. No later reference injection.",
+  "intervention": "At frame 0 only, originalSeedGPU state receives original PyTorch memory_features, memory_positions and object_pointer instead of GPU initialization outputs. Its frame-0 displayed result is a reference seed, not a GPU prediction.",
+  "policy": {
+    "maskIoUMinimum": 0.95,
+    "cosineMinimum": 0.99,
+    "float32Atol": 0.001,
+    "float32Rtol": 0.001
+  },
+  "initializationComparison": {
+    "passed": true,
+    "maskIoUAgainstReference": 1.0,
+    "sameObjectPresence": true,
+    "outputs": {
+      "low_res_mask": {
+        "maximumAbsoluteError": 0.2893691062927246,
+        "cosineSimilarity": 0.9999991262179891,
+        "float32Close": false
+      },
+      "high_res_mask": {
+        "maximumAbsoluteError": 0.2763972282409668,
+        "cosineSimilarity": 0.999999304472807,
+        "float32Close": false
+      },
+      "best_iou": {
+        "maximumAbsoluteError": 7.87973403930664e-05,
+        "cosineSimilarity": 1.0,
+        "float32Close": true
+      },
+      "object_pointer": {
+        "maximumAbsoluteError": 0.008369207382202148,
+        "cosineSimilarity": 0.9999896648062467,
+        "float32Close": false
+      },
+      "object_score": {
+        "maximumAbsoluteError": 0.002544403076171875,
+        "cosineSimilarity": 1.0,
+        "float32Close": true
+      },
+      "memory_features": {
+        "maximumAbsoluteError": 0.4050818681716919,
+        "cosineSimilarity": 0.9999032551250521,
+        "float32Close": false
+      },
+      "memory_positions": {
+        "maximumAbsoluteError": 5.960464477539063e-08,
+        "cosineSimilarity": 0.9999999999999993,
+        "float32Close": true
+      }
+    }
+  },
+  "finalStates": {
+    "normalGPU": {
+      "acceptedFrames": 49,
+      "spatialEntries": 7,
+      "pointerEntries": 16
+    },
+    "originalSeedGPU": {
+      "acceptedFrames": 49,
+      "spatialEntries": 7,
+      "pointerEntries": 16
+    }
+  },
+  "summary": {
+    "framesReplayed": 49,
+    "propagatedFramesCompared": 48,
+    "comparisons": {
+      "normalGPUAgainstOriginal": {
+        "failedFrames": [
+          26,
+          27,
+          28,
+          30,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          40,
+          41,
+          42,
+          43,
+          45,
+          47,
+          48
+        ],
+        "firstFailedFrame": 26,
+        "minimumMaskIoU": 0.8571428571428571,
+        "minimumPointerCosine": 0.7770946660179124,
+        "minimumMemoryCosine": 0.8584682294053531,
+        "presenceMismatchFrames": []
+      },
+      "originalSeedGPUAgainstOriginal": {
+        "failedFrames": [
+          27,
+          28,
+          29,
+          32,
+          33,
+          34,
+          35,
+          38,
+          39,
+          41,
+          42,
+          43,
+          44,
+          48
+        ],
+        "firstFailedFrame": 27,
+        "minimumMaskIoU": 0.89,
+        "minimumPointerCosine": 0.7254305062239618,
+        "minimumMemoryCosine": 0.9028653954911134,
+        "presenceMismatchFrames": []
+      },
+      "originalSeedGPUAgainstNormalGPU": {
+        "failedFrames": [
+          26,
+          27,
+          28,
+          29,
+          30,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          47,
+          48
+        ],
+        "firstFailedFrame": 26,
+        "minimumMaskIoU": 0.8761904761904762,
+        "minimumPointerCosine": 0.6691134386839931,
+        "minimumMemoryCosine": 0.8636353691593137,
+        "presenceMismatchFrames": []
+      }
+    },
+    "priorRunObservationDifferences": {
+      "original": [],
+      "normalGPU": []
+    },
+    "priorNormalFailedFrames": [
+      26,
+      27,
+      28,
+      30,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      40,
+      41,
+      42,
+      43,
+      45,
+      47,
+      48
+    ],
+    "normalFailureResolvedBySeedFrames": [
+      26,
+      30,
+      36,
+      37,
+      40,
+      45,
+      47
+    ],
+    "normalPassFailedWithSeedFrames": [
+      29,
+      39,
+      44
+    ]
+  },
+  "scope": "Selected evidence from completed user Mac worker-occlusion-seed-01. No model promotion or recovery claim.",
+  "sourceReportSHA256": "32a1b658f71142e825bb7305171d32d14c641b4473540ea0da6cd1ddb75d0f42",
+  "normalPropagationComparisonsExactlyMatchPriorReport": true,
+  "sameEncoderInputsAcrossBranches": true,
+  "initialSeedTensors": {
+    "normalGPU": {
+      "memory_features": {
+        "shape": [
+          1,
+          512,
+          64
+        ],
+        "dtype": "float32",
+        "sha256": "e3e896c254f036fed72a82de2bd6028b4d4afca48cdda9730130300c27fb8bbe"
+      },
+      "memory_positions": {
+        "shape": [
+          1,
+          512,
+          64
+        ],
+        "dtype": "float32",
+        "sha256": "02de04a1de51c14937743dd7704f23cd6a9c384eaf717d7b53d8b9853373fa50"
+      },
+      "object_pointer": {
+        "shape": [
+          1,
+          256
+        ],
+        "dtype": "float32",
+        "sha256": "5b461206a96e78c5fb0279b72602df3bedd03c1a62746267322c897caf2ae77c"
+      }
+    },
+    "originalSeedGPU": {
+      "memory_features": {
+        "shape": [
+          1,
+          512,
+          64
+        ],
+        "dtype": "float32",
+        "sha256": "ac4973f5d7e69376423a054f25dadba2c1f25600e5fbdd5a67fea31f3ff128f8"
+      },
+      "memory_positions": {
+        "shape": [
+          1,
+          512,
+          64
+        ],
+        "dtype": "float32",
+        "sha256": "5bb29d8dbf4230053b0b1b55da344de7217c95faf8b9ce0c8f3b0302d142dbcd"
+      },
+      "object_pointer": {
+        "shape": [
+          1,
+          256
+        ],
+        "dtype": "float32",
+        "sha256": "1c0ba3571a4dbd840cfd74495087cb0e3971f1ef992a5b85a65eda9fc6d5b961"
+      }
+    }
+  },
+  "selectedFrameMetrics": [
+    {
+      "index": 0,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0014801025390625,
+          "objectScore": 33.22129440307617,
+          "predictedIoU": 0.9259037375450134
+        },
+        "normalGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0014801025390625,
+          "objectScore": 33.21875,
+          "predictedIoU": 0.9259825348854065
+        },
+        "originalSeedGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0014801025390625,
+          "objectScore": 33.22129440307617,
+          "predictedIoU": 0.9259037375450134
+        }
+      },
+      "comparisons": {
+        "normalGPUInitializationAgainstOriginal": {
+          "passed": true,
+          "maskIoU": 1.0,
+          "pointerCosine": 0.9999896648062467,
+          "memoryCosine": 0.9999032551250521
+        }
+      }
+    },
+    {
+      "index": 1,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0014495849609375,
+          "objectScore": 6.636206150054932,
+          "predictedIoU": 0.9215864539146423
+        },
+        "normalGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0014495849609375,
+          "objectScore": 6.63671875,
+          "predictedIoU": 0.9214767217636108
+        },
+        "originalSeedGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0014495849609375,
+          "objectScore": 6.62109375,
+          "predictedIoU": 0.9214169979095459
+        }
+      },
+      "comparisons": {
+        "normalGPUAgainstOriginal": {
+          "passed": true,
+          "maskIoU": 1.0,
+          "pointerCosine": 0.9998526141965224,
+          "memoryCosine": 0.9982243639709842
+        },
+        "originalSeedGPUAgainstOriginal": {
+          "passed": true,
+          "maskIoU": 1.0,
+          "pointerCosine": 0.9999733748340324,
+          "memoryCosine": 0.9996349605082898
+        },
+        "originalSeedGPUAgainstNormalGPU": {
+          "passed": true,
+          "maskIoU": 1.0,
+          "pointerCosine": 0.999857678184625,
+          "memoryCosine": 0.9988426747829967
+        }
+      }
+    },
+    {
+      "index": 5,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.001617431640625,
+          "objectScore": 7.613001823425293,
+          "predictedIoU": 0.9331725239753723
+        },
+        "normalGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.001617431640625,
+          "objectScore": 7.62109375,
+          "predictedIoU": 0.9326717257499695
+        },
+        "originalSeedGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.001617431640625,
+          "objectScore": 7.609375,
+          "predictedIoU": 0.9328635931015015
+        }
+      },
+      "comparisons": {
+        "normalGPUAgainstOriginal": {
+          "passed": true,
+          "maskIoU": 1.0,
+          "pointerCosine": 0.9997191439711709,
+          "memoryCosine": 0.9987703305100731
+        },
+        "originalSeedGPUAgainstOriginal": {
+          "passed": true,
+          "maskIoU": 1.0,
+          "pointerCosine": 0.9999620711979857,
+          "memoryCosine": 0.9995047398876792
+        },
+        "originalSeedGPUAgainstNormalGPU": {
+          "passed": true,
+          "maskIoU": 1.0,
+          "pointerCosine": 0.9998188561510977,
+          "memoryCosine": 0.9994934348006745
+        }
+      }
+    },
+    {
+      "index": 26,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0014495849609375,
+          "objectScore": 7.25242280960083,
+          "predictedIoU": 0.926173985004425
+        },
+        "originalSeedGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0014495849609375,
+          "objectScore": 7.21875,
+          "predictedIoU": 0.9259799718856812
+        },
+        "normalGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.00140380859375,
+          "objectScore": 7.19921875,
+          "predictedIoU": 0.9260018467903137
+        }
+      },
+      "comparisons": {
+        "normalGPUAgainstOriginal": {
+          "passed": false,
+          "maskIoU": 0.968421052631579,
+          "pointerCosine": 0.9842180570405579,
+          "memoryCosine": 0.9586199705161454
+        },
+        "originalSeedGPUAgainstOriginal": {
+          "passed": true,
+          "maskIoU": 1.0,
+          "pointerCosine": 0.9999738003487588,
+          "memoryCosine": 0.998624684039009
+        },
+        "originalSeedGPUAgainstNormalGPU": {
+          "passed": false,
+          "maskIoU": 0.968421052631579,
+          "pointerCosine": 0.9839612396589178,
+          "memoryCosine": 0.9553281601776534
+        }
+      }
+    },
+    {
+      "index": 27,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0015411376953125,
+          "objectScore": 7.136505126953125,
+          "predictedIoU": 0.9337030053138733
+        },
+        "normalGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0015411376953125,
+          "objectScore": 7.109375,
+          "predictedIoU": 0.9369738698005676
+        },
+        "originalSeedGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0014495849609375,
+          "objectScore": 7.0859375,
+          "predictedIoU": 0.9268232583999634
+        }
+      },
+      "comparisons": {
+        "normalGPUAgainstOriginal": {
+          "passed": false,
+          "maskIoU": 1.0,
+          "pointerCosine": 0.9779055964793838,
+          "memoryCosine": 0.9218135149941749
+        },
+        "originalSeedGPUAgainstOriginal": {
+          "passed": false,
+          "maskIoU": 0.9405940594059405,
+          "pointerCosine": 0.7862687999985832,
+          "memoryCosine": 0.9835539178855595
+        },
+        "originalSeedGPUAgainstNormalGPU": {
+          "passed": false,
+          "maskIoU": 0.9405940594059405,
+          "pointerCosine": 0.6691134386839931,
+          "memoryCosine": 0.9277832892034175
+        }
+      }
+    },
+    {
+      "index": 32,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.00152587890625,
+          "objectScore": 7.0131001472473145,
+          "predictedIoU": 0.9182169437408447
+        },
+        "originalSeedGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0016326904296875,
+          "objectScore": 7.12890625,
+          "predictedIoU": 0.918639063835144
+        },
+        "normalGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.001556396484375,
+          "objectScore": 6.61328125,
+          "predictedIoU": 0.9128332734107971
+        }
+      },
+      "comparisons": {
+        "normalGPUAgainstOriginal": {
+          "passed": false,
+          "maskIoU": 0.9803921568627451,
+          "pointerCosine": 0.9954235705327787,
+          "memoryCosine": 0.9069983400457936
+        },
+        "originalSeedGPUAgainstOriginal": {
+          "passed": false,
+          "maskIoU": 0.9345794392523364,
+          "pointerCosine": 0.7254305062239618,
+          "memoryCosine": 0.9028653954911134
+        },
+        "originalSeedGPUAgainstNormalGPU": {
+          "passed": false,
+          "maskIoU": 0.9532710280373832,
+          "pointerCosine": 0.7210534816232158,
+          "memoryCosine": 0.9919195204785438
+        }
+      }
+    },
+    {
+      "index": 35,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0015869140625,
+          "objectScore": 6.800110340118408,
+          "predictedIoU": 0.9273996353149414
+        },
+        "normalGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0016937255859375,
+          "objectScore": 6.80078125,
+          "predictedIoU": 0.9337995648384094
+        },
+        "originalSeedGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0016326904296875,
+          "objectScore": 6.7421875,
+          "predictedIoU": 0.9295266270637512
+        }
+      },
+      "comparisons": {
+        "normalGPUAgainstOriginal": {
+          "passed": false,
+          "maskIoU": 0.9369369369369369,
+          "pointerCosine": 0.7770946660179124,
+          "memoryCosine": 0.8584682294053531
+        },
+        "originalSeedGPUAgainstOriginal": {
+          "passed": false,
+          "maskIoU": 0.9537037037037037,
+          "pointerCosine": 0.9826890612739898,
+          "memoryCosine": 0.9928549418648599
+        },
+        "originalSeedGPUAgainstNormalGPU": {
+          "passed": false,
+          "maskIoU": 0.963963963963964,
+          "pointerCosine": 0.8113602561508895,
+          "memoryCosine": 0.8636353691593137
+        }
+      }
+    },
+    {
+      "index": 48,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0015411376953125,
+          "objectScore": 6.994793891906738,
+          "predictedIoU": 0.9094404578208923
+        },
+        "originalSeedGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.00152587890625,
+          "objectScore": 6.91796875,
+          "predictedIoU": 0.9039614796638489
+        },
+        "normalGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.001434326171875,
+          "objectScore": 6.25390625,
+          "predictedIoU": 0.9065561294555664
+        }
+      },
+      "comparisons": {
+        "normalGPUAgainstOriginal": {
+          "passed": false,
+          "maskIoU": 0.9306930693069307,
+          "pointerCosine": 0.9672987532629135,
+          "memoryCosine": 0.9845668795376225
+        },
+        "originalSeedGPUAgainstOriginal": {
+          "passed": false,
+          "maskIoU": 0.9900990099009901,
+          "pointerCosine": 0.9523513431782898,
+          "memoryCosine": 0.9874333382553961
+        },
+        "originalSeedGPUAgainstNormalGPU": {
+          "passed": false,
+          "maskIoU": 0.94,
+          "pointerCosine": 0.920798680574556,
+          "memoryCosine": 0.9766135034849257
+        }
+      }
+    }
+  ],
+  "interpretation": [
+    "Normal baseline reproduces all prior propagation comparison dictionaries exactly, not just fail counts; original and normal observations also reproduce.",
+    "Original seed changes later history but does not remove divergence. Normal fails18/48 beginning26; original seed fails14/48 beginning27. Seven baseline failures pass with the seed, but three baseline passes fail with it.",
+    "Minimum mask IoU improves from .857143 to .89 and memory cosine from .858468 to .902865, while minimum pointer cosine worsens from .777095 to .725431. This is mixed diagnostic evidence, not an accepted quality improvement.",
+    "No presence mismatches in either branch; this prefix ends before the occlusion event.",
+    "The initial GPU result passes existing gates and low-resolution mask IoU is1.0. This does not establish equality of initial logits or stored memory.",
+    "The original seed remaining pinned plus its downstream history effects are not separated. Better initialization alone is insufficient in this experiment.",
+    "Next proposed source-grounded hypothesis: inspect mask-candidate scores, selected indices and pointer selection around first divergence. owned.selected_masks requests multimask_output=True. Pinned upstream _forward_sam_heads uses argmax(ious) for masks and selects the corresponding token when multiple tokens are present. Reports currently lack candidate scores/indices; a switching cause is NOT proven. Diagnostic output taps must retain unchanged-output controls because adding outputs can alter compiled execution."
+  ],
+  "sourceInspection": {
+    "ownedPath": "Temporal/owned.py",
+    "upstreamURL": "https://github.com/facebookresearch/EdgeTAM/blob/7711e012a30a2402c4eaab637bdb00a521302c91/sam2/modeling/sam2_base.py",
+    "function": "_forward_sam_heads"
+  }
+}
+

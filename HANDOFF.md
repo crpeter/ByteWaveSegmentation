@@ -1,5 +1,36 @@
 # ByteWave segmentation: continuation handoff
 
+## Current result: original seed alters drift but does not fix it
+
+User completed worker-occlusion-seed-01:49frames,48propagations. Evidence:
+Audit/mac-worker-occlusion-seed-summary.json. Normal GPU comparison dictionaries
+match the prior run exactly on every propagated frame, as do original/normal
+observations. Both branches consume matching encoder feature hashes.
+
+Normal GPU:18failures, first26, minimum low-mask IoU .857143, pointer .777095,
+memory .858468. Original-seeded GPU:14failures, first27, minimum IoU .89,
+pointer .725431 (WORSE, frame32), memory .902865. Seed resolves7normal failures
+but introduces3 at29,39,44. No presence mismatches. Initialization passed with
+low-mask IoU1, pointer .9999897, memory .9999033. Exact initial logits/memory still
+differ. Starting from original memory alone is insufficient; do not promote this
+as an accuracy fix. First-frame conditioning is influential but later GPU-owned
+history still diverges. Direct pinned-anchor effects vs downstream history
+effects remain unseparated. Default prefix ends before occlusion.
+
+Next proposed investigation (not implemented): inspect candidate-mask score
+margins and selected indices near26..32, together with pointer selection.
+Static source confirms owned.selected_masks requests multimask_output=True;
+pinned upstream sam2_base._forward_sam_heads uses argmax(ious) for masks and the
+corresponding SAM token when multiple tokens are present, then obj_ptr_proj.
+Small score changes COULD cause discrete selection changes and large pointer
+differences. Current reports expose only max IoU, not candidate values/indices,
+so this hypothesis is unproven. Inspect exact installed graph before designing
+taps; preserve unchanged-output controls because exposing internal outputs can
+change compiled execution. Do not change selection policy, thresholds, memory
+policy, precision or installed model based solely on this result.
+No next command for the user yet. Assistant analyzed the uploaded JSON and
+reviewed pinned source only; no builds/tests/inference or runtime edits.
+
 ## Current work: one-time original-seed comparison prepared
 
 User approved the next isolation after the shared-input results. New
