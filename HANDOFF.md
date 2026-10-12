@@ -1,6 +1,58 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: uninterrupted worker continuation visually confirmed; edge cutoff remains
+## Current work: bounded edge continuation prepared; awaiting Mac replay
+
+Temporal/diagnose_occlusion_backup.py now offers --continuation-policy appearance-edge
+(v3), using the reviewed appearance-only v2 replay as its required control.
+This is a development experiment motivated by the visible worker cutoff at210,
+not a successful result yet. No installed models, app code, export or parity gates
+changed. Assistant performed source review and AST parsing only, no inference,
+runtime tests, builds or benchmarks.
+
+Strict acquisition remains unchanged: three missing normal frames; three consecutive
+present candidates with predictedIoU>=.8, encoder>=.8 AND colour>=.5 against the
+same common anchor and consecutive low-mask overlap>=.5. Normal output always wins.
+
+An already accepted backup ordinarily continues using v2 full appearance checks.
+If those fail, edge grace additionally requires current positive presence, previous
+AND current low/high masks touching the same exact boundary, consecutive overlap
+>=.5 at BOTH resolutions, non-growing positive mask area at BOTH resolutions, and
+colour>=.5 against a common anchor from its last full appearance match. Retain
+boundary/colour-anchor intersections throughout grace. Limit grace to .25 seconds
+since the last full appearance match, using source PTS. Grace updates geometry only,
+never the timer or reference descriptors. A full appearance match resets the timer.
+Every displayed/committed mask is the fresh prediction. Failure discards the backup
+and restarts strict search. This may still reject correct fragments or accept wrong
+regions; visual review and independent holdout remain necessary.
+
+Require complete v2 control with script SHA
+a1b72d75ee8a2a0c5c379960ee4c9998cc67ff94e13a21d7039769f45d877741,
+matching source/model/reference identities and rules. Every normal history must
+reproduce. Before first decision divergence, raw backup/search and anchor metrics
+must reproduce too; only passing new edge grace can explain that first difference.
+Log edge checks, edgeContinuationFrames and firstPolicyDivergenceFrame. Existing
+baseline, conditioning-only probe, fixed anchor and original conditioning controls
+remain mandatory. Both worker and dog are development clips.
+
+Run from the Mac:
+```bash
+cd /Users/petercody/Documents/Projects/ByteWaveSegmentation &&
+export DEVELOPER_DIR="/Applications/Xcode-beta.app/Contents/Developer" &&
+git pull --ff-only &&
+.venv-temporal/bin/python Temporal/run_occlusion_continuation_pair.py --experiment edge
+```
+
+Runner checks both clips' paths, replays worker276 then dog600 using controls in
+.temporal-runs/continuation-quality-01/{worker,dog}/report.json, and writes fresh
+.temporal-runs/continuation-edge-01. Refuses existing output/ZIP. It packages both
+reports plus every backup-display/continuation-attempt preview (including rejection)
+into .temporal-runs/share/continuation-edge-01-review.zip and reveals it in Finder.
+One upload, no separate picture-packaging step. Partial reports are collected if a
+run fails. Next: review controls first, then all changed masks and the exit boundary;
+verify dog preservation. Do not claim improved recovery before those results.
+
+
+## Prior step: uninterrupted worker continuation visually confirmed; edge cutoff remains
 
 Evidence: Audit/worker-continuation-quality-visual-review.json.
 ZIP SHA25667fa42615c11c0aa58dfc690aab646a8972d94b677c1c058d9cff93f87a75cdf.

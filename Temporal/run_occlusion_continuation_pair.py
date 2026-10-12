@@ -13,17 +13,20 @@ from zipfile import ZIP_DEFLATED, ZipFile
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--output', type=Path, default=Path('.temporal-runs/continuation-quality-01'))
+    parser.add_argument('--experiment', choices=('quality', 'edge'), default='quality')
+    parser.add_argument('--output', type=Path)
     args = parser.parse_args()
     if platform.system() != 'Darwin':
         parser.error('Run locally on the Mac.')
     root = Path(__file__).resolve().parent.parent
     if Path.cwd().resolve() != root:
         parser.error(f'Run from the project directory: {root}')
-    output = args.output.resolve()
+    edge = args.experiment == 'edge'
+    output = (args.output or Path('.temporal-runs/continuation-edge-01' if edge
+                                 else '.temporal-runs/continuation-quality-01')).resolve()
     if not output.is_relative_to((root / '.temporal-runs').resolve()):
         parser.error('Output must be inside .temporal-runs.')
-    bundle = root / '.temporal-runs/share' / (output.name + '-reports.zip')
+    bundle = root / '.temporal-runs/share' / (output.name + ('-review.zip' if edge else '-reports.zip'))
     if output.exists() or bundle.exists():
         parser.error('Output or share ZIP already exists; choose a fresh --output.')
     common = {
@@ -43,6 +46,9 @@ def main():
             'memory-probe': Path('.temporal-runs/dog-pillar-memory-probe-01/report.json'),
             'appearance-report': Path('.temporal-runs/dog-identity-signals-01/report.json'),
             'backup-control': Path('.temporal-runs/dog-appearance-backup-01/report.json')}}
+    if edge:
+        for name, case in cases.items():
+            case['backup-control'] = Path('.temporal-runs/continuation-quality-01') / name / 'report.json'
     missing = sorted({str(p) for case in cases.values()
                       for p in {**common, **case}.values() if not p.exists()})
     if missing:
@@ -51,7 +57,7 @@ def main():
     try:
         for name, case in cases.items():
             command = [sys.executable, str(root / 'Temporal/diagnose_occlusion_backup.py'),
-                       '--continuation-policy', 'appearance-only',
+                       '--continuation-policy', 'appearance-edge' if edge else 'appearance-only',
                        '--output', str(output / name)]
             for key, value in {**common, **case}.items():
                 command.extend(['--' + key, str(value)])
@@ -64,6 +70,18 @@ def main():
             with ZipFile(bundle, 'x', ZIP_DEFLATED) as archive:
                 for p in reports:
                     archive.write(p, p.relative_to(output))
+                    if edge:
+                        # Include all displayed backup frames and continuation
+                        # attempts (including rejection), so no second ZIP is needed.
+                        report = json.loads(p.read_text())
+                        for row in report.get('frames', []):
+                            if not row.get('rowCompleted') or not (
+                                    row.get('displaySource') == 'backup' or 'continuation' in row):
+                                continue
+                            preview = (p.parent / row['preview']).resolve()
+                            if not preview.is_relative_to(p.parent.resolve()):
+                                raise ValueError('Preview path escapes run directory')
+                            archive.write(preview, preview.relative_to(output))
             print(f'Upload this ZIP: {bundle}', flush=True)
             subprocess.run(['open', '-R', str(bundle)], check=False)
     for name in cases:
@@ -73,3 +91,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

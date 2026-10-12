@@ -4,7 +4,8 @@
 Normal tracking always advances its own unchanged history and wins whenever
 present. During absence, a separate backup can accept a conditioning-only
 candidate after three consistent, appearance-matched frames. Backup predictions
-must continue passing the appearance checks; normal return discards the backup.
+must pass appearance checks or an explicitly enabled, bounded shrinking-edge
+allowance; normal return discards the backup.
 This is a development experiment on the already reviewed worker and dog clips,
 not a calibrated identity method, production change, model export or benchmark.
 """
@@ -12,6 +13,7 @@ from __future__ import annotations
 
 import argparse
 import copy
+from fractions import Fraction
 import importlib.metadata
 import json
 from pathlib import Path
@@ -45,6 +47,60 @@ RULE = {
     'continuationMustMatchAnAcceptanceAnchor': True,
     'pointerCosineUsedAsGate': False,
     'normalPresentAlwaysWins': True}
+
+EDGE_RULE = {
+    'maximumSecondsSinceFullAppearanceMatch': 0.25,
+    'minimumConsecutiveMaskIoU': 0.5,
+    'maximumAreaRatio': 1.0,
+    'bothMaskResolutionsMustTouchSameImageEdge': True,
+    'sameEdgeRequiredThroughoutGrace': True,
+    'commonColourAnchorRequiredThroughoutGrace': True,
+    'timerRenewedOnlyByFullAppearanceMatch': True}
+
+
+def mask_edges(mask):
+    return {name for name, touched in (
+        ('left', mask[:, 0].any()), ('right', mask[:, -1].any()),
+        ('top', mask[0, :].any()), ('bottom', mask[-1, :].any())) if touched}
+
+
+class EdgeHistory:
+    """Only mask geometry and fixed anchor IDs; no new appearance references."""
+    def record_full(self, output, timestamp, matches):
+        self.masks = [output[key][0, 0] > 0 for key in ('low_res_mask', 'high_res_mask')]
+        self.last_full_time = timestamp
+        self.anchors = set(matches)
+        self.edges = None
+
+    def assess(self, output, timestamp, assessment):
+        current = [output[key][0, 0] > 0 for key in ('low_res_mask', 'high_res_mask')]
+        elapsed = timestamp - self.last_full_time
+        edges = set.intersection(*(mask_edges(mask) for mask in self.masks + current))
+        if self.edges is not None:
+            edges &= self.edges
+        colours = {index for index in self.anchors
+            if assessment['againstAnchors'].get(str(index)) is not None
+            and assessment['againstAnchors'][str(index)]['rgbHistogramIntersection']
+                >= RULE['minimumRGBHistogramIntersection']}
+        overlaps = [mask_iou(old, new) for old, new in zip(self.masks, current)]
+        ratios = [float(new.sum() / old.sum()) if old.any() else None
+                  for old, new in zip(self.masks, current)]
+        checks = {
+            'present': assessment['present'],
+            'withinTimeLimit': 0 < elapsed <= Fraction(str(EDGE_RULE['maximumSecondsSinceFullAppearanceMatch'])),
+            'sameBoundary': bool(edges),
+            'colourMatch': bool(colours),
+            'overlap': all(x >= EDGE_RULE['minimumConsecutiveMaskIoU'] for x in overlaps),
+            'nonGrowingArea': all(x is not None and 0 < x <= EDGE_RULE['maximumAreaRatio'] for x in ratios)}
+        passed = all(checks.values())
+        result = {'passed': passed, 'checks': checks, 'edges': sorted(edges),
+                  'colourAnchors': sorted(colours), 'secondsSinceFullAppearance': float(elapsed),
+                  'lowMaskIoU': overlaps[0], 'highMaskIoU': overlaps[1],
+                  'lowAreaRatio': ratios[0], 'highAreaRatio': ratios[1]}
+        if passed:
+            # Renew geometry only. A grace frame cannot renew time or references.
+            self.masks, self.edges, self.anchors = current, edges, colours
+        return result
 
 
 def assess(features, output, image, anchors, *, require_quality=True):
@@ -93,6 +149,8 @@ def summarize(report):
         'normalPresentOutputsPreserved': all(row['normalOutputPreserved'] for row in rows),
         'backupDisplayIntervals': intervals(rows, lambda row: row['displaySource'] == 'backup'),
         'emptyDisplayIntervals': intervals(rows, lambda row: row['displaySource'] == 'empty'),
+        'edgeContinuationFrames': [row['index'] for row in rows
+            if row.get('continuation', {}).get('edgeGrace', {}).get('passed') is True],
         'backupFramesBelowAcquisitionQuality': [row['index'] for row in rows
             if row['displaySource'] == 'backup' and row.get('continuation', {}).get('predictedIoUPassed') is False],
         'backupControlPrefixFrames': report.get('backupControlPrefixFrames', 0),
@@ -111,19 +169,20 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ('upstream', 'video', 'phone-report', 'fixture', 'comparison', 'memory-probe', 'appearance-report', 'output'):
         parser.add_argument('--' + name, type=Path, required=True)
-    parser.add_argument('--continuation-policy', choices=('quality-and-appearance', 'appearance-only'),
+    parser.add_argument('--continuation-policy', choices=('quality-and-appearance', 'appearance-only', 'appearance-edge'),
                         default='quality-and-appearance')
     parser.add_argument('--backup-control', type=Path,
-                        help='Completed original appearance-backup report; required for appearance-only.')
+                        help='Completed prior policy report: original v1 for appearance-only, v2 for appearance-edge.')
     args = parser.parse_args()
     if platform.system() != 'Darwin':
         parser.error('Run locally on the Mac.')
     prior = json.loads(args.comparison.read_text())
     probe = json.loads(args.memory_probe.read_text())
     appearance = json.loads(args.appearance_report.read_text())
-    relaxed_continuation = args.continuation_policy == 'appearance-only'
+    edge_enabled = args.continuation_policy == 'appearance-edge'
+    relaxed_continuation = args.continuation_policy != 'quality-and-appearance'
     if relaxed_continuation and args.backup_control is None:
-        parser.error('Appearance-only continuation requires the completed original --backup-control.')
+        parser.error('Experimental continuation requires the completed prior --backup-control.')
     backup_control = json.loads(args.backup_control.read_text()) if args.backup_control else None
     if (prior.get('contract') != 'bytewave.occlusion-comparison.diagnostic.v1'
             or prior.get('completed') is not True or prior.get('previewOnly') is not False
@@ -164,17 +223,21 @@ def main():
             raise ValueError(f'Report identity mismatch: {key}')
     if backup_control is not None:
         control_rows = backup_control.get('frames', [])
+        expected_rule = ({**RULE, 'version': 'baseline-first-appearance-continuation.v2',
+                          'continuationPredictedIoUUsedAsGate': False} if edge_enabled else RULE)
+        expected_script = ('a1b72d75ee8a2a0c5c379960ee4c9998cc67ff94e13a21d7039769f45d877741'
+                           if edge_enabled else
+                           'e821c6ac1dd4887590aab7809e48efb58c5c2fd3b39bfdb7ca99b72c9aa68377')
         if (backup_control.get('contract') != 'bytewave.occlusion-backup.diagnostic.v1'
                 or backup_control.get('completed') is not True
                 or backup_control.get('summary', {}).get('interpretationAllowed') is not True
-                or backup_control.get('rule') != RULE
-                or backup_control.get('diagnosticScriptSHA256') !=
-                    'e821c6ac1dd4887590aab7809e48efb58c5c2fd3b39bfdb7ca99b72c9aa68377'
+                or backup_control.get('rule') != expected_rule
+                or backup_control.get('diagnosticScriptSHA256') != expected_script
                 or len(control_rows) != total
                 or [row['index'] for row in control_rows] != list(range(total))
                 or not all(row.get('rowCompleted') and row.get('baselineReproduced')
                     and row.get('normalOutputPreserved') for row in control_rows)):
-            parser.error('Backup control must be a complete original v1 replay with reproduced controls.')
+            parser.error('Backup control must be the complete reviewed prior policy replay with reproduced controls.')
         control_identity = {**identity, 'pointNormalizedTopLeft': args.point,
             'referenceNumFrames': total, 'anchorFrames': anchor_frames,
             'sourceComparisonSHA256': occlusion.sha(args.comparison),
@@ -197,16 +260,21 @@ def main():
         'pointNormalizedTopLeft': args.point, 'referenceNumFrames': total,
         'framesToReplay': total, 'anchorFrames': anchor_frames, 'computeUnits': 'CPU_AND_GPU',
         'rule': {**RULE,
-            'version': 'baseline-first-appearance-continuation.v2' if relaxed_continuation else RULE['version'],
+            'version': 'baseline-first-edge-continuation.v3' if edge_enabled else
+                       'baseline-first-appearance-continuation.v2' if relaxed_continuation else RULE['version'],
             'continuationPredictedIoUUsedAsGate': not relaxed_continuation},
+        'edgeRule': EDGE_RULE if edge_enabled else None,
         'continuationPolicyName': args.continuation_policy,
         'backupControlSHA256': occlusion.sha(args.backup_control) if backup_control else None,
         'backupControlPrefixFrames': 0, 'firstPolicyDivergenceFrame': None,
-        'experimentChange': 'Only remove predictedIoU cutoff during accepted-backup continuation. Acquisition, presence, appearance thresholds and baseline priority unchanged.' if relaxed_continuation else 'Original quality-and-appearance continuation.',
+        'experimentChange': ('Add bounded shrinking-edge continuation to v2; strict acquisition unchanged.' if edge_enabled else
+            'Only remove predictedIoU cutoff during accepted-backup continuation. Acquisition, presence, appearance thresholds and baseline priority unchanged.' if relaxed_continuation else 'Original quality-and-appearance continuation.'),
+        'edgePolicy': ('Only after an accepted backup fails full appearance: both current and previous low/high masks must touch a common exact image boundary, overlap>=.5 and not grow. Require presence and colour>=.5 against a common last-full-match acceptance anchor, within .25 seconds of last full appearance match. Keep edge and colour-anchor intersections across grace frames. Use current prediction only. Failed checks discard backup; grace never resets timer. Full appearance pass resumes normal v2 continuation.' if edge_enabled else None),
         'ruleLimit': 'Exploratory thresholds chosen after sparse worker AND dog appearance review. These clips are development evidence. Stable wrong regions can still pass; small correct subjects can fail. Baseline priority protects only baseline-present frames and does not prove identity.',
         'referencePolicy': 'Recompute fixed manually selected earlier normal descriptors and require exact reproduction of reviewed appearance report. No future image features or later updates enter references. Disable backup until all references have been observed.',
         'memoryPolicy': 'Normal state commits normal output every frame, never backup. A confirmed candidate gets a deep copy of the current pre-commit normal clock/conditioning with recent banks cleared, then current candidate committed at actual PTS. Backup propagates only while normal is absent; failed backup is discarded. Normal return immediately discards backup and pending streak.',
-        'continuationPolicy': ('Each backup propagation must be present and meet encoder>=.8 AND colour>=.5 against one of its acceptance anchors. PredictedIoU is logged but is not a continuation gate. ' if relaxed_continuation else 'Each backup propagation must be present, predictedIoU>=.8, and meet encoder>=.8 AND colour>=.5 against one of its acceptance anchors. ') + 'Failure discards it before display/commit and restarts search on that frame. No overlap gate on continuation. No stale-mask holding.',
+        'continuationPolicy': ('Full appearance requires presence, encoder>=.8 AND colour>=.5 against an acceptance anchor. Failure can use only the separately logged bounded edgePolicy; otherwise discard and restart strict search. PredictedIoU logged only. No stale-mask holding.' if edge_enabled else
+            ('Each backup propagation must be present and meet encoder>=.8 AND colour>=.5 against one of its acceptance anchors. PredictedIoU is logged but is not a continuation gate. ' if relaxed_continuation else 'Each backup propagation must be present, predictedIoU>=.8, and meet encoder>=.8 AND colour>=.5 against one of its acceptance anchors. ') + 'Failure discards it before display/commit and restarts search on that frame. No overlap gate on continuation. No stale-mask holding.'),
         'controlMeaning': 'Every baseline reproduces prior observations/comparison. Every search reproduces archived conditioning-only probe. Recomputed anchors reproduce appearance vectors exactly. Search candidates never alter normal history. Old reports are controls/reference definitions, not current-frame identity labels.',
         'policy': {'maskIoUMinimum': .95, 'cosineMinimum': .99, 'float32Atol': .001, 'float32Rtol': .001},
         'versions': {name: importlib.metadata.version(name) for name in ('torch', 'coremltools', 'numpy', 'av', 'Pillow')},
@@ -232,6 +300,7 @@ def main():
         model = owned.load_reference(args.upstream)
         backend = occlusion.FixtureBackend(args.fixture)
         normal_state, backup_state = TemporalState(), None
+        edge_history = None
         anchors, locked_anchors = {}, set()
         history = {'cond_frame_outputs': {}, 'non_cond_frame_outputs': {}}
         point = [min(float(x) * 1024, 1023) for x in args.point]
@@ -307,6 +376,7 @@ def main():
                     if backup_state is not None or searching:
                         event('normalResumed', index, timestamp, discardedBackup=backup_state is not None)
                     backup_state, searching = None, False
+                    edge_history = None
                     locked_anchors, streak_anchors = set(), set()
                     missing, streak, previous_mask, confirmation_start = 0, 0, None, None
                 else:
@@ -319,13 +389,25 @@ def main():
                         row['continuation'] = assess(features, backup_output, image, anchors,
                                                      require_quality=not relaxed_continuation)
                         matches = set(row['continuation']['qualifyingAnchors']) & locked_anchors
-                        row['continuation']['passed'] = bool(matches)
-                        if matches:
+                        row['continuation']['fullAppearancePassed'] = bool(matches)
+                        edge_passed = False
+                        if edge_enabled:
+                            if edge_history is None:
+                                raise ValueError('Missing accepted-backup edge history')
+                            if matches:
+                                edge_history.record_full(backup_output, timestamp, matches)
+                            else:
+                                row['continuation']['edgeGrace'] = edge_history.assess(
+                                    backup_output, timestamp, row['continuation'])
+                                edge_passed = row['continuation']['edgeGrace']['passed']
+                        row['continuation']['passed'] = bool(matches) or edge_passed
+                        if row['continuation']['passed']:
                             backup_state.commit(backup_output, timestamp, backup_state.token)
                             selected, display_source = backup_output, 'backup'
                         else:
                             event('backupRejected', index, timestamp)
                             backup_state, searching = None, False
+                            edge_history = None
                             locked_anchors, streak_anchors = set(), set()
                             streak, previous_mask, confirmation_start = 0, None, None
                     if backup_state is None and missing >= RULE['missingFrames'] and len(anchors) == len(anchor_frames):
@@ -366,6 +448,9 @@ def main():
                             backup_state.pointers.clear()
                             backup_state.commit(candidate, timestamp, backup_state.token)
                             locked_anchors = set(streak_anchors)
+                            if edge_enabled:
+                                edge_history = EdgeHistory()
+                                edge_history.record_full(candidate, timestamp, locked_anchors)
                             selected, display_source = candidate, 'backup'
                             row['recoveryAccepted'] = True
                             event('backupAccepted', index, timestamp, confirmationStartFrame=confirmation_start,
@@ -406,9 +491,12 @@ def main():
                     # Once a decision differs, feedback histories legitimately differ.
                     # Before then, compare raw observations/metrics, not new log fields.
                     if report['firstPolicyDivergenceFrame'] is None:
-                        skips_old_search = (relaxed_continuation
+                        allowed_difference = (edge_enabled
+                            and row.get('continuation', {}).get('edgeGrace', {}).get('passed') is True
+                            or not edge_enabled and relaxed_continuation
+                            and row.get('continuation', {}).get('predictedIoUPassed') is False)
+                        skips_old_search = (allowed_difference
                             and row.get('continuation', {}).get('passed') is True
-                            and row['continuation']['predictedIoUPassed'] is False
                             and control.get('continuation', {}).get('passed') is False)
                         for name in ('backupOrdinary', 'searchCandidate'):
                             if name == 'searchCandidate' and skips_old_search:
@@ -426,9 +514,7 @@ def main():
                             or control['recoveryAccepted'] != row['recoveryAccepted']
                             or control['streams']['displayed'] != row['streams']['displayed'])
                         if differs:
-                            if not (relaxed_continuation and row.get('continuation', {}).get('passed')
-                                    and row['continuation']['predictedIoUPassed'] is False
-                                    and control.get('continuation', {}).get('passed') is False):
+                            if not skips_old_search:
                                 raise ValueError(f'Unexpected first policy divergence at {index}')
                             report['firstPolicyDivergenceFrame'] = index
                     row['backupControlNormalReproduced'] = True
@@ -466,4 +552,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
 
