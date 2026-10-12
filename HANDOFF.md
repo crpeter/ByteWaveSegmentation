@@ -1,6 +1,44 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: bounded edge continuation prepared; awaiting Mac replay
+## Current work: edge continuation reviewed; independent clip next
+
+Evidence: Audit/mac-continuation-edge-pair-review.json.
+Uploaded continuation-edge-01-review.zip SHA256
+8afdbbc7382cf607587ad371c567f8eeefdc7ca2c4e176ff1ab3bc2713aa4b8f.
+Both runs completed with all baseline/probe/normal-output controls, original
+conditioning and fixed appearance references reproduced. Offline analysis only.
+
+Worker: backup accepted169 as before; now continuous169..214, 46 frames.
+Exactly five added display frames210..214, about0.167 seconds. No removed frames.
+First policy divergence210; prefix211 includes matching raw output at210.
+All prior169..209 PNGs are byte-identical to the already visually reviewed v2
+previews. New210..214 inspected at native resolution: masks stay on shrinking
+visible worker clothing at left boundary, no observed machine/rubble switch.
+Overlay-difference bounds verified all rendered overlay pixels are in inspected
+crops. Edge timer advances1/30..5/30 seconds from last full appearance209, never
+renews during grace, common colour anchor60 retained. Both resolutions pass
+presence, boundary, overlap and non-growing-area requirements.
+
+At215 a tiny clothing fragment is still visible. Backup prediction is present,
+passes time(.2s), boundary, overlap and area checks; rejected by colour match.
+Do not call this a complete exit or perfect segmentation. Avoid more tuning to
+this fragment. Normal history and113 normal-present outputs preserved.
+
+Dog: all600 streams, comparisons, display decisions and normal state counts
+identical to v2;557 normal-present outputs preserved. No backup acceptance or
+edge allowance, normal returns85 and247 unchanged. Controls establish development
+preservation, not general identity robustness.
+
+Next: freeze current v3 rules and obtain an independent clip not used to choose
+thresholds/anchors. Prefer clear identity before/after a few seconds of occlusion,
+ideally with a distractor. Assess wrong-object acquisition and recovery delay.
+Keep commands rooted at the explicit Mac project path and per-shell Xcode-beta;
+one share ZIP containing report plus relevant previews. No model/app promotion,
+selection changes or production ByteWave integration yet. No further files needed
+from this edge run.
+
+
+## Prior step: bounded edge continuation prepared; awaiting Mac replay
 
 Temporal/diagnose_occlusion_backup.py now offers --continuation-policy appearance-edge
 (v3), using the reviewed appearance-only v2 replay as its required control.
