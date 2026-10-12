@@ -1,6 +1,45 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: appearance-signal diagnostic prepared; user Mac runs pending
+## Current work: appearance diagnostics reviewed; useful signals but no universal identity gate
+
+Evidence: Audit/occlusion-identity-signals-review.json includes per-anchor values,
+source/report hashes and six reference-image hashes. Worker report SHA256
+f994a29da75e68b32fb3cbdf40f0f7e0c68dd891306366250afa1088261b306b;
+dog report SHA2566a96030a69ccb3ccc2656efa3862c7fc725de6ae26f513167f444b2b52dff231.
+Both used diagnostic script SHA256
+b6f483e4473dd573447486eda72150634d0a4b03d7bbcf520f8d2d811bb53d90.
+Worker218frames/13side calls and dog256frames/17side calls completed; all baseline
+and probe controls reproduced; original conditioning unchanged. No new recovery.
+
+All6 anchors inspected. Worker0/30/60 cover small bent-over worker's visible back/
+upper-body region to right of excavator; NOT standing worker at left.60 especially
+partial. Dog0 whole visible dog largely excludes box;15 head clipped at edge;
+30 hindquarters with front behind pillar. Reference masks are partial observations,
+not universal identity truth.
+
+Descriptive maxima across anchors (different metrics may choose different anchors):
+                    pointer   encoder   colour
+worker rubble148     .5462     .6792     .2683
+worker correct169    .3368     .9095     .8367
+dog background54     .6209     .6638     .4186
+dog wheel251         .6248     .7921     .2327
+dog normal head85    .6227     .6964     .2992
+dog normal edge247   .6736     .5858     .6443
+Pointer-only ranking fails worker case. Encoder/colour help with sampled worker
+recovery but a universal cutoff could reject correct partial dog while accepting
+wrong masks. Do not present cosine/intersection as percentages of identity trust.
+
+Next proposed experiment, NOT implemented: retain independent unchanged baseline;
+never suppress its present output just because experimental search is pending.
+Evaluate appearance agreement only for search candidates filling baseline absence,
+without committing pending candidates. Baseline-first routing alone cannot stop
+false positives during absence. Document any exploratory thresholds before full
+causal worker/dog replays, inspect all accepted intervals/feedback, then test a
+separate holdout. Both current clips now inform development, not holdout proof.
+No production/app/model changes or threshold promotion. Assistant performed offline
+JSON/image analysis only; no model inference/tests/build/export.
+
+## Prior step: appearance-signal diagnostic prepared; user Mac runs pending
 
 New Temporal/diagnose_occlusion_identity.py measures candidate/anchor similarities
 without any recovery decisions. No app/model/gate changes. Only normal GPU outputs
