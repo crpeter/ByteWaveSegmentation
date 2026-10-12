@@ -1,6 +1,38 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: baseline-first appearance backup diagnostic prepared; Mac replays pending
+## Current work: dog appearance-backup replay reviewed; worker report pending
+
+Evidence: Audit/mac-dog-appearance-backup-summary.json. User report SHA256
+dadee4d83f681bf59a2bd178966ee3eed2b8177d7ce3206755765afbaea0330e.
+Completed600 frames using diagnostic script
+e821c6ac1dd4887590aab7809e48efb58c5c2fd3b39bfdb7ca99b72c9aa68377.
+Offline row inspection: all600 ordered/completed, all baseline controls reproduce,
+all39 search controls reproduce, normal state counts advance exactly once/frame.
+Original conditioning and all anchor descriptors reproduce.
+
+All557 normal-present outputs preserved; no backup accepted or committed.
+All39 searches have zero confirmation streak / no qualifying anchors.
+32 nonempty search candidates rejected. Known wrong background54 fails appearance.
+Display stays empty48..84 and241..246, exactly baseline; normal returns85 and247
+without the old recovery delay. Frame251 wheel search is NOT evaluated: normal
+already present, so baseline priority avoids that old false acceptance. Do not
+claim appearance rejected the wheel in this run.
+
+This is a positive dog DEVELOPMENT-clip regression result, not successful recovery,
+general identity validation, speed measurement or device readiness. Existing normal
+tracker errors remain, including prior visually overlarge masks around330/331.
+The45 normal numerical gate failures reproduce prior baseline; they are not new
+backup regressions. No new preview request needed to establish baseline preservation
+because no backup masks were displayed.
+
+NEXT: obtain .temporal-runs/worker-appearance-backup-01/report.json from user.
+The prior command ran worker then dog sequentially; do not ask to rerun dog.
+Check worker controls, acceptances/continuation, all new backup intervals and their
+previews before deciding whether this rule retains useful recovery. Independent
+holdout still required before promotion. No app/model changes. Assistant performed
+offline JSON checks only, no inference/tests/builds/exports.
+
+## Prior step: baseline-first appearance backup diagnostic prepared; Mac replays pending
 
 New Temporal/diagnose_occlusion_backup.py implements one FIXED exploratory rule,
 informed by the sparse worker AND dog measurements. No production/app/model edits.

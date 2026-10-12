@@ -1,0 +1,149 @@
+{
+  "contract": "bytewave.occlusion-backup.diagnostic.v1",
+  "completed": true,
+  "readyForDeviceValidation": false,
+  "sourceVideoSHA256": "48df10abcbcd12df835d8f91edcf5fd8863506a40f190a4788e338ce1e460bce",
+  "sourceFileBytes": 117721190,
+  "diagnosticScriptSHA256": "e821c6ac1dd4887590aab7809e48efb58c5c2fd3b39bfdb7ca99b72c9aa68377",
+  "sourceComparisonSHA256": "f1bd9abde3a424f7c5bbfefff1ed0b40284602470b021a078d8f3c2a20b62102",
+  "sourceMemoryProbeSHA256": "f83406103dfbc5547bd4a6dee5dce691a4f985b8911502d729b0311336126bc1",
+  "sourceAppearanceReportSHA256": "6a96030a69ccb3ccc2656efa3862c7fc725de6ae26f513167f444b2b52dff231",
+  "fixtureSHA256": "760dd45c6eed6972f434dd324920b74dbfa262fb6648983606c2872581430a61",
+  "phoneReportSHA256": "7c807a77903c90fc90d23dcad387e82bb454a315f690acb1d517bf8b73c4dc65",
+  "modelFiles": {
+    "models/BWTemporalImageEncoder.mlpackage/Manifest.json": "df20c1178e37ef2d4587281d5feca5979f2db8b859ffe7357161e4d5b51c254f",
+    "models/BWTemporalImageEncoder.mlpackage/Data/com.apple.CoreML/model.mlmodel": "a3046d4fbd83b7974d0b01d92ca30a55adad08aca218789b97034245023bbeba",
+    "models/BWTemporalImageEncoder.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "90e112d95a98e30486b768a2397f253766ceaa95bfd3cdb5a31a8db0341f61c3",
+    "models/BWTemporalInitializer.mlpackage/Data/com.apple.CoreML/model.mlmodel": "a70da7906ee21086122e9c24479b149308337f49609854455ae9cf65f790625f",
+    "models/BWTemporalInitializer.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "9409edf81128013f2ff61ef2565832f0a35782304e7adc54466e0396b5ab94c2",
+    "models/BWTemporalInitializer.mlpackage/Manifest.json": "d2311a29bb658bd6f16e801e91893985eb5aea3f7a6587f718e3e93539bc3068",
+    "models/BWTemporalInitialMemoryEncoder.mlpackage/Data/com.apple.CoreML/model.mlmodel": "613c7a310f1fae1b698aaba6e5a70c3afb842f459d3ec96cf9e0f4b6b4b9438a",
+    "models/BWTemporalInitialMemoryEncoder.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "21ae511f368835d55fe519b9b4ae9032bf9256cdb3cc0e91fdf5b4c467311563",
+    "models/BWTemporalInitialMemoryEncoder.mlpackage/Manifest.json": "64fb8412cf6229dda7ec7227113c7c8cf1a5278a96b62b94e2a0a76f6d790b52",
+    "models/BWTemporalPropagator.mlpackage/Manifest.json": "aec4bf7ef5dafc3816e3a645f93b134824268f4b0e8184170452e10c8c5618c1",
+    "models/BWTemporalPropagator.mlpackage/Data/com.apple.CoreML/model.mlmodel": "dec2227edc7d22832a3726a68237b6789f2d79ede1a5b0cc6f76d400c69d08d9",
+    "models/BWTemporalPropagator.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "3e679bfdc49fc43e895434b8c8bb6e75bad20a2cad37fd0aa2d5019cd186386e"
+  },
+  "pointNormalizedTopLeft": [
+    0.45,
+    0.27
+  ],
+  "anchorFrames": [
+    0,
+    15,
+    30
+  ],
+  "rule": {
+    "version": "baseline-first-appearance-backup.v1",
+    "missingFrames": 3,
+    "confirmationFrames": 3,
+    "minimumPredictedIoU": 0.8,
+    "minimumConsecutiveMaskIoU": 0.5,
+    "minimumPooledEncoderCosine": 0.8,
+    "minimumRGBHistogramIntersection": 0.5,
+    "sameAnchorMustPassBothAppearanceChecks": true,
+    "commonAnchorRequiredAcrossConfirmationStreak": true,
+    "continuationMustMatchAnAcceptanceAnchor": true,
+    "pointerCosineUsedAsGate": false,
+    "normalPresentAlwaysWins": true
+  },
+  "ruleLimit": "Exploratory thresholds chosen after sparse worker AND dog appearance review. These clips are development evidence. Stable wrong regions can still pass; small correct subjects can fail. Baseline priority protects only baseline-present frames and does not prove identity.",
+  "conditioningUnchangedAtEnd": true,
+  "anchorDescriptorsReproduced": true,
+  "summary": {
+    "framesReplayed": 600,
+    "events": [
+      {
+        "type": "searchStarted",
+        "frame": 50,
+        "ptsSeconds": 1.6666666666666667
+      },
+      {
+        "type": "normalResumed",
+        "frame": 85,
+        "ptsSeconds": 2.8333333333333335,
+        "discardedBackup": false
+      },
+      {
+        "type": "searchStarted",
+        "frame": 243,
+        "ptsSeconds": 8.1
+      },
+      {
+        "type": "normalResumed",
+        "frame": 247,
+        "ptsSeconds": 8.233333333333333,
+        "discardedBackup": false
+      }
+    ],
+    "baselineMismatchFrames": [],
+    "probeMismatchFrames": [],
+    "normalPresentFrames": 557,
+    "normalPresentOutputsPreserved": true,
+    "backupDisplayIntervals": [],
+    "emptyDisplayIntervals": [
+      {
+        "firstFrame": 48,
+        "lastFrame": 84,
+        "firstPTSSeconds": 1.6,
+        "lastPTSSeconds": 2.8,
+        "frames": 37
+      },
+      {
+        "firstFrame": 241,
+        "lastFrame": 246,
+        "firstPTSSeconds": 8.033333333333333,
+        "lastPTSSeconds": 8.2,
+        "frames": 6
+      }
+    ],
+    "rejectedNonemptySearchFrames": [
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      84
+    ],
+    "interpretationAllowed": true,
+    "qualityMeaning": "Controls and normal-output preservation are not identity validation. Inspect every backup interval and rejection around visible return. Thresholds were informed by both clips; an independent clip is still required."
+  },
+  "sourceReportSHA256": "dadee4d83f681bf59a2bd178966ee3eed2b8177d7ce3206755765afbaea0330e",
+  "offlineReview": {
+    "all600RowsCompletedAndOrdered": true,
+    "allBaselineControlsReproduced": true,
+    "all39SearchControlsReproduced": true,
+    "all557PresentNormalObservationsAndComparisonsPreserved": true,
+    "allNormalStateFrameCountsPreserved": true,
+    "noBackupAcceptedOrCommitted": true,
+    "frame54KnownWrongBackgroundRejected": true,
+    "frame251SearchNotRunBecauseNormalPresent": true,
+    "interpretation": "Dog development-clip regression check only. Normal returns at frames 85 and 247 are preserved. No backup masks were accepted, so this run does not validate successful recovery or identity. Existing baseline errors remain. Await worker backup report before assessing recovery benefit."
+  }
+}
