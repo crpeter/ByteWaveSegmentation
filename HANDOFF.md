@@ -1,6 +1,39 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: independent dog/pillar baseline completed; previews needed
+## Current work: dog baseline previews reviewed; fixed-rule recovery ready to run
+
+Evidence: Audit/dog-pillar-baseline-visual-review.json.
+Uploaded previews(1).zip SHA256
+5b5c6a700b190a5131edb0940163378c908be31192c5f324ffe75d56b855c7a2.
+45 saved PNGs: selected19 triptychs inspected, remaining26 GPU panels screened;
+85,247,330 also viewed individually. No new inference by assistant.
+
+Baseline selects dog and generally excludes pizza box. First gap is consistent
+with pillar obstruction;85 masks the returning head,90 visible body. Second gap
+241-246 appears to be dog leaving the LEFT IMAGE EDGE near a parked vehicle,
+not established hand obstruction;247/255 show the return. Treat baseline as
+already working for these absence/return events.
+
+At330 (11s) ALL three streams have an oversized mask extending into nearby
+vehicle/background. GPU boundaries differ but qualitative failure is not
+GPU-exclusive. Exact worst disagreement331 and failed174/175 are not saved;
+do not invent their visual contents. Later345/375/390/599 show dog tracking
+again. Sample review is not exhaustive 600-frame ground truth.
+
+Next user runs EXISTING scripts without edits: diagnose_occlusion_memory.py
+with dog paths, --frames600 --review-range85 120, fresh dog-pillar-memory-probe-01.
+Then diagnose_occlusion_recovery.py linked to that successful probe, --frames600
+and SAME worker settings: missing3, confirmation3, predictedIoU.8, overlap.5.
+Fresh output dog-pillar-confirmed-recovery-01. Use && to stop on any failed control.
+This checks whether fixed recovery harms already-good baseline reacquisition,
+causes false positives or delay, and how subsequent tracking behaves. Review
+range85-120 summarizes first return only; inspect second return separately using
+per-frame report/previews. Original reference length remains600 in both replays.
+
+No production changes, threshold tuning, model conversion, tests or assistant
+inference. User runs on Mac with project cd and per-shell Xcode-beta path.
+Ask for recovery report.json; if a command fails, inspect its saved error report.
+## Prior step: independent dog/pillar baseline completed; previews requested
 
 User ran diagnose_occlusion.py on assets/dog-occlusion.mov with --new-video,
 --point 0.45 0.27, --frames 600 into .temporal-runs/dog-pillar-comparison-01.

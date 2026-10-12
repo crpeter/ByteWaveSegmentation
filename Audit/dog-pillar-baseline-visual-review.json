@@ -1,0 +1,149 @@
+{
+  "contract": "bytewave.dog-occlusion-baseline-visual-review.v1",
+  "sourceReportSHA256": "f1bd9abde3a424f7c5bbfefff1ed0b40284602470b021a078d8f3c2a20b62102",
+  "sourceVideoSHA256": "48df10abcbcd12df835d8f91edcf5fd8863506a40f190a4788e338ce1e460bce",
+  "previewZipSHA256": "5b5c6a700b190a5131edb0940163378c908be31192c5f324ffe75d56b855c7a2",
+  "previewHashes": {
+    "frame-0000.png": "f2e39d81685fcd90df5c56a3fa3264921c7d10dfafe8c33ae168daa129feb1c5",
+    "frame-0015.png": "267564bae7a08ee7fb26033f4d325b57ee90d230d3ab50fb7c27607c9d484ea8",
+    "frame-0030.png": "16b6af51588c5b52b5a54200c1f28611c802f3ecac903d407a07d06faa861787",
+    "frame-0045.png": "192dc384d81143a68bf3ce615deff1ece5ac2a51b168326e454e48ba644f7bc4",
+    "frame-0048.png": "ab8784264c02ee4e1a3463ddd265dd84a3152326404cbb7739ee3212c37e8dcc",
+    "frame-0060.png": "753e3a03ca193495617c434055696df9b6281fb401e55884d9140bc68a6e1276",
+    "frame-0075.png": "89271a858da7a9db9d6ffe672a786b38612e46010a42d803661767c6be968775",
+    "frame-0085.png": "823ce1a193bb912a916d6ad97c9bc1a5100344bad46222a2b104fe08c3acdd0b",
+    "frame-0090.png": "69d745cdcff9acc2cc6a588cf2d3f21a35999d97829abe4b156ed54e110e7968",
+    "frame-0105.png": "5d9dfc9c1c160d66dc270d01480204ce3208e2a0224b86b5916e6f75dfcf905e",
+    "frame-0120.png": "6f671675e1124fe32b274161d1ebc7170ffc18ac5d1ab91290f25e9a9138cf58",
+    "frame-0135.png": "5e684c31dac791e10555b25aa14812273451481b11503cb1ab27dbad83e29b09",
+    "frame-0150.png": "17cb03645fad1263adaf18cbe61afbfd4e92bab327e4f72c9c71b0593da62174",
+    "frame-0165.png": "c724bc1cfb9d377b93a6e7c71fa64c383dbbc9c778677196bedf64d50d05eaf3",
+    "frame-0180.png": "dba8a4e272c0fce4d365b098338e28f9e0de5880431530e64f816389df23f619",
+    "frame-0195.png": "1071db06fe3bb532d4ad36f59bbc0eabc9eefd9821713d57d6051f20547637ee",
+    "frame-0210.png": "5d2b4e431d686fd457708254117d4c96c9fe3b1974edfdecf4c5d44401c5e771",
+    "frame-0225.png": "4c002b7a5756ffe1f9ef94a26e206ef56a2c2e4eedc961874a73847faf18f314",
+    "frame-0240.png": "f6213e120cc799dcc93841ba7c91d059607777ec7ba611c80007b656a21f0aea",
+    "frame-0241.png": "f18094887f2facde8b3756894dc97ce2244589e425ac11a168d402c2d1bffd52",
+    "frame-0247.png": "3332036d51fa704a320563cce544e5fb041bb676681da0999b868c9083d2bf00",
+    "frame-0255.png": "155eba3db68b865b1f04382f88b2adb255785b3559cbd7c6d365ec568b12c117",
+    "frame-0270.png": "dd88cdad7a94e2ddfc0d436ecbf626d448ab10f47299e8803df2b00d999fc59e",
+    "frame-0285.png": "42054466d56f6321a2e2264d5613298a3add00129425110c72085c7aad5ef9ef",
+    "frame-0300.png": "23e36b853b6f0a114f81bdce621236a79e4ea60be63717962496dd986521650e",
+    "frame-0315.png": "2eb2fbba4fff4a3a7cf0f576ea84f64c5ac1392d4d0e11ae4b198e4f255f5c51",
+    "frame-0330.png": "1be6aa62dfc14f6d4ba85515d0fc475ad149e5e08c38af72a9297b8f455d6122",
+    "frame-0345.png": "ffc493f2e0d50925bcb5c713775def38337e9f44fac7a48be83591d4f444798b",
+    "frame-0360.png": "ce64c96828acb35b20bbbb05e50cbb404e3aaf5c3778d97c8ec02b931a3abe7f",
+    "frame-0375.png": "9255510dd8b0d7361cab3ad2c2b7903e378ab8b2c0898dbc8f8d9bb3f7accc58",
+    "frame-0390.png": "237413138644d0d55b95d976d8e14b2f1aec7fa164a199e4cace2930e8b48424",
+    "frame-0405.png": "cf2127ada8f02a4c0986549c4acacbea83e148f7faa76ba1ec57c5d46f8bf7ab",
+    "frame-0420.png": "f029a5318a680a7ec40a0f7483c343e37709342d98ff73c60422afdb8b354900",
+    "frame-0435.png": "8597acd649d35a4f5300c4fa74a7c84128cd3d6d8ae1575e88e403567fafacd9",
+    "frame-0450.png": "98fe708581fd1fc61014f830825885f352d4bcc7e064fb20e878a6bef7d7fefd",
+    "frame-0465.png": "69c297c424cc25d18beb422de6d3f2e2baca9cb7dd6aaa95bbd705972c58c86c",
+    "frame-0480.png": "4abebb9da91ff0d3a1c1fd2b8e8a1c79137d96efcc776b0d60fa071b1bf830bb",
+    "frame-0495.png": "2e82770e49a3b90b4925c4f4261c5df77e969666437441c736a5ea4af90159fb",
+    "frame-0510.png": "a508de31acedc83fa7aba265c72da9b11ee72a04090486a6e192e9ff775e9a52",
+    "frame-0525.png": "77325e55cb8251ca474ac632ac01d12eb2b74eb31048003f76c6342c232cbd9b",
+    "frame-0540.png": "da5147e859c38c2c8042939b0b0657f2483cfc7d943babb446a64d2bfd84ba61",
+    "frame-0555.png": "dea997dfc173134c29c30b3887674f4ea249f38e9116f6590734c010d4780402",
+    "frame-0570.png": "f3b9ce0cb0b9343a3295cfefa9cd6782f73e58677cba5439551020903408ce98",
+    "frame-0585.png": "0f167b51bdd35af1c76d226a350314d8bcb06663c5760f5fb84b632fc5b420ff",
+    "frame-0599.png": "9a8857d39ac8cf66cdaaaa60ef7d48388e592300de69fc3fef6c3b4172a32e9f"
+  },
+  "method": "Offline visual review only. Nineteen selected triptychs inspected in contact sheets; 85,247,330 also inspected individually. GPU panels of the other 26 saved previews inspected in a contact sheet. No inference, tests, model export or app changes.",
+  "triptychFramesReviewed": [
+    0,
+    45,
+    48,
+    60,
+    75,
+    85,
+    90,
+    165,
+    180,
+    240,
+    241,
+    247,
+    255,
+    315,
+    330,
+    345,
+    375,
+    390,
+    599
+  ],
+  "observations": [
+    {
+      "frames": [
+        0
+      ],
+      "finding": "All three masks select dog and largely exclude carried pizza box."
+    },
+    {
+      "frames": [
+        45,
+        48,
+        60,
+        75,
+        85,
+        90
+      ],
+      "finding": "Dog partly masked before pillar obstruction; absent at sampled 48,60,75; visible head is correctly masked at 85 on return, then visible body at 90. Baseline already reacquires after the long gap."
+    },
+    {
+      "frames": [
+        165,
+        180
+      ],
+      "finding": "Dog partly hidden by foreground car; remaining body/tail visible and masked. Exact failed frames174/175 are not in this archive."
+    },
+    {
+      "frames": [
+        240,
+        241,
+        247,
+        255
+      ],
+      "finding": "Second gap appears associated with dog leaving the left image boundary near the parked vehicle, rather than the earlier pillar. At247 masks cover a small clipped portion at left edge;255 shows more dog on return. Do not label this gap a hand occlusion without other evidence."
+    },
+    {
+      "frames": [
+        330
+      ],
+      "finding": "All three streams have a visibly oversized mask extending into the nearby vehicle/background region. GPU boundary differs, but qualitative oversegmentation is not exclusive to GPU. Source is blurred and cropped near top; exact cause unproven."
+    },
+    {
+      "frames": [
+        345,
+        375,
+        390,
+        599
+      ],
+      "finding": "Selected later previews again mask the dog, largely excluding pizza box. No lasting loss of the dog is apparent in these samples."
+    }
+  ],
+  "limits": [
+    "Only 45 saved sample frames, not all600, are provided.",
+    "Largest GPU/reference mask-IoU disagreement at331 is not saved; frame330 provides adjacent context only.",
+    "No ground-truth masks, exact all-frame boundary-quality or identity verdict.",
+    "Unchanged recovery rule has not yet run on this dog clip."
+  ],
+  "nextExperiment": {
+    "comparison": ".temporal-runs/dog-pillar-comparison-01/report.json",
+    "memoryProbeOutput": ".temporal-runs/dog-pillar-memory-probe-01",
+    "recoveryOutput": ".temporal-runs/dog-pillar-confirmed-recovery-01",
+    "frames": 600,
+    "reviewRange": [
+      85,
+      120
+    ],
+    "fixedRecoveryRule": {
+      "missingFrames": 3,
+      "confirmationFrames": 3,
+      "minimumPredictedIoU": 0.8,
+      "minimumConsecutiveMaskIoU": 0.5
+    },
+    "purpose": "Regression check: preserve correct baseline return after pillar and boundary gap, avoid premature false positives, and measure any recovery delay. Inspect later tracking too. Do not tune thresholds on this clip.",
+    "controls": "Use existing scripts unchanged; controlled memory probe precedes causal recovery because recovery requires its exact linked search-call evidence. Chain with && so recovery cannot start after failed probe."
+  }
+}
