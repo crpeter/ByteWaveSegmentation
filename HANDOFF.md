@@ -1,6 +1,45 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: both appearance-backup reports reviewed; worker previews pending
+## Current work: worker backup previews reviewed; continuation causes false rejection
+
+Evidence: Audit/worker-appearance-backup-visual-review.json records52 PNG hashes,
+zip/report hashes, review findings and displayed-mask bounds.
+ZIP SHA25623ec00adb47fae85351cfb0bf9836c096e6f78ba3c75c6780613fe87534c266c.
+Embedded report exactly matches reviewed worker report
+12bb1b25cdb1e117c8faa1ad6e5d14cf4b7aefcb792221508f9dfc5abfede9e2.
+
+Inspected148 and167..217. All37 displayed backup frames169,172,175..209 visually
+follow selected worker's visible upper body/back, beneath bucket then toward left
+edge. No observed switch to rubble/machine in these frames. Compared normal vs
+display panel pixels to verify all displayed overlay differences lie in inspected
+native-resolution crops (x0..469,y520..799); no omitted distant mask regions.
+Masks are partial-body silhouettes; no pixel-level ground truth.
+
+148 wrong rubble search withheld.167/168/171/174 correct-looking worker search
+withheld pending confirmation. At170/173 BOTH propagated backup and new search
+look correct, but output is empty. Appearance matches all3; predictedIoU .00100837
+and .25776285 cause continuation rejection. These gates produce two two-frame gaps.
+At210 raw backup and search still cover worker visible at left edge; cutoff is
+encoder cosine .796691 just below .8 despite predictedIoU .912562 and colour pass.
+211..214 search follows diminishing worker fragment but remains undisplayed.
+215..217 empty search/display; tiny light clothing fragment remains at image edge.
+Do not claim subject completely exited at210 or217.
+
+Conclusion: recovery adds correct-looking worker masks on reviewed frames and dog
+regression remains preserved, but current continuation rule flickers/cuts off early.
+NOT ready for promotion or general identity claim. No new model inference, model/
+app edits, threshold changes or runtime tests by assistant.
+
+Next narrow experiment: investigate predictedIoU semantics and distinguish strict
+three-frame acquisition from continuation of already accepted identity. Keep normal
+priority, strict acquisition and appearance controls; do not simultaneously loosen
+exit appearance thresholds. Any replacement must evaluate current-frame masks, not
+freeze stale masks, and rerun full worker/dog histories then independent holdout.
+No need for more files from this completed run. User prefers single share-folder ZIP
+handoffs; all Mac commands include explicit project cd and per-shell Xcode-beta.
+
+
+## Prior step: both appearance-backup reports reviewed
 
 Worker evidence: Audit/mac-worker-appearance-backup-summary.json.
 Report SHA25612bb1b25cdb1e117c8faa1ad6e5d14cf4b7aefcb792221508f9dfc5abfede9e2.
