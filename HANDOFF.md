@@ -1,6 +1,39 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: fixed worker recovery rule regresses on dog baseline; inspect previews
+## Current work: dog previews confirm false recovery; rule rejected for promotion
+
+Evidence: Audit/dog-confirmed-recovery-visual-review.json. All ten supplied
+triptychs52,53,54,60,75,84,85,86,247,251 inspected; original TIFF hashes recorded.
+Linked report SHA25662cc7c87f35f421b50a595f9dc34c97689ffb1da54e497a8b5ec947c002d0bc1.
+
+52/53 pending search masks broad blurred upper-image non-dog content. At54
+that wrong region is accepted.60/75 ordinary propagation continues masking
+background/occluding content while dog is hidden; middle search panel is blank
+because no search call occurred.84 still masks upper-right background while
+pizza box/small brown part begin emerging left of pillar. Do not claim every
+frame54-84 has zero visible dog pixels, or label the blurred region as a specific
+physical object without evidence.
+
+85 normal correctly masks returning head but recovery is empty;86 both mask dog.
+247 normal already masks dog fragment at left edge, recovery is suppressed.
+251 accepted search/recovery covers vehicle wheel/wheel arch as well as dog
+fragment, whereas normal remains on dog. This SECOND acceptance also fails
+visually; it is not merely a four-frame recovery delay.
+
+Conclusion: fixed worker-derived confidence/overlap rule does not generalize.
+Reject promotion; current app and model packages unchanged. Stable masks with
+high predicted IoU did not establish identity. Do not fix by arbitrarily raising
+thresholds against this dog clip. Both worker and dog are now development evidence.
+
+Next proposed direction (NOT IMPLEMENTED): preserve ordinary tracking independently
+and measure recovery-candidate consistency with trusted pre-occlusion subject
+evidence on BOTH clips before choosing a gate. Candidate pointer/feature similarity
+is an unvalidated diagnostic signal, not calibrated identity probability.
+Avoid overwriting accepted history with speculative recovery. Any new rule needs
+these regression cases plus an independent clip. No new Mac run requested yet.
+Assistant only performed offline image/JSON review; no tests/builds/inference.
+
+## Prior step: fixed worker recovery rule regresses on dog baseline; inspect previews
 
 Evidence: Audit/mac-dog-confirmed-recovery-summary.json.
 Uploaded recovery report SHA256
