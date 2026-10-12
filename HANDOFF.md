@@ -1,6 +1,69 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: appearance diagnostics reviewed; useful signals but no universal identity gate
+## Current work: baseline-first appearance backup diagnostic prepared; Mac replays pending
+
+New Temporal/diagnose_occlusion_backup.py implements one FIXED exploratory rule,
+informed by the sparse worker AND dog measurements. No production/app/model edits.
+No inference/tests/builds/exports run by assistant; AST/API/state-flow and whitespace
+review only. Native runtime still needs user Mac execution.
+
+Normal GPU state always advances unchanged and every prior observation/comparison
+must reproduce exactly. Present means positive object score plus nonempty low/high
+masks. Present normal output always wins, with all seven output tensors checked
+unchanged; it immediately discards pending search and any backup. This priority is
+not an identity verdict: baseline identity switches remain possible.
+
+Only after three consecutive normal-absent frames and all fixed reference frames
+have occurred, search with original conditioning only. Candidate must be present,
+predictedIoU>=.8, pooled encoder cosine>=.8 AND RGB histogram intersection>=.5
+against the SAME anchor. Require3 consecutive qualifying masks with IoU>=.5 and
+at least one common qualifying anchor across the whole streak. Pointer cosine
+and area are logged but not gates. No threshold CLI sweep in this version.
+
+On acceptance, deep-copy pre-commit normal state, clear recent/pointer banks only,
+preserve original conditioning and actual frame clock/PTS, and commit CURRENT
+candidate in separate backup state. Pending candidates never commit. Subsequent
+backup propagation while normal absent must meet presence, predictedIoU and both
+appearance thresholds against one of its acceptance anchors. No overlap gate
+during continuation. Failure discards backup before display/commit, then restarts
+search on same frame; new candidates still require3-frame confirmation.
+
+Normal state is checked unmodified by side work before its sole commit each frame.
+Conditioning tensors checked in both states. Search must exactly reproduce linked
+memory-probe control each time. Anchors are recomputed from earlier normal frames
+and their complete descriptors/observations must exactly match reviewed appearance
+report. Appearance helper script hash must match. No future image features, current
+frame identity labels or later reference updates enter decisions. Previously chosen
+anchor indices are an offline diagnostic convenience, not automatic app selection.
+
+Runs automatically cover the ENTIRE archived comparison (worker276, dog600);
+require full memory-probe controls and linked completed appearance report. Original
+reference num_frames unchanged. Source, package, fixture, report hashes and decoded
+pixels/PTS checked. Fresh output directories. Report logs all decisions, per-anchor
+metrics, streaks, backup commits, baseline preservation and display intervals.
+Save every search/backup frame plus display transitions/references. A rejection and
+new search on same frame yields4 panels to retain both raw outputs.
+
+User Mac worker command uses appearance-report
+.temporal-runs/worker-identity-signals-01/report.json; comparison
+.temporal-runs/worker-occlusion-trim-01/report.json; memory-probe
+.temporal-runs/worker-memory-probe-01/report.json; video assets/worker-occlusion.mov;
+output .temporal-runs/worker-appearance-backup-01.
+Dog uses dog-identity-signals-01/report.json, dog-pillar-comparison-01/report.json,
+dog-pillar-memory-probe-01/report.json, assets/dog-occlusion.mov;
+output .temporal-runs/dog-appearance-backup-01.
+Both exact fixture DeviceValidationData/memoryfp16projection and phone-report
+Audit/iphone17pro-worker-occlusion-report.json for package identity only.
+Use project cd, per-shell Xcode-beta DEVELOPER_DIR; run sequentially with &&.
+Ask for both report.json files first; then select previews from new intervals.
+
+Success is NOT yet claimed. Worker should retain useful recovery; dog full absence
+intervals may reveal uninspected false positives. Small/partial true backup masks
+may fail the conservative continuation gate. Both clips are development evidence.
+Any useful result needs visual review of all backup intervals and a separate holdout
+before promotion. Baseline-first alone cannot prevent wrong masks while absent.
+
+## Prior step: appearance diagnostics reviewed; useful signals but no universal identity gate
 
 Evidence: Audit/occlusion-identity-signals-review.json includes per-anchor values,
 source/report hashes and six reference-image hashes. Worker report SHA256
