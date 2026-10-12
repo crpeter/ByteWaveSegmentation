@@ -1,6 +1,57 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: worker backup previews reviewed; continuation causes false rejection
+## Current work: continuation quality-cutoff ablation prepared; Mac runs pending
+
+Updated Temporal/diagnose_occlusion_backup.py adds explicit --continuation-policy
+appearance-only, with quality-and-appearance retained as default. This removes
+ONLY predictedIoU>=.8 from continuation of an already accepted backup. Acquisition
+still requires presence, predictedIoU>=.8, encoder>=.8 AND colour>=.5 on the same
+anchor, three consecutive frames, overlap>=.5, common anchor. Continuation still
+requires positive presence/nonempty masks and both appearance thresholds against
+one acceptance anchor. Normal present output always wins. No stale-mask holding,
+new model export, weights, app change, reference update or relaxed parity gates.
+The rule records continuationPredictedIoUUsedAsGate and distinct v2 version.
+
+Source inspection: owned.selected_masks takes max of upstream _forward_sam_heads
+IoU estimates; pinned sam2_base.py documents estimated mask IoU separately from
+object-score logits, selects argmax mask and uses object-score sign for absence.
+This is an estimate, not identity probability or measured overlap. No output wiring
+change is proposed. The cause of the numerical score drop itself is not proven.
+Source: facebookresearch/EdgeTAM at7711e012a30a2402c4eaab637bdb00a521302c91,
+sam2/modeling/sam2_base.py. Existing owned.py unchanged.
+
+Appearance-only requires --backup-control pointing to reviewed original full
+appearance-backup report. Verify original rule/script SHA e821c6ac..., completed
+controls, source/model/reference hashes, full ordered rows. Normal observation/
+clock matches that control every frame; raw backup/search observations and anchor
+metrics match until first decision difference. At that first difference only the
+low-quality-but-present appearance-matching continuation may change; old fresh
+search is skipped because backup continues. Later feedback histories are expected
+to differ and are NOT required to reproduce old backup. All normal/comparison,
+conditioning-only probe, reference descriptor and model/pixel controls still apply.
+Reports include firstPolicyDivergenceFrame, backupControlPrefixFrames (includes
+first divergent-decision frame whose raw continuation is matched) and displayed
+continuation frames below original acquisition-quality cutoff.
+
+New Temporal/run_occlusion_continuation_pair.py checks both cases' input paths,
+runs worker276 then dog600 using same Python, and collects report.json files into
+.temporal-runs/share/continuation-quality-01-reports.zip and reveals in Finder.
+Default output .temporal-runs/continuation-quality-01/{worker,dog}; refuse existing
+output/ZIP; optional fresh --output inside .temporal-runs. Packages available
+partial reports even if a run errors. No cleanup/deletion or permissions changes.
+Use explicit project cd, export DEVELOPER_DIR=/Applications/Xcode-beta.app/Contents/Developer,
+git pull --ff-only, then .venv-temporal/bin/python Temporal/run_occlusion_continuation_pair.py.
+Both existing appearance-backup-01 reports are controls. No manual folder hunting.
+
+Assistant performed static source/API/control-flow and ast.parse checks only.
+No model inference, tests, builds, conversion or benchmark. User Mac execution
+pending. Expected question: does this remove early worker flicker while dog remains
+unchanged? Do NOT claim it will fix edge cutoff; appearance thresholds deliberately
+unchanged and feedback may alter outcomes. Review all new accepted/continuation
+intervals; both clips remain development evidence and independent holdout required.
+
+
+## Prior step: worker backup previews reviewed; continuation causes false rejection
 
 Evidence: Audit/worker-appearance-backup-visual-review.json records52 PNG hashes,
 zip/report hashes, review findings and displayed-mask bounds.

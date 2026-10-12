@@ -47,17 +47,19 @@ RULE = {
     'normalPresentAlwaysWins': True}
 
 
-def assess(features, output, image, anchors):
+def assess(features, output, image, anchors, *, require_quality=True):
     value = describe(features, output, image)
     comparisons = {str(index): metrics(value, anchor) for index, anchor in anchors.items()}
     matches = {index for index in anchors if comparisons[str(index)] is not None
         and comparisons[str(index)]['pooledEncoderCosine'] is not None
         and comparisons[str(index)]['pooledEncoderCosine'] >= RULE['minimumPooledEncoderCosine']
         and comparisons[str(index)]['rgbHistogramIntersection'] >= RULE['minimumRGBHistogramIntersection']}
-    qualified = present(output) and output['best_iou'].item() >= RULE['minimumPredictedIoU']
+    quality_passed = output['best_iou'].item() >= RULE['minimumPredictedIoU']
+    qualified = present(output) and (quality_passed or not require_quality)
     return {'present': present(output), 'predictedIoU': float(output['best_iou'].item()),
             'againstAnchors': comparisons, 'appearanceMatchingAnchors': sorted(matches),
-            'qualifyingAnchors': sorted(matches) if qualified else []}
+            'qualifyingAnchors': sorted(matches) if qualified else [],
+            'predictedIoUPassed': bool(quality_passed), 'predictedIoUUsedAsGate': require_quality}
 
 
 def condition_hashes(state):
@@ -91,6 +93,10 @@ def summarize(report):
         'normalPresentOutputsPreserved': all(row['normalOutputPreserved'] for row in rows),
         'backupDisplayIntervals': intervals(rows, lambda row: row['displaySource'] == 'backup'),
         'emptyDisplayIntervals': intervals(rows, lambda row: row['displaySource'] == 'empty'),
+        'backupFramesBelowAcquisitionQuality': [row['index'] for row in rows
+            if row['displaySource'] == 'backup' and row.get('continuation', {}).get('predictedIoUPassed') is False],
+        'backupControlPrefixFrames': report.get('backupControlPrefixFrames', 0),
+        'firstPolicyDivergenceFrame': report.get('firstPolicyDivergenceFrame'),
         'rejectedNonemptySearchFrames': [row['index'] for row in rows
             if row.get('search', {}).get('present') and not row['recoveryAccepted']],
         'interpretationAllowed': bool(report['completed'] and report.get('conditioningUnchangedAtEnd')
@@ -105,12 +111,20 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ('upstream', 'video', 'phone-report', 'fixture', 'comparison', 'memory-probe', 'appearance-report', 'output'):
         parser.add_argument('--' + name, type=Path, required=True)
+    parser.add_argument('--continuation-policy', choices=('quality-and-appearance', 'appearance-only'),
+                        default='quality-and-appearance')
+    parser.add_argument('--backup-control', type=Path,
+                        help='Completed original appearance-backup report; required for appearance-only.')
     args = parser.parse_args()
     if platform.system() != 'Darwin':
         parser.error('Run locally on the Mac.')
     prior = json.loads(args.comparison.read_text())
     probe = json.loads(args.memory_probe.read_text())
     appearance = json.loads(args.appearance_report.read_text())
+    relaxed_continuation = args.continuation_policy == 'appearance-only'
+    if relaxed_continuation and args.backup_control is None:
+        parser.error('Appearance-only continuation requires the completed original --backup-control.')
+    backup_control = json.loads(args.backup_control.read_text()) if args.backup_control else None
     if (prior.get('contract') != 'bytewave.occlusion-comparison.diagnostic.v1'
             or prior.get('completed') is not True or prior.get('previewOnly') is not False
             or prior.get('inferencePerformed') is not True
@@ -148,6 +162,26 @@ def main():
     for key, value in {**identity, 'pointNormalizedTopLeft': args.point}.items():
         if any(source.get(key) != value for source in (prior, probe, appearance)):
             raise ValueError(f'Report identity mismatch: {key}')
+    if backup_control is not None:
+        control_rows = backup_control.get('frames', [])
+        if (backup_control.get('contract') != 'bytewave.occlusion-backup.diagnostic.v1'
+                or backup_control.get('completed') is not True
+                or backup_control.get('summary', {}).get('interpretationAllowed') is not True
+                or backup_control.get('rule') != RULE
+                or backup_control.get('diagnosticScriptSHA256') !=
+                    'e821c6ac1dd4887590aab7809e48efb58c5c2fd3b39bfdb7ca99b72c9aa68377'
+                or len(control_rows) != total
+                or [row['index'] for row in control_rows] != list(range(total))
+                or not all(row.get('rowCompleted') and row.get('baselineReproduced')
+                    and row.get('normalOutputPreserved') for row in control_rows)):
+            parser.error('Backup control must be a complete original v1 replay with reproduced controls.')
+        control_identity = {**identity, 'pointNormalizedTopLeft': args.point,
+            'referenceNumFrames': total, 'anchorFrames': anchor_frames,
+            'sourceComparisonSHA256': occlusion.sha(args.comparison),
+            'sourceMemoryProbeSHA256': occlusion.sha(args.memory_probe),
+            'sourceAppearanceReportSHA256': occlusion.sha(args.appearance_report)}
+        if any(backup_control.get(key) != value for key, value in control_identity.items()):
+            parser.error('Backup control source, reference or package identity differs.')
     torch.set_num_threads(1)
     torch.set_num_interop_threads(1)
     args.output.mkdir(parents=True, exist_ok=False)
@@ -162,11 +196,17 @@ def main():
         'sourceAppearanceReportSHA256': occlusion.sha(args.appearance_report),
         'pointNormalizedTopLeft': args.point, 'referenceNumFrames': total,
         'framesToReplay': total, 'anchorFrames': anchor_frames, 'computeUnits': 'CPU_AND_GPU',
-        'rule': RULE,
+        'rule': {**RULE,
+            'version': 'baseline-first-appearance-continuation.v2' if relaxed_continuation else RULE['version'],
+            'continuationPredictedIoUUsedAsGate': not relaxed_continuation},
+        'continuationPolicyName': args.continuation_policy,
+        'backupControlSHA256': occlusion.sha(args.backup_control) if backup_control else None,
+        'backupControlPrefixFrames': 0, 'firstPolicyDivergenceFrame': None,
+        'experimentChange': 'Only remove predictedIoU cutoff during accepted-backup continuation. Acquisition, presence, appearance thresholds and baseline priority unchanged.' if relaxed_continuation else 'Original quality-and-appearance continuation.',
         'ruleLimit': 'Exploratory thresholds chosen after sparse worker AND dog appearance review. These clips are development evidence. Stable wrong regions can still pass; small correct subjects can fail. Baseline priority protects only baseline-present frames and does not prove identity.',
         'referencePolicy': 'Recompute fixed manually selected earlier normal descriptors and require exact reproduction of reviewed appearance report. No future image features or later updates enter references. Disable backup until all references have been observed.',
         'memoryPolicy': 'Normal state commits normal output every frame, never backup. A confirmed candidate gets a deep copy of the current pre-commit normal clock/conditioning with recent banks cleared, then current candidate committed at actual PTS. Backup propagates only while normal is absent; failed backup is discarded. Normal return immediately discards backup and pending streak.',
-        'continuationPolicy': 'Each backup propagation must be present, predictedIoU>=.8, and meet encoder>=.8 AND colour>=.5 against one of its acceptance anchors. Failure discards it before display/commit and restarts search on that frame. No overlap gate on continuation.',
+        'continuationPolicy': ('Each backup propagation must be present and meet encoder>=.8 AND colour>=.5 against one of its acceptance anchors. PredictedIoU is logged but is not a continuation gate. ' if relaxed_continuation else 'Each backup propagation must be present, predictedIoU>=.8, and meet encoder>=.8 AND colour>=.5 against one of its acceptance anchors. ') + 'Failure discards it before display/commit and restarts search on that frame. No overlap gate on continuation. No stale-mask holding.',
         'controlMeaning': 'Every baseline reproduces prior observations/comparison. Every search reproduces archived conditioning-only probe. Recomputed anchors reproduce appearance vectors exactly. Search candidates never alter normal history. Old reports are controls/reference definitions, not current-frame identity labels.',
         'policy': {'maskIoUMinimum': .95, 'cosineMinimum': .99, 'float32Atol': .001, 'float32Rtol': .001},
         'versions': {name: importlib.metadata.version(name) for name in ('torch', 'coremltools', 'numpy', 'av', 'Pillow')},
@@ -276,7 +316,8 @@ def main():
                             raise ValueError('Backup frame clock mismatch')
                         backup_output = call('Propagator', {**features, **backup_state.pack(timestamp)}, 'backup propagation')
                         row['streams']['backupOrdinary'] = occlusion.observation(backup_output)
-                        row['continuation'] = assess(features, backup_output, image, anchors)
+                        row['continuation'] = assess(features, backup_output, image, anchors,
+                                                     require_quality=not relaxed_continuation)
                         matches = set(row['continuation']['qualifyingAnchors']) & locked_anchors
                         row['continuation']['passed'] = bool(matches)
                         if matches:
@@ -354,6 +395,43 @@ def main():
                 row['streams']['displayed'] = occlusion.observation(selected) if selected is not None else None
                 if selected is not None:
                     row['comparisons']['displayedAgainstOriginal'] = v.compare(original, selected, coreml=True)
+                if backup_control is not None:
+                    control = control_rows[index]
+                    if (control['imageSHA256'] != digest
+                            or control['ptsNumerator'] != timestamp.numerator
+                            or control['ptsDenominator'] != timestamp.denominator
+                            or control['streams']['normalGPU'] != row['streams']['normalGPU']
+                            or control['normalStateAfter'] != row['normalStateAfter']):
+                        raise ValueError(f'Backup control normal history differs at {index}')
+                    # Once a decision differs, feedback histories legitimately differ.
+                    # Before then, compare raw observations/metrics, not new log fields.
+                    if report['firstPolicyDivergenceFrame'] is None:
+                        skips_old_search = (relaxed_continuation
+                            and row.get('continuation', {}).get('passed') is True
+                            and row['continuation']['predictedIoUPassed'] is False
+                            and control.get('continuation', {}).get('passed') is False)
+                        for name in ('backupOrdinary', 'searchCandidate'):
+                            if name == 'searchCandidate' and skips_old_search:
+                                continue
+                            if control['streams'].get(name) != row['streams'].get(name):
+                                raise ValueError(f'Backup control raw output differs before policy divergence at {index}')
+                        for name in ('search', 'continuation'):
+                            if name == 'search' and skips_old_search:
+                                continue
+                            for key in ('present', 'predictedIoU', 'againstAnchors', 'appearanceMatchingAnchors'):
+                                if control.get(name, {}).get(key) != row.get(name, {}).get(key):
+                                    raise ValueError(f'Backup control appearance differs before policy divergence at {index}')
+                        report['backupControlPrefixFrames'] += 1
+                        differs = (control['displaySource'] != display_source
+                            or control['recoveryAccepted'] != row['recoveryAccepted']
+                            or control['streams']['displayed'] != row['streams']['displayed'])
+                        if differs:
+                            if not (relaxed_continuation and row.get('continuation', {}).get('passed')
+                                    and row['continuation']['predictedIoUPassed'] is False
+                                    and control.get('continuation', {}).get('passed') is False):
+                                raise ValueError(f'Unexpected first policy divergence at {index}')
+                            report['firstPolicyDivergenceFrame'] = index
+                    row['backupControlNormalReproduced'] = True
                 # Save all backup/search frames, transitions and earlier references.
                 if candidate is not None or backup_output is not None or display_source != previous_display or index in anchor_frames:
                     relative = f'previews/frame-{index:04d}.png'
@@ -388,3 +466,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
