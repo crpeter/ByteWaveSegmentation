@@ -1,6 +1,48 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: dog previews confirm false recovery; rule rejected for promotion
+## Current work: appearance-signal diagnostic prepared; user Mac runs pending
+
+New Temporal/diagnose_occlusion_identity.py measures candidate/anchor similarities
+without any recovery decisions. No app/model/gate changes. Only normal GPU outputs
+commit to TemporalState; original PyTorch reference has independent history.
+Conditioning-only side calls are discarded. Baseline observations/comparisons must
+exactly reproduce completed comparison on every frame, and every measured search
+must reproduce linked completed memory-probe observations/comparisons.
+
+Explicit earlier anchor frames must precede the probe snapshot. Save anchor
+previews and vectors for review; these are normal predictions, NOT certified
+identity labels. Descriptors: object-pointer cosine; raw 64x64 encoder map pooled
+by binary high-mask area coverage over 16x16 image tiles; normalized joint RGB
+8x8x8 histogram intersection. Also mask area ratio/XYXY/feature coverage.
+Absent output gives null descriptor, zero norms give null cosine. Context,
+illumination, tiny masks, partial views and same-model coupling are limitations.
+No recommended thresholds, acceptance, automatic reference updates or re-ID claim.
+
+Suggested worker run: video assets/worker-occlusion.mov; comparison
+.temporal-runs/worker-occlusion-trim-01/report.json; memory probe
+.temporal-runs/worker-memory-probe-01/report.json; anchors0,30,60;
+inspect112,115,148,150,154,160,167,168,169,175,205,216,217;
+output .temporal-runs/worker-identity-signals-01. Replays218frames while retaining
+full original reference num_frames276.
+
+Suggested dog run: video assets/dog-occlusion.mov; comparison
+.temporal-runs/dog-pillar-comparison-01/report.json; memory probe
+.temporal-runs/dog-pillar-memory-probe-01/report.json; anchors0,15,30;
+inspect48,51,52,53,54,60,75,84,85,86,241,247,248,249,250,251,255;
+output .temporal-runs/dog-identity-signals-01. Replays256frames while retaining
+full original reference num_frames600. Both use exact memoryfp16projection fixture
+and Audit/iphone17pro-worker-occlusion-report.json for package identity only.
+All source/model/fixture hashes and decoded pixels/PTS checked. Fresh output
+directories required. Script hash, versions and source report hashes recorded.
+
+Ask for both report.json files and anchor previews0/30/60 worker,0/15/30 dog.
+Inspect anchor quality before drawing identity conclusions. Both clips now
+development evidence; any later rule requires independent holdout validation.
+No inference/tests/builds/conversion performed here. AST, API and source-flow
+review only; native runtime remains untested. User commands must include project
+cd and per-shell DEVELOPER_DIR Xcode-beta, never global xcode-select.
+
+## Prior step: dog previews confirm false recovery; rule rejected for promotion
 
 Evidence: Audit/dog-confirmed-recovery-visual-review.json. All ten supplied
 triptychs52,53,54,60,75,84,85,86,247,251 inspected; original TIFF hashes recorded.
