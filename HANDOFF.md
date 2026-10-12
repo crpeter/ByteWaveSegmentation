@@ -1,6 +1,38 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: dog appearance-backup replay reviewed; worker report pending
+## Current work: both appearance-backup reports reviewed; worker previews pending
+
+Worker evidence: Audit/mac-worker-appearance-backup-summary.json.
+Report SHA25612bb1b25cdb1e117c8faa1ad6e5d14cf4b7aefcb792221508f9dfc5abfede9e2.
+Completed276 ordered rows. All baseline/search controls reproduce; all113 present
+normal outputs preserved; normal clock advances once/frame; conditioning and
+reference descriptors unchanged. Same fixed rule/script as dog.
+
+Backup displays37 frames:169,172,175..209. Accepts169 after167..169 confirmation,
+rejects170; accepts172, rejects173; accepts175, holds through209, rejects210.
+Thus gaps170..171 and173..174 introduce flicker; not ready for promotion.
+At170 and173 appearance matches ALL3 anchors, but continuation predictedIoU
+.00100837 and .25776285 fail .8. These are quality-head rejections, not appearance
+mismatches. Fresh searches on those frames qualify but restart confirmation.
+At210 continuation predictedIoU .912562 passes, but maximum encoder cosine
+.796691 falls below .8; colour still passes anchor60. Fresh search also fails
+encoder (.797863 maximum). Do not lower thresholds before reviewing actual masks.
+Normal remains absent throughout these intervals; correct worker identity is
+not established by this report's nonempty masks alone.
+
+Dog results below remain valid: no backup acceptances, baseline present frames and
+return timing preserved. Both clips informed thresholds, so neither is a holdout.
+Next ask for worker previews148 and167..217 inclusive (all37 displayed backup
+frames plus confirmation/rejection/exit context). Provide ONE copy/paste command
+that packages report and exact previews into .temporal-runs/share/
+worker-appearance-review.zip and reveals it in Finder. User is overwhelmed by
+many experiment folders; identify uploads by contents, and consolidate future
+handoffs into clearly named share bundles instead of asking them to navigate
+multiple directories. Do not rerun either completed experiment.
+No production/app/model changes; offline JSON inspection only.
+
+
+## Prior step: dog appearance-backup replay reviewed
 
 Evidence: Audit/mac-dog-appearance-backup-summary.json. User report SHA256
 dadee4d83f681bf59a2bd178966ee3eed2b8177d7ce3206755765afbaea0330e.
