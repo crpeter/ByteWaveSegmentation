@@ -1,0 +1,621 @@
+{
+  "scope": "Offline paired continuation-cutoff report review; no inference or new visual review.",
+  "zipSHA256": "3eefaceca70829bacc2599a6564690b0e9dcba6a3dea8d8f2354608bceb45ab2",
+  "runs": {
+    "worker": {
+      "contract": "bytewave.occlusion-backup.diagnostic.v1",
+      "completed": true,
+      "readyForDeviceValidation": false,
+      "diagnosticScriptSHA256": "a1b72d75ee8a2a0c5c379960ee4c9998cc67ff94e13a21d7039769f45d877741",
+      "backupControlSHA256": "12bb1b25cdb1e117c8faa1ad6e5d14cf4b7aefcb792221508f9dfc5abfede9e2",
+      "sourceVideoSHA256": "a8a9d3fd5b85fbdf2770027353d6d19971845c13f83ffdcc6058ae5e6a0b1833",
+      "fixtureSHA256": "760dd45c6eed6972f434dd324920b74dbfa262fb6648983606c2872581430a61",
+      "sourceComparisonSHA256": "29ff27150c14715aca3375a82e9336eb3ff9628ae523b88bcfd2cc16a5d67fd3",
+      "sourceMemoryProbeSHA256": "9ed19a4ecad97e5160d7b833cfdcb65a7ffe784a04eafdc147c1641880c32024",
+      "sourceAppearanceReportSHA256": "f994a29da75e68b32fb3cbdf40f0f7e0c68dd891306366250afa1088261b306b",
+      "rule": {
+        "version": "baseline-first-appearance-continuation.v2",
+        "missingFrames": 3,
+        "confirmationFrames": 3,
+        "minimumPredictedIoU": 0.8,
+        "minimumConsecutiveMaskIoU": 0.5,
+        "minimumPooledEncoderCosine": 0.8,
+        "minimumRGBHistogramIntersection": 0.5,
+        "sameAnchorMustPassBothAppearanceChecks": true,
+        "commonAnchorRequiredAcrossConfirmationStreak": true,
+        "continuationMustMatchAnAcceptanceAnchor": true,
+        "pointerCosineUsedAsGate": false,
+        "normalPresentAlwaysWins": true,
+        "continuationPredictedIoUUsedAsGate": false
+      },
+      "conditioningUnchangedAtEnd": true,
+      "anchorDescriptorsReproduced": true,
+      "summary": {
+        "framesReplayed": 276,
+        "events": [
+          {
+            "type": "searchStarted",
+            "frame": 114,
+            "ptsSeconds": 3.8016666666666667
+          },
+          {
+            "type": "normalResumed",
+            "frame": 117,
+            "ptsSeconds": 3.901666666666667,
+            "discardedBackup": false
+          },
+          {
+            "type": "searchStarted",
+            "frame": 120,
+            "ptsSeconds": 4.001666666666667
+          },
+          {
+            "type": "backupAccepted",
+            "frame": 169,
+            "ptsSeconds": 5.635,
+            "confirmationStartFrame": 167,
+            "matchingAnchors": [
+              0,
+              30,
+              60
+            ]
+          },
+          {
+            "type": "backupRejected",
+            "frame": 210,
+            "ptsSeconds": 7.003333333333333
+          },
+          {
+            "type": "searchStarted",
+            "frame": 210,
+            "ptsSeconds": 7.003333333333333
+          }
+        ],
+        "baselineMismatchFrames": [],
+        "probeMismatchFrames": [],
+        "normalPresentFrames": 113,
+        "normalPresentOutputsPreserved": true,
+        "backupDisplayIntervals": [
+          {
+            "firstFrame": 169,
+            "lastFrame": 209,
+            "firstPTSSeconds": 5.635,
+            "lastPTSSeconds": 6.97,
+            "frames": 41
+          }
+        ],
+        "emptyDisplayIntervals": [
+          {
+            "firstFrame": 112,
+            "lastFrame": 116,
+            "firstPTSSeconds": 3.735,
+            "lastPTSSeconds": 3.868333333333333,
+            "frames": 5
+          },
+          {
+            "firstFrame": 118,
+            "lastFrame": 168,
+            "firstPTSSeconds": 3.935,
+            "lastPTSSeconds": 5.601666666666667,
+            "frames": 51
+          },
+          {
+            "firstFrame": 210,
+            "lastFrame": 275,
+            "firstPTSSeconds": 7.003333333333333,
+            "lastPTSSeconds": 9.17,
+            "frames": 66
+          }
+        ],
+        "backupFramesBelowAcquisitionQuality": [
+          170
+        ],
+        "backupControlPrefixFrames": 171,
+        "firstPolicyDivergenceFrame": 170,
+        "rejectedNonemptySearchFrames": [
+          148,
+          150,
+          154,
+          155,
+          156,
+          157,
+          158,
+          159,
+          160,
+          161,
+          162,
+          163,
+          164,
+          165,
+          166,
+          167,
+          168,
+          210,
+          211,
+          212,
+          213,
+          214
+        ],
+        "interpretationAllowed": true,
+        "qualityMeaning": "Controls and normal-output preservation are not identity validation. Inspect every backup interval and rejection around visible return. Thresholds were informed by both clips; an independent clip is still required."
+      },
+      "reportSHA256": "8f96e8dfdf79cb7f9b406cdf123160db342486fbb1a2180de93ec10b09c48c9c",
+      "addedDisplayedFrames": [
+        170,
+        171,
+        173,
+        174
+      ],
+      "removedDisplayedFrames": [],
+      "allNormalRowsAndComparisonsReproduced": true,
+      "decisionFrames": {
+        "170": {
+          "displaySource": "backup",
+          "streams": {
+            "normalGPU": {
+              "lowMaskEmpty": true,
+              "highMaskEmpty": true,
+              "foregroundFraction": 0.0,
+              "objectScore": -1.1982421875,
+              "predictedIoU": 1.6267887644610957e-12
+            },
+            "backupOrdinary": {
+              "lowMaskEmpty": false,
+              "highMaskEmpty": false,
+              "foregroundFraction": 0.001495361328125,
+              "objectScore": 0.0092620849609375,
+              "predictedIoU": 0.0010083718225359917
+            },
+            "displayed": {
+              "lowMaskEmpty": false,
+              "highMaskEmpty": false,
+              "foregroundFraction": 0.001495361328125,
+              "objectScore": 0.0092620849609375,
+              "predictedIoU": 0.0010083718225359917
+            }
+          },
+          "continuation": {
+            "present": true,
+            "predictedIoU": 0.0010083718225359917,
+            "againstAnchors": {
+              "0": {
+                "pointerCosine": 0.6635464137729372,
+                "pooledEncoderCosine": 0.873478759078346,
+                "rgbHistogramIntersection": 0.673036505318977,
+                "highMaskAreaRatio": 1.0427350427350428
+              },
+              "30": {
+                "pointerCosine": 0.5975479757795895,
+                "pooledEncoderCosine": 0.8889782151522294,
+                "rgbHistogramIntersection": 0.6519993287150831,
+                "highMaskAreaRatio": 0.9956057752667922
+              },
+              "60": {
+                "pointerCosine": 0.5347518100458036,
+                "pooledEncoderCosine": 0.8523296832176231,
+                "rgbHistogramIntersection": 0.8304383788254757,
+                "highMaskAreaRatio": 1.3118279569892473
+              }
+            },
+            "appearanceMatchingAnchors": [
+              0,
+              30,
+              60
+            ],
+            "qualifyingAnchors": [
+              0,
+              30,
+              60
+            ],
+            "predictedIoUPassed": false,
+            "predictedIoUUsedAsGate": false,
+            "passed": true
+          },
+          "search": null
+        },
+        "171": {
+          "displaySource": "backup",
+          "streams": {
+            "normalGPU": {
+              "lowMaskEmpty": true,
+              "highMaskEmpty": true,
+              "foregroundFraction": 0.0,
+              "objectScore": -1.4609375,
+              "predictedIoU": 4.114981084270161e-16
+            },
+            "backupOrdinary": {
+              "lowMaskEmpty": false,
+              "highMaskEmpty": false,
+              "foregroundFraction": 0.0016021728515625,
+              "objectScore": 0.283935546875,
+              "predictedIoU": 0.9011415839195251
+            },
+            "displayed": {
+              "lowMaskEmpty": false,
+              "highMaskEmpty": false,
+              "foregroundFraction": 0.0016021728515625,
+              "objectScore": 0.283935546875,
+              "predictedIoU": 0.9011415839195251
+            }
+          },
+          "continuation": {
+            "present": true,
+            "predictedIoU": 0.9011415839195251,
+            "againstAnchors": {
+              "0": {
+                "pointerCosine": 0.742607918081282,
+                "pooledEncoderCosine": 0.8749375830180661,
+                "rgbHistogramIntersection": 0.6865138067061145,
+                "highMaskAreaRatio": 1.0940170940170941
+              },
+              "30": {
+                "pointerCosine": 0.6888444118909639,
+                "pooledEncoderCosine": 0.9036348633202047,
+                "rgbHistogramIntersection": 0.6553883577188663,
+                "highMaskAreaRatio": 1.0445699937225361
+              },
+              "60": {
+                "pointerCosine": 0.7407193475396586,
+                "pooledEncoderCosine": 0.8485532174567256,
+                "rgbHistogramIntersection": 0.8191493486352357,
+                "highMaskAreaRatio": 1.3763440860215055
+              }
+            },
+            "appearanceMatchingAnchors": [
+              0,
+              30,
+              60
+            ],
+            "qualifyingAnchors": [
+              0,
+              30,
+              60
+            ],
+            "predictedIoUPassed": true,
+            "predictedIoUUsedAsGate": false,
+            "passed": true
+          },
+          "search": null
+        },
+        "173": {
+          "displaySource": "backup",
+          "streams": {
+            "normalGPU": {
+              "lowMaskEmpty": true,
+              "highMaskEmpty": true,
+              "foregroundFraction": 0.0,
+              "objectScore": -1.12890625,
+              "predictedIoU": 2.226090188919838e-12
+            },
+            "backupOrdinary": {
+              "lowMaskEmpty": false,
+              "highMaskEmpty": false,
+              "foregroundFraction": 0.001708984375,
+              "objectScore": 0.587890625,
+              "predictedIoU": 0.9010890126228333
+            },
+            "displayed": {
+              "lowMaskEmpty": false,
+              "highMaskEmpty": false,
+              "foregroundFraction": 0.001708984375,
+              "objectScore": 0.587890625,
+              "predictedIoU": 0.9010890126228333
+            }
+          },
+          "continuation": {
+            "present": true,
+            "predictedIoU": 0.9010890126228333,
+            "againstAnchors": {
+              "0": {
+                "pointerCosine": 0.7179861115012347,
+                "pooledEncoderCosine": 0.8989102606706326,
+                "rgbHistogramIntersection": 0.6926957517195883,
+                "highMaskAreaRatio": 1.15844838921762
+              },
+              "30": {
+                "pointerCosine": 0.6581390604176727,
+                "pooledEncoderCosine": 0.9195354500973894,
+                "rgbHistogramIntersection": 0.655262844752831,
+                "highMaskAreaRatio": 1.106089139987445
+              },
+              "60": {
+                "pointerCosine": 0.7603226209088184,
+                "pooledEncoderCosine": 0.871788705643902,
+                "rgbHistogramIntersection": 0.808653693590166,
+                "highMaskAreaRatio": 1.457402812241522
+              }
+            },
+            "appearanceMatchingAnchors": [
+              0,
+              30,
+              60
+            ],
+            "qualifyingAnchors": [
+              0,
+              30,
+              60
+            ],
+            "predictedIoUPassed": true,
+            "predictedIoUUsedAsGate": false,
+            "passed": true
+          },
+          "search": null
+        },
+        "174": {
+          "displaySource": "backup",
+          "streams": {
+            "normalGPU": {
+              "lowMaskEmpty": true,
+              "highMaskEmpty": true,
+              "foregroundFraction": 0.0,
+              "objectScore": -1.69921875,
+              "predictedIoU": 1.3526178868619577e-19
+            },
+            "backupOrdinary": {
+              "lowMaskEmpty": false,
+              "highMaskEmpty": false,
+              "foregroundFraction": 0.0016937255859375,
+              "objectScore": 0.671875,
+              "predictedIoU": 0.8891115188598633
+            },
+            "displayed": {
+              "lowMaskEmpty": false,
+              "highMaskEmpty": false,
+              "foregroundFraction": 0.0016937255859375,
+              "objectScore": 0.671875,
+              "predictedIoU": 0.8891115188598633
+            }
+          },
+          "continuation": {
+            "present": true,
+            "predictedIoU": 0.8891115188598633,
+            "againstAnchors": {
+              "0": {
+                "pointerCosine": 0.7039277650072624,
+                "pooledEncoderCosine": 0.8996116445682836,
+                "rgbHistogramIntersection": 0.6914342753758813,
+                "highMaskAreaRatio": 1.170940170940171
+              },
+              "30": {
+                "pointerCosine": 0.6450976693183391,
+                "pooledEncoderCosine": 0.9439127946336247,
+                "rgbHistogramIntersection": 0.6532834378931125,
+                "highMaskAreaRatio": 1.1180163214061518
+              },
+              "60": {
+                "pointerCosine": 0.7461853741435176,
+                "pooledEncoderCosine": 0.8585743615236342,
+                "rgbHistogramIntersection": 0.8203316971859473,
+                "highMaskAreaRatio": 1.4731182795698925
+              }
+            },
+            "appearanceMatchingAnchors": [
+              0,
+              30,
+              60
+            ],
+            "qualifyingAnchors": [
+              0,
+              30,
+              60
+            ],
+            "predictedIoUPassed": true,
+            "predictedIoUUsedAsGate": false,
+            "passed": true
+          },
+          "search": null
+        },
+        "210": {
+          "displaySource": "empty",
+          "streams": {
+            "normalGPU": {
+              "lowMaskEmpty": true,
+              "highMaskEmpty": true,
+              "foregroundFraction": 0.0,
+              "objectScore": -0.7880859375,
+              "predictedIoU": 1.8731908468794245e-08
+            },
+            "backupOrdinary": {
+              "lowMaskEmpty": false,
+              "highMaskEmpty": false,
+              "foregroundFraction": 0.0009002685546875,
+              "objectScore": 4.69921875,
+              "predictedIoU": 0.9137147068977356
+            },
+            "searchCandidate": {
+              "lowMaskEmpty": false,
+              "highMaskEmpty": false,
+              "foregroundFraction": 0.0008087158203125,
+              "objectScore": 2.087890625,
+              "predictedIoU": 0.9107412099838257
+            },
+            "displayed": null
+          },
+          "continuation": {
+            "present": true,
+            "predictedIoU": 0.9137147068977356,
+            "againstAnchors": {
+              "0": {
+                "pointerCosine": 0.6449360806933118,
+                "pooledEncoderCosine": 0.7669833161956613,
+                "rgbHistogramIntersection": 0.5669824337213285,
+                "highMaskAreaRatio": 0.6068376068376068
+              },
+              "30": {
+                "pointerCosine": 0.7170287844493396,
+                "pooledEncoderCosine": 0.7617127031562047,
+                "rgbHistogramIntersection": 0.4882506687233352,
+                "highMaskAreaRatio": 0.5794099183929693
+              },
+              "60": {
+                "pointerCosine": 0.8765656050619348,
+                "pooledEncoderCosine": 0.7968264686900938,
+                "rgbHistogramIntersection": 0.6844208343526835,
+                "highMaskAreaRatio": 0.7634408602150538
+              }
+            },
+            "appearanceMatchingAnchors": [],
+            "qualifyingAnchors": [],
+            "predictedIoUPassed": true,
+            "predictedIoUUsedAsGate": false,
+            "passed": false
+          },
+          "search": {
+            "present": true,
+            "predictedIoU": 0.9107412099838257,
+            "againstAnchors": {
+              "0": {
+                "pointerCosine": 0.35146088420957244,
+                "pooledEncoderCosine": 0.7712991236203547,
+                "rgbHistogramIntersection": 0.5211429826814442,
+                "highMaskAreaRatio": 0.5351742274819198
+              },
+              "30": {
+                "pointerCosine": 0.26931984830634287,
+                "pooledEncoderCosine": 0.7718026607710193,
+                "rgbHistogramIntersection": 0.43106820225464293,
+                "highMaskAreaRatio": 0.5109855618330195
+              },
+              "60": {
+                "pointerCosine": 0.38872523867299,
+                "pooledEncoderCosine": 0.7978631834251722,
+                "rgbHistogramIntersection": 0.6606420316097736,
+                "highMaskAreaRatio": 0.6732837055417701
+              }
+            },
+            "appearanceMatchingAnchors": [],
+            "qualifyingAnchors": [],
+            "predictedIoUPassed": true,
+            "predictedIoUUsedAsGate": true,
+            "consecutiveMaskIoU": null,
+            "confirmationStreak": 0,
+            "confirmationStartFrame": null,
+            "commonAnchors": []
+          }
+        }
+      }
+    },
+    "dog": {
+      "contract": "bytewave.occlusion-backup.diagnostic.v1",
+      "completed": true,
+      "readyForDeviceValidation": false,
+      "diagnosticScriptSHA256": "a1b72d75ee8a2a0c5c379960ee4c9998cc67ff94e13a21d7039769f45d877741",
+      "backupControlSHA256": "dadee4d83f681bf59a2bd178966ee3eed2b8177d7ce3206755765afbaea0330e",
+      "sourceVideoSHA256": "48df10abcbcd12df835d8f91edcf5fd8863506a40f190a4788e338ce1e460bce",
+      "fixtureSHA256": "760dd45c6eed6972f434dd324920b74dbfa262fb6648983606c2872581430a61",
+      "sourceComparisonSHA256": "f1bd9abde3a424f7c5bbfefff1ed0b40284602470b021a078d8f3c2a20b62102",
+      "sourceMemoryProbeSHA256": "f83406103dfbc5547bd4a6dee5dce691a4f985b8911502d729b0311336126bc1",
+      "sourceAppearanceReportSHA256": "6a96030a69ccb3ccc2656efa3862c7fc725de6ae26f513167f444b2b52dff231",
+      "rule": {
+        "version": "baseline-first-appearance-continuation.v2",
+        "missingFrames": 3,
+        "confirmationFrames": 3,
+        "minimumPredictedIoU": 0.8,
+        "minimumConsecutiveMaskIoU": 0.5,
+        "minimumPooledEncoderCosine": 0.8,
+        "minimumRGBHistogramIntersection": 0.5,
+        "sameAnchorMustPassBothAppearanceChecks": true,
+        "commonAnchorRequiredAcrossConfirmationStreak": true,
+        "continuationMustMatchAnAcceptanceAnchor": true,
+        "pointerCosineUsedAsGate": false,
+        "normalPresentAlwaysWins": true,
+        "continuationPredictedIoUUsedAsGate": false
+      },
+      "conditioningUnchangedAtEnd": true,
+      "anchorDescriptorsReproduced": true,
+      "summary": {
+        "framesReplayed": 600,
+        "events": [
+          {
+            "type": "searchStarted",
+            "frame": 50,
+            "ptsSeconds": 1.6666666666666667
+          },
+          {
+            "type": "normalResumed",
+            "frame": 85,
+            "ptsSeconds": 2.8333333333333335,
+            "discardedBackup": false
+          },
+          {
+            "type": "searchStarted",
+            "frame": 243,
+            "ptsSeconds": 8.1
+          },
+          {
+            "type": "normalResumed",
+            "frame": 247,
+            "ptsSeconds": 8.233333333333333,
+            "discardedBackup": false
+          }
+        ],
+        "baselineMismatchFrames": [],
+        "probeMismatchFrames": [],
+        "normalPresentFrames": 557,
+        "normalPresentOutputsPreserved": true,
+        "backupDisplayIntervals": [],
+        "emptyDisplayIntervals": [
+          {
+            "firstFrame": 48,
+            "lastFrame": 84,
+            "firstPTSSeconds": 1.6,
+            "lastPTSSeconds": 2.8,
+            "frames": 37
+          },
+          {
+            "firstFrame": 241,
+            "lastFrame": 246,
+            "firstPTSSeconds": 8.033333333333333,
+            "lastPTSSeconds": 8.2,
+            "frames": 6
+          }
+        ],
+        "backupFramesBelowAcquisitionQuality": [],
+        "backupControlPrefixFrames": 600,
+        "firstPolicyDivergenceFrame": null,
+        "rejectedNonemptySearchFrames": [
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64,
+          65,
+          66,
+          69,
+          70,
+          71,
+          72,
+          73,
+          74,
+          75,
+          76,
+          77,
+          78,
+          79,
+          80,
+          81,
+          82,
+          83,
+          84
+        ],
+        "interpretationAllowed": true,
+        "qualityMeaning": "Controls and normal-output preservation are not identity validation. Inspect every backup interval and rejection around visible return. Thresholds were informed by both clips; an independent clip is still required."
+      },
+      "reportSHA256": "e501ebe995302b4ce8e9d60a0d486f2c78bb2dc5e740121aa2b7ad06ee4e1e90",
+      "addedDisplayedFrames": [],
+      "removedDisplayedFrames": [],
+      "allNormalRowsAndComparisonsReproduced": true,
+      "allStreamsAndComparisonsMatchPrior": true
+    }
+  },
+  "interpretation": "Worker now displays uninterrupted backup169..209 (41frames), adding170,171,173,174. Dog unchanged with no backup. Only frame170 displayed continuation has predictedIoU below.8; altered feedback explains later changed predictions. Edge cutoff210 remains appearance rejection. Need new previews169..217 before asserting visual identity through altered history. Neither clip is holdout."
+}

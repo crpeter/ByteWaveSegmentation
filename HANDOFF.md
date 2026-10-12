@@ -1,6 +1,44 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: continuation quality-cutoff ablation prepared; Mac runs pending
+## Current work: continuation-cutoff paired reports pass controls; new worker visuals pending
+
+Evidence: Audit/mac-continuation-quality-pair-summary.json.
+ZIP SHA2563eefaceca70829bacc2599a6564690b0e9dcba6a3dea8d8f2354608bceb45ab2.
+Worker report SHA2568f96e8dfdf79cb7f9b406cdf123160db342486fbb1a2180de93ec10b09c48c9c.
+Dog report SHA256e501ebe995302b4ce8e9d60a0d486f2c78bb2dc5e740121aa2b7ad06ee4e1e90.
+Both completed with script SHA256
+a1b72d75ee8a2a0c5c379960ee4c9998cc67ff94e13a21d7039769f45d877741.
+
+Offline full-row review:276 worker/600 dog ordered completed frames, all original
+baseline/probe and backup-control normal rows reproduce, original conditioning/
+anchors preserved. All normal observations, comparisons and state counts match
+prior v1 runs.113 worker and557 dog normal-present outputs preserved.
+
+Worker backup169..209 now one uninterrupted41-frame interval; adds exactly
+170,171,173,174 and removes no displayed frames versus v1. Acceptance still169.
+First decision divergence170 after matching raw control through170 (prefix171
+including frame0). Only170 is displayed below acquisition-quality threshold:
+.00100837. Retaining it changes subsequent memory;171 .901142,173 .901089,
+174 .889112 now pass .8 anyway. Do not describe this as simply filling in stale
+masks or infer unchanged later pixel masks from previous visual review.
+At210 still rejected by appearance: best encoder .796826 below .8; predictedIoU
+.913715 and anchor60 colour .684421 pass. Edge cutoff remains deliberately
+unresolved by this single-variable experiment.
+
+Dog all600 streams, comparisons and display-source decisions exactly match
+previous appearance-backup run; zero backup acceptances, same empty intervals
+48..84/241..246, normal returns85/247. Full600-prefix control, no divergence.
+This establishes development-clip preservation, not general identity validation.
+
+NEXT request new worker previews169..210 inclusive (all41 backup frames plus
+rejection) from .temporal-runs/continuation-quality-01/worker, with report, packaged
+into .temporal-runs/share/continuation-quality-01-worker-previews.zip; reveal with
+open -R. No inference rerun or dog previews needed. Visually assess changed
+feedback history before next policy change or promotion. Both clips development;
+independent holdout still needed. Assistant only inspected JSON, no inference/tests.
+
+
+## Prior step: continuation quality-cutoff ablation prepared
 
 Updated Temporal/diagnose_occlusion_backup.py adds explicit --continuation-policy
 appearance-only, with quality-and-appearance retained as default. This removes
