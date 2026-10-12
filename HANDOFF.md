@@ -1,6 +1,34 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: continuation-cutoff paired reports pass controls; new worker visuals pending
+## Current work: uninterrupted worker continuation visually confirmed; edge cutoff remains
+
+Evidence: Audit/worker-continuation-quality-visual-review.json.
+ZIP SHA25667fa42615c11c0aa58dfc690aab646a8972d94b677c1c058d9cff93f87a75cdf.
+Embedded report matches previously reviewed
+8f96e8dfdf79cb7f9b406cdf123160db342486fbb1a2180de93ec10b09c48c9c.
+All42 PNGs169..210 reviewed, with hashes archived. All41 displayed masks169..209
+stay on selected worker visible upper body/back beneath bucket then toward left
+edge. No observed switch to machine/rubble. Newly retained170/171/173/174 correctly
+follow same visible worker; both previous two-frame gaps removed. Masks remain
+partial silhouettes, not pixel-perfect ground-truth validation. Pixel-difference
+bounds verified every displayed overlay lies in inspected native-resolution crops.
+
+At210 worker still partially visible at left edge. Raw backup/search cover visible
+fragment but displayed output is empty. False rejection remains at appearance
+cosine .796826 <.8; not an actual complete exit. Dog report unchanged as below.
+Removing continuation-only quality gate is a positive DEVELOPMENT result;
+not production/device readiness or general identity proof.
+
+Next focus: investigate continuation under partial visibility/frame-edge clipping
+using current-frame evidence while retaining strict acquisition and normal priority.
+Avoid merely lowering global appearance threshold to fit210. Preserve this version
+as control for any next isolated experiment; full worker/dog replays plus independent
+holdout before promotion. No further files needed for this run. Assistant only
+performed offline image/JSON review, no inference/tests/builds or model/app edits.
+Keep future user commands simple and share-folder ZIP handoffs.
+
+
+## Prior step: continuation-cutoff paired reports pass controls
 
 Evidence: Audit/mac-continuation-quality-pair-summary.json.
 ZIP SHA2563eefaceca70829bacc2599a6564690b0e9dcba6a3dea8d8f2354608bceb45ab2.
