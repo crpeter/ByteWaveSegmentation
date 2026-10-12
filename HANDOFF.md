@@ -1,6 +1,34 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: dog baseline previews reviewed; fixed-rule recovery ready to run
+## Current work: fixed worker recovery rule regresses on dog baseline; inspect previews
+
+Evidence: Audit/mac-dog-confirmed-recovery-summary.json.
+Uploaded recovery report SHA256
+62cc7c87f35f421b50a595f9dc34c97689ffb1da54e497a8b5ec947c002d0bc1.
+Completed 600 frames with exact baseline and available search-probe reproduction;
+conditioning unchanged. interpretationAllowed means controls passed, NOT quality.
+
+Worker settings stayed fixed: missing3, confirmation3, predictedIoU.8, overlap.5.
+Dog search starts50, accepts54 (1.8s) after52-54. Candidate predictedIoU .97504,
+foreground fraction .18047. Recovery then displays continuously54-84 (31 frames)
+while baseline is empty. Prior baseline previews60/75 show dog fully hidden.
+This is a strong false-recovery regression signal; new recovery panels are needed
+to identify what is masked. Do not describe this as earlier successful recovery.
+
+At baseline return85 recovery is empty; it displays again86. Second search243,
+acceptance251 versus baseline return247: four-frame/133ms delay. Ordinary recovery
+outputs247-250 are nonempty but display is suppressed while searching. These are
+two distinct issues: wrong candidate acceptance and withholding ordinary return.
+No threshold adjustment or production integration justified by this report.
+
+Next user opens EXISTING recovery previews52,53,54,60,75,84,85,86,247,251 from
+.temporal-runs/dog-pillar-confirmed-recovery-01/previews.
+Request those panels, not a zip of the entire >500-image directory. No rerun.
+Memory probe report was not separately supplied; its hash is recorded by recovery.
+No new inference/tests/builds/exports by assistant. Only offline JSON analysis.
+Keep current app/models unchanged until visual review and a justified next experiment.
+
+## Prior step: dog baseline previews reviewed; fixed-rule recovery ready to run
 
 Evidence: Audit/dog-pillar-baseline-visual-review.json.
 Uploaded previews(1).zip SHA256
