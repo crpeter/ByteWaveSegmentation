@@ -1,6 +1,48 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: local parts help shoe evidence but still match wrong hands
+## Current work: spatial coherence still admits a wrong hand
+
+Added offline-only Temporal/analyze_saved_mask_geometry.py and recorded results
+in Audit/mac-new-local-geometry-review.json. Uses saved local correspondence
+coordinates and checks all22 NPZ hashes; no model inference, conversion, build,
+training or performance benchmark. Source reportSHA f4103b4b9312e4478ba345f50972c56c044146114d93c1e4d9ab0d5a007cd52a
+is the previously validated local-parts upload.
+
+Exploratory orientation-preserving similarity fit: fixed96 sampled pair hypotheses
+plus weighted least squares, training weighted-median selection, one lower-half
+refit, scale[1/8,8]. Checkerboard two-fold scoring on held-out cells, minimum6 per
+fold;16 deterministic shuffled-reference baselines repeat whole fitting procedure.
+Both majority and fully interior reference sets, every earlier anchor independently.
+No labels used to fit or choose cutoff; no identity cutoff chosen.
+102 measured fits,12 insufficient-cell results (tiny179/235),1632 shuffled fits;
+nine absent frames remain null. Adjacent cells share context, so this is not
+independent validation. Shuffle comparisons are descriptive, not calibrated p values.
+
+Shoe197 has low held-out reference errors1.027/.656/1.200 cells versus shuffled
+4.529/3.307/4.750; genuine210/225 also show coherent structure.
+BUT wrong-hand345 fits anchor60 at .809 reference cells,63.5% within2cells.
+Correct partial165 is4.502/36.3%; clear intended375 is3.458/27.4%.
+Wrong-hand scale .207/.201 compresses to small earlier subject region.
+Normalizing each residual by fitted scale gives query-space median3.900 for
+wrong345, still below correct1655.017 and correct3756.269. No simple error
+cutoff separates these examples. Fully interior references do not fix it:
+wrong345 .748 reference-cell error vs correct1658.194/correct3753.421.
+Reviewed coordinate overlays197/165/345/375 againstanchor60; wrong hand's
+coherent cluster matches subject shorts/leg area. Generic local resemblance
+can be spatially consistent without identifying the same person.
+
+Decision: no normal-mask veto or memory filtering from these signals.
+Stop tuning single-frame local thresholds on this development clip.
+Next investigate sequence-level continuity at wrong acquisition (normal absence
+278..342 then wrong hand343), with correct whole-person initialization and
+unchanged native control. A future proposal must handle genuine disappearance,
+pose/scale change and mixed masks; no claim of solved identity or speed gain.
+No new Mac run requested in this analysis turn; model/app/recovery unchanged.
+Script and compact results committed for reproducibility. Full per-cell inputs
+remain in user's original local-parts ZIP.
+
+
+## Prior step: local parts help shoe evidence but still match wrong hands
 
 Evidence: Audit/mac-new-local-parts-review.json. Completed551-frame decoding
 prefix,22 encoder calls,31 pooled-descriptor reproduction controls. Offline linked
