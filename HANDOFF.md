@@ -1,6 +1,49 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: whole-person start helps extent, identity failures remain
+## Current work: measure identity evidence on saved native masks
+
+Added Temporal/diagnose_saved_mask_identity.py. User runs original CPU image
+encoder only at fixed early references0/30/60 and28 selected later frames.
+Uses saved CHOSEN masks from completed whole-person replay; no tracking rerun,
+no state/filtering/recovery changes, no pointer reconstruction or Core ML export.
+Prior replay contract/completion/all controls, source hash/bytes, pinned upstream/
+checkpoint and replay script hash must match. Decoded image hashes/timestamps
+and chosen-mask binary shape/value/fraction/emptiness checked through frame550.
+Each measured mask hash archived. Fractions/emptiness are consistency checks,
+not proof of pixelwise equality to an otherwise unsaved original tensor.
+
+Descriptors mirror diagnose_occlusion_identity.py: raw backbone_fpn[2] pooled
+by exact16x16 high-mask coverage, joint8x8x8 RGB histogram; box and area reported.
+Pointer metric explicitly omitted because replay did not save pointer tensors.
+Anchors fixed before all measured later frames and saved for visual confirmation;
+no updating after absence, no selecting anchors by later similarity.
+Nonpositive score or empty low/high output yields null descriptor.
+
+Reports raw metrics against every anchor and an OBSERVATIONAL match against
+the existing .8 pooled-encoder / .5 RGB same-anchor clause from backup RULE.
+No new threshold, no output decisions. This is not the complete backup rule,
+not calibrated identity confidence, and CPU features differ from prior GPU work.
+Defaults include genuine partial views197/210/225, mixed277/358, missed-visible300,
+wrong-hand343/545/549 and correct-person375. Labels are sparse review examples,
+not exhaustive or held-out ground truth. Measure false positives AND false rejections
+before any policy edits. No claimed improvement yet.
+
+One fresh output folder and ZIP, reveals Finder even after partial error.
+Source reviewed, AST parsed, saved JSON inspected; no assistant inference/tests.
+Mac runtime pending. User command:
+
+```bash
+cd /Users/petercody/Documents/Projects/ByteWaveSegmentation &&
+export DEVELOPER_DIR="/Applications/Xcode-beta.app/Contents/Developer" &&
+git pull --ff-only &&
+.venv-temporal/bin/python Temporal/diagnose_saved_mask_identity.py --video assets/occlusion-new.mov
+```
+Upload .temporal-runs/share/occlusion-new-identity-evidence-01.zip.
+Then inspect signal separation and partial-body reference failures; do not enable
+normal-output suppression or change tracking history based on one clip alone.
+
+
+## Prior step: whole-person start helps extent, identity failures remain
 
 Evidence: Audit/mac-new-whole-person-replay-review.json. Uploaded replay completed
 590 frames; all initialization controls pass (native assembly and forced-auto
