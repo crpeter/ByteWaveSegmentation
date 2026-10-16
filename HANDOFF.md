@@ -1,6 +1,70 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: extra conditioning reference reviewed; partial benefit, no promotion
+## Current work: backward tracking diagnostic prepared; Mac run pending
+
+Added Temporal/diagnose_backward_reacquisition.py. Source review of pinned
+sam2_base.track_step, _track_step, _use_mask_as_output and memory selection confirms
+reverse=True selects larger source indices for recent memories and past pointers.
+For stride1, relabeling source t to 375-t produces equivalent forward-time input
+selection. Pinned config uses direct-mask input and past-direction pointers.
+
+Visually reviewed saved chosen frame375 again: intended Kool-Aid-shirt man broadly
+covered (head, torso, visible arm/lower body), imperfect outline and occlusion by
+foreground woman. This is a predicted development reference, not a ground-truth
+mask or an automatically selected identity reference. Exact seed PNG SHA:
+8f5c205d46986543443bcefbb951dc6a8b90c4076dabbfa6501c4573703fed9d.
+
+Use that binary mask as an explicit input at frame375. Native track_step builds a
+fresh mask-conditioned object pointer and memory; no pointer from another mask and
+no forward-history tensors are borrowed. Upstream preserves input mask using
+logits -10/+10 and forces presence logit +10 for nonempty input; this is NOT
+measured identity confidence. Compare seed initialization against the same pixels
+and mask at relabeled frame0, checking mask/pointer/memory and exact binary masks.
+
+Reverse rollout advances independently from375 down to165 inclusive (211 frames).
+Keep seed conditioning and commit every reverse output including absence/wrong
+masks. At each propagated frame, compare native reverse=True with reverse history
+reindexed into increasing indices and reverse=False. Only actual reverse results
+advance history; the relabeled calls are same-input indexing controls, not a second
+independent tracker. Existing FP32 tensor-close/exact-binary checks remain intact.
+Read-only attention hook checks actual spatial/pointer budgets: one conditioning
+record plus up to6 recent spatial records and15 recent pointers (maximum7/64).
+Record every control, source index/PTS/hash and per-frame mask agreement.
+
+Compare with hash-verified SAVED chosen forward outputs (no forward inference
+rerun). Exact prior replay SHA5f9378e84e1b78ca19e00574245434e07180065dbcd608bdb34051338156cc56
+and extra-reference report SHAce4496788c83d981cf4c5391b9ae5cd6ecad4b8f1715db4887633715d478c6ce
+bind all211 forward PNGs to previously reproduced native output. Decode0..375
+using existing reader and check image hashes/PTS. Cache only RGB bytes165..375
+temporarily (~633MiB), verify hashes on reload, remove cache after run; ZIP excludes
+cache even on partial failure. Needs about1.2GiB free for cache and outputs.
+
+Every compared frame saves two full1024 overlays and both binary masks. One ZIP
+under .temporal-runs/share, automatically revealed in Finder, including partial
+reports on failure. Review missed visible targets, genuine shoe/partials,
+wrong hands/people and mixed masks together. Empty/empty IoU is null. No merged
+mask, direction-selection cutoff, automatic identity decision or quality claim.
+Different initialization and future evidence change jointly. Later seed comes
+from forward prediction, so direction agreement is correlated evidence.
+
+App, weights, installed fixtures, exporter, numerical gates and frozen recovery
+policies unchanged. Original PyTorch CPU diagnostic only; no speed, device,
+deployment or Core ML reverse-support claim. Assistant checked source/AST and
+existing report/seed/all211 mask hashes only; no inference, runtime model tests,
+conversion, builds or benchmarks. Mac execution still pending.
+
+```bash
+cd /Users/petercody/Documents/Projects/ByteWaveSegmentation &&
+export DEVELOPER_DIR="/Applications/Xcode-beta.app/Contents/Developer" &&
+git pull --ff-only &&
+.venv-temporal/bin/python Temporal/diagnose_backward_reacquisition.py \
+  --video assets/occlusion-new.mov
+```
+
+Upload only .temporal-runs/share/occlusion-new-backward-01.zip.
+
+
+## Prior step: extra conditioning reference reviewed; partial benefit, no promotion
 
 Evidence: Audit/mac-new-reacquisition-anchor-review.json. Report SHA
 ce4496788c83d981cf4c5391b9ae5cd6ecad4b8f1715db4887633715d478c6ce.
