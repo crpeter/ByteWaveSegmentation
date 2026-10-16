@@ -1,6 +1,47 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: reacquisition history probes prepared after sequence review
+## Current work: history probes reviewed; blanket memory freezing rejected
+
+Evidence: Audit/mac-new-reacquisition-history-review.json.
+User run completed387 native frames and84 three-way window comparisons.
+All initialization and first-window same-input mask/pointer/memory controls passed.
+Offline verified source replay hash, all387 image hashes/PTS/native observations
+and prior mask hashes; all252 binary masks have correct shapes/values/fractions;
+all84 saved native masks equal prior chosen masks. Probe entry counts remain
+fixed across both windows. Script hash matches prepared source.
+
+Visual review of all84 previews found mixed outcomes:
+-197: native/frozen preserve correct shoe; conditioning-only selects wrong man too.
+-200 and later first-window frames: frozen/conditioning add wrong foreground hand.
+-232..236: both probes select a different woman. All40 frames being nonempty
+does NOT mean40 correct recoveries.
+-343: native/frozen select wrong hand; probes are blank344..359 (conditioning
+already blank343), reducing false masks but also missing visible target portions.
+-360: probe output resumes with extraneous fragments; not clean identity recovery.
+-366..368: probes miss clearly visible intended man while native tracks him.
+-369..385: all broadly recover intended man;386 probes lose remaining partial.
+
+Nonempty counts197..236: native40/frozen40/conditioning40.
+Nonempty counts343..386: native44/frozen23/conditioning22.
+Frozen and conditioning binary masks match from212 and344 through window ends;
+reported observations match from212 and358. Do not infer internal tensor equality.
+The intervention combines withheld updates and aging/missing recent slots;
+it does not prove bad-mask feedback alone caused native failure.
+
+Decision: do not disable normal memory updates or promote conditioning-only
+replacement. No new identity cutoff, app/model/fixture/export/gate/recovery change.
+This is selected original-CPU development evidence, not device or held-out accuracy.
+Assistant performed saved-data checks and image review only; no inference/build.
+
+Next direction: inspect pinned upstream conditioning selection before designing
+a controlled additional-clean-reference experiment. An earlier visually reviewed
+target frame used as conditioning would be a manual experimental reference,
+not an automatic identity solution. Preserve native control and jointly review
+correct shoe/partial returns, wrong-person grabs and missing visible subject.
+No additional Mac run requested for this review.
+
+
+## Prior step: reacquisition history probes prepared after sequence review
 
 Evidence: Audit/mac-new-reacquisition-sequence-review.json. Saved chosen replay
 hash matches archived source. Offline inspected20 consecutive binary masks:
