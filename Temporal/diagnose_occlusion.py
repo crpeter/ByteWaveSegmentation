@@ -6,6 +6,7 @@ Numerical mismatches are recorded and tracing continues to observe recovery;
 shape/nonfinite errors stop immediately. No model export or state-policy change.
 Edited clips require --new-video and an explicit --point for inference.
 --preview-only saves a tentative selection image without model inference.
+--initialization-only compares first-frame masks only; no temporal recovery claim.
 This is diagnostic evidence, not ground-truth identity or device validation.
 """
 from __future__ import annotations
@@ -170,10 +171,16 @@ def main():
                         help='Normalized top-left point on the first displayed frame; required for new-video inference.')
     parser.add_argument('--preview-only', action='store_true',
                         help='Save first-frame selection preview without loading/running models. Without --point the phone point is tentative.')
+    parser.add_argument('--initialization-only', action='store_true',
+                        help='Run only first-frame selection in all three streams; no temporal propagation.')
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
     if platform.system() != 'Darwin':
         parser.error('Run this diagnostic locally on the Mac.')
+    if args.initialization_only and args.preview_only:
+        parser.error('--initialization-only and --preview-only are mutually exclusive.')
+    if args.initialization_only and (not args.new_video or args.point is None):
+        parser.error('--initialization-only requires --new-video and an explicit --point.')
     if not 20 <= args.frames <= 600:
         parser.error('Choose 20 to 600 frames; default 300 covers the worker disappearance/return.')
     if args.new_video and args.point is None and not args.preview_only:
@@ -181,8 +188,8 @@ def main():
     if not args.new_video and args.point is not None:
         parser.error('--point requires --new-video; matched-source mode uses the phone selection.')
     phone, fixture, normalized_point = verify_inputs(args)
-    frame_count = args.frames
-    if args.new_video and not args.preview_only:
+    frame_count = 1 if args.initialization_only else args.frames
+    if args.new_video and not args.preview_only and not args.initialization_only:
         # Count only the requested prefix before any inference. A shortened clip
         # can end before the requested cap; all three streams use the same count.
         frame_count = 0
@@ -213,6 +220,7 @@ def main():
         'pointSource': 'explicit' if args.point is not None else 'phone-report',
         'effectiveFrames': frame_count,
         'previewOnly': args.preview_only,
+        'initializationOnly': args.initialization_only,
         'inferencePerformed': False,
         'phoneComparisonLimit': 'Phone source has no content hash or saved input pixels. Byte count, dimensions, duration and initial PTS are guards, not proof of identical content. PyAV/Pillow preparation differs from iPhone Core Image. All three Mac streams receive identical pixels; no exact Mac/iPhone parity claim.',
         'memoryPolicy': 'Initial conditioning frame retained; all validated outputs, including absent frames, enter recent memory. No confidence filtering or recovery modification.',

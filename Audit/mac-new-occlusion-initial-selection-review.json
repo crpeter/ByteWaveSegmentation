@@ -1,0 +1,293 @@
+{
+  "scope": "Offline report and sampled-preview review of new clip baseline; initialization target is not the intended full person.",
+  "archiveSHA256": "76056c0f589f26aeb4a50218b70e53d1a6e2f27d259bd78fbbe77ce99e738571",
+  "reportSHA256": "6f88957f2718412135c269ae25935100cca17c29b811d05fbedebc7265721ea7",
+  "sourceVideoSHA256": "5170ab7d885e131cbcd79be302d422f58e014f0c7ffbde51dcdcf8ad27bfa1e9",
+  "sourceFileBytes": 35866195,
+  "pointNormalizedTopLeft": [
+    0.5,
+    0.58
+  ],
+  "completed": true,
+  "orderedFullRows": true,
+  "summary": {
+    "framesCompared": 590,
+    "streams": {
+      "original": {
+        "emptyFrames": 336,
+        "emptyIntervals": [
+          {
+            "firstFrame": 168,
+            "firstPTSSeconds": 5.6,
+            "frames": 44,
+            "lastFrame": 211,
+            "lastPTSSeconds": 7.033333333333333,
+            "nextNonemptyFrame": 212
+          },
+          {
+            "firstFrame": 213,
+            "firstPTSSeconds": 7.1,
+            "frames": 3,
+            "lastFrame": 215,
+            "lastPTSSeconds": 7.166666666666667,
+            "nextNonemptyFrame": 216
+          },
+          {
+            "firstFrame": 235,
+            "firstPTSSeconds": 7.833333333333333,
+            "frames": 37,
+            "lastFrame": 271,
+            "lastPTSSeconds": 9.033333333333333,
+            "nextNonemptyFrame": 272
+          },
+          {
+            "firstFrame": 310,
+            "firstPTSSeconds": 10.333333333333334,
+            "frames": 42,
+            "lastFrame": 351,
+            "lastPTSSeconds": 11.7,
+            "nextNonemptyFrame": 352
+          },
+          {
+            "firstFrame": 356,
+            "firstPTSSeconds": 11.866666666666667,
+            "frames": 2,
+            "lastFrame": 357,
+            "lastPTSSeconds": 11.9,
+            "nextNonemptyFrame": 358
+          },
+          {
+            "firstFrame": 359,
+            "firstPTSSeconds": 11.966666666666667,
+            "frames": 4,
+            "lastFrame": 362,
+            "lastPTSSeconds": 12.066666666666666,
+            "nextNonemptyFrame": 363
+          },
+          {
+            "firstFrame": 386,
+            "firstPTSSeconds": 12.866666666666667,
+            "frames": 204,
+            "lastFrame": 589,
+            "lastPTSSeconds": 19.633333333333333,
+            "nextNonemptyFrame": null
+          }
+        ]
+      },
+      "ownedFP32": {
+        "emptyFrames": 336,
+        "emptyIntervals": [
+          {
+            "firstFrame": 168,
+            "firstPTSSeconds": 5.6,
+            "frames": 44,
+            "lastFrame": 211,
+            "lastPTSSeconds": 7.033333333333333,
+            "nextNonemptyFrame": 212
+          },
+          {
+            "firstFrame": 213,
+            "firstPTSSeconds": 7.1,
+            "frames": 3,
+            "lastFrame": 215,
+            "lastPTSSeconds": 7.166666666666667,
+            "nextNonemptyFrame": 216
+          },
+          {
+            "firstFrame": 235,
+            "firstPTSSeconds": 7.833333333333333,
+            "frames": 37,
+            "lastFrame": 271,
+            "lastPTSSeconds": 9.033333333333333,
+            "nextNonemptyFrame": 272
+          },
+          {
+            "firstFrame": 310,
+            "firstPTSSeconds": 10.333333333333334,
+            "frames": 42,
+            "lastFrame": 351,
+            "lastPTSSeconds": 11.7,
+            "nextNonemptyFrame": 352
+          },
+          {
+            "firstFrame": 356,
+            "firstPTSSeconds": 11.866666666666667,
+            "frames": 2,
+            "lastFrame": 357,
+            "lastPTSSeconds": 11.9,
+            "nextNonemptyFrame": 358
+          },
+          {
+            "firstFrame": 359,
+            "firstPTSSeconds": 11.966666666666667,
+            "frames": 4,
+            "lastFrame": 362,
+            "lastPTSSeconds": 12.066666666666666,
+            "nextNonemptyFrame": 363
+          },
+          {
+            "firstFrame": 386,
+            "firstPTSSeconds": 12.866666666666667,
+            "frames": 204,
+            "lastFrame": 589,
+            "lastPTSSeconds": 19.633333333333333,
+            "nextNonemptyFrame": null
+          }
+        ]
+      },
+      "coremlGPU": {
+        "emptyFrames": 358,
+        "emptyIntervals": [
+          {
+            "firstFrame": 168,
+            "firstPTSSeconds": 5.6,
+            "frames": 49,
+            "lastFrame": 216,
+            "lastPTSSeconds": 7.2,
+            "nextNonemptyFrame": 217
+          },
+          {
+            "firstFrame": 218,
+            "firstPTSSeconds": 7.266666666666667,
+            "frames": 54,
+            "lastFrame": 271,
+            "lastPTSSeconds": 9.033333333333333,
+            "nextNonemptyFrame": 272
+          },
+          {
+            "firstFrame": 310,
+            "firstPTSSeconds": 10.333333333333334,
+            "frames": 42,
+            "lastFrame": 351,
+            "lastPTSSeconds": 11.7,
+            "nextNonemptyFrame": 352
+          },
+          {
+            "firstFrame": 354,
+            "firstPTSSeconds": 11.8,
+            "frames": 9,
+            "lastFrame": 362,
+            "lastPTSSeconds": 12.066666666666666,
+            "nextNonemptyFrame": 363
+          },
+          {
+            "firstFrame": 386,
+            "firstPTSSeconds": 12.866666666666667,
+            "frames": 204,
+            "lastFrame": 589,
+            "lastPTSSeconds": 19.633333333333333,
+            "nextNonemptyFrame": null
+          }
+        ]
+      }
+    },
+    "comparisons": {
+      "ownedFP32AgainstOriginal": {
+        "failedFrames": 57,
+        "firstFailedFrame": 8,
+        "allFramesWithinExistingGates": false
+      },
+      "coremlGPUAgainstOriginal": {
+        "failedFrames": 174,
+        "firstFailedFrame": 0,
+        "allFramesWithinExistingGates": false
+      }
+    }
+  },
+  "frame0Comparisons": {
+    "ownedFP32AgainstOriginal": {
+      "passed": true,
+      "maskIoUAgainstReference": 1.0,
+      "sameObjectPresence": true,
+      "outputs": {
+        "low_res_mask": {
+          "maximumAbsoluteError": 6.198883056640625e-05,
+          "cosineSimilarity": 0.9999999999996114,
+          "float32Close": true
+        },
+        "high_res_mask": {
+          "maximumAbsoluteError": 6.008148193359375e-05,
+          "cosineSimilarity": 0.9999999999994988,
+          "float32Close": true
+        },
+        "best_iou": {
+          "maximumAbsoluteError": 4.76837158203125e-07,
+          "cosineSimilarity": 1.0,
+          "float32Close": true
+        },
+        "object_pointer": {
+          "maximumAbsoluteError": 5.4836273193359375e-06,
+          "cosineSimilarity": 0.9999999999951295,
+          "float32Close": true
+        },
+        "object_score": {
+          "maximumAbsoluteError": 7.62939453125e-06,
+          "cosineSimilarity": 1.0,
+          "float32Close": true
+        },
+        "memory_features": {
+          "maximumAbsoluteError": 0.0001894235610961914,
+          "cosineSimilarity": 0.999999999977551,
+          "float32Close": true
+        },
+        "memory_positions": {
+          "maximumAbsoluteError": 0.0,
+          "cosineSimilarity": 1.0000000000000002,
+          "float32Close": true
+        }
+      }
+    },
+    "coremlGPUAgainstOriginal": {
+      "passed": false,
+      "maskIoUAgainstReference": 0.9912225705329154,
+      "sameObjectPresence": true,
+      "outputs": {
+        "low_res_mask": {
+          "maximumAbsoluteError": 0.1388378143310547,
+          "cosineSimilarity": 0.9999986290665303,
+          "float32Close": false
+        },
+        "high_res_mask": {
+          "maximumAbsoluteError": 0.13522911071777344,
+          "cosineSimilarity": 0.999998729220196,
+          "float32Close": false
+        },
+        "best_iou": {
+          "maximumAbsoluteError": 0.0006576180458068848,
+          "cosineSimilarity": 1.0,
+          "float32Close": true
+        },
+        "object_pointer": {
+          "maximumAbsoluteError": 0.009405970573425293,
+          "cosineSimilarity": 0.9999807157250536,
+          "float32Close": false
+        },
+        "object_score": {
+          "maximumAbsoluteError": 0.00046539306640625,
+          "cosineSimilarity": 1.0,
+          "float32Close": true
+        },
+        "memory_features": {
+          "maximumAbsoluteError": 3.5836472511291504,
+          "cosineSimilarity": 0.9892682725465062,
+          "float32Close": false
+        },
+        "memory_positions": {
+          "maximumAbsoluteError": 5.960464477539063e-08,
+          "cosineSimilarity": 0.9999999999999993,
+          "float32Close": true
+        }
+      }
+    }
+  },
+  "visualFindings": [
+    "Frame0 all three masks select the shirt graphic, excluding head, arms, legs and much of the shirt. The assistant-chosen torso point therefore did not select the requested full person.",
+    "Reviewed all57 saved GPU preview panels as contact sheets, with native full triptych checks at0 and352. Sparse previews do not establish frame-by-frame identity accuracy.",
+    "Sampled GPU masks repeatedly track the graphic; no full-person recovery claim is supported.",
+    "At352 original and ownedFP32 show false mask fragments on the foreground woman including teeth; GPU mainly covers the selected subject shirt behind her, with small stray foreground pixels. This illustrates that original output is not identity ground truth."
+  ],
+  "interpretation": "Completed diagnostic, not a numerical parity pass:174 GPU and57 FP32 comparison failures. At0 GPU maskIoU .99122 passes but memory cosine .989268 is below .99. Do not blame all failures on initialization or infer their cause without isolation.",
+  "nextStep": "Check actual first-frame masks at a few explicit points using new initialization-only mode, then run a new independent-history baseline with a visually confirmed full-person selection. Keep this run archived; do not tune recovery thresholds to it.",
+  "recoveryPolicyChanged": false,
+  "assistantInferencePerformed": false
+}

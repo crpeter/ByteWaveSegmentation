@@ -1,6 +1,44 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: edge continuation reviewed; independent clip next
+## Current work: new clip baseline reveals wrong initial target; verify mask first
+
+Evidence: Audit/mac-new-occlusion-initial-selection-review.json.
+Uploaded occlusion-new-comparison-01.zip completed590 frames for19.667s clip.
+Source SHA5170ab7d885e131cbcd79be302d422f58e014f0c7ffbde51dcdcf8ad27bfa1e9,
+35866195bytes. Selected intended man in black graphic shirt/shorts. Point(.50,.58)
+chosen by assistant actually selects the shirt GRAPHIC in all three streams at0,
+not the entire person. Coordinate-only preview did not reveal this ambiguity.
+Do not interpret this as a full-person occlusion/recovery test or promote changes.
+
+Numerical result:174 GPU failures (first0) and57 FP32 (first8); report remains
+diagnostic complete, not parity passed. At0 maskIoU .99122 but memory cosine
+.989268<.99. Some original/FP32 false foreground fragments visible at352.
+Reviewed all57 saved GPU preview panels in contact sheets and full triptychs0/352.
+Sparse review is not every-frame ground truth. No assistant inference performed.
+
+Added --initialization-only to diagnose_occlusion.py: requires new-video and explicit
+point, mutually exclusive with preview-only, compares exactly first frame in all3
+streams and marks initializationOnly=true. Existing full-run behavior/gates unchanged.
+New Temporal/run_occlusion_selection.py defaults to three tentative points for this
+clip: head(.50,.28), shoulder(.36,.40), previous forearm(.50,.45).
+No candidate is guaranteed to select full person; visually inspect actual masks.
+One first-frame initialization per point, no temporal propagation; models unchanged.
+Runner collects reports/mask previews in one ZIP, reveals Finder; fresh output guard.
+Source reviewed and AST parsed only. Mac runtime/inference still pending.
+
+Mac command:
+```bash
+cd /Users/petercody/Documents/Projects/ByteWaveSegmentation &&
+export DEVELOPER_DIR="/Applications/Xcode-beta.app/Contents/Developer" &&
+git pull --ff-only &&
+.venv-temporal/bin/python Temporal/run_occlusion_selection.py --video assets/occlusion-new.mov
+```
+Upload .temporal-runs/share/occlusion-new-mask-selection-01.zip.
+Then choose full-person mask by first-frame semantics before rerunning baseline.
+No recovery rule changes or model/app promotion. Preserve this failed-target run.
+
+
+## Prior step: edge continuation reviewed; independent clip next
 
 Evidence: Audit/mac-continuation-edge-pair-review.json.
 Uploaded continuation-edge-01-review.zip SHA256
