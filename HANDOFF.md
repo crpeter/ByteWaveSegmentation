@@ -1,6 +1,47 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: extra reviewed conditioning reference diagnostic prepared
+## Current work: extra conditioning reference reviewed; partial benefit, no promotion
+
+Evidence: Audit/mac-new-reacquisition-anchor-review.json. Report SHA
+ce4496788c83d981cf4c5391b9ae5cd6ecad4b8f1715db4887633715d478c6ce.
+Completed387 native frames,84 four-way comparisons. All initialization/snapshot
+controls passed. Offline source/report/script hashes,387 native image/PTS/mask
+hashes/observations,336 binary masks,84 conditioning-only masks/observations,
+frame60 anchor mask and336 attention budgets checked. All84 previews reviewed,
+with enlarged359/362/367. No assistant inference/build/export/benchmark.
+
+Adding reviewed native frame60 to frame0-only conditioning fixes wrong foreground
+man selection at197 while retaining shoe. It also recovers intended man366..368
+where frame0-only is blank; native already succeeds there. Reference-only
+nonempty second-window count increases22 to27 (added359/361/366/367/368).
+This is not five clean recoveries:359 and361 include extraneous foreground.
+At362 enlarged preview also shows substantial wrong foreground patches.
+Both reference-only versions still select wrong woman233..236 and lose partial386.
+
+Adding frame60 to normal native recent memory does NOT remove wrong-hand343..348/
+350..351 or later mixed masks. Wrong hand344 grows from.029109 to.075638 image
+fraction. First-window true partials broadly preserved, but no demonstrated
+identity fix. NativePlusAnchor is present all84 inspected frames, as is native;
+presence count does not measure correctness.
+
+Actual attention budgets: native7 spatial/64 pointer tokens; nativePlusAnchor8/68;
+conditioningOnly1/4; conditioningPlusAnchor2/8. Corresponding pointers and memory
+were promoted together. Probe outputs never entered any history; nativePlusAnchor
+still received original recent mistakes. No independently advancing candidate,
+automatic reference selector, fixed-budget Core ML fit, device or speed result.
+Extra memory content, temporal position and budget change jointly.
+
+Decision: keep app/models/gates/frozen recovery rules unchanged. Extra reviewed
+reference is useful proposal evidence, insufficient for accepting identity.
+Next direction worth inspecting: reverse-time tracking from a later clear view,
+since final extraction can be computed once and cached. Need pinned reverse
+semantics and consistent initializer/pointer before preparing any diagnostic.
+Compare independent directions across disappearance; agreement alone cannot
+establish identity and wrong/mixed masks must remain visible in review.
+No new Mac run requested this turn.
+
+
+## Prior step: extra reviewed conditioning reference diagnostic prepared
 
 Added Temporal/diagnose_reacquisition_anchor.py after reviewing pinned upstream
 sam2_base._prepare_memory_conditioned_features, select_closest_cond_frames and
