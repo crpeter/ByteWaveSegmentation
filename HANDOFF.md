@@ -1,6 +1,64 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: history probes reviewed; blanket memory freezing rejected
+## Current work: extra reviewed conditioning reference diagnostic prepared
+
+Added Temporal/diagnose_reacquisition_anchor.py after reviewing pinned upstream
+sam2_base._prepare_memory_conditioned_features, select_closest_cond_frames and
+memory_attention.forward. Conditioning memories are selected separately from
+recent records, receive conditioning temporal position, and supply corresponding
+object pointers. Multiple conditioning records are supported in original PyTorch;
+this is not the installed fixed Core ML contract.
+
+Reviewed saved chosen frame60 again: intended man broadly covered, partially
+occluded by foreground person, imperfect boundaries; not a ground-truth mask.
+Promote its actual native memory AND pointer together to conditioning in probes.
+No new click, mask re-encoding, inferred pointer or future frame. Fixed frame60
+is a manually reviewed development reference, not automatic identity detection.
+
+Same prefix387 of original590, originalCPU, point(.36,.4), candidate1.
+Require exact reviewed history-report SHA
+012d0cd5b86526e2e212430e2113a63dafcda7489f4ca017a73b3e0ab19f487e,
+matching replay/source/helper hashes and successful prior controls.
+Repeat initializer controls and check every native frame against saved pixels,
+PTS, mask hashes, binary masks, fractions/emptiness and object logit tolerance.
+At window starts repeat no-op history snapshot mask/pointer/memory control.
+
+At each frame197..236 and343..386, independently compare:
+1. native: original advancing history, unchanged.
+2. nativePlusAnchor: fresh native snapshot with60 moved into conditioning.
+3. conditioningOnly: frame0 only, must reproduce previous experiment each frame.
+4. conditioningPlusAnchor: frames0+60 only.
+All probe outputs discarded; only native outputs enter history. NativePlusAnchor
+still receives native recent wrong masks. This isolates immediate reference effect;
+it does not test an independently advancing candidate tracker.
+
+Read-only memory-attention pre-hook records actual input shapes/spatial-record
+counts/pointer tokens. Enforce expected native7/64 tokens, plus-anchor8/68,
+conditioning-only1/4, conditioning-plus-anchor2/8. Both references must be selected;
+no duplicate record in conditioning/nonconditioning buckets. Native source frame60
+stays in original nonconditioning history. Extra reference changes content,
+temporal encoding AND token budget; no fixed-budget, speed or deployment claim.
+
+Save anchor preview/mask and all84 four-panel comparisons with336 binary masks.
+One ZIP under .temporal-runs/share; reveal with Finder, preserve partial reports.
+No model/fixture/export/app/gate/frozen-recovery changes. Assistant read sources,
+reviewed saved frame60 and AST-parsed script/data constants only. No inference,
+runtime model tests, conversion, build or benchmark. Mac execution pending.
+
+```bash
+cd /Users/petercody/Documents/Projects/ByteWaveSegmentation &&
+export DEVELOPER_DIR="/Applications/Xcode-beta.app/Contents/Developer" &&
+git pull --ff-only &&
+.venv-temporal/bin/python Temporal/diagnose_reacquisition_anchor.py \
+  --video assets/occlusion-new.mov
+```
+
+Upload .temporal-runs/share/occlusion-new-reacquisition-anchor-01.zip.
+Review both wrong-identity suppression and genuine partial-target preservation,
+especially197/200/232..236/343..360/366..368/386. No promotion on nonempty counts.
+
+
+## Prior step: history probes reviewed; blanket memory freezing rejected
 
 Evidence: Audit/mac-new-reacquisition-history-review.json.
 User run completed387 native frames and84 three-way window comparisons.
