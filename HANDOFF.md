@@ -1,6 +1,56 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: spatial coherence still admits a wrong hand
+## Current work: reacquisition history probes prepared after sequence review
+
+Evidence: Audit/mac-new-reacquisition-sequence-review.json. Saved chosen replay
+hash matches archived source. Offline inspected20 consecutive binary masks:
+correct shoe return197..206 and wrong-hand return343..352.
+Correct197 follows17 empty frames180..196; wrong343 follows65 empty278..342.
+Raw object logits start similarly (.346 versus .389). Wrong343..345 remains
+present three frames with adjacent high-mask IoU .505/.659; correct197..199
+has .476/.554. Simple three-frame plus.5 overlap would admit wrong onset while
+delaying correct onset. This is not the full frozen recovery rule, and logits
+are not calibrated identity confidence. Wrong sequence later fluctuates.
+No single-frame appearance/geometry or short persistence gate promoted.
+
+Added Temporal/diagnose_reacquisition_history.py, pending Mac execution.
+OriginalCPU only, prefix387 frames; passes original full590 as num_frames to
+preserve native temporal context. Same reviewed candidate1 at point(.36,.4).
+Source/replay/script hashes and all prior controls must match. Repeats initial
+automatic-choice/scores, forced-auto mask/pointer/memory and native-assembly
+controls. Native chosen output at EVERY prefix frame must match saved binary
+high mask exactly, mask fractions/emptiness exactly and object logit within
+rtol1e-5/atol1e-6. Decoded image hash and PTS must match every frame.
+
+Fixed reviewed windows197..236(correct partial return) and343..386(wrong hand
+then mixed/real subject). At each start make separate fixed history containers:
+frozenPreWindow retains all pre-window records; conditioningOnly retains frame0
+only. Shared tensors remain read-only under pinned upstream; no probe output is
+ever inserted into native or probe state. Initial frozenPreWindow must reproduce
+native mask/pointer/memory under existing FP32 control including exact binary masks.
+Subsequent differences combine withheld updates AND aging/unavailable recent slots;
+not a pure causal attribution to poisoned memory. Native always advances unchanged.
+Probes are experiments, not automatic acceptance or proposed production policies.
+
+Every window frame gets three-panel JPEG and binary masks; one ZIP under share,
+Finder reveal including partial failures. Fresh output only. No weights, export,
+installed fixture, correctness gates, app or frozen recovery rules changed.
+Assistant performed offline mask calculations, pinned-source review and AST parse;
+no model inference, runtime model tests, build or benchmark. Mac runtime pending.
+
+```bash
+cd /Users/petercody/Documents/Projects/ByteWaveSegmentation &&
+export DEVELOPER_DIR="/Applications/Xcode-beta.app/Contents/Developer" &&
+git pull --ff-only &&
+.venv-temporal/bin/python Temporal/diagnose_reacquisition_history.py --video assets/occlusion-new.mov
+```
+
+Upload .temporal-runs/share/occlusion-new-reacquisition-history-01.zip.
+Review wrong-region persistence AND preservation of genuine partial recovery.
+No claim of improved tracking until this evidence is reviewed.
+
+
+## Prior step: spatial coherence still admits a wrong hand
 
 Added offline-only Temporal/analyze_saved_mask_geometry.py and recorded results
 in Audit/mac-new-local-geometry-review.json. Uses saved local correspondence
