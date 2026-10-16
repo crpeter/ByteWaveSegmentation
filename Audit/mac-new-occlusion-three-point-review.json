@@ -1,0 +1,147 @@
+{
+  "scope": "Offline review of three first-frame triptychs, no assistant inference.",
+  "archiveSHA256": "7a9b578fc2aa79806c68d759a59bd16acfb0f11f7b45f2fa9cb5eb5d11c65164",
+  "wholePersonSelectionFound": false,
+  "decision": "Inspect original multimask alternatives before full temporal replay; recovery policy remains frozen.",
+  "points": [
+    {
+      "point": [
+        0.5,
+        0.28
+      ],
+      "reportSHA256": "8bbc2f69d6bc1cba58d927f197d6fbb4f464b110cec133e65bc1060a7b80e7eb",
+      "previewSHA256": "ce3b36410ec7bd6c70b30669124a3efb4b6025aee0921dfea03408ebe1891804",
+      "completed": true,
+      "framesCompared": 1,
+      "visualObservation": "Head/face/hair fragment, not whole person; GPU differs.",
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.01019287109375,
+          "objectScore": 30.829086303710938,
+          "predictedIoU": 0.1675582379102707
+        },
+        "ownedFP32": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.01019287109375,
+          "objectScore": 30.829082489013672,
+          "predictedIoU": 0.16755826771259308
+        },
+        "coremlGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.008453369140625,
+          "objectScore": 30.828125,
+          "predictedIoU": 0.15577037632465363
+        }
+      },
+      "comparisons": {
+        "ownedFP32AgainstOriginal": {
+          "failedFrames": 1,
+          "firstFailedFrame": 0,
+          "allFramesWithinExistingGates": false
+        },
+        "coremlGPUAgainstOriginal": {
+          "failedFrames": 1,
+          "firstFailedFrame": 0,
+          "allFramesWithinExistingGates": false
+        }
+      }
+    },
+    {
+      "point": [
+        0.36,
+        0.4
+      ],
+      "reportSHA256": "a02281edce8f2155fb52ec9e47ad51528ce96289548fc6abc0c079d3f45640d4",
+      "previewSHA256": "8789da83385b7f7b1ac9855afc143d94f9b742dd7bee30de2770b61a7709d8a8",
+      "completed": true,
+      "framesCompared": 1,
+      "visualObservation": "Shirt only, not whole person.",
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0539093017578125,
+          "objectScore": 29.536540985107422,
+          "predictedIoU": 0.5077220797538757
+        },
+        "ownedFP32": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0539093017578125,
+          "objectScore": 29.53653907775879,
+          "predictedIoU": 0.5077227354049683
+        },
+        "coremlGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0539703369140625,
+          "objectScore": 29.5,
+          "predictedIoU": 0.5086965560913086
+        }
+      },
+      "comparisons": {
+        "ownedFP32AgainstOriginal": {
+          "failedFrames": 0,
+          "firstFailedFrame": null,
+          "allFramesWithinExistingGates": true
+        },
+        "coremlGPUAgainstOriginal": {
+          "failedFrames": 0,
+          "firstFailedFrame": null,
+          "allFramesWithinExistingGates": true
+        }
+      }
+    },
+    {
+      "point": [
+        0.5,
+        0.45
+      ],
+      "reportSHA256": "09a11645fd40cdce5a7727f601f19e14a0cbf8f665e6ac0cedb586ded9f0e200",
+      "previewSHA256": "47dab595ad7e4e6a2094a8368a9af06c292466ecac92d3498227761bc71e6d0d",
+      "completed": true,
+      "framesCompared": 1,
+      "visualObservation": "Raised arm/hand only, not whole person.",
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0161895751953125,
+          "objectScore": 28.866960525512695,
+          "predictedIoU": 0.7913821935653687
+        },
+        "ownedFP32": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0161895751953125,
+          "objectScore": 28.866958618164062,
+          "predictedIoU": 0.7913818955421448
+        },
+        "coremlGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0161895751953125,
+          "objectScore": 28.859375,
+          "predictedIoU": 0.7916734218597412
+        }
+      },
+      "comparisons": {
+        "ownedFP32AgainstOriginal": {
+          "failedFrames": 0,
+          "firstFailedFrame": null,
+          "allFramesWithinExistingGates": true
+        },
+        "coremlGPUAgainstOriginal": {
+          "failedFrames": 0,
+          "firstFailedFrame": null,
+          "allFramesWithinExistingGates": true
+        }
+      }
+    }
+  ],
+  "sourceVideoSHA256": "5170ab7d885e131cbcd79be302d422f58e014f0c7ffbde51dcdcf8ad27bfa1e9"
+}

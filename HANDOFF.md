@@ -1,6 +1,40 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: new clip baseline reveals wrong initial target; verify mask first
+## Current work: all three first-frame points select parts; inspect alternatives
+
+Evidence: Audit/mac-new-occlusion-three-point-review.json. All three one-frame
+runs completed, none selects the intended whole person. Head(.50,.28) selects
+head/face/hair fragment; shoulder(.36,.40) selects shirt; forearm(.50,.45) selects
+raised arm/hand. Shoulder/arm numerical checks pass; head checks fail, including
+GPU maskIoU about .697. Semantic selection and numerical agreement are separate.
+Do not use these as whole-person occlusion trials or rerun long tracking yet.
+
+Source inspection of pinned upstream sam2_base._forward_sam_heads confirms three
+candidate masks, with highest predicted IoU automatically selected. This score
+is not whole-person identity evidence. New Temporal/diagnose_initial_mask_alternatives.py
+uses original _track_step on frame0 with the same decoded pixels and reviewed
+points. It saves all three masks/scores per point, marks automatic selection,
+and checks prior original summary values (not full tensor parity). No candidate
+pointer is exposed/used, no memory encoding/propagation, no new export, no installed
+model or recovery-policy changes. Original CPU only; not Core ML validation.
+
+The diagnostic verifies prior report completion, initialization-only mode, source
+hash/bytes, upstream/checkpoint, first-frame image hash and timestamp. One ZIP,
+fresh-output guard, partial reports retained on error. Source reviewed and Python
+AST parsed only; inference/runtime remains to be run by user on Mac.
+
+```bash
+cd /Users/petercody/Documents/Projects/ByteWaveSegmentation &&
+export DEVELOPER_DIR="/Applications/Xcode-beta.app/Contents/Developer" &&
+git pull --ff-only &&
+.venv-temporal/bin/python Temporal/diagnose_initial_mask_alternatives.py --video assets/occlusion-new.mov
+```
+Upload .temporal-runs/share/occlusion-new-mask-alternatives-01.zip (Finder revealed).
+Inspect alternatives for whole-person semantics before deciding next experiment.
+If alternate selection is later used for tracking, its object pointer and initial
+memory must correspond to that mask; never reuse top-mask pointer blindly.
+
+## Prior step: new clip baseline reveals wrong initial target; verify mask first
 
 Evidence: Audit/mac-new-occlusion-initial-selection-review.json.
 Uploaded occlusion-new-comparison-01.zip completed590 frames for19.667s clip.
