@@ -1,0 +1,584 @@
+{
+  "scope": "Offline descriptor recomputation and preview review only; no assistant model inference.",
+  "archiveSHA256": "9ce746a07f24b9f87c033ad801cfd1f22db1a3e83aac008bf1bcc78528810c4b",
+  "reportSHA256": "63f2ff752076b112278ab85454f3bf6b305bb548b828e5f45cd3124710cc9003",
+  "sourceReplaySHA256": "5f9378e84e1b78ca19e00574245434e07180065dbcd608bdb34051338156cc56",
+  "completed": true,
+  "framesDecodedAndChecked": 551,
+  "encoderCalls": 22,
+  "allInspectedMasksAndObservationsMatchReplay": true,
+  "allReportedSimilaritiesRecomputed": true,
+  "anchors": [
+    0,
+    30,
+    60
+  ],
+  "inspectedCount": 28,
+  "presentCount": 19,
+  "matchingFrames": [
+    90,
+    375
+  ],
+  "visualReview": "All 3 anchor and 28 inspection previews viewed in contact sheets; earlier replay had full-size review of key failure/return frames. No exhaustive ground truth.",
+  "findings": [
+    "All three references broadly depict intended man; no obvious wrong-subject reference selection.",
+    "Only 90 and375 pass any same-anchor .8 encoder / .5 RGB clause.",
+    "Sampled wrong hand343/345/346/545/549 and contaminated hair+hand355/358/360 all fail.",
+    "Valid partial-target views150/165/197/210/225 also fail. Colour often passes, pooled encoder similarity fails; shoe197 fails both.",
+    "Empty frames have no descriptor and cannot be repaired by filtering saved masks.",
+    "The rule cannot be enabled as a normal-output veto on this evidence without losing correct partial-target masks."
+  ],
+  "decision": "Keep deployed/experimental tracker policies unchanged. Next investigate visibility-aware/local feature evidence using fixed early references, before suppression or memory filtering. No global cutoff relaxation from this single clip.",
+  "limitations": [
+    "CPU original encoder only; not GPU/iPhone validation.",
+    "Observation of existing appearance clause, not full recovery rule.",
+    "Selected development examples, not independent accuracy evaluation."
+  ],
+  "measurements": [
+    {
+      "index": 90,
+      "againstAnchors": {
+        "0": {
+          "pooledEncoderCosine": 0.8693357127418023,
+          "rgbHistogramIntersection": 0.6958952851711303,
+          "highMaskAreaRatio": 0.43979801525075435,
+          "existingJointAppearanceRuleMatches": true
+        },
+        "30": {
+          "pooledEncoderCosine": 0.9006491782086437,
+          "rgbHistogramIntersection": 0.7216329824288102,
+          "highMaskAreaRatio": 0.4740487173854678,
+          "existingJointAppearanceRuleMatches": true
+        },
+        "60": {
+          "pooledEncoderCosine": 0.9645562998096912,
+          "rgbHistogramIntersection": 0.8194875929202953,
+          "highMaskAreaRatio": 0.7461343424060237,
+          "existingJointAppearanceRuleMatches": true
+        }
+      },
+      "matchingAnchorFrames": [
+        0,
+        30,
+        60
+      ]
+    },
+    {
+      "index": 150,
+      "againstAnchors": {
+        "0": {
+          "pooledEncoderCosine": 0.6598473784348018,
+          "rgbHistogramIntersection": 0.6592426402176219,
+          "highMaskAreaRatio": 0.20905534767077844,
+          "existingJointAppearanceRuleMatches": false
+        },
+        "30": {
+          "pooledEncoderCosine": 0.6784397894557829,
+          "rgbHistogramIntersection": 0.6916042445928268,
+          "highMaskAreaRatio": 0.22533621341924776,
+          "existingJointAppearanceRuleMatches": false
+        },
+        "60": {
+          "pooledEncoderCosine": 0.7348717466464915,
+          "rgbHistogramIntersection": 0.64984623015816,
+          "highMaskAreaRatio": 0.354670482702983,
+          "existingJointAppearanceRuleMatches": false
+        }
+      },
+      "matchingAnchorFrames": []
+    },
+    {
+      "index": 165,
+      "againstAnchors": {
+        "0": {
+          "pooledEncoderCosine": 0.5314754779260003,
+          "rgbHistogramIntersection": 0.5074534162171958,
+          "highMaskAreaRatio": 0.06690744818762843,
+          "existingJointAppearanceRuleMatches": false
+        },
+        "30": {
+          "pooledEncoderCosine": 0.5462538439369267,
+          "rgbHistogramIntersection": 0.5026931188086251,
+          "highMaskAreaRatio": 0.07211808352249152,
+          "existingJointAppearanceRuleMatches": false
+        },
+        "60": {
+          "pooledEncoderCosine": 0.6055973258871243,
+          "rgbHistogramIntersection": 0.47101845383661967,
+          "highMaskAreaRatio": 0.11351107354833753,
+          "existingJointAppearanceRuleMatches": false
+        }
+      },
+      "matchingAnchorFrames": []
+    },
+    {
+      "index": 179,
+      "againstAnchors": {
+        "0": {
+          "pooledEncoderCosine": -0.08818609721341417,
+          "rgbHistogramIntersection": 0.24261177861578662,
+          "highMaskAreaRatio": 0.00015850821129144565,
+          "existingJointAppearanceRuleMatches": false
+        },
+        "30": {
+          "pooledEncoderCosine": -0.016827125345341785,
+          "rgbHistogramIntersection": 0.24359913109272413,
+          "highMaskAreaRatio": 0.00017085255424568598,
+          "existingJointAppearanceRuleMatches": false
+        },
+        "60": {
+          "pooledEncoderCosine": 0.0748880755586664,
+          "rgbHistogramIntersection": 0.24806134013121967,
+          "highMaskAreaRatio": 0.0002689153108853076,
+          "existingJointAppearanceRuleMatches": false
+        }
+      },
+      "matchingAnchorFrames": []
+    },
+    {
+      "index": 197,
+      "againstAnchors": {
+        "0": {
+          "pooledEncoderCosine": 0.33931173184852154,
+          "rgbHistogramIntersection": 0.17391331345715982,
+          "highMaskAreaRatio": 0.01857942676637588,
+          "existingJointAppearanceRuleMatches": false
+        },
+        "30": {
+          "pooledEncoderCosine": 0.3709643341704805,
+          "rgbHistogramIntersection": 0.201267398882975,
+          "highMaskAreaRatio": 0.020026360108369334,
+          "existingJointAppearanceRuleMatches": false
+        },
+        "60": {
+          "pooledEncoderCosine": 0.4882731049251543,
+          "rgbHistogramIntersection": 0.24514989394911407,
+          "highMaskAreaRatio": 0.03152071608305641,
+          "existingJointAppearanceRuleMatches": false
+        }
+      },
+      "matchingAnchorFrames": []
+    },
+    {
+      "index": 210,
+      "againstAnchors": {
+        "0": {
+          "pooledEncoderCosine": 0.6929332592603521,
+          "rgbHistogramIntersection": 0.5878898606589829,
+          "highMaskAreaRatio": 0.26753921662977576,
+          "existingJointAppearanceRuleMatches": false
+        },
+        "30": {
+          "pooledEncoderCosine": 0.7037874765321738,
+          "rgbHistogramIntersection": 0.5833838417939847,
+          "highMaskAreaRatio": 0.28837470405896853,
+          "existingJointAppearanceRuleMatches": false
+        },
+        "60": {
+          "pooledEncoderCosine": 0.7494793146678956,
+          "rgbHistogramIntersection": 0.6731697511520532,
+          "highMaskAreaRatio": 0.45389062830141563,
+          "existingJointAppearanceRuleMatches": false
+        }
+      },
+      "matchingAnchorFrames": []
+    },
+    {
+      "index": 225,
+      "againstAnchors": {
+        "0": {
+          "pooledEncoderCosine": 0.7140292840868975,
+          "rgbHistogramIntersection": 0.662548094468669,
+          "highMaskAreaRatio": 0.2902228738670909,
+          "existingJointAppearanceRuleMatches": false
+        },
+        "30": {
+          "pooledEncoderCosine": 0.7464980838576963,
+          "rgbHistogramIntersection": 0.6927781291745717,
+          "highMaskAreaRatio": 0.31282492494691366,
+          "existingJointAppearanceRuleMatches": false
+        },
+        "60": {
+          "pooledEncoderCosine": 0.7743544089133404,
+          "rgbHistogramIntersection": 0.6955931505583026,
+          "highMaskAreaRatio": 0.49237433011275233,
+          "existingJointAppearanceRuleMatches": false
+        }
+      },
+      "matchingAnchorFrames": []
+    },
+    {
+      "index": 235,
+      "againstAnchors": {
+        "0": {
+          "pooledEncoderCosine": 0.11294852503964556,
+          "rgbHistogramIntersection": 0.17914679810268186,
+          "highMaskAreaRatio": 0.001528472037453226,
+          "existingJointAppearanceRuleMatches": false
+        },
+        "30": {
+          "pooledEncoderCosine": 0.21464418741196375,
+          "rgbHistogramIntersection": 0.1578795570850927,
+          "highMaskAreaRatio": 0.0016475067730834004,
+          "existingJointAppearanceRuleMatches": false
+        },
+        "60": {
+          "pooledEncoderCosine": 0.2905074017711757,
+          "rgbHistogramIntersection": 0.17375685360549267,
+          "highMaskAreaRatio": 0.002593111926394038,
+          "existingJointAppearanceRuleMatches": false
+        }
+      },
+      "matchingAnchorFrames": []
+    },
+    {
+      "index": 237,
+      "againstAnchors": {
+        "0": null,
+        "30": null,
+        "60": null
+      },
+      "matchingAnchorFrames": []
+    },
+    {
+      "index": 270,
+      "againstAnchors": {
+        "0": null,
+        "30": null,
+        "60": null
+      },
+      "matchingAnchorFrames": []
+    },
+    {
+      "index": 277,
+      "againstAnchors": {
+        "0": {
+          "pooledEncoderCosine": 0.680794205588103,
+          "rgbHistogramIntersection": 0.5966980067079288,
+          "highMaskAreaRatio": 0.27678930296014087,
+          "existingJointAppearanceRuleMatches": false
+        },
+        "30": {
+          "pooledEncoderCosine": 0.7326790688173233,
+          "rgbHistogramIntersection": 0.5416213900509061,
+          "highMaskAreaRatio": 0.2983451709745918,
+          "existingJointAppearanceRuleMatches": false
+        },
+        "60": {
+          "pooledEncoderCosine": 0.7519842272238153,
+          "rgbHistogramIntersection": 0.5175519301454228,
+          "highMaskAreaRatio": 0.4695837575152225,
+          "existingJointAppearanceRuleMatches": false
+        }
+      },
+      "matchingAnchorFrames": []
+    },
+    {
+      "index": 278,
+      "againstAnchors": {
+        "0": null,
+        "30": null,
+        "60": null
+      },
+      "matchingAnchorFrames": []
+    },
+    {
+      "index": 285,
+      "againstAnchors": {
+        "0": null,
+        "30": null,
+        "60": null
+      },
+      "matchingAnchorFrames": []
+    },
+    {
+      "index": 300,
+      "againstAnchors": {
+        "0": null,
+        "30": null,
+        "60": null
+      },
+      "matchingAnchorFrames": []
+    },
+    {
+      "index": 330,
+      "againstAnchors": {
+        "0": null,
+        "30": null,
+        "60": null
+      },
+      "matchingAnchorFrames": []
+    },
+    {
+      "index": 343,
+      "againstAnchors": {
+        "0": {
+          "pooledEncoderCosine": 0.44712123250809327,
+          "rgbHistogramIntersection": 0.13704106285985254,
+          "highMaskAreaRatio": 0.10370965824497444,
+          "existingJointAppearanceRuleMatches": false
+        },
+        "30": {
+          "pooledEncoderCosine": 0.4562491172448863,
+          "rgbHistogramIntersection": 0.16736463745418398,
+          "highMaskAreaRatio": 0.1117863854921774,
+          "existingJointAppearanceRuleMatches": false
+        },
+        "60": {
+          "pooledEncoderCosine": 0.4837185886934789,
+          "rgbHistogramIntersection": 0.16816301380250193,
+          "highMaskAreaRatio": 0.17594744626495842,
+          "existingJointAppearanceRuleMatches": false
+        }
+      },
+      "matchingAnchorFrames": []
+    },
+    {
+      "index": 345,
+      "againstAnchors": {
+        "0": {
+          "pooledEncoderCosine": 0.5405650418457788,
+          "rgbHistogramIntersection": 0.17440185709047845,
+          "highMaskAreaRatio": 0.1966747241674073,
+          "existingJointAppearanceRuleMatches": false
+        },
+        "30": {
+          "pooledEncoderCosine": 0.5302749968071961,
+          "rgbHistogramIntersection": 0.19138716266060865,
+          "highMaskAreaRatio": 0.21199140855727222,
+          "existingJointAppearanceRuleMatches": false
+        },
+        "60": {
+          "pooledEncoderCosine": 0.5241104719385428,
+          "rgbHistogramIntersection": 0.18938608847380958,
+          "highMaskAreaRatio": 0.3336662760991913,
+          "existingJointAppearanceRuleMatches": false
+        }
+      },
+      "matchingAnchorFrames": []
+    },
+    {
+      "index": 346,
+      "againstAnchors": {
+        "0": {
+          "pooledEncoderCosine": 0.5188028675143542,
+          "rgbHistogramIntersection": 0.19230286299537686,
+          "highMaskAreaRatio": 0.46514234603474724,
+          "existingJointAppearanceRuleMatches": false
+        },
+        "30": {
+          "pooledEncoderCosine": 0.48422015889705455,
+          "rgbHistogramIntersection": 0.20525640340572437,
+          "highMaskAreaRatio": 0.5013668204339655,
+          "existingJointAppearanceRuleMatches": false
+        },
+        "60": {
+          "pooledEncoderCosine": 0.4677729786861876,
+          "rgbHistogramIntersection": 0.24255015434633656,
+          "highMaskAreaRatio": 0.7891319797929353,
+          "existingJointAppearanceRuleMatches": false
+        }
+      },
+      "matchingAnchorFrames": []
+    },
+    {
+      "index": 355,
+      "againstAnchors": {
+        "0": {
+          "pooledEncoderCosine": 0.7133959108122612,
+          "rgbHistogramIntersection": 0.48800882780308075,
+          "highMaskAreaRatio": 2.121213493577587,
+          "existingJointAppearanceRuleMatches": false
+        },
+        "30": {
+          "pooledEncoderCosine": 0.672164967171835,
+          "rgbHistogramIntersection": 0.5199568283554761,
+          "highMaskAreaRatio": 2.286409899685143,
+          "existingJointAppearanceRuleMatches": false
+        },
+        "60": {
+          "pooledEncoderCosine": 0.5953333554414161,
+          "rgbHistogramIntersection": 0.5193205763734499,
+          "highMaskAreaRatio": 3.5987207314496454,
+          "existingJointAppearanceRuleMatches": false
+        }
+      },
+      "matchingAnchorFrames": []
+    },
+    {
+      "index": 358,
+      "againstAnchors": {
+        "0": {
+          "pooledEncoderCosine": 0.7189567880896317,
+          "rgbHistogramIntersection": 0.5278133894608077,
+          "highMaskAreaRatio": 2.6663119101937762,
+          "existingJointAppearanceRuleMatches": false
+        },
+        "30": {
+          "pooledEncoderCosine": 0.7156128822284071,
+          "rgbHistogramIntersection": 0.5474939004026707,
+          "highMaskAreaRatio": 2.8739596299821826,
+          "existingJointAppearanceRuleMatches": false
+        },
+        "60": {
+          "pooledEncoderCosine": 0.6407612991690056,
+          "rgbHistogramIntersection": 0.5911925613597632,
+          "highMaskAreaRatio": 4.523501277347727,
+          "existingJointAppearanceRuleMatches": false
+        }
+      },
+      "matchingAnchorFrames": []
+    },
+    {
+      "index": 360,
+      "againstAnchors": {
+        "0": {
+          "pooledEncoderCosine": 0.7275289723066002,
+          "rgbHistogramIntersection": 0.505038641579139,
+          "highMaskAreaRatio": 2.576998194138593,
+          "existingJointAppearanceRuleMatches": false
+        },
+        "30": {
+          "pooledEncoderCosine": 0.7084610513022397,
+          "rgbHistogramIntersection": 0.5323229496697326,
+          "highMaskAreaRatio": 2.777690317541676,
+          "existingJointAppearanceRuleMatches": false
+        },
+        "60": {
+          "pooledEncoderCosine": 0.6387894102105759,
+          "rgbHistogramIntersection": 0.6037963900375649,
+          "highMaskAreaRatio": 4.371977103782101,
+          "existingJointAppearanceRuleMatches": false
+        }
+      },
+      "matchingAnchorFrames": []
+    },
+    {
+      "index": 375,
+      "againstAnchors": {
+        "0": {
+          "pooledEncoderCosine": 0.9059884169388095,
+          "rgbHistogramIntersection": 0.7183920970050265,
+          "highMaskAreaRatio": 1.4699825074866826,
+          "existingJointAppearanceRuleMatches": true
+        },
+        "30": {
+          "pooledEncoderCosine": 0.9107648094500689,
+          "rgbHistogramIntersection": 0.7211338136350517,
+          "highMaskAreaRatio": 1.5844621805667423,
+          "existingJointAppearanceRuleMatches": true
+        },
+        "60": {
+          "pooledEncoderCosine": 0.8141662412902375,
+          "rgbHistogramIntersection": 0.6465856223273498,
+          "highMaskAreaRatio": 2.493882176677359,
+          "existingJointAppearanceRuleMatches": true
+        }
+      },
+      "matchingAnchorFrames": [
+        0,
+        30,
+        60
+      ]
+    },
+    {
+      "index": 386,
+      "againstAnchors": {
+        "0": {
+          "pooledEncoderCosine": 0.30532702088006275,
+          "rgbHistogramIntersection": 0.5005601666580699,
+          "highMaskAreaRatio": 0.11324279495264568,
+          "existingJointAppearanceRuleMatches": false
+        },
+        "30": {
+          "pooledEncoderCosine": 0.4017415767775338,
+          "rgbHistogramIntersection": 0.4995182518742646,
+          "highMaskAreaRatio": 0.12206194625466793,
+          "existingJointAppearanceRuleMatches": false
+        },
+        "60": {
+          "pooledEncoderCosine": 0.35461653184374536,
+          "rgbHistogramIntersection": 0.4783110750739348,
+          "highMaskAreaRatio": 0.19212078139106048,
+          "existingJointAppearanceRuleMatches": false
+        }
+      },
+      "matchingAnchorFrames": []
+    },
+    {
+      "index": 387,
+      "againstAnchors": {
+        "0": null,
+        "30": null,
+        "60": null
+      },
+      "matchingAnchorFrames": []
+    },
+    {
+      "index": 542,
+      "againstAnchors": {
+        "0": null,
+        "30": null,
+        "60": null
+      },
+      "matchingAnchorFrames": []
+    },
+    {
+      "index": 545,
+      "againstAnchors": {
+        "0": {
+          "pooledEncoderCosine": 0.5123962651242103,
+          "rgbHistogramIntersection": 0.30105985628921483,
+          "highMaskAreaRatio": 0.21708831737872705,
+          "existingJointAppearanceRuleMatches": false
+        },
+        "30": {
+          "pooledEncoderCosine": 0.4994085122741058,
+          "rgbHistogramIntersection": 0.3331192641895345,
+          "highMaskAreaRatio": 0.23399477679334163,
+          "existingJointAppearanceRuleMatches": false
+        },
+        "60": {
+          "pooledEncoderCosine": 0.5178159216086715,
+          "rgbHistogramIntersection": 0.3798413784551792,
+          "highMaskAreaRatio": 0.3682987264939206,
+          "existingJointAppearanceRuleMatches": false
+        }
+      },
+      "matchingAnchorFrames": []
+    },
+    {
+      "index": 549,
+      "againstAnchors": {
+        "0": {
+          "pooledEncoderCosine": 0.6723521976432362,
+          "rgbHistogramIntersection": 0.3934195250763752,
+          "highMaskAreaRatio": 0.8637961584402792,
+          "existingJointAppearanceRuleMatches": false
+        },
+        "30": {
+          "pooledEncoderCosine": 0.6445185692217864,
+          "rgbHistogramIntersection": 0.3884885326823315,
+          "highMaskAreaRatio": 0.931067096238803,
+          "existingJointAppearanceRuleMatches": false
+        },
+        "60": {
+          "pooledEncoderCosine": 0.6095262473577694,
+          "rgbHistogramIntersection": 0.43664318212823916,
+          "highMaskAreaRatio": 1.4654635907877298,
+          "existingJointAppearanceRuleMatches": false
+        }
+      },
+      "matchingAnchorFrames": []
+    },
+    {
+      "index": 550,
+      "againstAnchors": {
+        "0": null,
+        "30": null,
+        "60": null
+      },
+      "matchingAnchorFrames": []
+    }
+  ]
+}

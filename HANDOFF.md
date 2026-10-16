@@ -1,6 +1,39 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: measure identity evidence on saved native masks
+## Current work: global appearance gate rejects wrong regions AND valid partial target
+
+Evidence: Audit/mac-new-saved-mask-identity-review.json. Completed identity evidence
+report linked to exact whole-person replay;551 decoded frames checked,22 encoder
+calls,3 fixed anchors and28 inspected frames.19 have descriptors,9 are absent.
+Offline independently recomputed all reported encoder cosines/RGB intersections
+and match lists from saved vectors. All inspected mask hashes, image hashes and
+observations match archived replay. No assistant inference or runtime test.
+
+Reviewed all3 anchor and28 inspection previews in contact sheets. Early references
+0/30/60 broadly cover intended man (imperfect masks, not ground truth).
+Only90 and375 pass the existing same-anchor .8 pooled-encoder/.5 RGB clause.
+Wrong hands343/345/346/545/549 and contaminated hair+hand355/358/360 all fail.
+But valid partial-target150/165/197/210/225 also fail: best encoder similarities
+150=.7349,210=.7495,225=.7744, despite colour passing. Shoe197 is .4883/.2451
+against anchor60 and also fails. Mixed277 fails. Null at300 cannot restore missing
+target; filtering only affects masks that already exist.
+
+Decision: DO NOT enable this clause as a veto on normal predictions. It would
+remove real visible target portions as well as bad masks. Do not simply lower
+global cutoff to fit the clip. This is selected development evidence, not an
+accuracy score, held-out validation or Core ML/iPhone performance claim.
+No model, app, history or frozen recovery-policy changes.
+
+Next diagnostic direction: visibility-aware/local feature comparison to fixed
+earlier subject references instead of pooling whole-body/partial masks into one
+vector. Assess genuine partial regions and wrong-person regions together, including
+mixed masks; avoid patch matching that accepts skin/background merely because some
+local descriptor matches. Need evidence separation before proposing any suppression
+or memory filtering. Current whole-mask result remains a useful conservative
+indicator, not a sufficient identity decision. No new Mac run requested this turn.
+
+
+## Prior step: measure identity evidence on saved native masks
 
 Added Temporal/diagnose_saved_mask_identity.py. User runs original CPU image
 encoder only at fixed early references0/30/60 and28 selected later frames.
