@@ -1,6 +1,38 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: replay reviewed whole-person alternative
+## Current work: whole-person start helps extent, identity failures remain
+
+Evidence: Audit/mac-new-whole-person-replay-review.json. Uploaded replay completed
+590 frames; all initialization controls pass (native assembly and forced-auto
+mask/pointer/memory, including exact binary masks). Source/prior artifact hashes
+match, script SHA matches commit8a5a816. All1180 saved high masks agree with report
+fractions/emptiness, frames ordered590. Offline inspection only, no model execution.
+
+Visually reviewed all62 saved chosen previews in contact sheets; enlarged paired
+197/277/300/343/358/375/549. Not every frame is manually labeled.
+Whole-person initial candidate broadly tracks intended head/body/limbs in sampled
+early frames. At197 the target shoe is recovered;210/225 show target at left.
+At277 target body fragments plus small extraneous hand patch. At300 intended man
+is visible but both masks empty. At343 chosen mask is foreground hand; at358 large
+foreground hair/head+hand contamination along with target hair. At375 intended
+man broadly reacquired. At545/549 false foreground-hand fragments when target
+not visible. Do not call all nonempty returns correct identity recovery.
+
+Automatic367 empty vs chosen323:44 additional nonempty frames, NOT accuracy gain
+count. This is original PyTorch CPU, not optimized Core ML/iPhone validation.
+Initialization is controlled; correct subject extent alone does not prevent
+misses or wrong-subject output. No policy/export/app change or promotion made.
+
+Next diagnostic direction: measure appearance/identity evidence on native NORMAL
+outputs against earlier trusted subject references, including wrong-present hand/
+hair frames and genuine partial-target frames. Existing frozen backup recovery
+only overrides absence; normal-present output wins, so it would not directly reject
+these contaminated normal masks. First establish evidence separation without
+changing histories or tuning thresholds to this one clip. Preserve prior worker/
+dog controls. No new run requested yet; current replay and video are available.
+
+
+## Prior step: replay reviewed whole-person alternative
 
 Evidence: Audit/mac-new-occlusion-alternatives-review.json. Uploaded alternatives
 completed; all prior summary controls reproduce. Reviewed all nine masks.

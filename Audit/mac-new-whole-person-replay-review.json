@@ -1,0 +1,238 @@
+{
+  "scope": "Offline report, saved-mask consistency and sparse preview review. No assistant inference.",
+  "archiveSHA256": "261356ea1d48f0465174586181e02dcc569191bb86270da1a9471330f8e82241",
+  "reportSHA256": "5f9378e84e1b78ca19e00574245434e07180065dbcd608bdb34051338156cc56",
+  "sourceVideoSHA256": "5170ab7d885e131cbcd79be302d422f58e014f0c7ffbde51dcdcf8ad27bfa1e9",
+  "scriptSHA256": "5b469fdc01f670b7453031e5c82707e6873ee619294013186e5c57b0186575a4",
+  "scriptMatchesPublishedCommit": "8a5a816737f737e54a6ff01a730126a2989a9923",
+  "completed": true,
+  "framesCompared": 590,
+  "controls": {
+    "reviewedMaskReproduced": true,
+    "priorScoresReproduced": true,
+    "forceAutomaticAgainstUnchanged": {
+      "low_res_mask": true,
+      "high_res_mask": true,
+      "object_pointer": true,
+      "object_score": true,
+      "memory_features": true,
+      "memory_positions": true,
+      "low_res_maskBinaryExact": true,
+      "high_res_maskBinaryExact": true
+    },
+    "initialAssemblyAgainstNative": {
+      "low_res_mask": true,
+      "high_res_mask": true,
+      "object_pointer": true,
+      "object_score": true,
+      "memory_features": true,
+      "memory_positions": true,
+      "low_res_maskBinaryExact": true,
+      "high_res_maskBinaryExact": true
+    }
+  },
+  "savedHighMasksChecked": 1180,
+  "allSavedHighMasksMatchReport": true,
+  "summary": {
+    "automatic": {
+      "emptyFrames": 367,
+      "framesProcessed": 590
+    },
+    "chosen": {
+      "emptyFrames": 323,
+      "framesProcessed": 590
+    }
+  },
+  "visualReview": {
+    "chosenPreviewFrames": [
+      0,
+      15,
+      30,
+      45,
+      60,
+      75,
+      90,
+      105,
+      120,
+      135,
+      150,
+      165,
+      179,
+      180,
+      195,
+      197,
+      210,
+      225,
+      237,
+      240,
+      255,
+      270,
+      276,
+      277,
+      278,
+      279,
+      285,
+      300,
+      315,
+      330,
+      343,
+      345,
+      346,
+      355,
+      358,
+      360,
+      375,
+      387,
+      390,
+      405,
+      420,
+      435,
+      450,
+      465,
+      480,
+      495,
+      510,
+      525,
+      540,
+      542,
+      543,
+      545,
+      546,
+      547,
+      549,
+      550,
+      551,
+      552,
+      555,
+      570,
+      585,
+      589
+    ],
+    "pairedPreviewsInspectedFullSize": [
+      197,
+      277,
+      300,
+      343,
+      358,
+      375,
+      549
+    ],
+    "limit": "All 62 saved chosen previews inspected in contact sheets, seven paired frames enlarged. Not all 590 frames visually labeled."
+  },
+  "observations": [
+    {
+      "frames": "0..165 sampled every15",
+      "finding": "Chosen mask broadly follows intended person, including head/limbs rather than shirt only."
+    },
+    {
+      "frame": 197,
+      "seconds": 6.5667,
+      "finding": "Chosen mask picks up target shoe at left edge; automatic shirt stream empty."
+    },
+    {
+      "frames": [
+        210,
+        225
+      ],
+      "finding": "Sampled chosen masks cover visible intended person at left; automatic low mask empty."
+    },
+    {
+      "frame": 277,
+      "seconds": 9.2333,
+      "finding": "Chosen mask includes target body fragments and a small extraneous foreground-hand patch; automatic mainly shirt fragments."
+    },
+    {
+      "frame": 300,
+      "seconds": 10.0,
+      "finding": "Both masks empty although intended man is visibly present behind foreground woman."
+    },
+    {
+      "frame": 343,
+      "seconds": 11.4333,
+      "finding": "Chosen mask covers foreground hand; wrong-subject output after absence."
+    },
+    {
+      "frame": 358,
+      "seconds": 11.9333,
+      "finding": "Chosen mask includes large foreground hair/head and hand regions plus target hair; substantial contamination."
+    },
+    {
+      "frame": 375,
+      "seconds": 12.5,
+      "finding": "Chosen mask again broadly covers intended man; automatic mainly shirt."
+    },
+    {
+      "frames": [
+        545,
+        549
+      ],
+      "seconds": [
+        18.1667,
+        18.3
+      ],
+      "finding": "Chosen masks falsely cover foreground hand when intended man is not visible."
+    }
+  ],
+  "interpretation": "Correct initial extent improves early whole-person coverage but does not solve missed recovery or identity contamination. 44 additional nonempty frames are not 44 correct frames. Completed means replay finished, not quality passed.",
+  "nextStep": "Observe appearance/identity evidence on native normal outputs, including false-present hand/hair masks, before changing policy. Earlier backup recovery accepted normal-present outputs unconditionally, so absence-only recovery cannot directly reject these errors.",
+  "promotion": false,
+  "coreMLOrPhoneValidation": false,
+  "emptyIntervals": {
+    "automatic": [
+      [
+        179,
+        275
+      ],
+      [
+        279,
+        345
+      ],
+      [
+        355,
+        357
+      ],
+      [
+        387,
+        541
+      ],
+      [
+        543,
+        545
+      ],
+      [
+        547,
+        550
+      ],
+      [
+        552,
+        589
+      ]
+    ],
+    "chosen": [
+      [
+        180,
+        196
+      ],
+      [
+        237,
+        276
+      ],
+      [
+        278,
+        342
+      ],
+      [
+        387,
+        544
+      ],
+      [
+        546,
+        548
+      ],
+      [
+        550,
+        589
+      ]
+    ]
+  }
+}
