@@ -1,6 +1,54 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: global appearance gate rejects wrong regions AND valid partial target
+## Current work: local appearance evidence prepared; awaiting Mac run
+
+Added Temporal/diagnose_saved_mask_local_parts.py, a measurement-only follow-up
+to the global appearance false rejections. Uses the same fixed anchors0/30/60
+and28 inspection frames as the completed pooled-identity report. Original CPU
+image encoder only at present requested frames; no temporal rerun or state change.
+Existing replay controls/source/script hashes and prior identity report must match.
+Every decoded frame through550 checks pixel hash, PTS and saved binary-mask
+shape/values/fraction/emptiness. Requested masks additionally match prior identity
+mask hashes/observations. Recomputed pooled descriptors must reproduce at
+atol1e-7/rtol1e-6; absent descriptors must remain absent. Defaults expect22 encoder
+calls and31 requested-frame controls, including9 null inspections.
+
+Local measurements: every foreground-touched64x64 grid cell, weighted by exact
+16x16 binary-mask coverage. Compare independently against each early anchor:
+nearest raw encoder feature in reference cells with coverage>=.5, plus a fully
+covered-cell sensitivity check. Save per-cell reference coordinates/cosines,
+same-match masked mean-RGB distances, mutual-nearest flag and unique reference
+cell count. Report weighted distributions, not a single maximum or acceptance.
+Compare nearest subject feature with a fixed sampled outside-mask bank (every
+fourth grid row/column with zero coverage). This is contextual contrast, not
+labeled distractors or exhaustive background; bank-size imbalance can bias maxima.
+Raw features have receptive fields beyond the displayed16x16 tiles, especially
+problematic for tiny fragments. They are not semantic body-part/identity embeddings.
+No new identity thresholds, normal-output veto, recovery or memory-policy edits.
+
+Save raw local vectors/coverage/coordinates/colours as compressed NPZ for offline
+recomputation and per-anchor spatial match maps with fixed scales. Existing global
+appearance clause retained as observational context only. Missing output stays null;
+this diagnostic cannot recover a visible subject whose predicted mask is absent.
+Evaluate reviewed true partial masks150/165/197/210/225 against wrong hands and mixed
+hair/hand masks jointly. Do not tune a rule to this selected development sample.
+
+Source reviewed and AST parsed only; no assistant inference, builds, tests or
+benchmarks. Runtime and reproducibility controls pending user's Mac.
+One fresh result directory, one share ZIP, Finder reveal including partial failure.
+
+```bash
+cd /Users/petercody/Documents/Projects/ByteWaveSegmentation &&
+export DEVELOPER_DIR="/Applications/Xcode-beta.app/Contents/Developer" &&
+git pull --ff-only &&
+.venv-temporal/bin/python Temporal/diagnose_saved_mask_local_parts.py --video assets/occlusion-new.mov
+```
+
+Upload .temporal-runs/share/occlusion-new-local-parts-01.zip.
+No installed model, app, export, numerical parity gate or production change.
+
+
+## Prior step: global appearance gate rejects wrong regions AND valid partial target
 
 Evidence: Audit/mac-new-saved-mask-identity-review.json. Completed identity evidence
 report linked to exact whole-person replay;551 decoded frames checked,22 encoder
