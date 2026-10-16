@@ -1,6 +1,42 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: local appearance evidence prepared; awaiting Mac run
+## Current work: local parts help shoe evidence but still match wrong hands
+
+Evidence: Audit/mac-new-local-parts-review.json. Completed551-frame decoding
+prefix,22 encoder calls,31 pooled-descriptor reproduction controls. Offline linked
+all requested source/mask hashes/observations/PTS to prior report and hashed22 NPZ
+archives. Independently recomputed all114 local comparisons (19 nonempty frames,
+3 anchors,2 reference-coverage modes), including coordinates, background margins,
+colour distances, mutual flags and distributions; max difference1.78e-15.
+Script SHA matches committed source. No assistant model run/test/benchmark.
+
+Reviewed all19 nonempty masks and57 per-anchor margin maps in contact sheets;
+enlarged197/277/345/358. Early-reference correspondence overlay confirms shoe197
+matches mostly earlier shoe regions, with some outliers. Mean cosine now
+.6985/.7229/.7400 and subject-minus-background .1899/.2165/.2593.
+These local scores differ in definition from prior pooled scores, not an accuracy
+improvement measurement.
+
+Wrong hand345 still has positive mean margins .1589/.1340/.1233. At anchor0 its
+cosine .6611 exceeds correct partial165 .5901 and its margin .1589 exceeds
+correct375 .1326. Its matches scatter over face, arms, shorts/legs and shoes.
+Mixed277 includes positive extraneous hand area. Wrong hand portions in355/358/360
+remain positive amid mixed red/green regions. Do not claim clean pixelwise separation.
+Fully interior references do not resolve overlap: anchor60 wrong345 margin .1143,
+correct165 .0882, correct375 .0777. Shoe197 cosine drops .7400 to .6686.
+Mutual-nearest fraction also depends on mask size: tiny179 near1 versus clear375
+about.14-.18. No simple cutoff justified. Empty300 cannot be recovered by filtering.
+
+Decision: no normal-mask veto, no recovery/memory-policy edit, no model/app promotion.
+Useful descriptive partial-view evidence, still insufficient identity evidence.
+Next offline direction: spatial consistency of groups of matches using saved
+vectors/coordinates, jointly checking correct partials and wrong/mixed masks.
+Do not accept generic skin/clothing because any earlier patch matches; preserve
+pose/scale/tiny-fragment limitations. No additional Mac run needed to begin analysis.
+Current clip remains selected development evidence, not held-out accuracy validation.
+
+
+## Prior step: local appearance evidence prepared
 
 Added Temporal/diagnose_saved_mask_local_parts.py, a measurement-only follow-up
 to the global appearance false rejections. Uses the same fixed anchors0/30/60
