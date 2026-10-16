@@ -1,6 +1,55 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: all three first-frame points select parts; inspect alternatives
+## Current work: replay reviewed whole-person alternative
+
+Evidence: Audit/mac-new-occlusion-alternatives-review.json. Uploaded alternatives
+completed; all prior summary controls reproduce. Reviewed all nine masks.
+Shoulder point(.36,.40), candidate1 broadly covers the intended person head to
+shoes, with holes/imperfect boundaries. Its predicted IoU .4044 ranks below the
+shirt candidate2 .5077. This explains automatic part selection; it is not proof
+of robust tracking, accurate identity or Core ML behavior.
+
+New Temporal/diagnose_initial_candidate_replay.py runs original PyTorch CPU:
+automatic vs visually chosen initialization, independent histories, shared
+read-only image features. Defaults point-number2/candidate1 from prior alternatives.
+Source video hash/bytes, pinned upstream/checkpoint, first image hash/timestamp,
+prior quality scores, automatic choice and chosen binary mask must reproduce.
+
+Initial selection uses a temporary mask-decoder forward hook that returns
+artificial ranking scores ONLY to upstream _forward_sam_heads. Upstream then
+selects both the desired mask and its corresponding decoder token, computes
+object pointer including absence handling. Hook always removed in finally;
+real scores restored before returning/reporting; no weight/tensor mutation.
+Pinned edgetam.yaml use_multimask_token_for_obj_ptr=true and decoder source
+confirmed one token per alternative. Shape/finite guard requires three tokens.
+Initial spatial memory freshly encoded from each selected high-resolution mask.
+
+Before propagation, forcing automatic candidate must reproduce unchanged
+mask/pointer/memory outputs, and initial assembly must reproduce native track_step,
+using existing FP32 allclose tolerances(.001/.001) plus exact binary masks. Selected alternative mask must
+exactly reproduce reviewed PNG. These controls are not cross-stream parity.
+From frame1 both streams use untouched native track_step with independent histories.
+All outputs including absence enter history; original temporal selection retained.
+No recovery backup, model export/promotion, app/fixture modification or speed claim.
+
+Every frame's binary high mask saved. Preview pairs every15 frames, low-mask
+empty/nonempty transitions and last frame. One ZIP in .temporal-runs/share, revealed
+in Finder even on partial failure. Output fresh-only. Default cap600 covers590
+frames of this clip. Source reviewed and AST parsed only; no assistant model run,
+conversion, build, benchmark or test. Actual runtime/controls pending user Mac.
+
+```bash
+cd /Users/petercody/Documents/Projects/ByteWaveSegmentation &&
+export DEVELOPER_DIR="/Applications/Xcode-beta.app/Contents/Developer" &&
+git pull --ff-only &&
+.venv-temporal/bin/python Temporal/diagnose_initial_candidate_replay.py --video assets/occlusion-new.mov
+```
+Upload .temporal-runs/share/occlusion-new-whole-person-01.zip.
+Review subject extent, wrong-person switches and disappearance/return before
+deciding how to validate this initialization in Core ML or compare frozen recovery.
+
+
+## Prior step: all three first-frame points select parts; inspect alternatives
 
 Evidence: Audit/mac-new-occlusion-three-point-review.json. All three one-frame
 runs completed, none selects the intended whole person. Head(.50,.28) selects
