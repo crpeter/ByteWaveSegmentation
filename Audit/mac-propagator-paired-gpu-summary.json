@@ -1,0 +1,49 @@
+{
+  "source": "User-pasted propagator-paired-gpu-01/summary.json; selected fields transcribed.",
+  "completed": true,
+  "passed": true,
+  "readyForDeviceValidation": false,
+  "scope": "76 paired original/conv2 propagator calls on identical original-CPU-state inputs across 19 propagated frames. Four balanced-order pairs per frame; one excluded warm-up per model. No sustained playback or iPhone timing claim.",
+  "computeUnits": "CPU_AND_GPU",
+  "macOS": "26.5.2",
+  "machine": "arm64",
+  "coremltoolsVersion": "9.0",
+  "sourceManifestSHA256": "47b7b85eef755ff7a440c0017f232a82ac7213af622d15d30a04f3487e07dd67",
+  "candidateReportSHA256": "d8ec125e1b5524e6cdce23ab0a8fefc44a2b2615dd68d4d582e33725829c04fd",
+  "sourceFrameReportSHA256": "8768eab4331ad57994782ee244861b64f3c3eb27fa6c970cc881a843618af9a6",
+  "candidateFiles": {
+    "Manifest.json": "e5695a5b2b55bcebaa23fbd6040dc18f143e4d0c0906ec5876cf0f97eb622f54",
+    "Data/com.apple.CoreML/model.mlmodel": "d24ed7a12babc62a3a370a13ade0a308860ba851ef79995b7022fefaba6de5b2",
+    "Data/com.apple.CoreML/weights/weight.bin": "69db9b2de01d311a2644cf696f6b7875e5beb637f2c785a4002f605827d41615"
+  },
+  "pointNormalizedTopLeft": [
+    0.4912,
+    0.4706
+  ],
+  "loadMilliseconds": {
+    "original": 313.0958331748843,
+    "conv2": 305.99037487991154
+  },
+  "summary": {
+    "measuredPairs": 76,
+    "medianMilliseconds": {
+      "original": 14.406521106138825,
+      "conv2": 14.470687601715326
+    },
+    "ratioOfMediansOriginalOverConv2": 0.9955657604294564,
+    "medianPairedRatioOriginalOverConv2": 0.9962869173164557,
+    "medianLatencyReductionPercent": -0.44539896275970214,
+    "allMeasuredOutputsPassed": true,
+    "medianMillisecondsByFirstModel": {
+      "original": {
+        "original": 14.473395538516343,
+        "conv2": 14.42287489771843
+      },
+      "conv2": {
+        "original": 14.323645504191518,
+        "conv2": 14.563707984052598
+      }
+    }
+  },
+  "assessment": "No useful Mac GPU speed improvement demonstrated. The 0.064 ms median increase is not evidence of a statistically established regression. Retain original export; paired CPU_AND_NE comparison remains pending."
+}

@@ -1,0 +1,2873 @@
+{
+  "clipID" : "47A4956A-C035-45B2-92AD-2BD584837D56",
+  "compileAndLoadMilliseconds" : {
+    "ImageEncoder" : 248.3432916633319,
+    "InitialMemoryEncoder" : 105.28220832929946,
+    "Initializer" : 134.63508333370555,
+    "Propagator" : 297.26095833757427
+  },
+  "contract" : "bytewave.edgetam-temporal-owned.v2",
+  "createdAt" : "2026-09-16T00:59:14Z",
+  "diagnosticPropagator" : {
+    "baselineFixtureSHA256" : "80bfbde3da5d8d650a68d60a1f61e2da0050abbe576e0bc848da46d640298455",
+    "candidateReportSHA256" : "36f8539aa651b010c4fd2321a13925aaf004a415d4feb1ff840d4c96a70b962e",
+    "contract" : "bytewave.propagator-attention.diagnostic.v1",
+    "pairedReportSHA256" : "7025a100b04591511fcad5d8519a44d182902fc55df743b4c4486dc5a576f5c2",
+    "precisionPolicy" : "memory-sdpa-fp16-only.diagnostic.v1",
+    "variant" : "memoryfp16"
+  },
+  "emptyMasks" : 0,
+  "fixtureSHA256" : "f6b8e78c142538375ff6bf6fee5516975543f06e2f0780f959ffd3abc0dbbc9f",
+  "framesPredicted" : 181,
+  "hardware" : "iPhone18,1",
+  "imagePreparation" : "Decoded BGRA; track presentation transform converted to Core Image coordinates; sRGB, stretched to 1024x1024. Preview keeps display aspect. Point is normalized top-left. Graph owns image scaling\/normalization.",
+  "isIOSAppOnMac" : false,
+  "lastAction" : "Predicted frame at 8.936666666666667 seconds",
+  "lastDecodedSize" : [
+    1920,
+    1080
+  ],
+  "lastDisplaySize" : [
+    1080,
+    1920
+  ],
+  "lastPointNormalizedTopLeft" : [
+    0.12072072072072071,
+    0.3856418918918919
+  ],
+  "lastResetReason" : "subject selection on current frame",
+  "lastState" : {
+    "acceptedFrames" : 71,
+    "pointerEntries" : 16,
+    "spatialEntries" : 7
+  },
+  "modelFiles" : {
+    "models\/BWTemporalImageEncoder.mlpackage\/Data\/com.apple.CoreML\/model.mlmodel" : "51a1fbee94f3b1ea3b47345d2539112d79b3fd39d49c850a37cff088ba9e69f7",
+    "models\/BWTemporalImageEncoder.mlpackage\/Data\/com.apple.CoreML\/weights\/weight.bin" : "74c81dbff608d07039888a1d8b417714f0f83eac37d65e9722f85324e7966c7c",
+    "models\/BWTemporalImageEncoder.mlpackage\/Manifest.json" : "137a2fbdef2f14de316c91d52d75c8938fe58fffa75c5639cb2befb3d009b5a1",
+    "models\/BWTemporalInitialMemoryEncoder.mlpackage\/Data\/com.apple.CoreML\/model.mlmodel" : "613c7a310f1fae1b698aaba6e5a70c3afb842f459d3ec96cf9e0f4b6b4b9438a",
+    "models\/BWTemporalInitialMemoryEncoder.mlpackage\/Data\/com.apple.CoreML\/weights\/weight.bin" : "21ae511f368835d55fe519b9b4ae9032bf9256cdb3cc0e91fdf5b4c467311563",
+    "models\/BWTemporalInitialMemoryEncoder.mlpackage\/Manifest.json" : "64fb8412cf6229dda7ec7227113c7c8cf1a5278a96b62b94e2a0a76f6d790b52",
+    "models\/BWTemporalInitializer.mlpackage\/Data\/com.apple.CoreML\/model.mlmodel" : "a70da7906ee21086122e9c24479b149308337f49609854455ae9cf65f790625f",
+    "models\/BWTemporalInitializer.mlpackage\/Data\/com.apple.CoreML\/weights\/weight.bin" : "9409edf81128013f2ff61ef2565832f0a35782304e7adc54466e0396b5ab94c2",
+    "models\/BWTemporalInitializer.mlpackage\/Manifest.json" : "d2311a29bb658bd6f16e801e91893985eb5aea3f7a6587f718e3e93539bc3068",
+    "models\/BWTemporalPropagator.mlpackage\/Data\/com.apple.CoreML\/model.mlmodel" : "dec2227edc7d22832a3726a68237b6789f2d79ede1a5b0cc6f76d400c69d08d9",
+    "models\/BWTemporalPropagator.mlpackage\/Data\/com.apple.CoreML\/weights\/weight.bin" : "3e679bfdc49fc43e895434b8c8bb6e75bad20a2cad37fd0aa2d5019cd186386e",
+    "models\/BWTemporalPropagator.mlpackage\/Manifest.json" : "aec4bf7ef5dafc3816e3a645f93b134824268f4b0e8184170452e10c8c5618c1"
+  },
+  "modelVariant" : "memoryfp16",
+  "operatingSystem" : "Version 27.0 (Build 24A435)",
+  "precisionPolicy" : "memory-sdpa-fp16-only.diagnostic.v1",
+  "reachedEnd" : false,
+  "recentFrameLimit" : 120,
+  "recentFrames" : [
+    {
+      "decodeAndPreparationMilliseconds" : 31.616208332707174,
+      "foregroundFraction" : 0.104827880859375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.41700000292621553,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.031291664461605,
+        "Propagator" : 32.51483333588112
+      },
+      "objectScore" : 8.453125,
+      "predictedIoU" : 0.9768966,
+      "predictionAndStateMilliseconds" : 63.798333329032175,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10203,
+      "requestIndex" : 61,
+      "requestMilliseconds" : 95.93283334106673,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 18,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 33.3565000037197,
+      "foregroundFraction" : 0.1053314208984375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.39416666550096124,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.873666657484137,
+        "Propagator" : 32.53079166461248
+      },
+      "objectScore" : 9.3359375,
+      "predictedIoU" : 0.975706,
+      "predictionAndStateMilliseconds" : 63.90929166809656,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10223,
+      "requestIndex" : 62,
+      "requestMilliseconds" : 97.75683333282359,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 19,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 31.58554167021066,
+      "foregroundFraction" : 0.1060791015625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.38729167135898024,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.779041664558463,
+        "Propagator" : 32.538208324695006
+      },
+      "objectScore" : 8.875,
+      "predictedIoU" : 0.9749997,
+      "predictionAndStateMilliseconds" : 63.48291666654404,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10243,
+      "requestIndex" : 63,
+      "requestMilliseconds" : 95.55491666833404,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 20,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 30.925875005777925,
+      "foregroundFraction" : 0.107635498046875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4167500010225922,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.14737499889452,
+        "Propagator" : 32.545499998377636
+      },
+      "objectScore" : 8.8125,
+      "predictedIoU" : 0.97712654,
+      "predictionAndStateMilliseconds" : 64.30362499668263,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10263,
+      "requestIndex" : 64,
+      "requestMilliseconds" : 95.74095833522733,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 21,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 33.937125001102686,
+      "foregroundFraction" : 0.1088714599609375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3949583333451301,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.971083333482966,
+        "Propagator" : 32.37083333078772
+      },
+      "objectScore" : 9.140625,
+      "predictedIoU" : 0.977848,
+      "predictionAndStateMilliseconds" : 63.8452500134008,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10283,
+      "requestIndex" : 65,
+      "requestMilliseconds" : 98.28562499023974,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 22,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 30.584291671402752,
+      "foregroundFraction" : 0.110931396484375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3872083325404674,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.011374996509403,
+        "Propagator" : 32.95254166005179
+      },
+      "objectScore" : 9.1484375,
+      "predictedIoU" : 0.97570795,
+      "predictionAndStateMilliseconds" : 64.03437499830034,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10303,
+      "requestIndex" : 66,
+      "requestMilliseconds" : 95.11166666925419,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 23,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 31.220499993651174,
+      "foregroundFraction" : 0.114898681640625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3957083390560001,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.778875001473352,
+        "Propagator" : 32.80879167141393
+      },
+      "objectScore" : 9.1015625,
+      "predictedIoU" : 0.9771169,
+      "predictionAndStateMilliseconds" : 63.70549999701325,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10323,
+      "requestIndex" : 67,
+      "requestMilliseconds" : 95.41687500313856,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 24,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 31.099916668608785,
+      "foregroundFraction" : 0.117706298828125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3874166723107919,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.485249995952472,
+        "Propagator" : 32.62750001158565
+      },
+      "objectScore" : 9.2265625,
+      "predictedIoU" : 0.976404,
+      "predictionAndStateMilliseconds" : 64.25687500450294,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10343,
+      "requestIndex" : 68,
+      "requestMilliseconds" : 95.8437083318131,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 25,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 31.40108333900571,
+      "foregroundFraction" : 0.120391845703125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4028750117868185,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.84512501116842,
+        "Propagator" : 32.479874993441626
+      },
+      "objectScore" : 9.234375,
+      "predictedIoU" : 0.97851264,
+      "predictionAndStateMilliseconds" : 63.51812501088716,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10363,
+      "requestIndex" : 69,
+      "requestMilliseconds" : 95.42491666798014,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 26,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 31.969541669241153,
+      "foregroundFraction" : 0.123199462890625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.39704167284071445,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.10141666000709,
+        "Propagator" : 32.509500000742264
+      },
+      "objectScore" : 9.4375,
+      "predictedIoU" : 0.97690475,
+      "predictionAndStateMilliseconds" : 63.926041664672084,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10383,
+      "requestIndex" : 70,
+      "requestMilliseconds" : 96.3951666635694,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 27,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 30.50495834031608,
+      "foregroundFraction" : 0.12713623046875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3918750007869676,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.92833332810551,
+        "Propagator" : 32.729041660786606
+      },
+      "objectScore" : 9.25,
+      "predictedIoU" : 0.9750302,
+      "predictionAndStateMilliseconds" : 63.62525001168251,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10403,
+      "requestIndex" : 71,
+      "requestMilliseconds" : 94.62258333223872,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 28,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 30.997166672023013,
+      "foregroundFraction" : 0.1291961669921875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4090833244845271,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.84458333067596,
+        "Propagator" : 32.252833334496245
+      },
+      "objectScore" : 9.25,
+      "predictedIoU" : 0.9761327,
+      "predictionAndStateMilliseconds" : 63.304458337370306,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10423,
+      "requestIndex" : 72,
+      "requestMilliseconds" : 94.81549999327399,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 29,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 32.012041672714986,
+      "foregroundFraction" : 0.130859375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3872083325404674,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.004291662597097,
+        "Propagator" : 32.62395833735354
+      },
+      "objectScore" : 9.3984375,
+      "predictedIoU" : 0.9756916,
+      "predictionAndStateMilliseconds" : 63.892791673424654,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10443,
+      "requestIndex" : 73,
+      "requestMilliseconds" : 96.39579166832846,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 30,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 30.114000008325092,
+      "foregroundFraction" : 0.130523681640625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.39745832327753305,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.191583339008503,
+        "Propagator" : 32.62841666582972
+      },
+      "objectScore" : 9.3828125,
+      "predictedIoU" : 0.97628695,
+      "predictionAndStateMilliseconds" : 64.3442500004312,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10463,
+      "requestIndex" : 74,
+      "requestMilliseconds" : 94.96366666280665,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 31,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 31.90741666185204,
+      "foregroundFraction" : 0.1287994384765625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3847083280561492,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.08516666723881,
+        "Propagator" : 32.95199999411125
+      },
+      "objectScore" : 9.0859375,
+      "predictedIoU" : 0.98002636,
+      "predictionAndStateMilliseconds" : 64.19225000718143,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10483,
+      "requestIndex" : 75,
+      "requestMilliseconds" : 96.59391666355077,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 32,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 30.643708334537223,
+      "foregroundFraction" : 0.1247711181640625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3954999992856756,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.07616665691603,
+        "Propagator" : 32.602541672531515
+      },
+      "objectScore" : 9.296875,
+      "predictedIoU" : 0.9771433,
+      "predictionAndStateMilliseconds" : 63.62929166061804,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10503,
+      "requestIndex" : 76,
+      "requestMilliseconds" : 94.76941666798666,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 33,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 31.932375000906177,
+      "foregroundFraction" : 0.1204071044921875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.40750000334810466,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.022375007509254,
+        "Propagator" : 32.225333343376406
+      },
+      "objectScore" : 8.515625,
+      "predictedIoU" : 0.9770007,
+      "predictionAndStateMilliseconds" : 63.49570833845064,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10523,
+      "requestIndex" : 77,
+      "requestMilliseconds" : 95.9407916670898,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 34,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 32.75291665340774,
+      "foregroundFraction" : 0.115478515625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.39312499575316906,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.817666667629965,
+        "Propagator" : 32.55704166076612
+      },
+      "objectScore" : 9.734375,
+      "predictedIoU" : 0.9780238,
+      "predictionAndStateMilliseconds" : 63.69045833707787,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10543,
+      "requestIndex" : 78,
+      "requestMilliseconds" : 96.94299999682698,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 35,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 31.192041671602055,
+      "foregroundFraction" : 0.1098175048828125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4002083296654746,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.999333330313675,
+        "Propagator" : 32.70387499651406
+      },
+      "objectScore" : 9.1484375,
+      "predictedIoU" : 0.9795837,
+      "predictionAndStateMilliseconds" : 63.66158332093619,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10563,
+      "requestIndex" : 79,
+      "requestMilliseconds" : 95.3657916688826,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 36,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 32.23233332391828,
+      "foregroundFraction" : 0.1063995361328125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.380041659809649,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.15470833471045,
+        "Propagator" : 32.64533334004227
+      },
+      "objectScore" : 8.9609375,
+      "predictedIoU" : 0.9785069,
+      "predictionAndStateMilliseconds" : 64.07925000530668,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10583,
+      "requestIndex" : 80,
+      "requestMilliseconds" : 96.79808333748952,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 37,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 31.30758332554251,
+      "foregroundFraction" : 0.1063690185546875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4087083361810073,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.927875000983477,
+        "Propagator" : 32.49399999913294
+      },
+      "objectScore" : 9.6171875,
+      "predictedIoU" : 0.9806841,
+      "predictionAndStateMilliseconds" : 63.12616667128168,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10603,
+      "requestIndex" : 81,
+      "requestMilliseconds" : 94.94758333312348,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 38,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 32.12712499953341,
+      "foregroundFraction" : 0.10589599609375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.38045833935029805,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.084291660576127,
+        "Propagator" : 32.46041666716337
+      },
+      "objectScore" : 9.46875,
+      "predictedIoU" : 0.97817296,
+      "predictionAndStateMilliseconds" : 63.657958336989395,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10623,
+      "requestIndex" : 82,
+      "requestMilliseconds" : 96.26849999767728,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 39,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 30.6821249978384,
+      "foregroundFraction" : 0.10406494140625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3976666630478576,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.04087500285823,
+        "Propagator" : 32.716375004383735
+      },
+      "objectScore" : 9.8828125,
+      "predictedIoU" : 0.9754263,
+      "predictionAndStateMilliseconds" : 63.69483334128745,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10643,
+      "requestIndex" : 83,
+      "requestMilliseconds" : 94.88424999290146,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 40,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 31.648041665903293,
+      "foregroundFraction" : 0.10205078125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4173749912297353,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.06612500594929,
+        "Propagator" : 32.65112500230316
+      },
+      "objectScore" : 9.6953125,
+      "predictedIoU" : 0.978737,
+      "predictionAndStateMilliseconds" : 64.16424999770243,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10663,
+      "requestIndex" : 84,
+      "requestMilliseconds" : 96.33395832497627,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 41,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 33.960166678298265,
+      "foregroundFraction" : 0.098602294921875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.39524999738205224,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.40874999552034,
+        "Propagator" : 32.54583332454786
+      },
+      "objectScore" : 9.3671875,
+      "predictedIoU" : 0.9749585,
+      "predictionAndStateMilliseconds" : 64.43850000505336,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10683,
+      "requestIndex" : 85,
+      "requestMilliseconds" : 98.89750000729691,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 42,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 31.950625008903444,
+      "foregroundFraction" : 0.0934906005859375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4363750049378723,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.047500009648502,
+        "Propagator" : 32.87441666179802
+      },
+      "objectScore" : 9.078125,
+      "predictedIoU" : 0.9794038,
+      "predictionAndStateMilliseconds" : 64.119375005248,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10703,
+      "requestIndex" : 86,
+      "requestMilliseconds" : 96.6163750126725,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 43,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 34.81012499833014,
+      "foregroundFraction" : 0.0912628173828125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3942083421861753,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.381874994607642,
+        "Propagator" : 33.05979167635087
+      },
+      "objectScore" : 8.90625,
+      "predictedIoU" : 0.9788825,
+      "predictionAndStateMilliseconds" : 64.95412498770747,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10723,
+      "requestIndex" : 87,
+      "requestMilliseconds" : 100.26237499550916,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 44,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 32.262374996207654,
+      "foregroundFraction" : 0.0901031494140625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.39670833211857826,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.783999996841885,
+        "Propagator" : 32.400625001173466
+      },
+      "objectScore" : 8.875,
+      "predictedIoU" : 0.97995526,
+      "predictionAndStateMilliseconds" : 63.41020832769573,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10743,
+      "requestIndex" : 88,
+      "requestMilliseconds" : 96.17645833350252,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 45,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 32.95787499519065,
+      "foregroundFraction" : 0.0894775390625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.38358333404175937,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.83037500071805,
+        "Propagator" : 32.307749992469326
+      },
+      "objectScore" : 8.9140625,
+      "predictedIoU" : 0.9802572,
+      "predictionAndStateMilliseconds" : 63.40837500465568,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10763,
+      "requestIndex" : 89,
+      "requestMilliseconds" : 96.85491667187307,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 46,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 31.511249995674007,
+      "foregroundFraction" : 0.088775634765625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.41920834337361157,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.95966665749438,
+        "Propagator" : 32.789666671305895
+      },
+      "objectScore" : 8.7578125,
+      "predictedIoU" : 0.97866315,
+      "predictionAndStateMilliseconds" : 63.835541674052365,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10783,
+      "requestIndex" : 90,
+      "requestMilliseconds" : 95.86487500928342,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 47,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 35.84625000075903,
+      "foregroundFraction" : 0.0889739990234375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3928333317162469,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.097749999375083,
+        "Propagator" : 32.56041667191312
+      },
+      "objectScore" : 8.75,
+      "predictedIoU" : 0.9784919,
+      "predictionAndStateMilliseconds" : 64.12949999503326,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10803,
+      "requestIndex" : 91,
+      "requestMilliseconds" : 100.46929166128393,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 48,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 32.60216666967608,
+      "foregroundFraction" : 0.0889434814453125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3919583250535652,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.033291665138677,
+        "Propagator" : 32.70183333370369
+      },
+      "objectScore" : 8.96875,
+      "predictedIoU" : 0.9793306,
+      "predictionAndStateMilliseconds" : 63.80045833066106,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10823,
+      "requestIndex" : 92,
+      "requestMilliseconds" : 96.90083333407529,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 49,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 33.573000007891096,
+      "foregroundFraction" : 0.0893707275390625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.38791666156612337,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.949416666757315,
+        "Propagator" : 32.76062500663102
+      },
+      "objectScore" : 8.6171875,
+      "predictedIoU" : 0.9795904,
+      "predictionAndStateMilliseconds" : 63.84729167621117,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10843,
+      "requestIndex" : 93,
+      "requestMilliseconds" : 97.90458333736751,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 50,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 33.278999995673075,
+      "foregroundFraction" : 0.090118408203125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.38858334301039577,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.966708329273388,
+        "Propagator" : 32.412874992587604
+      },
+      "objectScore" : 9.203125,
+      "predictedIoU" : 0.97956204,
+      "predictionAndStateMilliseconds" : 64.53433333081193,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10863,
+      "requestIndex" : 94,
+      "requestMilliseconds" : 98.31008334003855,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 51,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 33.86754165694583,
+      "foregroundFraction" : 0.0887298583984375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.39200000173877925,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.15862499724608,
+        "Propagator" : 32.48512498976197
+      },
+      "objectScore" : 9.0625,
+      "predictedIoU" : 0.97581124,
+      "predictionAndStateMilliseconds" : 63.78370833408553,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10883,
+      "requestIndex" : 95,
+      "requestMilliseconds" : 98.14775000268128,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 52,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 33.32524999859743,
+      "foregroundFraction" : 0.0894012451171875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3830833447864279,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.845124996616505,
+        "Propagator" : 32.50099999422673
+      },
+      "objectScore" : 8.9140625,
+      "predictedIoU" : 0.9761174,
+      "predictionAndStateMilliseconds" : 63.48854166571982,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10903,
+      "requestIndex" : 96,
+      "requestMilliseconds" : 97.29933334165253,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 53,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 31.22366666502785,
+      "foregroundFraction" : 0.090606689453125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.403750003897585,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.02733332524076,
+        "Propagator" : 32.13945832976606
+      },
+      "objectScore" : 9.140625,
+      "predictedIoU" : 0.97806346,
+      "predictionAndStateMilliseconds" : 63.15829166851472,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10923,
+      "requestIndex" : 97,
+      "requestMilliseconds" : 94.88841667189263,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 54,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 33.09145833190996,
+      "foregroundFraction" : 0.0924530029296875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3816666721832007,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.831874997587875,
+        "Propagator" : 32.84904167230707
+      },
+      "objectScore" : 8.7109375,
+      "predictedIoU" : 0.97883487,
+      "predictionAndStateMilliseconds" : 63.86254167591687,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10943,
+      "requestIndex" : 98,
+      "requestMilliseconds" : 97.43862500181422,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 55,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 32.00895832560491,
+      "foregroundFraction" : 0.094757080078125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.41579167009331286,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.048416663892567,
+        "Propagator" : 32.78341666737106
+      },
+      "objectScore" : 8.4375,
+      "predictedIoU" : 0.97947276,
+      "predictionAndStateMilliseconds" : 63.83900000946596,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10963,
+      "requestIndex" : 99,
+      "requestMilliseconds" : 96.37629166536499,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 56,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 34.74137499870267,
+      "foregroundFraction" : 0.096160888671875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.38804166251793504,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.064666671212763,
+        "Propagator" : 32.62087500479538
+      },
+      "objectScore" : 8.6484375,
+      "predictedIoU" : 0.97823447,
+      "predictionAndStateMilliseconds" : 64.17479166702833,
+      "ptsTimescale" : 600,
+      "ptsValue" : 10983,
+      "requestIndex" : 100,
+      "requestMilliseconds" : 99.40929166623391,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 57,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 32.95891666493844,
+      "foregroundFraction" : 0.098419189453125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.387291656807065,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.781916671898216,
+        "Propagator" : 32.805916664074175
+      },
+      "objectScore" : 8.9453125,
+      "predictedIoU" : 0.9782787,
+      "predictionAndStateMilliseconds" : 63.627124996855855,
+      "ptsTimescale" : 600,
+      "ptsValue" : 11003,
+      "requestIndex" : 101,
+      "requestMilliseconds" : 97.07499999785796,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 58,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 33.10637499089353,
+      "foregroundFraction" : 0.0995025634765625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.39487499452661723,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.27166666125413,
+        "Propagator" : 32.75195833703037
+      },
+      "objectScore" : 9.09375,
+      "predictedIoU" : 0.97760814,
+      "predictionAndStateMilliseconds" : 64.2117916722782,
+      "ptsTimescale" : 600,
+      "ptsValue" : 11023,
+      "requestIndex" : 102,
+      "requestMilliseconds" : 97.82483332674019,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 59,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 33.89312500075903,
+      "foregroundFraction" : 0.1027679443359375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.384041661163792,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 23.669166665058583,
+        "Propagator" : 34.83304166002199
+      },
+      "objectScore" : 9.109375,
+      "predictedIoU" : 0.9773446,
+      "predictionAndStateMilliseconds" : 68.05891667318065,
+      "ptsTimescale" : 600,
+      "ptsValue" : 11043,
+      "requestIndex" : 103,
+      "requestMilliseconds" : 102.45491667592432,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 60,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 33.189333335030824,
+      "foregroundFraction" : 0.106719970703125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.39224998909048736,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 23.34291665465571,
+        "Propagator" : 33.65762499743141
+      },
+      "objectScore" : 9.1015625,
+      "predictedIoU" : 0.9731967,
+      "predictionAndStateMilliseconds" : 66.27412499801721,
+      "ptsTimescale" : 600,
+      "ptsValue" : 11063,
+      "requestIndex" : 104,
+      "requestMilliseconds" : 99.97333333012648,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 61,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 32.940166667685844,
+      "foregroundFraction" : 0.1083526611328125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4499583301367238,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.516416662256233,
+        "Propagator" : 33.01499999361113
+      },
+      "objectScore" : 8.9375,
+      "predictedIoU" : 0.9671217,
+      "predictionAndStateMilliseconds" : 64.48520833509974,
+      "ptsTimescale" : 600,
+      "ptsValue" : 11083,
+      "requestIndex" : 105,
+      "requestMilliseconds" : 97.98745832813438,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 62,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 36.42112499801442,
+      "foregroundFraction" : 0.10986328125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4086250119144097,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.35204167664051,
+        "Propagator" : 32.5977916654665
+      },
+      "objectScore" : 9.28125,
+      "predictedIoU" : 0.9713904,
+      "predictionAndStateMilliseconds" : 64.74329167394899,
+      "ptsTimescale" : 600,
+      "ptsValue" : 11103,
+      "requestIndex" : 106,
+      "requestMilliseconds" : 101.68058333510999,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 63,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 33.42012500797864,
+      "foregroundFraction" : 0.1093597412109375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3836249961750582,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.407500000554137,
+        "Propagator" : 32.58449998975266
+      },
+      "objectScore" : 9.34375,
+      "predictedIoU" : 0.97365046,
+      "predictionAndStateMilliseconds" : 64.30474999069702,
+      "ptsTimescale" : 600,
+      "ptsValue" : 11123,
+      "requestIndex" : 107,
+      "requestMilliseconds" : 98.21941665722989,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 64,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 31.98629166581668,
+      "foregroundFraction" : 0.1103668212890625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3926250064978376,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.17454166384414,
+        "Propagator" : 32.76245834422298
+      },
+      "objectScore" : 9.328125,
+      "predictedIoU" : 0.9752528,
+      "predictionAndStateMilliseconds" : 63.89970832969993,
+      "ptsTimescale" : 600,
+      "ptsValue" : 11143,
+      "requestIndex" : 108,
+      "requestMilliseconds" : 96.38858333346434,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 65,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 32.62258334143553,
+      "foregroundFraction" : 0.111053466796875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4455833259271458,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.84383332496509,
+        "Propagator" : 32.80429166625254
+      },
+      "objectScore" : 8.71875,
+      "predictedIoU" : 0.97374696,
+      "predictionAndStateMilliseconds" : 64.05566666217055,
+      "ptsTimescale" : 600,
+      "ptsValue" : 11163,
+      "requestIndex" : 109,
+      "requestMilliseconds" : 97.23741667403374,
+      "segment" : 4,
+      "state" : {
+        "acceptedFrames" : 66,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 0,
+      "foregroundFraction" : 0.0333251953125,
+      "initialized" : true,
+      "maskRenderingMilliseconds" : 0.6228749989531934,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 41.41150000214111,
+        "InitialMemoryEncoder" : 5.961499991826713,
+        "Initializer" : 13.862624997273088
+      },
+      "objectScore" : 29.515625,
+      "predictedIoU" : 0.9790998,
+      "predictionAndStateMilliseconds" : 91.66154166450724,
+      "ptsTimescale" : 60000,
+      "ptsValue" : 397043,
+      "requestIndex" : 110,
+      "requestMilliseconds" : 92.32470834103879,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 1,
+        "pointerEntries" : 1,
+        "spatialEntries" : 1
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 59.46162500185892,
+      "foregroundFraction" : 0.034820556640625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.53608333109878,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 32.70712499215733,
+        "Propagator" : 35.42758333787788
+      },
+      "objectScore" : 9.40625,
+      "predictedIoU" : 0.9850686,
+      "predictionAndStateMilliseconds" : 81.83908333012369,
+      "ptsTimescale" : 600,
+      "ptsValue" : 3982,
+      "requestIndex" : 111,
+      "requestMilliseconds" : 142.05050001328345,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 2,
+        "pointerEntries" : 2,
+        "spatialEntries" : 2
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 58.95516667806078,
+      "foregroundFraction" : 0.037994384765625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4996250063413754,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 35.33391666132957,
+        "Propagator" : 35.624083335278556
+      },
+      "objectScore" : 9.7890625,
+      "predictedIoU" : 0.9811049,
+      "predictionAndStateMilliseconds" : 85.98033332964405,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4002,
+      "requestIndex" : 112,
+      "requestMilliseconds" : 145.64149999932852,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 3,
+        "pointerEntries" : 3,
+        "spatialEntries" : 3
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 55.99229167273734,
+      "foregroundFraction" : 0.041015625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.5449166637845337,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 33.069124998291954,
+        "Propagator" : 34.63266666221898
+      },
+      "objectScore" : 9.625,
+      "predictedIoU" : 0.9768762,
+      "predictionAndStateMilliseconds" : 81.9517916534096,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4022,
+      "requestIndex" : 113,
+      "requestMilliseconds" : 138.6930833250517,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 4,
+        "pointerEntries" : 4,
+        "spatialEntries" : 4
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 25.603083326132037,
+      "foregroundFraction" : 0.0427093505859375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.38487499114125967,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.836625004652888,
+        "Propagator" : 32.772249993286096
+      },
+      "objectScore" : 9.609375,
+      "predictedIoU" : 0.97718734,
+      "predictionAndStateMilliseconds" : 63.956083336961456,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4042,
+      "requestIndex" : 114,
+      "requestMilliseconds" : 90.049791673664,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 5,
+        "pointerEntries" : 5,
+        "spatialEntries" : 5
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 25.256666660425253,
+      "foregroundFraction" : 0.0442352294921875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3922083415091038,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.17574999667704,
+        "Propagator" : 32.114708330482244
+      },
+      "objectScore" : 9.4453125,
+      "predictedIoU" : 0.96842176,
+      "predictionAndStateMilliseconds" : 63.40104165428784,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4062,
+      "requestIndex" : 115,
+      "requestMilliseconds" : 89.16375000262633,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 6,
+        "pointerEntries" : 6,
+        "spatialEntries" : 6
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 23.3180000068387,
+      "foregroundFraction" : 0.0437469482421875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.38625000161118805,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.20587499323301,
+        "Propagator" : 32.50854165526107
+      },
+      "objectScore" : 9.875,
+      "predictedIoU" : 0.9693961,
+      "predictionAndStateMilliseconds" : 63.8899166660849,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4082,
+      "requestIndex" : 116,
+      "requestMilliseconds" : 87.70066665601917,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 7,
+        "pointerEntries" : 7,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 23.844875002396293,
+      "foregroundFraction" : 0.045501708984375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4203749995213002,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.01858333137352,
+        "Propagator" : 33.01387499959674
+      },
+      "objectScore" : 9.203125,
+      "predictedIoU" : 0.9741441,
+      "predictionAndStateMilliseconds" : 64.3477083358448,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4102,
+      "requestIndex" : 117,
+      "requestMilliseconds" : 88.7231250089826,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 8,
+        "pointerEntries" : 8,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 24.85825000621844,
+      "foregroundFraction" : 0.047027587890625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3902916650986299,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.307708335574716,
+        "Propagator" : 32.47350000310689
+      },
+      "objectScore" : 9.4375,
+      "predictedIoU" : 0.97241807,
+      "predictionAndStateMilliseconds" : 64.29679166467395,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4122,
+      "requestIndex" : 118,
+      "requestMilliseconds" : 89.65291667846031,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 9,
+        "pointerEntries" : 9,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 23.68541667237878,
+      "foregroundFraction" : 0.0482940673828125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.37920834438409656,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.334958339342847,
+        "Propagator" : 33.02600000461098
+      },
+      "objectScore" : 9.6640625,
+      "predictedIoU" : 0.9693801,
+      "predictionAndStateMilliseconds" : 64.46791667258367,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4142,
+      "requestIndex" : 119,
+      "requestMilliseconds" : 88.63420833949931,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 10,
+        "pointerEntries" : 10,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 22.608541665249504,
+      "foregroundFraction" : 0.0447998046875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.39116665720939636,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.878708343137987,
+        "Propagator" : 32.50149999803398
+      },
+      "objectScore" : 9.4765625,
+      "predictedIoU" : 0.96429837,
+      "predictionAndStateMilliseconds" : 63.292958337115124,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4162,
+      "requestIndex" : 120,
+      "requestMilliseconds" : 86.39366665738635,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 11,
+        "pointerEntries" : 11,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 23.995958326850086,
+      "foregroundFraction" : 0.045440673828125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.412083332776092,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.0815416687401,
+        "Propagator" : 31.947291674441658
+      },
+      "objectScore" : 10.046875,
+      "predictedIoU" : 0.9551419,
+      "predictionAndStateMilliseconds" : 63.28849999408703,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4182,
+      "requestIndex" : 121,
+      "requestMilliseconds" : 87.79620834684465,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 12,
+        "pointerEntries" : 12,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 23.859666674979962,
+      "foregroundFraction" : 0.042144775390625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3852916706819087,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.677458338672295,
+        "Propagator" : 32.86274999845773
+      },
+      "objectScore" : 10.1875,
+      "predictedIoU" : 0.9653904,
+      "predictionAndStateMilliseconds" : 63.94700000237208,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4202,
+      "requestIndex" : 122,
+      "requestMilliseconds" : 88.29437500389758,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 13,
+        "pointerEntries" : 13,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 22.931708343094215,
+      "foregroundFraction" : 0.04254150390625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3831249923678115,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.85779166757129,
+        "Propagator" : 32.39883334026672
+      },
+      "objectScore" : 10.1953125,
+      "predictedIoU" : 0.96834445,
+      "predictionAndStateMilliseconds" : 63.30966667155735,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4222,
+      "requestIndex" : 123,
+      "requestMilliseconds" : 86.72462499816902,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 14,
+        "pointerEntries" : 14,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 23.90475000720471,
+      "foregroundFraction" : 0.04345703125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4092500021215528,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.987208325299434,
+        "Propagator" : 32.402958342572674
+      },
+      "objectScore" : 10.96875,
+      "predictedIoU" : 0.9690045,
+      "predictionAndStateMilliseconds" : 63.640958338510245,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4242,
+      "requestIndex" : 124,
+      "requestMilliseconds" : 88.05920832674019,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 15,
+        "pointerEntries" : 15,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 23.149291664594784,
+      "foregroundFraction" : 0.047210693359375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3809999907389283,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.712291665608063,
+        "Propagator" : 32.99308332498185
+      },
+      "objectScore" : 9.9453125,
+      "predictedIoU" : 0.96036935,
+      "predictionAndStateMilliseconds" : 64.18241666688118,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4262,
+      "requestIndex" : 125,
+      "requestMilliseconds" : 87.8179999999702,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 16,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 24.442958339932375,
+      "foregroundFraction" : 0.0383453369140625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.38050000148359686,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.91258332459256,
+        "Propagator" : 32.5907083315542
+      },
+      "objectScore" : 10.015625,
+      "predictedIoU" : 0.9737055,
+      "predictionAndStateMilliseconds" : 63.534041662933305,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4282,
+      "requestIndex" : 126,
+      "requestMilliseconds" : 88.45962499617599,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 17,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 25.144166676909663,
+      "foregroundFraction" : 0.03619384765625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.38225000025704503,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.821791655384004,
+        "Propagator" : 32.50504165771417
+      },
+      "objectScore" : 10.2578125,
+      "predictedIoU" : 0.97387356,
+      "predictionAndStateMilliseconds" : 63.46000000485219,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4302,
+      "requestIndex" : 127,
+      "requestMilliseconds" : 89.08012500614859,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 18,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 24.179916668799706,
+      "foregroundFraction" : 0.0362701416015625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.42679166654124856,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.797666675411165,
+        "Propagator" : 33.13904166861903
+      },
+      "objectScore" : 10.109375,
+      "predictedIoU" : 0.9765519,
+      "predictionAndStateMilliseconds" : 64.59162499231752,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4322,
+      "requestIndex" : 128,
+      "requestMilliseconds" : 89.30283333756961,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 19,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 24.995624989969656,
+      "foregroundFraction" : 0.036468505859375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.39074999222066253,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.854749997146428,
+        "Propagator" : 32.868583337403834
+      },
+      "objectScore" : 9.9375,
+      "predictedIoU" : 0.97173035,
+      "predictionAndStateMilliseconds" : 64.2928333254531,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4342,
+      "requestIndex" : 129,
+      "requestMilliseconds" : 89.78675000253133,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 20,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 23.547499993583187,
+      "foregroundFraction" : 0.035369873046875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.37979165790602565,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.95312498952262,
+        "Propagator" : 32.983874989440665
+      },
+      "objectScore" : 10.015625,
+      "predictedIoU" : 0.970101,
+      "predictionAndStateMilliseconds" : 64.10874999710359,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4362,
+      "requestIndex" : 130,
+      "requestMilliseconds" : 88.13149998604786,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 21,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 23.30012500169687,
+      "foregroundFraction" : 0.032867431640625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.40787500620353967,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.100208341726102,
+        "Propagator" : 32.78199999476783
+      },
+      "objectScore" : 9.6953125,
+      "predictedIoU" : 0.9754234,
+      "predictionAndStateMilliseconds" : 63.95025001256727,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4382,
+      "requestIndex" : 131,
+      "requestMilliseconds" : 87.76083333941642,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 22,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 25.38579166866839,
+      "foregroundFraction" : 0.0335693359375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.38479166687466204,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.774166671093553,
+        "Propagator" : 33.16300000005867
+      },
+      "objectScore" : 9.4140625,
+      "predictedIoU" : 0.9768767,
+      "predictionAndStateMilliseconds" : 64.41437499597669,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4402,
+      "requestIndex" : 132,
+      "requestMilliseconds" : 90.28454167128075,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 23,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 23.905541660496965,
+      "foregroundFraction" : 0.035186767578125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.38516666973009706,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.07487499981653,
+        "Propagator" : 32.20366666209884
+      },
+      "objectScore" : 9.0546875,
+      "predictedIoU" : 0.97683483,
+      "predictionAndStateMilliseconds" : 63.430666661588475,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4422,
+      "requestIndex" : 133,
+      "requestMilliseconds" : 87.82195833919104,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 24,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 24.552458329708315,
+      "foregroundFraction" : 0.037384033203125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4352916730567813,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.735041664214805,
+        "Propagator" : 32.83320834452752
+      },
+      "objectScore" : 9.3203125,
+      "predictedIoU" : 0.97788405,
+      "predictionAndStateMilliseconds" : 64.0386250015581,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4442,
+      "requestIndex" : 134,
+      "requestMilliseconds" : 89.13170832965989,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 25,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 26.40895833610557,
+      "foregroundFraction" : 0.0403289794921875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.39904167351778597,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.097041670349427,
+        "Propagator" : 32.681666663847864
+      },
+      "objectScore" : 9.3828125,
+      "predictedIoU" : 0.9753788,
+      "predictionAndStateMilliseconds" : 64.32320833846461,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4462,
+      "requestIndex" : 135,
+      "requestMilliseconds" : 91.2408333242638,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 26,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 25.690249996841885,
+      "foregroundFraction" : 0.0420379638671875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.37854166293982416,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.039749994291924,
+        "Propagator" : 32.611791670206
+      },
+      "objectScore" : 8.7421875,
+      "predictedIoU" : 0.97950566,
+      "predictionAndStateMilliseconds" : 63.85187500563916,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4482,
+      "requestIndex" : 136,
+      "requestMilliseconds" : 90.02212500490714,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 27,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 24.314291673363186,
+      "foregroundFraction" : 0.0451202392578125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.408458334277384,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.06987500539981,
+        "Propagator" : 32.67479166970588
+      },
+      "objectScore" : 9.15625,
+      "predictedIoU" : 0.97997016,
+      "predictionAndStateMilliseconds" : 63.81537500419654,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4502,
+      "requestIndex" : 137,
+      "requestMilliseconds" : 88.63820832630154,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 28,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 25.628125004004687,
+      "foregroundFraction" : 0.0481719970703125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3861250006593764,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.23187500203494,
+        "Propagator" : 33.301125004072674
+      },
+      "objectScore" : 9.4921875,
+      "predictedIoU" : 0.9800899,
+      "predictionAndStateMilliseconds" : 65.04937499994412,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4522,
+      "requestIndex" : 138,
+      "requestMilliseconds" : 91.17316667106934,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 29,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 23.826458331313916,
+      "foregroundFraction" : 0.0508575439453125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3852916706819087,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.040750001906417,
+        "Propagator" : 32.60516666341573
+      },
+      "objectScore" : 9.4921875,
+      "predictedIoU" : 0.9810986,
+      "predictionAndStateMilliseconds" : 63.741666672285646,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4542,
+      "requestIndex" : 139,
+      "requestMilliseconds" : 88.05374999064952,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 30,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 24.46745832276065,
+      "foregroundFraction" : 0.0538177490234375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.38716667040716857,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 23.65279167133849,
+        "Propagator" : 32.69716666545719
+      },
+      "objectScore" : 9.5859375,
+      "predictedIoU" : 0.9784322,
+      "predictionAndStateMilliseconds" : 65.53687500127126,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4562,
+      "requestIndex" : 140,
+      "requestMilliseconds" : 90.49741666240152,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 31,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 23.80700000503566,
+      "foregroundFraction" : 0.0560760498046875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3938333393307403,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.96662500500679,
+        "Propagator" : 32.23533333220985
+      },
+      "objectScore" : 9.46875,
+      "predictedIoU" : 0.9771408,
+      "predictionAndStateMilliseconds" : 63.379499988514,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4582,
+      "requestIndex" : 141,
+      "requestMilliseconds" : 87.68233333830722,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 32,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 23.803416668670252,
+      "foregroundFraction" : 0.0587921142578125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.37508334207814187,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.06645833211951,
+        "Propagator" : 32.57329166808631
+      },
+      "objectScore" : 9.9921875,
+      "predictedIoU" : 0.97494626,
+      "predictionAndStateMilliseconds" : 63.56662500184029,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4602,
+      "requestIndex" : 142,
+      "requestMilliseconds" : 87.84841666056309,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 33,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 22.16795833373908,
+      "foregroundFraction" : 0.0607147216796875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.384041661163792,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.13258332631085,
+        "Propagator" : 32.296750010573305
+      },
+      "objectScore" : 10.1484375,
+      "predictedIoU" : 0.97480404,
+      "predictionAndStateMilliseconds" : 63.33062499470543,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4622,
+      "requestIndex" : 143,
+      "requestMilliseconds" : 85.9773749980377,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 34,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 23.311416662181728,
+      "foregroundFraction" : 0.06402587890625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.38370833499357104,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.822208334924653,
+        "Propagator" : 32.776833337266
+      },
+      "objectScore" : 9.8671875,
+      "predictedIoU" : 0.9759664,
+      "predictionAndStateMilliseconds" : 63.74512499314733,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4642,
+      "requestIndex" : 144,
+      "requestMilliseconds" : 87.54008333198726,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 35,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 24.0907500119647,
+      "foregroundFraction" : 0.0678863525390625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.433625013101846,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.814583335071802,
+        "Propagator" : 33.33558332815301
+      },
+      "objectScore" : 10.0625,
+      "predictedIoU" : 0.97577184,
+      "predictionAndStateMilliseconds" : 64.48337499750778,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4662,
+      "requestIndex" : 145,
+      "requestMilliseconds" : 89.11316667217761,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 36,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 26.53508333605714,
+      "foregroundFraction" : 0.07244873046875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3827500040642917,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.986208332236856,
+        "Propagator" : 32.70370833342895
+      },
+      "objectScore" : 9.9140625,
+      "predictedIoU" : 0.973987,
+      "predictionAndStateMilliseconds" : 64.24829167372081,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4682,
+      "requestIndex" : 146,
+      "requestMilliseconds" : 91.27416666888166,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 37,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 24.83599999686703,
+      "foregroundFraction" : 0.07757568359375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3742500121006742,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.027416664059274,
+        "Propagator" : 32.4865000002319
+      },
+      "objectScore" : 10.1015625,
+      "predictedIoU" : 0.9748492,
+      "predictionAndStateMilliseconds" : 63.61675000516698,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4702,
+      "requestIndex" : 147,
+      "requestMilliseconds" : 88.93020832329057,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 38,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 22.448250005254522,
+      "foregroundFraction" : 0.0782318115234375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.38641666469629854,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.00641666422598,
+        "Propagator" : 32.59158333821688
+      },
+      "objectScore" : 10.359375,
+      "predictedIoU" : 0.9741329,
+      "predictionAndStateMilliseconds" : 63.52008333487902,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4722,
+      "requestIndex" : 148,
+      "requestMilliseconds" : 86.45458333194256,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 39,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 22.970624995650724,
+      "foregroundFraction" : 0.075836181640625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.43041666503995657,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.961333335842937,
+        "Propagator" : 32.81112499826122
+      },
+      "objectScore" : 10.4296875,
+      "predictedIoU" : 0.97529083,
+      "predictionAndStateMilliseconds" : 65.13970832747873,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4742,
+      "requestIndex" : 149,
+      "requestMilliseconds" : 88.65904166304972,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 40,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 24.83100000245031,
+      "foregroundFraction" : 0.07464599609375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.39504167216364294,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.991916655679233,
+        "Propagator" : 33.28650000912603
+      },
+      "objectScore" : 10.1953125,
+      "predictedIoU" : 0.97951895,
+      "predictionAndStateMilliseconds" : 65.09458333312068,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4762,
+      "requestIndex" : 150,
+      "requestMilliseconds" : 90.42795833374839,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 41,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 23.758333321893588,
+      "foregroundFraction" : 0.0733795166015625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3760416730074212,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.128208336653188,
+        "Propagator" : 32.798291664221324
+      },
+      "objectScore" : 9.953125,
+      "predictedIoU" : 0.97805154,
+      "predictionAndStateMilliseconds" : 64.21333333128132,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4782,
+      "requestIndex" : 151,
+      "requestMilliseconds" : 88.45374999509659,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 42,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 22.714833336067386,
+      "foregroundFraction" : 0.074432373046875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.43237500358372927,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.97320833511185,
+        "Propagator" : 33.0649166717194
+      },
+      "objectScore" : 9.765625,
+      "predictedIoU" : 0.9799222,
+      "predictionAndStateMilliseconds" : 64.19916666345671,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4802,
+      "requestIndex" : 152,
+      "requestMilliseconds" : 87.44870833470486,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 43,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 25.698750003357418,
+      "foregroundFraction" : 0.07440185546875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3980000037699938,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.82650000031572,
+        "Propagator" : 32.96954167308286
+      },
+      "objectScore" : 9.8828125,
+      "predictedIoU" : 0.97732246,
+      "predictionAndStateMilliseconds" : 64.55816666129977,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4822,
+      "requestIndex" : 153,
+      "requestMilliseconds" : 90.75733333884273,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 44,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 23.789791666786186,
+      "foregroundFraction" : 0.07379150390625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.38187499740161,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.987291678669862,
+        "Propagator" : 32.56641665939242
+      },
+      "objectScore" : 9.9375,
+      "predictedIoU" : 0.97519374,
+      "predictionAndStateMilliseconds" : 63.834958331426606,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4842,
+      "requestIndex" : 154,
+      "requestMilliseconds" : 88.11066666385159,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 45,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 23.30699999583885,
+      "foregroundFraction" : 0.0720672607421875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4344166663940996,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.24995833239518,
+        "Propagator" : 33.21441667503677
+      },
+      "objectScore" : 10.125,
+      "predictedIoU" : 0.97660565,
+      "predictionAndStateMilliseconds" : 64.60437500209082,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4862,
+      "requestIndex" : 155,
+      "requestMilliseconds" : 88.45116666634567,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 46,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 25.710916670504957,
+      "foregroundFraction" : 0.07025146484375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.39566666237078607,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.27566667716019,
+        "Propagator" : 33.01637498952914
+      },
+      "objectScore" : 10.53125,
+      "predictedIoU" : 0.97844875,
+      "predictionAndStateMilliseconds" : 64.9775833444437,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4882,
+      "requestIndex" : 156,
+      "requestMilliseconds" : 91.18495832080953,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 47,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 23.883000001660548,
+      "foregroundFraction" : 0.06927490234375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.374249997548759,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.899041661527008,
+        "Propagator" : 32.310249996953644
+      },
+      "objectScore" : 10.5703125,
+      "predictedIoU" : 0.9798299,
+      "predictionAndStateMilliseconds" : 63.22758333408274,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4902,
+      "requestIndex" : 157,
+      "requestMilliseconds" : 87.58579165441915,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 48,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 23.291291669011116,
+      "foregroundFraction" : 0.0699005126953125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3819999983534217,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.533749986905605,
+        "Propagator" : 33.131125004729256
+      },
+      "objectScore" : 11.265625,
+      "predictedIoU" : 0.97901344,
+      "predictionAndStateMilliseconds" : 64.6568749943981,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4922,
+      "requestIndex" : 158,
+      "requestMilliseconds" : 88.42487499350682,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 49,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 23.637958336621523,
+      "foregroundFraction" : 0.071197509765625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3904999903170392,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 23.74866667378228,
+        "Propagator" : 33.365166673320346
+      },
+      "objectScore" : 10.875,
+      "predictedIoU" : 0.977496,
+      "predictionAndStateMilliseconds" : 66.44758333277423,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4942,
+      "requestIndex" : 159,
+      "requestMilliseconds" : 90.58679167355876,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 50,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 23.27154167869594,
+      "foregroundFraction" : 0.072113037109375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.38595832302235067,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.93891665956471,
+        "Propagator" : 32.3823749931762
+      },
+      "objectScore" : 11.09375,
+      "predictedIoU" : 0.9735555,
+      "predictionAndStateMilliseconds" : 63.554958323948085,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4962,
+      "requestIndex" : 160,
+      "requestMilliseconds" : 87.31616666773334,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 51,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 22.90345833171159,
+      "foregroundFraction" : 0.0684967041015625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.4362499894341454,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.307791659841314,
+        "Propagator" : 33.10412498831283
+      },
+      "objectScore" : 10.421875,
+      "predictedIoU" : 0.97552,
+      "predictionAndStateMilliseconds" : 64.55795833608136,
+      "ptsTimescale" : 600,
+      "ptsValue" : 4982,
+      "requestIndex" : 161,
+      "requestMilliseconds" : 88.0054583249148,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 52,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 25.559583329595625,
+      "foregroundFraction" : 0.063079833984375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.39775000186637044,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.040500000002794,
+        "Propagator" : 33.16454167361371
+      },
+      "objectScore" : 10.4296875,
+      "predictedIoU" : 0.97777987,
+      "predictionAndStateMilliseconds" : 65.04170833795797,
+      "ptsTimescale" : 600,
+      "ptsValue" : 5002,
+      "requestIndex" : 162,
+      "requestMilliseconds" : 91.10599999257829,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 53,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 23.317208324442618,
+      "foregroundFraction" : 0.0639495849609375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.38391666021198034,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.874083337024786,
+        "Propagator" : 32.540833330131136
+      },
+      "objectScore" : 10.515625,
+      "predictedIoU" : 0.9755828,
+      "predictionAndStateMilliseconds" : 63.7049583310727,
+      "ptsTimescale" : 600,
+      "ptsValue" : 5022,
+      "requestIndex" : 163,
+      "requestMilliseconds" : 87.50258333748206,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 54,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 22.179458333994262,
+      "foregroundFraction" : 0.0639190673828125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.38570833567064255,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.993916656356305,
+        "Propagator" : 32.69441667362116
+      },
+      "objectScore" : 10.5390625,
+      "predictedIoU" : 0.97874844,
+      "predictionAndStateMilliseconds" : 63.655166668468155,
+      "ptsTimescale" : 600,
+      "ptsValue" : 5042,
+      "requestIndex" : 164,
+      "requestMilliseconds" : 86.32879167271312,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 55,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 22.315875001368113,
+      "foregroundFraction" : 0.0630340576171875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.39887499588076025,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.039083327399567,
+        "Propagator" : 32.635416675475426
+      },
+      "objectScore" : 10.4453125,
+      "predictedIoU" : 0.9742989,
+      "predictionAndStateMilliseconds" : 63.89350000245031,
+      "ptsTimescale" : 600,
+      "ptsValue" : 5062,
+      "requestIndex" : 165,
+      "requestMilliseconds" : 86.71299999696203,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 56,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 22.68249999906402,
+      "foregroundFraction" : 0.060211181640625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3896249982062727,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.042874988983385,
+        "Propagator" : 32.828541661729105
+      },
+      "objectScore" : 10.21875,
+      "predictedIoU" : 0.97097695,
+      "predictionAndStateMilliseconds" : 64.21912500809412,
+      "ptsTimescale" : 600,
+      "ptsValue" : 5082,
+      "requestIndex" : 166,
+      "requestMilliseconds" : 87.39075000630692,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 57,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 23.676458324189298,
+      "foregroundFraction" : 0.059173583984375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3884583420585841,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.762124994187616,
+        "Propagator" : 32.732291670981795
+      },
+      "objectScore" : 10.59375,
+      "predictedIoU" : 0.9782442,
+      "predictionAndStateMilliseconds" : 64.22837500576861,
+      "ptsTimescale" : 600,
+      "ptsValue" : 5102,
+      "requestIndex" : 167,
+      "requestMilliseconds" : 88.39587500551715,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 58,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 25.25079165934585,
+      "foregroundFraction" : 0.0586700439453125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3872499946737662,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.32416666811332,
+        "Propagator" : 32.91483334032819
+      },
+      "objectScore" : 10.6171875,
+      "predictedIoU" : 0.9799836,
+      "predictionAndStateMilliseconds" : 64.39354167378042,
+      "ptsTimescale" : 600,
+      "ptsValue" : 5122,
+      "requestIndex" : 168,
+      "requestMilliseconds" : 90.13083332683891,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 59,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 24.9902499926975,
+      "foregroundFraction" : 0.059234619140625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.37599999632220715,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.236374992644414,
+        "Propagator" : 32.87054166139569
+      },
+      "objectScore" : 10.3828125,
+      "predictedIoU" : 0.9764795,
+      "predictionAndStateMilliseconds" : 64.25908333039843,
+      "ptsTimescale" : 600,
+      "ptsValue" : 5142,
+      "requestIndex" : 169,
+      "requestMilliseconds" : 89.72370832634624,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 60,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 24.338375005754642,
+      "foregroundFraction" : 0.062103271484375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.38712500827386975,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.404291667044163,
+        "Propagator" : 32.79283334268257
+      },
+      "objectScore" : 10.8828125,
+      "predictedIoU" : 0.97689205,
+      "predictionAndStateMilliseconds" : 64.16408333461732,
+      "ptsTimescale" : 600,
+      "ptsValue" : 5162,
+      "requestIndex" : 170,
+      "requestMilliseconds" : 88.98604166461155,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 61,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 25.218958340701647,
+      "foregroundFraction" : 0.0632781982421875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3748333401745185,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.098041663412005,
+        "Propagator" : 32.99841666012071
+      },
+      "objectScore" : 10.6015625,
+      "predictedIoU" : 0.973872,
+      "predictionAndStateMilliseconds" : 64.24887500179466,
+      "ptsTimescale" : 600,
+      "ptsValue" : 5182,
+      "requestIndex" : 171,
+      "requestMilliseconds" : 89.94529166375287,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 62,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 24.369583334191702,
+      "foregroundFraction" : 0.0638580322265625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.411750006605871,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.059166672988795,
+        "Propagator" : 32.80541666026693
+      },
+      "objectScore" : 10.9453125,
+      "predictedIoU" : 0.97557515,
+      "predictionAndStateMilliseconds" : 63.86833332362585,
+      "ptsTimescale" : 600,
+      "ptsValue" : 5202,
+      "requestIndex" : 172,
+      "requestMilliseconds" : 88.75370833266061,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 63,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 26.506624999456108,
+      "foregroundFraction" : 0.0631866455078125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3877500130329281,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.25108332640957,
+        "Propagator" : 32.59274999436457
+      },
+      "objectScore" : 10.3515625,
+      "predictedIoU" : 0.97621745,
+      "predictionAndStateMilliseconds" : 64.23400000494439,
+      "ptsTimescale" : 600,
+      "ptsValue" : 5222,
+      "requestIndex" : 173,
+      "requestMilliseconds" : 91.23566666676197,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 64,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 23.766124999383464,
+      "foregroundFraction" : 0.0649261474609375,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.41433333535678685,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.464874986326322,
+        "Propagator" : 32.5426666677231
+      },
+      "objectScore" : 9.6015625,
+      "predictedIoU" : 0.9782485,
+      "predictionAndStateMilliseconds" : 64.08629166253377,
+      "ptsTimescale" : 600,
+      "ptsValue" : 5242,
+      "requestIndex" : 174,
+      "requestMilliseconds" : 88.37158333335537,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 65,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 25.394333322765306,
+      "foregroundFraction" : 0.0685577392578125,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.39020834083203226,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.05366666021291,
+        "Propagator" : 33.130374999018386
+      },
+      "objectScore" : 9.6171875,
+      "predictedIoU" : 0.9780306,
+      "predictionAndStateMilliseconds" : 64.6978750010021,
+      "ptsTimescale" : 600,
+      "ptsValue" : 5262,
+      "requestIndex" : 175,
+      "requestMilliseconds" : 90.58508333691861,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 66,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 24.171624987502582,
+      "foregroundFraction" : 0.073394775390625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.41341666656080633,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.32866667327471,
+        "Propagator" : 33.26820832444355
+      },
+      "objectScore" : 9.8515625,
+      "predictedIoU" : 0.9725697,
+      "predictionAndStateMilliseconds" : 64.85433332272805,
+      "ptsTimescale" : 600,
+      "ptsValue" : 5282,
+      "requestIndex" : 176,
+      "requestMilliseconds" : 89.54354166053236,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 67,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 25.265000003855675,
+      "foregroundFraction" : 0.0781707763671875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.38679166755173355,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.36158333835192,
+        "Propagator" : 33.06212500319816
+      },
+      "objectScore" : 10.0546875,
+      "predictedIoU" : 0.9727903,
+      "predictionAndStateMilliseconds" : 64.93137500365265,
+      "ptsTimescale" : 600,
+      "ptsValue" : 5302,
+      "requestIndex" : 177,
+      "requestMilliseconds" : 90.69120834465139,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 68,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 24.686208329512738,
+      "foregroundFraction" : 0.0802154541015625,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3901666641468182,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.004791666404344,
+        "Propagator" : 32.777541666291654
+      },
+      "objectScore" : 10.265625,
+      "predictedIoU" : 0.9787169,
+      "predictionAndStateMilliseconds" : 63.94312500196975,
+      "ptsTimescale" : 600,
+      "ptsValue" : 5322,
+      "requestIndex" : 178,
+      "requestMilliseconds" : 89.12045834586024,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 69,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 25.097583333263174,
+      "foregroundFraction" : 0.0831756591796875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.37604165845550597,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 22.024708334356546,
+        "Propagator" : 32.28354167367797
+      },
+      "objectScore" : 10.6953125,
+      "predictedIoU" : 0.98264897,
+      "predictionAndStateMilliseconds" : 63.42695833882317,
+      "ptsTimescale" : 600,
+      "ptsValue" : 5342,
+      "requestIndex" : 179,
+      "requestMilliseconds" : 89.00337500381283,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 70,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    },
+    {
+      "decodeAndPreparationMilliseconds" : 24.682041665073484,
+      "foregroundFraction" : 0.0867919921875,
+      "initialized" : false,
+      "maskRenderingMilliseconds" : 0.3915000124834478,
+      "modelMilliseconds" : {
+        "ImageEncoder" : 21.886250004172325,
+        "Propagator" : 32.68212500552181
+      },
+      "objectScore" : 10.59375,
+      "predictedIoU" : 0.98216033,
+      "predictionAndStateMilliseconds" : 63.58295833342709,
+      "ptsTimescale" : 600,
+      "ptsValue" : 5362,
+      "requestIndex" : 180,
+      "requestMilliseconds" : 88.76475000579376,
+      "segment" : 5,
+      "state" : {
+        "acceptedFrames" : 71,
+        "pointerEntries" : 16,
+        "spatialEntries" : 7
+      }
+    }
+  ],
+  "requestedComputeUnits" : "CPU_AND_GPU",
+  "schema" : "bytewave.requested-video-tracking.v1",
+  "scope" : "On-demand sequential decoded frames from a user-selected video. One positive point per reset; no ground-truth parity or automatic quality pass. All model outputs retain shape\/finiteness checks. No audio, frame dropping, pre-scan or full-video mask cache. Run tracking advances as requests finish, not on a real-time playback clock.",
+  "seeks" : 4,
+  "segmentsStarted" : 5,
+  "sourceFileBytes" : 63087530,
+  "sourceModelsManifestSHA256" : "47b7b85eef755ff7a440c0017f232a82ac7213af622d15d30a04f3487e07dd67",
+  "sourceReportSHA256" : "8768eab4331ad57994782ee244861b64f3c3eb27fa6c970cc881a843618af9a6",
+  "swiftDebugCompilation" : false,
+  "thermalStateAtSnapshot" : "nominal",
+  "thermalStateAtStart" : "nominal",
+  "timingScope" : "Request time includes synchronous decode, orientation\/resize, PNG preview, prediction\/state, mask PNG and small pre-prediction checkpoint writes. Excludes model loading, UI presentation, report saving and user pauses. Initialization uses the already prepared displayed frame. Warm totals exclude the first prediction after every reset. These are processing diagnostics, not sustained playback FPS.",
+  "trackTransform" : [
+    0,
+    1,
+    -1,
+    0,
+    1080,
+    0
+  ],
+  "videoDurationSeconds" : 27.838333333333335,
+  "warmModelTotals" : {
+    "ImageEncoder" : {
+      "count" : 176,
+      "maximumMilliseconds" : 35.54458332655486,
+      "meanMilliseconds" : 22.624036694072526,
+      "totalMilliseconds" : 3981.8304581567645
+    },
+    "Propagator" : {
+      "count" : 176,
+      "maximumMilliseconds" : 145.9350833320059,
+      "meanMilliseconds" : 33.453683712237265,
+      "totalMilliseconds" : 5887.848333353759
+    }
+  },
+  "warmPredictionAndStateTotals" : {
+    "count" : 176,
+    "maximumMilliseconds" : 197.23837501078378,
+    "meanMilliseconds" : 65.58398721650023,
+    "totalMilliseconds" : 11542.78175010404
+  },
+  "warmRequestTotals" : {
+    "count" : 176,
+    "maximumMilliseconds" : 267.1028333279537,
+    "meanMilliseconds" : 95.15011600416818,
+    "totalMilliseconds" : 16746.4204167336
+  }
+}

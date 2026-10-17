@@ -1,0 +1,193 @@
+{
+  "scope": "Offline review of saved native chosen-mask sequence; no model execution. Sparse semantics from prior reviewed previews, not every-frame identity labels.",
+  "sourceReplaySHA256": "5f9378e84e1b78ca19e00574245434e07180065dbcd608bdb34051338156cc56",
+  "findings": [
+    "Correct shoe197 follows17 empty frames180..196. Wrong hand343 follows65 empty frames278..342. Both start with low positive object scores: .346 and .389; these are raw logits, not identity probabilities.",
+    "Wrong hand343..345 survives three frames; consecutive high-mask IoU .505/.659. Correct return197..199 gives .476/.554. A three-present-frame plus .5 adjacent-overlap heuristic would favor this wrong onset over the correct onset; not a full existing recovery-policy evaluation.",
+    "Wrong sequence is later unstable (346..352), but correct target reappears within same native nonempty interval. Waiting alone could still admit the wrong early hand; do not assume all sustained nonempty outputs preserve identity."
+  ],
+  "nextDiagnostic": {
+    "script": "Temporal/diagnose_reacquisition_history.py",
+    "windows": [
+      [
+        197,
+        236
+      ],
+      [
+        343,
+        386
+      ]
+    ],
+    "nativePrefixFrames": 387,
+    "referenceNumFrames": 590,
+    "variants": [
+      "native",
+      "frozenPreWindow",
+      "conditioningOnly"
+    ],
+    "limits": "Snapshots discard every probe output. This intervention combines withheld updates with aging/missing recent-memory slots; not pure causal attribution to bad-mask contamination, and not a deployable recovery rule. First frozen-pre-window output must match native on mask/pointer/memory."
+  },
+  "rows": [
+    {
+      "index": 197,
+      "ptsSeconds": 6.566666666666666,
+      "objectScore": 0.3460526764392853,
+      "highForegroundFraction": 0.0031299591064453125,
+      "previousHighMaskIoU": null,
+      "maskSHA256": "736b2fc81435414553de92b8c7a46e5d36c0b2b6e4772211b11d1d8c584b530c"
+    },
+    {
+      "index": 198,
+      "ptsSeconds": 6.6,
+      "objectScore": 0.8377447128295898,
+      "highForegroundFraction": 0.006501197814941406,
+      "previousHighMaskIoU": 0.4762461628416898,
+      "maskSHA256": "e057688ef838a4a9f0446e7e1f5443cd2052539a3d08679472b156c8712fd87d"
+    },
+    {
+      "index": 199,
+      "ptsSeconds": 6.633333333333334,
+      "objectScore": 1.2828304767608643,
+      "highForegroundFraction": 0.011435508728027344,
+      "previousHighMaskIoU": 0.5536097802742441,
+      "maskSHA256": "f9365db93d747b0aa6f1f5398156793842bfbb2169245704021b5d16696b533b"
+    },
+    {
+      "index": 200,
+      "ptsSeconds": 6.666666666666667,
+      "objectScore": 1.7870713472366333,
+      "highForegroundFraction": 0.015771865844726562,
+      "previousHighMaskIoU": 0.7071988510561905,
+      "maskSHA256": "9c591a31af06675581505c5e5c3e71bd744a0d4deee8254d5826d6c33ce07bfa"
+    },
+    {
+      "index": 201,
+      "ptsSeconds": 6.7,
+      "objectScore": 2.283752918243408,
+      "highForegroundFraction": 0.01954364776611328,
+      "previousHighMaskIoU": 0.7762375287797391,
+      "maskSHA256": "64313bd54e2d47e116be62eec98c560d77814214d30eb743968087db7034d644"
+    },
+    {
+      "index": 202,
+      "ptsSeconds": 6.733333333333333,
+      "objectScore": 2.469099521636963,
+      "highForegroundFraction": 0.023522377014160156,
+      "previousHighMaskIoU": 0.8144487303117969,
+      "maskSHA256": "4770c6dd4543c52d9526ea35788344c4dba082a7d96385ba4e0a432af707995e"
+    },
+    {
+      "index": 203,
+      "ptsSeconds": 6.766666666666667,
+      "objectScore": 2.6038403511047363,
+      "highForegroundFraction": 0.02717304229736328,
+      "previousHighMaskIoU": 0.8512275814034477,
+      "maskSHA256": "d34f03771550602287e04bbbe2c4551e2ee5bb0499dbf82208bcc95d5d81c717"
+    },
+    {
+      "index": 204,
+      "ptsSeconds": 6.8,
+      "objectScore": 2.63515043258667,
+      "highForegroundFraction": 0.03049182891845703,
+      "previousHighMaskIoU": 0.8638759594340495,
+      "maskSHA256": "c03fc59b0a344261c2b4372ce2d9ee1f03e0073afff90c26c96b1f65472862c2"
+    },
+    {
+      "index": 205,
+      "ptsSeconds": 6.833333333333333,
+      "objectScore": 2.7199578285217285,
+      "highForegroundFraction": 0.033644676208496094,
+      "previousHighMaskIoU": 0.8879874231492659,
+      "maskSHA256": "ba0cef5c25a569193cc9eb94bc321bd5eace850c346eb040c3733d636eb0fff4"
+    },
+    {
+      "index": 206,
+      "ptsSeconds": 6.866666666666666,
+      "objectScore": 2.7699246406555176,
+      "highForegroundFraction": 0.0367889404296875,
+      "previousHighMaskIoU": 0.8922623622854214,
+      "maskSHA256": "98902f717d91aa0bac7e951d304dd20cdbf07d63aafa4423836e6ad96731cd8a"
+    },
+    {
+      "index": 343,
+      "ptsSeconds": 11.433333333333334,
+      "objectScore": 0.3885277211666107,
+      "highForegroundFraction": 0.0174713134765625,
+      "previousHighMaskIoU": null,
+      "maskSHA256": "506cf6f2851ed9d66962a4d75f5967c5809d98d809000988ca4fe2721a4fa23a"
+    },
+    {
+      "index": 344,
+      "ptsSeconds": 11.466666666666667,
+      "objectScore": 0.6392412185668945,
+      "highForegroundFraction": 0.02910900115966797,
+      "previousHighMaskIoU": 0.5054091539528432,
+      "maskSHA256": "e8642b13799918f300f83192778a5b97daa25a8aba9123a393a7c11942695805"
+    },
+    {
+      "index": 345,
+      "ptsSeconds": 11.5,
+      "objectScore": 0.7816948890686035,
+      "highForegroundFraction": 0.03313255310058594,
+      "previousHighMaskIoU": 0.659082820682292,
+      "maskSHA256": "27b285d13fec9764fa7b20b0d38589fc31135db3b6af2a83c13be732b19a556c"
+    },
+    {
+      "index": 346,
+      "ptsSeconds": 11.533333333333333,
+      "objectScore": 1.0517102479934692,
+      "highForegroundFraction": 0.07835960388183594,
+      "previousHighMaskIoU": 0.38707227943619193,
+      "maskSHA256": "fa8ea67ae127ffe9d5178ca11b5f0a96bd91eb7c70ed70a45f456990bfbb97a0"
+    },
+    {
+      "index": 347,
+      "ptsSeconds": 11.566666666666666,
+      "objectScore": 1.3165193796157837,
+      "highForegroundFraction": 0.03333854675292969,
+      "previousHighMaskIoU": 0.30278188714503407,
+      "maskSHA256": "515424ecb39b304d6f68bb2be8d032e384aecc98d357a23552e66bc7866e0064"
+    },
+    {
+      "index": 348,
+      "ptsSeconds": 11.6,
+      "objectScore": 0.9916551113128662,
+      "highForegroundFraction": 0.033710479736328125,
+      "previousHighMaskIoU": 0.6668089141773352,
+      "maskSHA256": "c7bf5d89ee8eeb5c0e0a0d8025af9bb752ed8cff489f3d429be55479f0bb0c01"
+    },
+    {
+      "index": 349,
+      "ptsSeconds": 11.633333333333333,
+      "objectScore": 1.1785212755203247,
+      "highForegroundFraction": 0.03738212585449219,
+      "previousHighMaskIoU": 0.03346642266955027,
+      "maskSHA256": "2110d5730a787eb2fc90630da77f58e28fd2c4959942f61d14111cd3997f4c6c"
+    },
+    {
+      "index": 350,
+      "ptsSeconds": 11.666666666666666,
+      "objectScore": 0.7797891497612,
+      "highForegroundFraction": 0.20809364318847656,
+      "previousHighMaskIoU": 0.00020983423095754353,
+      "maskSHA256": "40334cbcdfd1b6f75e52d79f886d92ebbce79cf95732f5478e44d694c9a65efb"
+    },
+    {
+      "index": 351,
+      "ptsSeconds": 11.7,
+      "objectScore": 0.7093780040740967,
+      "highForegroundFraction": 0.21229839324951172,
+      "previousHighMaskIoU": 0.7075450502796758,
+      "maskSHA256": "3782802204708458b6dc1d8c50f494405317089133d9ec3cd225af25b93e3194"
+    },
+    {
+      "index": 352,
+      "ptsSeconds": 11.733333333333333,
+      "objectScore": 0.7222714424133301,
+      "highForegroundFraction": 0.029654502868652344,
+      "previousHighMaskIoU": 0.0181349749385,
+      "maskSHA256": "960e7045a63e8ce2d98c8c889068fbd0950f24fd96c08554f84af1509dd657b3"
+    }
+  ],
+  "modelOrPolicyChanged": false
+}

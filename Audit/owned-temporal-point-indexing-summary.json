@@ -1,0 +1,639 @@
+{
+  "sourceAttachment": "Pasted text(20260915-144639).txt",
+  "sourceAttachmentSHA256": "69d185ae9d646d70f31f3c5ea0490b18511a5abf6704588f8e904b9bb383a1cc",
+  "scope": "Summary of user-run static inspection of dog-07 exported packages",
+  "interpretation": "Initializer has ten dynamic non_zero operations in point-label handling; absent labels can yield empty selections. This supports a GPU empty-dispatch candidate, not proof of the crashing operation. No non_zero operations exist in the other three models. Encoder ANE failure remains separate.",
+  "models": {
+    "ImageEncoder": {
+      "modelSpecSHA256": "d12fb8adb3442c5c6a7545a72764cd3ca5ffe4a4e520ec0bff8b4ae2d81a34be",
+      "metadata": {
+        "bytewave.precision": "mixed-encoder-late-conv33-and-fp32-attention-iou.v1",
+        "bytewave.checkpoint.sha256": "ed2d4850b8792c239689b043c47046ec239b6e808a3d9b6ae676c803fd8780df",
+        "com.github.apple.coremltools.version": "9.0",
+        "com.github.apple.coremltools.conversion_date": "2026-09-15",
+        "com.github.apple.coremltools.source": "torch==2.7.0",
+        "bytewave.contract": "bytewave.edgetam-temporal-owned.v2",
+        "bytewave.upstream": "7711e012a30a2402c4eaab637bdb00a521302c91",
+        "com.github.apple.coremltools.source_dialect": "TorchScript"
+      },
+      "blocks": [
+        {
+          "location": "main/CoreML8",
+          "operationCounts": {
+            "const": 1150,
+            "mul": 12,
+            "sub": 1,
+            "cast": 173,
+            "conv": 132,
+            "gelu": 27,
+            "add": 74,
+            "reduce_mean": 10,
+            "relu": 10,
+            "sigmoid": 10,
+            "upsample_nearest_neighbor": 1
+          },
+          "nonZeroOperations": []
+        }
+      ]
+    },
+    "Initializer": {
+      "modelSpecSHA256": "54e1f72722bc40313db6d46c6ff2243341634cb7776cdb1f24e024e20ae5552c",
+      "metadata": {
+        "bytewave.precision": "mixed-encoder-late-conv33-and-fp32-attention-iou.v1",
+        "bytewave.checkpoint.sha256": "ed2d4850b8792c239689b043c47046ec239b6e808a3d9b6ae676c803fd8780df",
+        "com.github.apple.coremltools.version": "9.0",
+        "com.github.apple.coremltools.conversion_date": "2026-09-15",
+        "com.github.apple.coremltools.source": "torch==2.7.0",
+        "bytewave.contract": "bytewave.edgetam-temporal-owned.v2",
+        "bytewave.upstream": "7711e012a30a2402c4eaab637bdb00a521302c91",
+        "com.github.apple.coremltools.source_dialect": "TorchScript"
+      },
+      "blocks": [
+        {
+          "location": "main/CoreML8",
+          "operationCounts": {
+            "const": 472,
+            "cast": 55,
+            "add": 32,
+            "concat": 10,
+            "slice_by_index": 17,
+            "mul": 6,
+            "slice_update": 2,
+            "sub": 3,
+            "linear": 54,
+            "sin": 1,
+            "cos": 1,
+            "equal": 10,
+            "non_zero": 10,
+            "shape": 8,
+            "select": 13,
+            "tile": 7,
+            "greater_equal": 6,
+            "scatter_nd": 6,
+            "gather_nd": 8,
+            "reshape": 34,
+            "expand_dims": 6,
+            "real_div": 6,
+            "transpose": 30,
+            "scaled_dot_product_attention": 7,
+            "layer_norm": 9,
+            "relu": 16,
+            "conv_transpose": 2,
+            "reduce_mean": 2,
+            "pow": 1,
+            "sqrt": 1,
+            "batch_norm": 1,
+            "gelu": 2,
+            "stack": 2,
+            "matmul": 1,
+            "sigmoid": 1,
+            "greater": 1,
+            "upsample_bilinear": 1,
+            "reduce_argmax": 1,
+            "reduce_max": 1
+          },
+          "nonZeroOperations": [
+            {
+              "index": 65,
+              "type": "non_zero",
+              "inputs": {
+                "x": [
+                  {
+                    "name": "cast_4",
+                    "dtype": "INT32",
+                    "shape": [
+                      1,
+                      2
+                    ]
+                  }
+                ]
+              },
+              "smallAttributes": {
+                "name": {
+                  "type": {
+                    "tensorType": {
+                      "dataType": "STRING"
+                    }
+                  },
+                  "immediateValue": {
+                    "tensor": {
+                      "strings": {
+                        "values": [
+                          "non_zero_0"
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+              "outputs": [
+                {
+                  "name": "non_zero_0",
+                  "dtype": "INT32",
+                  "shape": [
+                    "unknown",
+                    2
+                  ]
+                }
+              ]
+            },
+            {
+              "index": 89,
+              "type": "non_zero",
+              "inputs": {
+                "x": [
+                  {
+                    "name": "var_99_cast_fp16",
+                    "dtype": "BOOL",
+                    "shape": [
+                      1,
+                      2
+                    ]
+                  }
+                ]
+              },
+              "smallAttributes": {
+                "name": {
+                  "type": {
+                    "tensorType": {
+                      "dataType": "STRING"
+                    }
+                  },
+                  "immediateValue": {
+                    "tensor": {
+                      "strings": {
+                        "values": [
+                          "non_zero_1"
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+              "outputs": [
+                {
+                  "name": "non_zero_1",
+                  "dtype": "INT32",
+                  "shape": [
+                    "unknown",
+                    2
+                  ]
+                }
+              ]
+            },
+            {
+              "index": 119,
+              "type": "non_zero",
+              "inputs": {
+                "x": [
+                  {
+                    "name": "var_110_cast_fp16",
+                    "dtype": "BOOL",
+                    "shape": [
+                      1,
+                      2
+                    ]
+                  }
+                ]
+              },
+              "smallAttributes": {
+                "name": {
+                  "type": {
+                    "tensorType": {
+                      "dataType": "STRING"
+                    }
+                  },
+                  "immediateValue": {
+                    "tensor": {
+                      "strings": {
+                        "values": [
+                          "non_zero_3"
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+              "outputs": [
+                {
+                  "name": "non_zero_3",
+                  "dtype": "INT32",
+                  "shape": [
+                    "unknown",
+                    2
+                  ]
+                }
+              ]
+            },
+            {
+              "index": 129,
+              "type": "non_zero",
+              "inputs": {
+                "x": [
+                  {
+                    "name": "cast_9",
+                    "dtype": "INT32",
+                    "shape": [
+                      1,
+                      2
+                    ]
+                  }
+                ]
+              },
+              "smallAttributes": {
+                "name": {
+                  "type": {
+                    "tensorType": {
+                      "dataType": "STRING"
+                    }
+                  },
+                  "immediateValue": {
+                    "tensor": {
+                      "strings": {
+                        "values": [
+                          "non_zero_4"
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+              "outputs": [
+                {
+                  "name": "non_zero_4",
+                  "dtype": "INT32",
+                  "shape": [
+                    "unknown",
+                    2
+                  ]
+                }
+              ]
+            },
+            {
+              "index": 155,
+              "type": "non_zero",
+              "inputs": {
+                "x": [
+                  {
+                    "name": "var_116_cast_fp16",
+                    "dtype": "BOOL",
+                    "shape": [
+                      1,
+                      2
+                    ]
+                  }
+                ]
+              },
+              "smallAttributes": {
+                "name": {
+                  "type": {
+                    "tensorType": {
+                      "dataType": "STRING"
+                    }
+                  },
+                  "immediateValue": {
+                    "tensor": {
+                      "strings": {
+                        "values": [
+                          "non_zero_5"
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+              "outputs": [
+                {
+                  "name": "non_zero_5",
+                  "dtype": "INT32",
+                  "shape": [
+                    "unknown",
+                    2
+                  ]
+                }
+              ]
+            },
+            {
+              "index": 167,
+              "type": "non_zero",
+              "inputs": {
+                "x": [
+                  {
+                    "name": "cast_12",
+                    "dtype": "INT32",
+                    "shape": [
+                      1,
+                      2
+                    ]
+                  }
+                ]
+              },
+              "smallAttributes": {
+                "name": {
+                  "type": {
+                    "tensorType": {
+                      "dataType": "STRING"
+                    }
+                  },
+                  "immediateValue": {
+                    "tensor": {
+                      "strings": {
+                        "values": [
+                          "non_zero_6"
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+              "outputs": [
+                {
+                  "name": "non_zero_6",
+                  "dtype": "INT32",
+                  "shape": [
+                    "unknown",
+                    2
+                  ]
+                }
+              ]
+            },
+            {
+              "index": 195,
+              "type": "non_zero",
+              "inputs": {
+                "x": [
+                  {
+                    "name": "var_124_cast_fp16",
+                    "dtype": "BOOL",
+                    "shape": [
+                      1,
+                      2
+                    ]
+                  }
+                ]
+              },
+              "smallAttributes": {
+                "name": {
+                  "type": {
+                    "tensorType": {
+                      "dataType": "STRING"
+                    }
+                  },
+                  "immediateValue": {
+                    "tensor": {
+                      "strings": {
+                        "values": [
+                          "non_zero_7"
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+              "outputs": [
+                {
+                  "name": "non_zero_7",
+                  "dtype": "INT32",
+                  "shape": [
+                    "unknown",
+                    2
+                  ]
+                }
+              ]
+            },
+            {
+              "index": 205,
+              "type": "non_zero",
+              "inputs": {
+                "x": [
+                  {
+                    "name": "cast_14",
+                    "dtype": "INT32",
+                    "shape": [
+                      1,
+                      2
+                    ]
+                  }
+                ]
+              },
+              "smallAttributes": {
+                "name": {
+                  "type": {
+                    "tensorType": {
+                      "dataType": "STRING"
+                    }
+                  },
+                  "immediateValue": {
+                    "tensor": {
+                      "strings": {
+                        "values": [
+                          "non_zero_8"
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+              "outputs": [
+                {
+                  "name": "non_zero_8",
+                  "dtype": "INT32",
+                  "shape": [
+                    "unknown",
+                    2
+                  ]
+                }
+              ]
+            },
+            {
+              "index": 231,
+              "type": "non_zero",
+              "inputs": {
+                "x": [
+                  {
+                    "name": "var_130_cast_fp16",
+                    "dtype": "BOOL",
+                    "shape": [
+                      1,
+                      2
+                    ]
+                  }
+                ]
+              },
+              "smallAttributes": {
+                "name": {
+                  "type": {
+                    "tensorType": {
+                      "dataType": "STRING"
+                    }
+                  },
+                  "immediateValue": {
+                    "tensor": {
+                      "strings": {
+                        "values": [
+                          "non_zero_9"
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+              "outputs": [
+                {
+                  "name": "non_zero_9",
+                  "dtype": "INT32",
+                  "shape": [
+                    "unknown",
+                    2
+                  ]
+                }
+              ]
+            },
+            {
+              "index": 241,
+              "type": "non_zero",
+              "inputs": {
+                "x": [
+                  {
+                    "name": "cast_16",
+                    "dtype": "INT32",
+                    "shape": [
+                      1,
+                      2
+                    ]
+                  }
+                ]
+              },
+              "smallAttributes": {
+                "name": {
+                  "type": {
+                    "tensorType": {
+                      "dataType": "STRING"
+                    }
+                  },
+                  "immediateValue": {
+                    "tensor": {
+                      "strings": {
+                        "values": [
+                          "non_zero_10"
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+              "outputs": [
+                {
+                  "name": "non_zero_10",
+                  "dtype": "INT32",
+                  "shape": [
+                    "unknown",
+                    2
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "InitialMemoryEncoder": {
+      "modelSpecSHA256": "238b184dade315bd24cd2d83f9702843c7b00cbd9716ff4be6b2bf81c0c0580a",
+      "metadata": {
+        "bytewave.precision": "mixed-encoder-late-conv33-and-fp32-attention-iou.v1",
+        "bytewave.checkpoint.sha256": "ed2d4850b8792c239689b043c47046ec239b6e808a3d9b6ae676c803fd8780df",
+        "com.github.apple.coremltools.version": "9.0",
+        "com.github.apple.coremltools.conversion_date": "2026-09-15",
+        "com.github.apple.coremltools.source": "torch==2.7.0",
+        "bytewave.contract": "bytewave.edgetam-temporal-owned.v2",
+        "bytewave.upstream": "7711e012a30a2402c4eaab637bdb00a521302c91",
+        "com.github.apple.coremltools.source_dialect": "TorchScript"
+      },
+      "blocks": [
+        {
+          "location": "main/CoreML8",
+          "operationCounts": {
+            "const": 363,
+            "cast": 34,
+            "greater": 1,
+            "mul": 3,
+            "add": 30,
+            "conv": 9,
+            "reduce_mean": 12,
+            "sub": 6,
+            "pow": 6,
+            "sqrt": 6,
+            "real_div": 6,
+            "batch_norm": 6,
+            "gelu": 14,
+            "transpose": 36,
+            "linear": 42,
+            "reshape": 34,
+            "layer_norm": 20,
+            "split": 8,
+            "scaled_dot_product_attention": 8,
+            "concat": 1,
+            "identity": 1
+          },
+          "nonZeroOperations": []
+        }
+      ]
+    },
+    "Propagator": {
+      "modelSpecSHA256": "4282a2030aceea086a3e6b8768af2a48129f4e46f754161d8ae2717026c7cd84",
+      "metadata": {
+        "bytewave.precision": "mixed-encoder-late-conv33-and-fp32-attention-iou.v1",
+        "bytewave.checkpoint.sha256": "ed2d4850b8792c239689b043c47046ec239b6e808a3d9b6ae676c803fd8780df",
+        "com.github.apple.coremltools.version": "9.0",
+        "com.github.apple.coremltools.conversion_date": "2026-09-15",
+        "com.github.apple.coremltools.source": "torch==2.7.0",
+        "bytewave.contract": "bytewave.edgetam-temporal-owned.v2",
+        "bytewave.upstream": "7711e012a30a2402c4eaab637bdb00a521302c91",
+        "com.github.apple.coremltools.source_dialect": "TorchScript"
+      },
+      "blocks": [
+        {
+          "location": "main/CoreML8",
+          "operationCounts": {
+            "const": 929,
+            "cast": 93,
+            "reshape": 90,
+            "concat": 6,
+            "add": 68,
+            "slice_by_index": 28,
+            "expand_dims": 18,
+            "tile": 3,
+            "sub": 17,
+            "mul": 38,
+            "transpose": 68,
+            "layer_norm": 36,
+            "linear": 115,
+            "stack": 10,
+            "scaled_dot_product_attention": 19,
+            "squeeze": 4,
+            "relu": 18,
+            "scatter_nd": 2,
+            "gather_nd": 4,
+            "conv_transpose": 2,
+            "reduce_mean": 14,
+            "pow": 7,
+            "sqrt": 7,
+            "real_div": 7,
+            "batch_norm": 7,
+            "gelu": 16,
+            "matmul": 1,
+            "sigmoid": 2,
+            "greater": 1,
+            "select": 1,
+            "upsample_bilinear": 1,
+            "reduce_argmax": 1,
+            "reduce_max": 1,
+            "conv": 9,
+            "split": 8
+          },
+          "nonZeroOperations": []
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "sourceAttachment": "7053e909-9492-4a18-874a-f5252649e2f6.json",
+  "sourceSHA256": "d4f1b2bad57c04d2352fbe2360500f02f99ea22d4fed1b4fb729bd08d7f4629e",
+  "confirmedHost": "Mac, running the iPad build (confirmed by user)",
+  "physicalIPhoneConfirmed": false,
+  "neuralEngineReport": {
+    "cancelled": false,
+    "compileAndLoadMilliseconds": {
+      "ImageEncoder": 1049.6408334001899,
+      "InitialMemoryEncoder": 2702.1592499222606,
+      "Initializer": 835.9044583048671,
+      "Propagator": 13524.944625096396
+    },
+    "contract": "bytewave.edgetam-temporal-owned.v2",
+    "error": "Non-finite output: raw_vision_features.",
+    "failedStage": "frame 1",
+    "fixtureSHA256": "27bbdc854536a5d33153250bc4bac44940692c0bea76fd8e6e6b9c91fb1792e9",
+    "frames": [],
+    "generatedAt": "2026-09-15T14:24:34Z",
+    "hardware": "iPad8,6",
+    "mode": "CPU + Neural Engine",
+    "operatingSystem": "Version 26.5.2 (Build 25F84)",
+    "passed": false,
+    "pointNormalizedTopLeft": [
+      0.4912,
+      0.4706
+    ],
+    "precisionPolicy": "mixed-encoder-late-conv33-and-fp32-attention-iou.v1",
+    "reference": "Mac Core ML CPU replay of the passed original-PyTorch comparison fixture",
+    "schema": "bytewave.temporal-device-comparison.v1",
+    "scope": "20 exact-input sequential predictions with bounded Swift state. Low mask, pointer and memory cosine >= 0.99; low-mask IoU >= 0.95; matching object presence; all model outputs finite. High mask is checked for shape/finiteness, not compared numerically. No video decoding, sustained playback FPS, or measured hardware utilization.",
+    "sourceModelsManifestSHA256": "b8d7f80fd31cc9ae75128379e18a228753254e0a9431d04d3e4fd86914d3b754",
+    "sourceReportSHA256": "a730025e6891a6b36bee0dac3f62975d24972d72911fd4fe7bcf0fc61123b311",
+    "thermalStateAtEnd": "nominal",
+    "thermalStateAtStart": "nominal",
+    "timingScope": "Model-call wall time excludes input copies, tensor checks, state assembly, reference comparison, file I/O and display. Prediction-and-state time includes input copies/checks/state. First frame is cold; compile/load is separate. Debug-build timings are diagnostic.",
+    "verifiedModelFileCount": 12
+  },
+  "nativeAbortsReportedByUser": {
+    "modes": [
+      "CPU + GPU",
+      "Automatic"
+    ],
+    "assertion": "(threadgroupsPerGrid.width(8) * threadgroupsPerGrid.y(0) * threadgroupsPerGrid.depth(1))(0) must not be 0.",
+    "site": "model.prediction(from: input)",
+    "component": "Unknown; prior probe did not persist the active component before native abort."
+  },
+  "scope": "Mac accelerated-mode failures. No physical-iPhone result or confirmed faulty operator/kernel."
+}

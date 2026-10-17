@@ -1,0 +1,65 @@
+{
+  "scope": "Bulk-copy result on iPhone 17 Pro Release. Numerical fixture ran Original rather than requested Memory FP16 candidate. Video uses Memory FP16 on a shorter clip; do not compare its total timing directly with the prior 27.838-second clip. No assistant inference or device tests.",
+  "reports": {
+    "fixture": {
+      "path": "Audit/iphone17pro-chunk-copy-original-report.json",
+      "sha256": "aea9430575224a8391daae6959d4fdc438fbed680a8046f66afdb02ddb2095ee"
+    },
+    "video": {
+      "path": "Audit/iphone17pro-chunk-copy-short-video-report.json",
+      "sha256": "8b29fe983e336b6986e7fca9aeb04d056bb17b904f7a5ba5093ee82cdeac4e31"
+    },
+    "priorOriginalFixture": {
+      "path": "Audit/iphone17pro-memoryfp16-repeat-original-report.json",
+      "sha256": "63d2106ff948fec8904653ac87e0e67908fbe5d28893d99acf3e99ea1bb6d7ab"
+    }
+  },
+  "tensorCopyImplementation": "owned-float32-chunk-copy.v1",
+  "fixture": {
+    "modelVariant": "original",
+    "passed": true,
+    "completed": true,
+    "frames": 20,
+    "allFrameGatesPassed": true,
+    "minimumMaskIoU": 0.9968039772727273,
+    "minimumPointerCosine": 0.9989761542919103,
+    "minimumMemoryCosine": 0.9959750418467518,
+    "sameReferenceFixtureAsBaseline": true,
+    "sameFrameInputsAsBaseline": true,
+    "allStateCountsCorrect": true,
+    "warmOutputCopyAndValidationMeanMilliseconds": {
+      "before": 8.627333330590965,
+      "after": 2.135517543616803,
+      "reductionPercent": 75.2470727421109,
+      "savedMilliseconds": 6.491815786974161
+    },
+    "timingLimitation": "Separate runs, not alternating paired timings. Same original model fixture and point."
+  },
+  "video": {
+    "modelVariant": "memoryfp16",
+    "videoDurationSeconds": 3.716666666666667,
+    "framesPredicted": 112,
+    "segmentsStarted": 1,
+    "seeks": 0,
+    "emptyMasks": 0,
+    "reachedEnd": true,
+    "lastState": {
+      "acceptedFrames": 112,
+      "pointerEntries": 16,
+      "spatialEntries": 7
+    },
+    "thermalStateAtStart": "nominal",
+    "thermalStateAtSnapshot": "nominal",
+    "reportedError": null,
+    "retainedRows": 112,
+    "allFramesRetained": true,
+    "timestampsStrictlyIncreasing": true,
+    "allStateCountsCorrect": true,
+    "warmFrames": 111,
+    "warmRequestMeanMilliseconds": 63.504134009981335,
+    "warmPredictionAndStateMeanMilliseconds": 60.55679354320599,
+    "warmOutputCopyAndValidationMeanMilliseconds": 2.174445945399327,
+    "visualFeedback": "User reports the dog approaches the camera and is patted, and the mask successfully excludes their hand. Qualitative user observation; no annotated ground truth."
+  },
+  "remainingGate": "Run existing 20-frame Memory FP16 candidate with CPU + GPU and share temporal report. Original fixture is passed. No rebuild or model preparation necessary for that run; no more implementation change until candidate result."
+}

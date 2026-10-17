@@ -1,0 +1,205 @@
+{
+  "scope": "Offline review of user-run original-PyTorch reacquisition history diagnostic; no assistant model execution.",
+  "contract": "bytewave.reacquisition-history.review.v1",
+  "sourceReportSHA256": "012d0cd5b86526e2e212430e2113a63dafcda7489f4ca017a73b3e0ab19f487e",
+  "sourceReplaySHA256": "5f9378e84e1b78ca19e00574245434e07180065dbcd608bdb34051338156cc56",
+  "sourceVideoSHA256": "5170ab7d885e131cbcd79be302d422f58e014f0c7ffbde51dcdcf8ad27bfa1e9",
+  "scriptSHA256": "c718a9ff2ceb005a2a420487b63191db2267edbdb1ef5302dbfc46470081f123",
+  "completed": true,
+  "readyForDeviceValidation": false,
+  "verification": {
+    "reportSHA256": "012d0cd5b86526e2e212430e2113a63dafcda7489f4ca017a73b3e0ab19f487e",
+    "nativeFramesChecked": 387,
+    "binaryMasksChecked": 252,
+    "nativeMasksCompared": 84,
+    "fixedProbeHistoryCountsChecked": 84,
+    "windows": [
+      {
+        "first": 197,
+        "last": 236,
+        "nonemptyCounts": {
+          "native": 40,
+          "frozenPreWindow": 40,
+          "conditioningOnly": 40
+        },
+        "identicalProbeMasksFrom": 212,
+        "identicalProbeObservationsFrom": 212
+      },
+      {
+        "first": 343,
+        "last": 386,
+        "nonemptyCounts": {
+          "native": 44,
+          "frozenPreWindow": 23,
+          "conditioningOnly": 22
+        },
+        "identicalProbeMasksFrom": 344,
+        "identicalProbeObservationsFrom": 358
+      }
+    ],
+    "controls": {
+      "initialization": {
+        "automaticChoice": true,
+        "scores": true,
+        "forcedAutomatic": {
+          "low_res_mask": true,
+          "high_res_mask": true,
+          "object_pointer": true,
+          "object_score": true,
+          "memory_features": true,
+          "memory_positions": true,
+          "low_res_maskBinaryExact": true,
+          "high_res_maskBinaryExact": true
+        },
+        "nativeAssembly": {
+          "low_res_mask": true,
+          "high_res_mask": true,
+          "object_pointer": true,
+          "object_score": true,
+          "memory_features": true,
+          "memory_positions": true,
+          "low_res_maskBinaryExact": true,
+          "high_res_maskBinaryExact": true
+        }
+      },
+      "window-197-same-input": {
+        "low_res_mask": true,
+        "high_res_mask": true,
+        "object_pointer": true,
+        "object_score": true,
+        "memory_features": true,
+        "memory_positions": true,
+        "low_res_maskBinaryExact": true,
+        "high_res_maskBinaryExact": true
+      },
+      "window-343-same-input": {
+        "low_res_mask": true,
+        "high_res_mask": true,
+        "object_pointer": true,
+        "object_score": true,
+        "memory_features": true,
+        "memory_positions": true,
+        "low_res_maskBinaryExact": true,
+        "high_res_maskBinaryExact": true
+      }
+    }
+  },
+  "visualReview": {
+    "framesReviewed": 84,
+    "method": "All three-panel previews in contact sheets; enlarged frames197,200,236.",
+    "observations": [
+      {
+        "frames": [
+          197
+        ],
+        "finding": "Native and frozen preserve intended tiny shoe at left; conditioning-only also selects wrong foreground man."
+      },
+      {
+        "frames": [
+          200
+        ],
+        "finding": "Native follows intended partial target; both probes additionally select wrong foreground man's hand."
+      },
+      {
+        "frames": [
+          224,
+          225,
+          226,
+          227,
+          228,
+          229,
+          230,
+          231
+        ],
+        "finding": "Probe masks include wrong foreground hand alongside intended target at left."
+      },
+      {
+        "frames": [
+          232,
+          233,
+          234,
+          235,
+          236
+        ],
+        "finding": "Both probes select wrong woman behind foreground man. Nonempty count is not correct recovery."
+      },
+      {
+        "frames": [
+          343,
+          344,
+          345,
+          346,
+          347,
+          348
+        ],
+        "finding": "Native selects wrong foreground hand. Frozen matches native at343 then is empty344..359; conditioning-only is empty343..359. Visible partial target appears behind foreground occluder during part of this interval."
+      },
+      {
+        "frames": [
+          350,
+          351,
+          353,
+          354,
+          355,
+          356,
+          357,
+          358,
+          359
+        ],
+        "finding": "Native has large wrong-hand or mixed masks; probes are empty. Blank output alone is not identity success."
+      },
+      {
+        "frames": [
+          360
+        ],
+        "finding": "Probe masks resume with target region but retain extraneous foreground fragments."
+      },
+      {
+        "frames": [
+          366,
+          367,
+          368
+        ],
+        "finding": "Both probes are empty despite clearly visible intended man; native broadly covers intended man."
+      },
+      {
+        "frames": [
+          369,
+          370,
+          371,
+          372,
+          373,
+          374,
+          375,
+          376,
+          377,
+          378,
+          379,
+          380,
+          381,
+          382,
+          383,
+          384,
+          385
+        ],
+        "finding": "All variants broadly cover intended man, with imperfect boundaries."
+      },
+      {
+        "frames": [
+          386
+        ],
+        "finding": "Native retains intended partial target; probes are empty."
+      }
+    ]
+  },
+  "interpretation": [
+    "Native reproduces prior chosen stream; first-window frozen controls match native outputs, including pointer and memory, under existing FP32 gates.",
+    "Withheld updates and temporal aging are coupled. This does not isolate wrong-mask feedback as the sole cause.",
+    "Probe masks converge from212 in first window and344 in second; reported observations converge from212 and358 respectively. Equality of observations is not proof of internal tensor equality.",
+    "Both probe variants remain nonempty all40 first-window frames despite wrong identity. No ground-truth accuracy rate is calculated.",
+    "One retrospectively selected development clip, original CPU only; no iPhone, Core ML, speed, or held-out generalization claim."
+  ],
+  "decision": "Reject blanket freezing or conditioning-only replacement; preserve production and frozen recovery policies.",
+  "nextDirection": "First inspect how pinned upstream selects conditioning frames, then consider a separate controlled diagnostic using an additional earlier visually reviewed target frame as conditioning memory. Treat a manual anchor as an experimental upper bound, not an automatic identity solution; compare correct partial returns, wrong people and missed visible target together.",
+  "changes": "Audit and HANDOFF only; no app, models, weights, exporter, numerical gates or recovery policies changed."
+}

@@ -1,0 +1,1412 @@
+{
+  "scope": "Check fresh segmentation and tracking at a visible reappearance landmark.\n\nStart original PyTorch and installed GPU with empty histories and a NEW explicit\npoint at the chosen source frame. Compare their fresh outputs with unchanged\nnumerical gates, and record prior ongoing-track observations as context only.\nThis tests prompted segmentation ability, not automatic identity recovery.\nNo model conversion, export, memory-policy change or app modification.\n",
+  "contract": "bytewave.occlusion-restart.diagnostic.v1",
+  "completed": true,
+  "readyForDeviceValidation": false,
+  "sourceVideoSHA256": "a8a9d3fd5b85fbdf2770027353d6d19971845c13f83ffdcc6058ae5e6a0b1833",
+  "sourceFileBytes": 10796435,
+  "phoneReportSHA256": "7c807a77903c90fc90d23dcad387e82bb454a315f690acb1d517bf8b73c4dc65",
+  "fixtureSHA256": "760dd45c6eed6972f434dd324920b74dbfa262fb6648983606c2872581430a61",
+  "modelFiles": {
+    "models/BWTemporalImageEncoder.mlpackage/Manifest.json": "df20c1178e37ef2d4587281d5feca5979f2db8b859ffe7357161e4d5b51c254f",
+    "models/BWTemporalImageEncoder.mlpackage/Data/com.apple.CoreML/model.mlmodel": "a3046d4fbd83b7974d0b01d92ca30a55adad08aca218789b97034245023bbeba",
+    "models/BWTemporalImageEncoder.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "90e112d95a98e30486b768a2397f253766ceaa95bfd3cdb5a31a8db0341f61c3",
+    "models/BWTemporalInitializer.mlpackage/Data/com.apple.CoreML/model.mlmodel": "a70da7906ee21086122e9c24479b149308337f49609854455ae9cf65f790625f",
+    "models/BWTemporalInitializer.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "9409edf81128013f2ff61ef2565832f0a35782304e7adc54466e0396b5ab94c2",
+    "models/BWTemporalInitializer.mlpackage/Manifest.json": "d2311a29bb658bd6f16e801e91893985eb5aea3f7a6587f718e3e93539bc3068",
+    "models/BWTemporalInitialMemoryEncoder.mlpackage/Data/com.apple.CoreML/model.mlmodel": "613c7a310f1fae1b698aaba6e5a70c3afb842f459d3ec96cf9e0f4b6b4b9438a",
+    "models/BWTemporalInitialMemoryEncoder.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "21ae511f368835d55fe519b9b4ae9032bf9256cdb3cc0e91fdf5b4c467311563",
+    "models/BWTemporalInitialMemoryEncoder.mlpackage/Manifest.json": "64fb8412cf6229dda7ec7227113c7c8cf1a5278a96b62b94e2a0a76f6d790b52",
+    "models/BWTemporalPropagator.mlpackage/Manifest.json": "aec4bf7ef5dafc3816e3a645f93b134824268f4b0e8184170452e10c8c5618c1",
+    "models/BWTemporalPropagator.mlpackage/Data/com.apple.CoreML/model.mlmodel": "dec2227edc7d22832a3726a68237b6789f2d79ede1a5b0cc6f76d400c69d08d9",
+    "models/BWTemporalPropagator.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "3e679bfdc49fc43e895434b8c8bb6e75bad20a2cad37fd0aa2d5019cd186386e"
+  },
+  "upstream": "7711e012a30a2402c4eaab637bdb00a521302c91",
+  "checkpointSHA256": "ed2d4850b8792c239689b043c47046ec239b6e808a3d9b6ae676c803fd8780df",
+  "sourceComparisonSHA256": "29ff27150c14715aca3375a82e9336eb3ff9628ae523b88bcfd2cc16a5d67fd3",
+  "startSourceFrame": 175,
+  "requestedFrames": 31,
+  "freshReferenceNumFrames": 101,
+  "pointNormalizedTopLeft": [
+    0.17578125,
+    0.5810546875
+  ],
+  "priorPointNormalizedTopLeft": [
+    0.6468468468468468,
+    0.5888513513513512
+  ],
+  "computeUnits": "CPU_AND_GPU",
+  "policy": {
+    "maskIoUMinimum": 0.95,
+    "cosineMinimum": 0.99,
+    "float32Atol": 0.001,
+    "float32Rtol": 0.001
+  },
+  "torchThreads": {
+    "intraOp": 1,
+    "interOp": 1
+  },
+  "versions": {
+    "torch": "2.7.0",
+    "coremltools": "9.0",
+    "numpy": "1.26.4",
+    "av": "15.0.0",
+    "Pillow": "11.2.1"
+  },
+  "memoryPolicy": "Fresh independent histories, local indices start at zero. Original reference has dynamic history; GPU uses unchanged bounded state. Original source PTS retained. No prior tracking memory copied.",
+  "priorComparisonLimit": "Stored ongoing-track observations only; ongoing models are not rerun here and have a different original point/history. Numerical parity compares only the two fresh streams.",
+  "summary": {
+    "framesCompared": 31,
+    "freshGPUParityAllPassed": true,
+    "failedSourceFrames": [],
+    "nonemptySourceFrames": {
+      "freshOriginal": [
+        175,
+        176,
+        177,
+        178,
+        179,
+        180,
+        181,
+        182,
+        183,
+        184,
+        185,
+        186,
+        187,
+        188,
+        189,
+        190,
+        191,
+        192,
+        193,
+        194,
+        195,
+        196,
+        197,
+        198,
+        199,
+        200,
+        201,
+        202,
+        203,
+        204,
+        205
+      ],
+      "freshGPU": [
+        175,
+        176,
+        177,
+        178,
+        179,
+        180,
+        181,
+        182,
+        183,
+        184,
+        185,
+        186,
+        187,
+        188,
+        189,
+        190,
+        191,
+        192,
+        193,
+        194,
+        195,
+        196,
+        197,
+        198,
+        199,
+        200,
+        201,
+        202,
+        203,
+        204,
+        205
+      ],
+      "priorOriginal": [],
+      "priorGPU": []
+    },
+    "firstFrame": {
+      "sourceFrame": 175,
+      "localFrame": 0,
+      "ptsSeconds": 5.835,
+      "ptsNumerator": 1167,
+      "ptsDenominator": 200,
+      "imageSHA256": "c0de0dfacd1f80c508654f34ec5de1400853eae6f6142876840046062b0ed4c7",
+      "freshGPUAgainstFreshOriginal": {
+        "passed": true,
+        "maskIoUAgainstReference": 1,
+        "sameObjectPresence": true,
+        "outputs": {
+          "low_res_mask": {
+            "maximumAbsoluteError": 0.20108985900878906,
+            "cosineSimilarity": 0.9999991082947509,
+            "float32Close": false
+          },
+          "high_res_mask": {
+            "maximumAbsoluteError": 0.19121742248535156,
+            "cosineSimilarity": 0.9999992738291961,
+            "float32Close": false
+          },
+          "best_iou": {
+            "maximumAbsoluteError": 0.0002034306526184082,
+            "cosineSimilarity": 1,
+            "float32Close": true
+          },
+          "object_pointer": {
+            "maximumAbsoluteError": 0.012029767036437988,
+            "cosineSimilarity": 0.9999792782790424,
+            "float32Close": false
+          },
+          "object_score": {
+            "maximumAbsoluteError": 0.103546142578125,
+            "cosineSimilarity": 1,
+            "float32Close": false
+          },
+          "memory_features": {
+            "maximumAbsoluteError": 1.8977370262145996,
+            "cosineSimilarity": 0.9991257782647842,
+            "float32Close": false
+          },
+          "memory_positions": {
+            "maximumAbsoluteError": 5.960464477539063e-8,
+            "cosineSimilarity": 0.9999999999999993,
+            "float32Close": true
+          }
+        }
+      },
+      "observations": {
+        "freshOriginal": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0016326904296875,
+          "objectScore": 30.853546142578125,
+          "predictedIoU": 0.9332408308982849
+        },
+        "freshGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0016326904296875,
+          "objectScore": 30.75,
+          "predictedIoU": 0.9334442615509033
+        },
+        "priorOriginal": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.5627802610397339,
+          "predictedIoU": 7.753791711544456e-18
+        },
+        "priorGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.5654296875,
+          "predictedIoU": 8.752109375389805e-18
+        }
+      },
+      "gpuState": {
+        "acceptedFrames": 1,
+        "spatialEntries": 1,
+        "pointerEntries": 1
+      },
+      "preview": "previews/frame-0175.png"
+    },
+    "qualityMeaning": "A nonempty mask must be visually checked against the intended worker. Fresh prompting is not automatic recovery; prior observations have different prompts and histories."
+  },
+  "uploadedReportSHA256": "0cf1b42618af2d019dd15fd26c18f35a72a1f89daadf661593c2a97f975edfd4",
+  "minimumMetrics": {
+    "maskIoU": 0.9741379310344828,
+    "pointerCosine": 0.9997481281991383,
+    "memoryCosine": 0.9938067559992179
+  },
+  "interpretationNotes": [
+    "Both freshly prompted streams produce nonempty masks on all 31 source frames 175–205, while stored ongoing original/GPU observations are empty on all 31.",
+    "Fresh GPU/original comparisons pass unchanged gates on all 31. This supports prompted segmentation capability at reappearance; it does not prove automatic recovery or isolate the effect of the new point versus resetting history.",
+    "The requested fresh preview frame-0175.png has not yet been supplied. Correct subject and mask extent still require visual confirmation; agreement between models is not ground-truth quality.",
+    "Next proposed research after preview confirmation: isolate pre-occlusion memory retention effects with a diagnostic branch. No heuristic, policy, or production model change implemented."
+  ],
+  "frameMetrics": [
+    {
+      "sourceFrame": 175,
+      "ptsSeconds": 5.835,
+      "maskIoU": 1,
+      "pointerCosine": 0.9999792782790424,
+      "memoryCosine": 0.9991257782647842,
+      "passed": true,
+      "observations": {
+        "freshOriginal": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0016326904296875,
+          "objectScore": 30.853546142578125,
+          "predictedIoU": 0.9332408308982849
+        },
+        "freshGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0016326904296875,
+          "objectScore": 30.75,
+          "predictedIoU": 0.9334442615509033
+        },
+        "priorOriginal": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.5627802610397339,
+          "predictedIoU": 7.753791711544456e-18
+        },
+        "priorGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.5654296875,
+          "predictedIoU": 8.752109375389805e-18
+        }
+      }
+    },
+    {
+      "sourceFrame": 176,
+      "ptsSeconds": 5.868333333333333,
+      "maskIoU": 0.9911504424778761,
+      "pointerCosine": 0.9998806653746082,
+      "memoryCosine": 0.9996727029712352,
+      "passed": true,
+      "observations": {
+        "freshOriginal": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0017242431640625,
+          "objectScore": 5.817077159881592,
+          "predictedIoU": 0.917063295841217
+        },
+        "freshGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.001708984375,
+          "objectScore": 5.78125,
+          "predictedIoU": 0.9169725775718689
+        },
+        "priorOriginal": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.3193970918655396,
+          "predictedIoU": 4.554801512763858e-15
+        },
+        "priorGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.3291015625,
+          "predictedIoU": 4.0909887172205055e-15
+        }
+      }
+    },
+    {
+      "sourceFrame": 177,
+      "ptsSeconds": 5.901666666666666,
+      "maskIoU": 1,
+      "pointerCosine": 0.9998464498880418,
+      "memoryCosine": 0.999519364007638,
+      "passed": true,
+      "observations": {
+        "freshOriginal": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.001678466796875,
+          "objectScore": 4.982583045959473,
+          "predictedIoU": 0.9160634279251099
+        },
+        "freshGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.001678466796875,
+          "objectScore": 4.8671875,
+          "predictedIoU": 0.9157620072364807
+        },
+        "priorOriginal": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.8087135553359985,
+          "predictedIoU": 1.2862570677649175e-21
+        },
+        "priorGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.814453125,
+          "predictedIoU": 1.229881154727734e-21
+        }
+      }
+    },
+    {
+      "sourceFrame": 178,
+      "ptsSeconds": 5.935,
+      "maskIoU": 0.9908256880733946,
+      "pointerCosine": 0.9998758312235216,
+      "memoryCosine": 0.9994538230535036,
+      "passed": true,
+      "observations": {
+        "freshOriginal": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.00164794921875,
+          "objectScore": 6.4451117515563965,
+          "predictedIoU": 0.9236815571784973
+        },
+        "freshGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0016632080078125,
+          "objectScore": 6.359375,
+          "predictedIoU": 0.9233245849609375
+        },
+        "priorOriginal": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -2.046855926513672,
+          "predictedIoU": 6.205783706159771e-22
+        },
+        "priorGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -2.05078125,
+          "predictedIoU": 4.451871011605211e-22
+        }
+      }
+    },
+    {
+      "sourceFrame": 179,
+      "ptsSeconds": 5.968333333333334,
+      "maskIoU": 0.9908256880733946,
+      "pointerCosine": 0.9998034141746008,
+      "memoryCosine": 0.9984949321240594,
+      "passed": true,
+      "observations": {
+        "freshOriginal": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.00164794921875,
+          "objectScore": 6.450203895568848,
+          "predictedIoU": 0.9253762364387512
+        },
+        "freshGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0016632080078125,
+          "objectScore": 6.359375,
+          "predictedIoU": 0.9247806668281555
+        },
+        "priorOriginal": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -2.0303192138671875,
+          "predictedIoU": 2.4865970161119203e-23
+        },
+        "priorGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -2.048828125,
+          "predictedIoU": 1.784604211596398e-23
+        }
+      }
+    },
+    {
+      "sourceFrame": 180,
+      "ptsSeconds": 6.001666666666667,
+      "maskIoU": 0.990909090909091,
+      "pointerCosine": 0.9998415604715803,
+      "memoryCosine": 0.9995248393594169,
+      "passed": true,
+      "observations": {
+        "freshOriginal": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0016632080078125,
+          "objectScore": 6.824772834777832,
+          "predictedIoU": 0.9240230917930603
+        },
+        "freshGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.001678466796875,
+          "objectScore": 6.69921875,
+          "predictedIoU": 0.9232102036476135
+        },
+        "priorOriginal": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -2.1667749881744385,
+          "predictedIoU": 7.995478878939667e-23
+        },
+        "priorGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -2.1796875,
+          "predictedIoU": 5.92378814686635e-23
+        }
+      }
+    },
+    {
+      "sourceFrame": 181,
+      "ptsSeconds": 6.036666666666667,
+      "maskIoU": 0.9908256880733946,
+      "pointerCosine": 0.999774270376419,
+      "memoryCosine": 0.9977125331915131,
+      "passed": true,
+      "observations": {
+        "freshOriginal": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.00164794921875,
+          "objectScore": 6.780628681182861,
+          "predictedIoU": 0.9249592423439026
+        },
+        "freshGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0016632080078125,
+          "objectScore": 6.6875,
+          "predictedIoU": 0.9240840673446655
+        },
+        "priorOriginal": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.7161641120910645,
+          "predictedIoU": 1.742763836966945e-17
+        },
+        "priorGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.7197265625,
+          "predictedIoU": 2.0163963416523442e-17
+        }
+      }
+    },
+    {
+      "sourceFrame": 182,
+      "ptsSeconds": 6.07,
+      "maskIoU": 1,
+      "pointerCosine": 0.9998491806095897,
+      "memoryCosine": 0.9973627647735134,
+      "passed": true,
+      "observations": {
+        "freshOriginal": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0015716552734375,
+          "objectScore": 6.725123405456543,
+          "predictedIoU": 0.919863224029541
+        },
+        "freshGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0015716552734375,
+          "objectScore": 6.640625,
+          "predictedIoU": 0.9187695980072021
+        },
+        "priorOriginal": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.5053796768188477,
+          "predictedIoU": 3.1042317560859775e-16
+        },
+        "priorGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.5107421875,
+          "predictedIoU": 2.9919797735422854e-16
+        }
+      }
+    },
+    {
+      "sourceFrame": 183,
+      "ptsSeconds": 6.1033333333333335,
+      "maskIoU": 1,
+      "pointerCosine": 0.9998584171301086,
+      "memoryCosine": 0.9997616060713149,
+      "passed": true,
+      "observations": {
+        "freshOriginal": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0015869140625,
+          "objectScore": 6.889240741729736,
+          "predictedIoU": 0.9171841740608215
+        },
+        "freshGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0015869140625,
+          "objectScore": 6.796875,
+          "predictedIoU": 0.9166498184204102
+        },
+        "priorOriginal": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.6683804988861084,
+          "predictedIoU": 6.74080399953548e-17
+        },
+        "priorGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.6826171875,
+          "predictedIoU": 4.950450311258766e-17
+        }
+      }
+    },
+    {
+      "sourceFrame": 184,
+      "ptsSeconds": 6.136666666666667,
+      "maskIoU": 1,
+      "pointerCosine": 0.9998975741172932,
+      "memoryCosine": 0.9996200026437283,
+      "passed": true,
+      "observations": {
+        "freshOriginal": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0016021728515625,
+          "objectScore": 7.0196332931518555,
+          "predictedIoU": 0.9115130305290222
+        },
+        "freshGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0016021728515625,
+          "objectScore": 6.93359375,
+          "predictedIoU": 0.9110273718833923
+        },
+        "priorOriginal": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.5484312772750854,
+          "predictedIoU": 5.767742211199294e-16
+        },
+        "priorGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.568359375,
+          "predictedIoU": 4.121421975740642e-16
+        }
+      }
+    },
+    {
+      "sourceFrame": 185,
+      "ptsSeconds": 6.17,
+      "maskIoU": 1,
+      "pointerCosine": 0.9997481281991383,
+      "memoryCosine": 0.999600794429637,
+      "passed": true,
+      "observations": {
+        "freshOriginal": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.001617431640625,
+          "objectScore": 6.970850944519043,
+          "predictedIoU": 0.9068469405174255
+        },
+        "freshGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.001617431640625,
+          "objectScore": 6.875,
+          "predictedIoU": 0.9056799411773682
+        },
+        "priorOriginal": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.4452931880950928,
+          "predictedIoU": 3.5428338865037268e-15
+        },
+        "priorGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.4609375,
+          "predictedIoU": 2.8424388595616173e-15
+        }
+      }
+    },
+    {
+      "sourceFrame": 186,
+      "ptsSeconds": 6.203333333333333,
+      "maskIoU": 0.990990990990991,
+      "pointerCosine": 0.9997827049773987,
+      "memoryCosine": 0.9997472775390933,
+      "passed": true,
+      "observations": {
+        "freshOriginal": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.001678466796875,
+          "objectScore": 6.974274158477783,
+          "predictedIoU": 0.90901118516922
+        },
+        "freshGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0016937255859375,
+          "objectScore": 6.87890625,
+          "predictedIoU": 0.9084689617156982
+        },
+        "priorOriginal": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.626745343208313,
+          "predictedIoU": 1.1436570032400599e-16
+        },
+        "priorGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.638671875,
+          "predictedIoU": 8.729772355564545e-17
+        }
+      }
+    },
+    {
+      "sourceFrame": 187,
+      "ptsSeconds": 6.236666666666666,
+      "maskIoU": 1,
+      "pointerCosine": 0.9998586257169807,
+      "memoryCosine": 0.9992313628676757,
+      "passed": true,
+      "observations": {
+        "freshOriginal": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0016937255859375,
+          "objectScore": 7.009326934814453,
+          "predictedIoU": 0.9061986804008484
+        },
+        "freshGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0016937255859375,
+          "objectScore": 6.92578125,
+          "predictedIoU": 0.905809760093689
+        },
+        "priorOriginal": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.246941089630127,
+          "predictedIoU": 2.2336278659995656e-11
+        },
+        "priorGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.2578125,
+          "predictedIoU": 2.026160315915515e-11
+        }
+      }
+    },
+    {
+      "sourceFrame": 188,
+      "ptsSeconds": 6.27,
+      "maskIoU": 1,
+      "pointerCosine": 0.9998684706236273,
+      "memoryCosine": 0.9993703837300548,
+      "passed": true,
+      "observations": {
+        "freshOriginal": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.001678466796875,
+          "objectScore": 7.286221027374268,
+          "predictedIoU": 0.9081743955612183
+        },
+        "freshGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.001678466796875,
+          "objectScore": 7.2109375,
+          "predictedIoU": 0.9077310562133789
+        },
+        "priorOriginal": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.087148666381836,
+          "predictedIoU": 1.170491925606143e-9
+        },
+        "priorGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.095703125,
+          "predictedIoU": 1.065222798857235e-9
+        }
+      }
+    },
+    {
+      "sourceFrame": 189,
+      "ptsSeconds": 6.303333333333334,
+      "maskIoU": 0.9741379310344828,
+      "pointerCosine": 0.9999080242964274,
+      "memoryCosine": 0.9996243035120337,
+      "passed": true,
+      "observations": {
+        "freshOriginal": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0017242431640625,
+          "objectScore": 7.425356388092041,
+          "predictedIoU": 0.9038315415382385
+        },
+        "freshGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.00177001953125,
+          "objectScore": 7.34375,
+          "predictedIoU": 0.9039829969406128
+        },
+        "priorOriginal": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.1540383100509644,
+          "predictedIoU": 8.856591848793727e-11
+        },
+        "priorGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.169921875,
+          "predictedIoU": 6.620312631433478e-11
+        }
+      }
+    },
+    {
+      "sourceFrame": 190,
+      "ptsSeconds": 6.336666666666667,
+      "maskIoU": 0.9913793103448276,
+      "pointerCosine": 0.9998985582019244,
+      "memoryCosine": 0.99965990213192,
+      "passed": true,
+      "observations": {
+        "freshOriginal": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.00177001953125,
+          "objectScore": 7.50250244140625,
+          "predictedIoU": 0.9054157137870789
+        },
+        "freshGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0017547607421875,
+          "objectScore": 7.421875,
+          "predictedIoU": 0.9049841165542603
+        },
+        "priorOriginal": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.2062917947769165,
+          "predictedIoU": 9.144041079878207e-11
+        },
+        "priorGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.2236328125,
+          "predictedIoU": 7.45080316888469e-11
+        }
+      }
+    },
+    {
+      "sourceFrame": 191,
+      "ptsSeconds": 6.37,
+      "maskIoU": 1,
+      "pointerCosine": 0.9998224038439398,
+      "memoryCosine": 0.9997933610944546,
+      "passed": true,
+      "observations": {
+        "freshOriginal": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0016937255859375,
+          "objectScore": 7.123332977294922,
+          "predictedIoU": 0.9051991105079651
+        },
+        "freshGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0016937255859375,
+          "objectScore": 7.03125,
+          "predictedIoU": 0.9041521549224854
+        },
+        "priorOriginal": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.0936675071716309,
+          "predictedIoU": 4.0937644385508065e-9
+        },
+        "priorGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.1142578125,
+          "predictedIoU": 2.726119774365543e-9
+        }
+      }
+    },
+    {
+      "sourceFrame": 192,
+      "ptsSeconds": 6.403333333333333,
+      "maskIoU": 0.9912280701754386,
+      "pointerCosine": 0.9998790478583616,
+      "memoryCosine": 0.9995064646193738,
+      "passed": true,
+      "observations": {
+        "freshOriginal": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0017242431640625,
+          "objectScore": 7.437803268432617,
+          "predictedIoU": 0.8918294310569763
+        },
+        "freshGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.001739501953125,
+          "objectScore": 7.359375,
+          "predictedIoU": 0.8910664319992065
+        },
+        "priorOriginal": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.413775086402893,
+          "predictedIoU": 4.940344228816177e-15
+        },
+        "priorGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.4375,
+          "predictedIoU": 3.556130186193251e-15
+        }
+      }
+    },
+    {
+      "sourceFrame": 193,
+      "ptsSeconds": 6.4366666666666665,
+      "maskIoU": 1,
+      "pointerCosine": 0.9999298842892138,
+      "memoryCosine": 0.999082944629534,
+      "passed": true,
+      "observations": {
+        "freshOriginal": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.001861572265625,
+          "objectScore": 7.478039264678955,
+          "predictedIoU": 0.904349148273468
+        },
+        "freshGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.001861572265625,
+          "objectScore": 7.421875,
+          "predictedIoU": 0.9039801955223083
+        },
+        "priorOriginal": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.6760258674621582,
+          "predictedIoU": 3.7736235970659014e-18
+        },
+        "priorGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.69140625,
+          "predictedIoU": 3.2702248441184334e-18
+        }
+      }
+    },
+    {
+      "sourceFrame": 194,
+      "ptsSeconds": 6.47,
+      "maskIoU": 0.9915966386554622,
+      "pointerCosine": 0.9997524466190637,
+      "memoryCosine": 0.9994365230635589,
+      "passed": true,
+      "observations": {
+        "freshOriginal": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.001800537109375,
+          "objectScore": 7.2842864990234375,
+          "predictedIoU": 0.897629976272583
+        },
+        "freshGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0018157958984375,
+          "objectScore": 7.21484375,
+          "predictedIoU": 0.8971216082572937
+        },
+        "priorOriginal": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.612247347831726,
+          "predictedIoU": 1.7116787204194473e-17
+        },
+        "priorGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.6279296875,
+          "predictedIoU": 1.6691025762384854e-17
+        }
+      }
+    },
+    {
+      "sourceFrame": 195,
+      "ptsSeconds": 6.503333333333333,
+      "maskIoU": 0.9922480620155039,
+      "pointerCosine": 0.9998711967231837,
+      "memoryCosine": 0.9994966913251634,
+      "passed": true,
+      "observations": {
+        "freshOriginal": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.001953125,
+          "objectScore": 7.1233696937561035,
+          "predictedIoU": 0.9039376378059387
+        },
+        "freshGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0019683837890625,
+          "objectScore": 7.04296875,
+          "predictedIoU": 0.9047688841819763
+        },
+        "priorOriginal": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.1558566093444824,
+          "predictedIoU": 6.1832947616247136e-12
+        },
+        "priorGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.1806640625,
+          "predictedIoU": 4.1944932770154875e-12
+        }
+      }
+    },
+    {
+      "sourceFrame": 196,
+      "ptsSeconds": 6.536666666666667,
+      "maskIoU": 1,
+      "pointerCosine": 0.9998941985590643,
+      "memoryCosine": 0.9986857941865036,
+      "passed": true,
+      "observations": {
+        "freshOriginal": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0019073486328125,
+          "objectScore": 7.338764667510986,
+          "predictedIoU": 0.9203280806541443
+        },
+        "freshGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0019073486328125,
+          "objectScore": 7.25390625,
+          "predictedIoU": 0.9196509122848511
+        },
+        "priorOriginal": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.061780571937561,
+          "predictedIoU": 7.570352764801891e-13
+        },
+        "priorGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.083984375,
+          "predictedIoU": 5.238870860561906e-13
+        }
+      }
+    },
+    {
+      "sourceFrame": 197,
+      "ptsSeconds": 6.57,
+      "maskIoU": 0.9922480620155039,
+      "pointerCosine": 0.9998180514105678,
+      "memoryCosine": 0.9985853790992942,
+      "passed": true,
+      "observations": {
+        "freshOriginal": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0019683837890625,
+          "objectScore": 7.208427429199219,
+          "predictedIoU": 0.9253652095794678
+        },
+        "freshGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.001953125,
+          "objectScore": 7.13671875,
+          "predictedIoU": 0.9253965616226196
+        },
+        "priorOriginal": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.499721884727478,
+          "predictedIoU": 6.839020778492066e-17
+        },
+        "priorGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.498046875,
+          "predictedIoU": 9.233254695112912e-17
+        }
+      }
+    },
+    {
+      "sourceFrame": 198,
+      "ptsSeconds": 6.6033333333333335,
+      "maskIoU": 1,
+      "pointerCosine": 0.9997846961084464,
+      "memoryCosine": 0.9998387979056074,
+      "passed": true,
+      "observations": {
+        "freshOriginal": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.00201416015625,
+          "objectScore": 6.961929798126221,
+          "predictedIoU": 0.9238663911819458
+        },
+        "freshGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.00201416015625,
+          "objectScore": 6.90625,
+          "predictedIoU": 0.9242667555809021
+        },
+        "priorOriginal": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.183653712272644,
+          "predictedIoU": 5.755000696914397e-14
+        },
+        "priorGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.1904296875,
+          "predictedIoU": 6.205347108552417e-14
+        }
+      }
+    },
+    {
+      "sourceFrame": 199,
+      "ptsSeconds": 6.636666666666667,
+      "maskIoU": 1,
+      "pointerCosine": 0.9998309615120345,
+      "memoryCosine": 0.9997360963361253,
+      "passed": true,
+      "observations": {
+        "freshOriginal": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0018310546875,
+          "objectScore": 6.876516819000244,
+          "predictedIoU": 0.923319399356842
+        },
+        "freshGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0018310546875,
+          "objectScore": 6.8125,
+          "predictedIoU": 0.9231197834014893
+        },
+        "priorOriginal": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -0.951941728591919,
+          "predictedIoU": 9.530904537813356e-11
+        },
+        "priorGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -0.955078125,
+          "predictedIoU": 1.300900082101819e-10
+        }
+      }
+    },
+    {
+      "sourceFrame": 200,
+      "ptsSeconds": 6.67,
+      "maskIoU": 1,
+      "pointerCosine": 0.9998785087584214,
+      "memoryCosine": 0.9979711731083747,
+      "passed": true,
+      "observations": {
+        "freshOriginal": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0017852783203125,
+          "objectScore": 6.777974605560303,
+          "predictedIoU": 0.9222642779350281
+        },
+        "freshGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0017852783203125,
+          "objectScore": 6.7109375,
+          "predictedIoU": 0.9218522310256958
+        },
+        "priorOriginal": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.0022735595703125,
+          "predictedIoU": 1.0364140969054692e-11
+        },
+        "priorGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -1.0078125,
+          "predictedIoU": 1.0944271530699545e-11
+        }
+      }
+    },
+    {
+      "sourceFrame": 201,
+      "ptsSeconds": 6.703333333333333,
+      "maskIoU": 1,
+      "pointerCosine": 0.9998994495431002,
+      "memoryCosine": 0.9995592863073631,
+      "passed": true,
+      "observations": {
+        "freshOriginal": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0017547607421875,
+          "objectScore": 6.591436862945557,
+          "predictedIoU": 0.9257296919822693
+        },
+        "freshGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0017547607421875,
+          "objectScore": 6.51171875,
+          "predictedIoU": 0.925237238407135
+        },
+        "priorOriginal": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -0.6448624134063721,
+          "predictedIoU": 0.00000411109795095399
+        },
+        "priorGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -0.65087890625,
+          "predictedIoU": 0.000004484737928578397
+        }
+      }
+    },
+    {
+      "sourceFrame": 202,
+      "ptsSeconds": 6.736666666666666,
+      "maskIoU": 1,
+      "pointerCosine": 0.9999700569060135,
+      "memoryCosine": 0.9991024580305232,
+      "passed": true,
+      "observations": {
+        "freshOriginal": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.001739501953125,
+          "objectScore": 6.717530727386475,
+          "predictedIoU": 0.9269289970397949
+        },
+        "freshGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.001739501953125,
+          "objectScore": 6.66015625,
+          "predictedIoU": 0.9266127943992615
+        },
+        "priorOriginal": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -0.6697991490364075,
+          "predictedIoU": 0.0000020361217138997745
+        },
+        "priorGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -0.67822265625,
+          "predictedIoU": 0.000001795227149159473
+        }
+      }
+    },
+    {
+      "sourceFrame": 203,
+      "ptsSeconds": 6.77,
+      "maskIoU": 1,
+      "pointerCosine": 0.9999414646294309,
+      "memoryCosine": 0.9992232798806083,
+      "passed": true,
+      "observations": {
+        "freshOriginal": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.001739501953125,
+          "objectScore": 6.452912330627441,
+          "predictedIoU": 0.9317689538002014
+        },
+        "freshGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.001739501953125,
+          "objectScore": 6.38671875,
+          "predictedIoU": 0.9314947724342346
+        },
+        "priorOriginal": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -0.663865864276886,
+          "predictedIoU": 0.0000062687936406291556
+        },
+        "priorGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -0.6640625,
+          "predictedIoU": 0.000006624725301662693
+        }
+      }
+    },
+    {
+      "sourceFrame": 204,
+      "ptsSeconds": 6.803333333333334,
+      "maskIoU": 1,
+      "pointerCosine": 0.9999706710140989,
+      "memoryCosine": 0.9988501617594484,
+      "passed": true,
+      "observations": {
+        "freshOriginal": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.00164794921875,
+          "objectScore": 6.636188983917236,
+          "predictedIoU": 0.9333188533782959
+        },
+        "freshGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.00164794921875,
+          "objectScore": 6.57421875,
+          "predictedIoU": 0.9329595565795898
+        },
+        "priorOriginal": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -0.6810883283615112,
+          "predictedIoU": 1.0383784498912974e-8
+        },
+        "priorGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -0.68603515625,
+          "predictedIoU": 1.0523252491623225e-8
+        }
+      }
+    },
+    {
+      "sourceFrame": 205,
+      "ptsSeconds": 6.836666666666667,
+      "maskIoU": 1,
+      "pointerCosine": 0.9999576271231323,
+      "memoryCosine": 0.9938067559992179,
+      "passed": true,
+      "observations": {
+        "freshOriginal": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0016021728515625,
+          "objectScore": 6.462939262390137,
+          "predictedIoU": 0.9277392625808716
+        },
+        "freshGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0016021728515625,
+          "objectScore": 6.41015625,
+          "predictedIoU": 0.9274176955223083
+        },
+        "priorOriginal": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -0.9872884750366211,
+          "predictedIoU": 2.1817425643888555e-9
+        },
+        "priorGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0,
+          "objectScore": -0.9951171875,
+          "predictedIoU": 2.2308586089536675e-9
+        }
+      }
+    }
+  ]
+}

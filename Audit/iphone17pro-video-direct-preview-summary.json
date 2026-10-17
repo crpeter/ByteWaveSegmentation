@@ -1,0 +1,98 @@
+{
+  "scope": "Successive user-run full-clip comparisons, not paired timings or ground-truth mask parity. Source clip metadata matches but a full video hash is not present. Selected points differ. Only latest 120 detailed rows retained; no display/render timing or playback FPS claim.",
+  "sourceReport": "Audit/iphone17pro-video-direct-preview-report.json",
+  "sourceReportSHA256": "8a434d4ee73a78beccfbd70dc0434f83136e60238a1b71879a2fb8cf5d589e9c",
+  "baselineReport": "Audit/iphone17pro-video-preparation-report.json",
+  "baselineReportSHA256": "39ca65d144cb36d1efea850d08f65c195639a68e2239c111efb011e5d386e71c",
+  "hardware": "iPhone18,1",
+  "operatingSystem": "Version 27.0 (Build 24A435)",
+  "swiftDebugCompilation": false,
+  "timingInstrumentation": "video-preparation-stages.v2",
+  "previewTransport": "Eager sRGB RGBA8 CGImage shared with UI; no preview PNG encoding or decoding. Mask overlay still uses PNG.",
+  "framesPredicted": 835,
+  "segmentsStarted": 1,
+  "seeks": 0,
+  "emptyMasks": 0,
+  "reachedEnd": true,
+  "lastState": {
+    "acceptedFrames": 835,
+    "pointerEntries": 16,
+    "spatialEntries": 7
+  },
+  "thermalStateAtStart": "nominal",
+  "thermalStateAtSnapshot": "nominal",
+  "reportedError": null,
+  "retainedFrames": 120,
+  "checks": {
+    "allWarmCountsMatch": true,
+    "retainedPTSStrictlyIncreasing": true,
+    "retainedStateAdvances": true,
+    "retainedBanksBounded": true
+  },
+  "matchedComparisonFields": {
+    "hardware": true,
+    "operatingSystem": true,
+    "swiftDebugCompilation": true,
+    "fixtureSHA256": true,
+    "modelFiles": true,
+    "requestedComputeUnits": true,
+    "sourceFileBytes": true,
+    "videoDurationSeconds": true,
+    "trackTransform": true,
+    "lastDecodedSize": true,
+    "lastDisplaySize": true,
+    "framesPredicted": true,
+    "segmentsStarted": true,
+    "seeks": true
+  },
+  "points": {
+    "before": [
+      0.5378378378378378,
+      0.42719594594594584
+    ],
+    "after": [
+      0.517117117117117,
+      0.4378378378378377
+    ]
+  },
+  "warmFramesPerRun": 834,
+  "warmMeanMilliseconds": {
+    "preparation": {
+      "before": 30.901606964774885,
+      "after": 2.5232782777177163,
+      "reductionMilliseconds": 28.37832868705717,
+      "reductionPercent": 91.83447553198761
+    },
+    "predictionAndState": {
+      "before": 76.5948732513993,
+      "after": 75.78588274376087,
+      "reductionMilliseconds": 0.8089905076384412,
+      "reductionPercent": 1.056194067954361
+    },
+    "maskRendering": {
+      "before": 0.414213129522768,
+      "after": 0.4017779776199477,
+      "reductionMilliseconds": 0.012435151902820296,
+      "reductionPercent": 3.0021143745847327
+    },
+    "request": {
+      "before": 108.0345865309902,
+      "after": 78.8087068844547,
+      "reductionMilliseconds": 29.225879646535503,
+      "reductionPercent": 27.052336279504278
+    }
+  },
+  "afterPreparationStageMeanMilliseconds": {
+    "modelBufferAllocation": 0.12641042160072388,
+    "modelInputRender": 1.2171158579424386,
+    "orientationGraphSetup": 0.02061385884772142,
+    "previewImageCreation": 0.9025658476251575,
+    "sampleAcquisition": 0.2546328440564294
+  },
+  "afterModelMeanMilliseconds": {
+    "ImageEncoder": 26.35273521166751,
+    "Propagator": 39.99007174272212
+  },
+  "afterPredictionAndStateShareOfRequestPercent": 96.16435256941122,
+  "conclusion": "The direct preview path reduced measured preparation by 28.378 ms and total request by 29.226 ms in these runs. Inference/state is now the dominant measured cost. Retain the change; visual alignment/color confirmation is not encoded by this report. No further implementation change made with this evidence."
+}

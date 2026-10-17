@@ -1,0 +1,1154 @@
+{
+  "schema": "bytewave.requested-video-tracking.v1",
+  "createdAt": "2026-10-11T02:40:11Z",
+  "hardware": "iPhone18,1",
+  "operatingSystem": "Version 27.2 (Build 24B5089g)",
+  "modelVariant": "memoryfp16projection",
+  "contract": "bytewave.edgetam-temporal-owned.v2",
+  "precisionPolicy": "encoder-projection-memoryfp16.diagnostic.v1",
+  "requestedComputeUnits": "CPU_AND_GPU",
+  "fixtureSHA256": "760dd45c6eed6972f434dd324920b74dbfa262fb6648983606c2872581430a61",
+  "modelFiles": {
+    "models/BWTemporalImageEncoder.mlpackage/Data/com.apple.CoreML/model.mlmodel": "a3046d4fbd83b7974d0b01d92ca30a55adad08aca218789b97034245023bbeba",
+    "models/BWTemporalImageEncoder.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "90e112d95a98e30486b768a2397f253766ceaa95bfd3cdb5a31a8db0341f61c3",
+    "models/BWTemporalImageEncoder.mlpackage/Manifest.json": "df20c1178e37ef2d4587281d5feca5979f2db8b859ffe7357161e4d5b51c254f",
+    "models/BWTemporalInitialMemoryEncoder.mlpackage/Data/com.apple.CoreML/model.mlmodel": "613c7a310f1fae1b698aaba6e5a70c3afb842f459d3ec96cf9e0f4b6b4b9438a",
+    "models/BWTemporalInitialMemoryEncoder.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "21ae511f368835d55fe519b9b4ae9032bf9256cdb3cc0e91fdf5b4c467311563",
+    "models/BWTemporalInitialMemoryEncoder.mlpackage/Manifest.json": "64fb8412cf6229dda7ec7227113c7c8cf1a5278a96b62b94e2a0a76f6d790b52",
+    "models/BWTemporalInitializer.mlpackage/Data/com.apple.CoreML/model.mlmodel": "a70da7906ee21086122e9c24479b149308337f49609854455ae9cf65f790625f",
+    "models/BWTemporalInitializer.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "9409edf81128013f2ff61ef2565832f0a35782304e7adc54466e0396b5ab94c2",
+    "models/BWTemporalInitializer.mlpackage/Manifest.json": "d2311a29bb658bd6f16e801e91893985eb5aea3f7a6587f718e3e93539bc3068",
+    "models/BWTemporalPropagator.mlpackage/Data/com.apple.CoreML/model.mlmodel": "dec2227edc7d22832a3726a68237b6789f2d79ede1a5b0cc6f76d400c69d08d9",
+    "models/BWTemporalPropagator.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "3e679bfdc49fc43e895434b8c8bb6e75bad20a2cad37fd0aa2d5019cd186386e",
+    "models/BWTemporalPropagator.mlpackage/Manifest.json": "aec4bf7ef5dafc3816e3a645f93b134824268f4b0e8184170452e10c8c5618c1"
+  },
+  "sourceFileBytes": 122642940,
+  "videoDurationSeconds": 73.29666666666667,
+  "trackTransform": [
+    0,
+    1,
+    -1,
+    0,
+    1080,
+    0
+  ],
+  "lastDecodedSize": [
+    1920,
+    1080
+  ],
+  "lastDisplaySize": [
+    1080,
+    1920
+  ],
+  "lastPointNormalizedTopLeft": [
+    0.6468468468468468,
+    0.5888513513513512
+  ],
+  "framesPredicted": 236,
+  "segmentsStarted": 1,
+  "seeks": 0,
+  "emptyMasks": 124,
+  "reachedEnd": false,
+  "lastState": {
+    "acceptedFrames": 236,
+    "pointerEntries": 16,
+    "spatialEntries": 7
+  },
+  "cacheSelectionSegment": 1,
+  "cachedStartSeconds": 0,
+  "cachedEndSeconds": 7.836666666666667,
+  "cachedMaskFrames": 236,
+  "cacheLimitReached": false,
+  "lastAction": "Predicted frame at 7.836666666666667 seconds",
+  "lastResetReason": "subject selection on current frame",
+  "evidenceScope": "Selected fields from uploaded phone report, not original report bytes. Screens sampled separately; no ground-truth pass.",
+  "uploadedReportSHA256": "8ec7813b749d1215234d4e8cbdc676a12f392956a655afe1ef066634d0da942c",
+  "observations": [
+    "Selected bent-over distant worker; sampled recording shows initial mask, bucket occlusion, then visible shirt without returning highlight.",
+    "No inferred first-loss timestamp: report retains only last 120 frames.",
+    "All retained frames 116..235 have empty low-resolution masks; source PTS 3.868333..7.836667 seconds.",
+    "User reports good full-occlusion recovery for dog and strong separate crossing-subject tests; this worker remains a failure case."
+  ],
+  "recentFrames": [
+    {
+      "requestIndex": 116,
+      "segment": 1,
+      "ptsValue": 2321,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -0.36938477,
+      "predictedIoU": 9.172165e-07
+    },
+    {
+      "requestIndex": 117,
+      "segment": 1,
+      "ptsValue": 2341,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -0.112854004,
+      "predictedIoU": 0.0023041242
+    },
+    {
+      "requestIndex": 118,
+      "segment": 1,
+      "ptsValue": 2361,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.1083984,
+      "predictedIoU": 1.7538414e-17
+    },
+    {
+      "requestIndex": 119,
+      "segment": 1,
+      "ptsValue": 2381,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.4130859,
+      "predictedIoU": 9.371374e-22
+    },
+    {
+      "requestIndex": 120,
+      "segment": 1,
+      "ptsValue": 2401,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.5361328,
+      "predictedIoU": 1.7906676e-22
+    },
+    {
+      "requestIndex": 121,
+      "segment": 1,
+      "ptsValue": 2421,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.5068359,
+      "predictedIoU": 7.716213e-22
+    },
+    {
+      "requestIndex": 122,
+      "segment": 1,
+      "ptsValue": 2441,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.8251953,
+      "predictedIoU": 6.787144e-25
+    },
+    {
+      "requestIndex": 123,
+      "segment": 1,
+      "ptsValue": 2461,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.8486328,
+      "predictedIoU": 3.6972634e-25
+    },
+    {
+      "requestIndex": 124,
+      "segment": 1,
+      "ptsValue": 2481,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -2.125,
+      "predictedIoU": 1.9709318e-27
+    },
+    {
+      "requestIndex": 125,
+      "segment": 1,
+      "ptsValue": 2501,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -2.3027344,
+      "predictedIoU": 7.532295e-29
+    },
+    {
+      "requestIndex": 126,
+      "segment": 1,
+      "ptsValue": 2521,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -2.5878906,
+      "predictedIoU": 9.18429e-31
+    },
+    {
+      "requestIndex": 127,
+      "segment": 1,
+      "ptsValue": 2541,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.3867188,
+      "predictedIoU": 1.3381268e-31
+    },
+    {
+      "requestIndex": 128,
+      "segment": 1,
+      "ptsValue": 2561,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.3671875,
+      "predictedIoU": 2.152249e-31
+    },
+    {
+      "requestIndex": 129,
+      "segment": 1,
+      "ptsValue": 2581,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.4160156,
+      "predictedIoU": 3.7328397e-30
+    },
+    {
+      "requestIndex": 130,
+      "segment": 1,
+      "ptsValue": 2601,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.3378906,
+      "predictedIoU": 1.3310007e-29
+    },
+    {
+      "requestIndex": 131,
+      "segment": 1,
+      "ptsValue": 2621,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.4316406,
+      "predictedIoU": 6.159928e-31
+    },
+    {
+      "requestIndex": 132,
+      "segment": 1,
+      "ptsValue": 2641,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.5976562,
+      "predictedIoU": 1.4890281e-32
+    },
+    {
+      "requestIndex": 133,
+      "segment": 1,
+      "ptsValue": 2661,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.6210938,
+      "predictedIoU": 2.4386581e-32
+    },
+    {
+      "requestIndex": 134,
+      "segment": 1,
+      "ptsValue": 2681,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.5898438,
+      "predictedIoU": 1.453088e-31
+    },
+    {
+      "requestIndex": 135,
+      "segment": 1,
+      "ptsValue": 2701,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.5019531,
+      "predictedIoU": 8.098185e-31
+    },
+    {
+      "requestIndex": 136,
+      "segment": 1,
+      "ptsValue": 2721,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.5976562,
+      "predictedIoU": 2.7352963e-32
+    },
+    {
+      "requestIndex": 137,
+      "segment": 1,
+      "ptsValue": 2741,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.828125,
+      "predictedIoU": 3.3978373e-33
+    },
+    {
+      "requestIndex": 138,
+      "segment": 1,
+      "ptsValue": 2761,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.6464844,
+      "predictedIoU": 6.8959436e-33
+    },
+    {
+      "requestIndex": 139,
+      "segment": 1,
+      "ptsValue": 2781,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.5644531,
+      "predictedIoU": 8.11853e-33
+    },
+    {
+      "requestIndex": 140,
+      "segment": 1,
+      "ptsValue": 2801,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.5136719,
+      "predictedIoU": 2.3066565e-32
+    },
+    {
+      "requestIndex": 141,
+      "segment": 1,
+      "ptsValue": 2821,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.6601562,
+      "predictedIoU": 1.8276614e-33
+    },
+    {
+      "requestIndex": 142,
+      "segment": 1,
+      "ptsValue": 2841,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.6269531,
+      "predictedIoU": 2.9554727e-33
+    },
+    {
+      "requestIndex": 143,
+      "segment": 1,
+      "ptsValue": 2861,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.5898438,
+      "predictedIoU": 4.4888853e-33
+    },
+    {
+      "requestIndex": 144,
+      "segment": 1,
+      "ptsValue": 2881,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.6699219,
+      "predictedIoU": 5.9250238e-33
+    },
+    {
+      "requestIndex": 145,
+      "segment": 1,
+      "ptsValue": 2901,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.8613281,
+      "predictedIoU": 1.5218345e-33
+    },
+    {
+      "requestIndex": 146,
+      "segment": 1,
+      "ptsValue": 2921,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.8359375,
+      "predictedIoU": 1.8797596e-33
+    },
+    {
+      "requestIndex": 147,
+      "segment": 1,
+      "ptsValue": 2941,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.6894531,
+      "predictedIoU": 4.2593075e-33
+    },
+    {
+      "requestIndex": 148,
+      "segment": 1,
+      "ptsValue": 2961,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.8378906,
+      "predictedIoU": 2.7177279e-33
+    },
+    {
+      "requestIndex": 149,
+      "segment": 1,
+      "ptsValue": 2981,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.7285156,
+      "predictedIoU": 2.3666858e-33
+    },
+    {
+      "requestIndex": 150,
+      "segment": 1,
+      "ptsValue": 3001,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.3769531,
+      "predictedIoU": 1.9615211e-32
+    },
+    {
+      "requestIndex": 151,
+      "segment": 1,
+      "ptsValue": 3021,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.3027344,
+      "predictedIoU": 1.0901409e-31
+    },
+    {
+      "requestIndex": 152,
+      "segment": 1,
+      "ptsValue": 3041,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.3867188,
+      "predictedIoU": 2.3887734e-32
+    },
+    {
+      "requestIndex": 153,
+      "segment": 1,
+      "ptsValue": 3061,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.2910156,
+      "predictedIoU": 2.0095806e-29
+    },
+    {
+      "requestIndex": 154,
+      "segment": 1,
+      "ptsValue": 3081,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -0.26489258,
+      "predictedIoU": 0.002907693
+    },
+    {
+      "requestIndex": 155,
+      "segment": 1,
+      "ptsValue": 3101,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -0.9472656,
+      "predictedIoU": 8.497513e-09
+    },
+    {
+      "requestIndex": 156,
+      "segment": 1,
+      "ptsValue": 3121,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.9072266,
+      "predictedIoU": 3.42112e-17
+    },
+    {
+      "requestIndex": 157,
+      "segment": 1,
+      "ptsValue": 3141,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -2.1308594,
+      "predictedIoU": 6.456127e-20
+    },
+    {
+      "requestIndex": 158,
+      "segment": 1,
+      "ptsValue": 3161,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -2.4394531,
+      "predictedIoU": 2.0812468e-23
+    },
+    {
+      "requestIndex": 159,
+      "segment": 1,
+      "ptsValue": 3181,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -2.5976562,
+      "predictedIoU": 3.4804713e-26
+    },
+    {
+      "requestIndex": 160,
+      "segment": 1,
+      "ptsValue": 3201,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -2.7773438,
+      "predictedIoU": 7.2355667e-28
+    },
+    {
+      "requestIndex": 161,
+      "segment": 1,
+      "ptsValue": 3221,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -2.9902344,
+      "predictedIoU": 1.7138309e-29
+    },
+    {
+      "requestIndex": 162,
+      "segment": 1,
+      "ptsValue": 3241,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -2.8496094,
+      "predictedIoU": 3.7405993e-27
+    },
+    {
+      "requestIndex": 163,
+      "segment": 1,
+      "ptsValue": 3261,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -2.59375,
+      "predictedIoU": 1.2863083e-25
+    },
+    {
+      "requestIndex": 164,
+      "segment": 1,
+      "ptsValue": 3281,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -2.4277344,
+      "predictedIoU": 4.1689572e-22
+    },
+    {
+      "requestIndex": 165,
+      "segment": 1,
+      "ptsValue": 3301,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -2.4179688,
+      "predictedIoU": 1.5457665e-23
+    },
+    {
+      "requestIndex": 166,
+      "segment": 1,
+      "ptsValue": 3321,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.7988281,
+      "predictedIoU": 1.0305033e-17
+    },
+    {
+      "requestIndex": 167,
+      "segment": 1,
+      "ptsValue": 3341,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.5117188,
+      "predictedIoU": 3.743359e-17
+    },
+    {
+      "requestIndex": 168,
+      "segment": 1,
+      "ptsValue": 3361,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.7851562,
+      "predictedIoU": 7.762154e-21
+    },
+    {
+      "requestIndex": 169,
+      "segment": 1,
+      "ptsValue": 3381,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.6376953,
+      "predictedIoU": 4.8070926e-20
+    },
+    {
+      "requestIndex": 170,
+      "segment": 1,
+      "ptsValue": 3401,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -0.9863281,
+      "predictedIoU": 1.32358265e-11
+    },
+    {
+      "requestIndex": 171,
+      "segment": 1,
+      "ptsValue": 3421,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.4042969,
+      "predictedIoU": 8.615833e-17
+    },
+    {
+      "requestIndex": 172,
+      "segment": 1,
+      "ptsValue": 3441,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.1416016,
+      "predictedIoU": 1.0590755e-14
+    },
+    {
+      "requestIndex": 173,
+      "segment": 1,
+      "ptsValue": 3461,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -0.8334961,
+      "predictedIoU": 5.508423e-10
+    },
+    {
+      "requestIndex": 174,
+      "segment": 1,
+      "ptsValue": 3481,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.5371094,
+      "predictedIoU": 3.4711492e-19
+    },
+    {
+      "requestIndex": 175,
+      "segment": 1,
+      "ptsValue": 3501,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.3193359,
+      "predictedIoU": 1.5262487e-16
+    },
+    {
+      "requestIndex": 176,
+      "segment": 1,
+      "ptsValue": 3521,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.1601562,
+      "predictedIoU": 1.4046376e-14
+    },
+    {
+      "requestIndex": 177,
+      "segment": 1,
+      "ptsValue": 3541,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.7539062,
+      "predictedIoU": 2.1617965e-21
+    },
+    {
+      "requestIndex": 178,
+      "segment": 1,
+      "ptsValue": 3561,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -2.0039062,
+      "predictedIoU": 4.56099e-23
+    },
+    {
+      "requestIndex": 179,
+      "segment": 1,
+      "ptsValue": 3581,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -2.0761719,
+      "predictedIoU": 9.842296e-24
+    },
+    {
+      "requestIndex": 180,
+      "segment": 1,
+      "ptsValue": 3601,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -2.0429688,
+      "predictedIoU": 1.472328e-22
+    },
+    {
+      "requestIndex": 181,
+      "segment": 1,
+      "ptsValue": 3622,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.5751953,
+      "predictedIoU": 1.2395115e-16
+    },
+    {
+      "requestIndex": 182,
+      "segment": 1,
+      "ptsValue": 3642,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.2841797,
+      "predictedIoU": 1.3089498e-13
+    },
+    {
+      "requestIndex": 183,
+      "segment": 1,
+      "ptsValue": 3662,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.3388672,
+      "predictedIoU": 9.661781e-13
+    },
+    {
+      "requestIndex": 184,
+      "segment": 1,
+      "ptsValue": 3682,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.4794922,
+      "predictedIoU": 9.688234e-15
+    },
+    {
+      "requestIndex": 185,
+      "segment": 1,
+      "ptsValue": 3702,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.4941406,
+      "predictedIoU": 5.964918e-17
+    },
+    {
+      "requestIndex": 186,
+      "segment": 1,
+      "ptsValue": 3722,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.6894531,
+      "predictedIoU": 3.6082676e-19
+    },
+    {
+      "requestIndex": 187,
+      "segment": 1,
+      "ptsValue": 3742,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.3164062,
+      "predictedIoU": 6.568607e-14
+    },
+    {
+      "requestIndex": 188,
+      "segment": 1,
+      "ptsValue": 3762,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.3242188,
+      "predictedIoU": 1.2419082e-13
+    },
+    {
+      "requestIndex": 189,
+      "segment": 1,
+      "ptsValue": 3782,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.1972656,
+      "predictedIoU": 8.356015e-12
+    },
+    {
+      "requestIndex": 190,
+      "segment": 1,
+      "ptsValue": 3802,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.2441406,
+      "predictedIoU": 1.9912986e-12
+    },
+    {
+      "requestIndex": 191,
+      "segment": 1,
+      "ptsValue": 3822,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.2451172,
+      "predictedIoU": 2.2320553e-12
+    },
+    {
+      "requestIndex": 192,
+      "segment": 1,
+      "ptsValue": 3842,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.4716797,
+      "predictedIoU": 1.2856225e-16
+    },
+    {
+      "requestIndex": 193,
+      "segment": 1,
+      "ptsValue": 3862,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.7050781,
+      "predictedIoU": 1.1302882e-19
+    },
+    {
+      "requestIndex": 194,
+      "segment": 1,
+      "ptsValue": 3882,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.4931641,
+      "predictedIoU": 3.786878e-17
+    },
+    {
+      "requestIndex": 195,
+      "segment": 1,
+      "ptsValue": 3902,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.0400391,
+      "predictedIoU": 9.578482e-12
+    },
+    {
+      "requestIndex": 196,
+      "segment": 1,
+      "ptsValue": 3922,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.1269531,
+      "predictedIoU": 7.83323e-14
+    },
+    {
+      "requestIndex": 197,
+      "segment": 1,
+      "ptsValue": 3942,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.1582031,
+      "predictedIoU": 1.7690745e-13
+    },
+    {
+      "requestIndex": 198,
+      "segment": 1,
+      "ptsValue": 3962,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -0.9189453,
+      "predictedIoU": 4.774967e-11
+    },
+    {
+      "requestIndex": 199,
+      "segment": 1,
+      "ptsValue": 3982,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -0.78515625,
+      "predictedIoU": 8.917403e-09
+    },
+    {
+      "requestIndex": 200,
+      "segment": 1,
+      "ptsValue": 4002,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.0771484,
+      "predictedIoU": 2.0735883e-11
+    },
+    {
+      "requestIndex": 201,
+      "segment": 1,
+      "ptsValue": 4022,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -0.8486328,
+      "predictedIoU": 1.6283807e-09
+    },
+    {
+      "requestIndex": 202,
+      "segment": 1,
+      "ptsValue": 4042,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.0380859,
+      "predictedIoU": 2.8045444e-10
+    },
+    {
+      "requestIndex": 203,
+      "segment": 1,
+      "ptsValue": 4062,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.0175781,
+      "predictedIoU": 2.1191142e-10
+    },
+    {
+      "requestIndex": 204,
+      "segment": 1,
+      "ptsValue": 4082,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -0.9199219,
+      "predictedIoU": 2.3964882e-11
+    },
+    {
+      "requestIndex": 205,
+      "segment": 1,
+      "ptsValue": 4102,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.2753906,
+      "predictedIoU": 1.0093028e-12
+    },
+    {
+      "requestIndex": 206,
+      "segment": 1,
+      "ptsValue": 4122,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -0.9819336,
+      "predictedIoU": 3.5726e-09
+    },
+    {
+      "requestIndex": 207,
+      "segment": 1,
+      "ptsValue": 4142,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.2578125,
+      "predictedIoU": 1.7564421e-10
+    },
+    {
+      "requestIndex": 208,
+      "segment": 1,
+      "ptsValue": 4162,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.3232422,
+      "predictedIoU": 1.2323006e-12
+    },
+    {
+      "requestIndex": 209,
+      "segment": 1,
+      "ptsValue": 4182,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.2333984,
+      "predictedIoU": 2.8641535e-11
+    },
+    {
+      "requestIndex": 210,
+      "segment": 1,
+      "ptsValue": 4202,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -0.90527344,
+      "predictedIoU": 1.6857246e-08
+    },
+    {
+      "requestIndex": 211,
+      "segment": 1,
+      "ptsValue": 4222,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -0.84521484,
+      "predictedIoU": 3.9592345e-07
+    },
+    {
+      "requestIndex": 212,
+      "segment": 1,
+      "ptsValue": 4242,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.0742188,
+      "predictedIoU": 6.248692e-12
+    },
+    {
+      "requestIndex": 213,
+      "segment": 1,
+      "ptsValue": 4262,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.5136719,
+      "predictedIoU": 5.4703607e-15
+    },
+    {
+      "requestIndex": 214,
+      "segment": 1,
+      "ptsValue": 4282,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.8388672,
+      "predictedIoU": 7.8076575e-19
+    },
+    {
+      "requestIndex": 215,
+      "segment": 1,
+      "ptsValue": 4302,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -2.2382812,
+      "predictedIoU": 8.0096776e-22
+    },
+    {
+      "requestIndex": 216,
+      "segment": 1,
+      "ptsValue": 4322,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -2.7578125,
+      "predictedIoU": 4.9247342e-27
+    },
+    {
+      "requestIndex": 217,
+      "segment": 1,
+      "ptsValue": 4342,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.7519531,
+      "predictedIoU": 8.0265164e-33
+    },
+    {
+      "requestIndex": 218,
+      "segment": 1,
+      "ptsValue": 4362,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.7089844,
+      "predictedIoU": 4.0808068e-32
+    },
+    {
+      "requestIndex": 219,
+      "segment": 1,
+      "ptsValue": 4382,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.8867188,
+      "predictedIoU": 9.5746535e-33
+    },
+    {
+      "requestIndex": 220,
+      "segment": 1,
+      "ptsValue": 4402,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -2.9355469,
+      "predictedIoU": 1.3441241e-29
+    },
+    {
+      "requestIndex": 221,
+      "segment": 1,
+      "ptsValue": 4422,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.3671875,
+      "predictedIoU": 7.0528076e-31
+    },
+    {
+      "requestIndex": 222,
+      "segment": 1,
+      "ptsValue": 4442,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.4296875,
+      "predictedIoU": 6.4410367e-31
+    },
+    {
+      "requestIndex": 223,
+      "segment": 1,
+      "ptsValue": 4462,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.0527344,
+      "predictedIoU": 5.717482e-26
+    },
+    {
+      "requestIndex": 224,
+      "segment": 1,
+      "ptsValue": 4482,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.5,
+      "predictedIoU": 5.3951065e-32
+    },
+    {
+      "requestIndex": 225,
+      "segment": 1,
+      "ptsValue": 4502,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.8808594,
+      "predictedIoU": 3.258173e-32
+    },
+    {
+      "requestIndex": 226,
+      "segment": 1,
+      "ptsValue": 4522,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.9042969,
+      "predictedIoU": 1.0366976e-32
+    },
+    {
+      "requestIndex": 227,
+      "segment": 1,
+      "ptsValue": 4542,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.546875,
+      "predictedIoU": 1.5287369e-31
+    },
+    {
+      "requestIndex": 228,
+      "segment": 1,
+      "ptsValue": 4562,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.7441406,
+      "predictedIoU": 6.489566e-33
+    },
+    {
+      "requestIndex": 229,
+      "segment": 1,
+      "ptsValue": 4582,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.5449219,
+      "predictedIoU": 3.2619783e-32
+    },
+    {
+      "requestIndex": 230,
+      "segment": 1,
+      "ptsValue": 4602,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.0214844,
+      "predictedIoU": 4.619878e-31
+    },
+    {
+      "requestIndex": 231,
+      "segment": 1,
+      "ptsValue": 4622,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -1.8867188,
+      "predictedIoU": 2.2933946e-21
+    },
+    {
+      "requestIndex": 232,
+      "segment": 1,
+      "ptsValue": 4642,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -2.5859375,
+      "predictedIoU": 1.8016825e-25
+    },
+    {
+      "requestIndex": 233,
+      "segment": 1,
+      "ptsValue": 4662,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -2.9414062,
+      "predictedIoU": 1.7500538e-30
+    },
+    {
+      "requestIndex": 234,
+      "segment": 1,
+      "ptsValue": 4682,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.1582031,
+      "predictedIoU": 1.4020774e-31
+    },
+    {
+      "requestIndex": 235,
+      "segment": 1,
+      "ptsValue": 4702,
+      "ptsTimescale": 600,
+      "foregroundFraction": 0,
+      "objectScore": -3.3398438,
+      "predictedIoU": 4.542269e-32
+    }
+  ]
+}

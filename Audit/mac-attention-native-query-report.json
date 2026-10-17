@@ -1,0 +1,626 @@
+{
+  "scope": "Compare an isolated memory-attention candidate on the saved fixture.\n\nUnchanged CPU reconversion control, then candidate CPU/GPU against original\nPyTorch over all 20 frames. Every query still attends to every original key.\nDiagnostic only: no normal exporter, installed model or correctness gate changes.\n",
+  "contract": "bytewave.propagator-attention.diagnostic.v1",
+  "completed": true,
+  "passed": true,
+  "candidateVariant": "memoryfp16q1024",
+  "readyForDeviceValidation": false,
+  "sourceManifestSHA256": "47b7b85eef755ff7a440c0017f232a82ac7213af622d15d30a04f3487e07dd67",
+  "sourceFrameReportSHA256": "8768eab4331ad57994782ee244861b64f3c3eb27fa6c970cc881a843618af9a6",
+  "variants": {
+    "unchanged": {
+      "variant": "unchanged",
+      "inspectedAttentions": [
+        {
+          "output": "output_1",
+          "kind": "self",
+          "queryShape": [
+            1,
+            1,
+            4096,
+            256
+          ],
+          "keyShape": [
+            1,
+            1,
+            4096,
+            256
+          ],
+          "valueShape": [
+            1,
+            1,
+            4096,
+            256
+          ],
+          "dtype": "fp32",
+          "maskSource": null
+        },
+        {
+          "output": "output_3",
+          "kind": "cross",
+          "queryShape": [
+            1,
+            1,
+            4096,
+            256
+          ],
+          "keyShape": [
+            1,
+            1,
+            3648,
+            256
+          ],
+          "valueShape": [
+            1,
+            1,
+            3648,
+            256
+          ],
+          "dtype": "fp32",
+          "maskSource": "bias_5_cast_fp16_to_fp32"
+        },
+        {
+          "output": "output_5",
+          "kind": "self",
+          "queryShape": [
+            1,
+            1,
+            4096,
+            256
+          ],
+          "keyShape": [
+            1,
+            1,
+            4096,
+            256
+          ],
+          "valueShape": [
+            1,
+            1,
+            4096,
+            256
+          ],
+          "dtype": "fp32",
+          "maskSource": null
+        },
+        {
+          "output": "output",
+          "kind": "cross",
+          "queryShape": [
+            1,
+            1,
+            4096,
+            256
+          ],
+          "keyShape": [
+            1,
+            1,
+            3648,
+            256
+          ],
+          "valueShape": [
+            1,
+            1,
+            3648,
+            256
+          ],
+          "dtype": "fp32",
+          "maskSource": "bias_5_cast_fp16_to_fp32"
+        }
+      ],
+      "modifications": [],
+      "unrelatedOperationsPreserved": true,
+      "externalInterfacesPreserved": true,
+      "attentionPrecision": "fp32",
+      "memoryNote": "Score tensor size is per chunk, not a measured or guaranteed peak allocation.",
+      "files": {
+        "Manifest.json": "250153dc575791a956c2a655076d4d446c691f88308f1b4ec21706b3a181786f",
+        "Data/com.apple.CoreML/model.mlmodel": "73d8a84ef7e63808b4f78f3abb26ad2b52f70f8d4330a8b90ffdc8975c8e6831",
+        "Data/com.apple.CoreML/weights/weight.bin": "3e679bfdc49fc43e895434b8c8bb6e75bad20a2cad37fd0aa2d5019cd186386e"
+      }
+    },
+    "memoryfp16": {
+      "variant": "memoryfp16",
+      "inspectedAttentions": [
+        {
+          "output": "output_1",
+          "kind": "self",
+          "queryShape": [
+            1,
+            1,
+            4096,
+            256
+          ],
+          "keyShape": [
+            1,
+            1,
+            4096,
+            256
+          ],
+          "valueShape": [
+            1,
+            1,
+            4096,
+            256
+          ],
+          "dtype": "fp32",
+          "maskSource": null
+        },
+        {
+          "output": "output_3",
+          "kind": "cross",
+          "queryShape": [
+            1,
+            1,
+            4096,
+            256
+          ],
+          "keyShape": [
+            1,
+            1,
+            3648,
+            256
+          ],
+          "valueShape": [
+            1,
+            1,
+            3648,
+            256
+          ],
+          "dtype": "fp32",
+          "maskSource": "bias_5_cast_fp16_to_fp32"
+        },
+        {
+          "output": "output_5",
+          "kind": "self",
+          "queryShape": [
+            1,
+            1,
+            4096,
+            256
+          ],
+          "keyShape": [
+            1,
+            1,
+            4096,
+            256
+          ],
+          "valueShape": [
+            1,
+            1,
+            4096,
+            256
+          ],
+          "dtype": "fp32",
+          "maskSource": null
+        },
+        {
+          "output": "output",
+          "kind": "cross",
+          "queryShape": [
+            1,
+            1,
+            4096,
+            256
+          ],
+          "keyShape": [
+            1,
+            1,
+            3648,
+            256
+          ],
+          "valueShape": [
+            1,
+            1,
+            3648,
+            256
+          ],
+          "dtype": "fp32",
+          "maskSource": "bias_5_cast_fp16_to_fp32"
+        }
+      ],
+      "modifications": [
+        {
+          "oldOutput": "output_1",
+          "newOutput": "bwmemoryfp16_0_restore",
+          "attentionPrecision": "fp16",
+          "outputInterface": "fp32",
+          "maskCast": null,
+          "allQueriesAndKeysRetained": true
+        },
+        {
+          "oldOutput": "output_3",
+          "newOutput": "bwmemoryfp16_1_restore",
+          "attentionPrecision": "fp16",
+          "outputInterface": "fp32",
+          "maskCast": "fp16",
+          "allQueriesAndKeysRetained": true
+        },
+        {
+          "oldOutput": "output_5",
+          "newOutput": "bwmemoryfp16_2_restore",
+          "attentionPrecision": "fp16",
+          "outputInterface": "fp32",
+          "maskCast": null,
+          "allQueriesAndKeysRetained": true
+        },
+        {
+          "oldOutput": "output",
+          "newOutput": "bwmemoryfp16_3_restore",
+          "attentionPrecision": "fp16",
+          "outputInterface": "fp32",
+          "maskCast": "fp16",
+          "allQueriesAndKeysRetained": true
+        }
+      ],
+      "unrelatedOperationsPreserved": true,
+      "externalInterfacesPreserved": true,
+      "attentionPrecision": "fp16",
+      "memoryNote": "Score tensor size is per chunk, not a measured or guaranteed peak allocation.",
+      "files": {
+        "Manifest.json": "23adec82383df189eb09d7ec17584c711f496c1908459cb5999ad118223d0643",
+        "Data/com.apple.CoreML/model.mlmodel": "de2c880bcd444ca6bade5d922a162bcce62876fac51462d688cebdbc3f48f214",
+        "Data/com.apple.CoreML/weights/weight.bin": "3e679bfdc49fc43e895434b8c8bb6e75bad20a2cad37fd0aa2d5019cd186386e"
+      }
+    },
+    "memoryfp16q1024": {
+      "variant": "memoryfp16q1024",
+      "inspectedAttentions": [
+        {
+          "output": "output_1",
+          "kind": "self",
+          "queryShape": [
+            1,
+            1,
+            4096,
+            256
+          ],
+          "keyShape": [
+            1,
+            1,
+            4096,
+            256
+          ],
+          "valueShape": [
+            1,
+            1,
+            4096,
+            256
+          ],
+          "dtype": "fp32",
+          "maskSource": null
+        },
+        {
+          "output": "output_3",
+          "kind": "cross",
+          "queryShape": [
+            1,
+            1,
+            4096,
+            256
+          ],
+          "keyShape": [
+            1,
+            1,
+            3648,
+            256
+          ],
+          "valueShape": [
+            1,
+            1,
+            3648,
+            256
+          ],
+          "dtype": "fp32",
+          "maskSource": "bias_5_cast_fp16_to_fp32"
+        },
+        {
+          "output": "output_5",
+          "kind": "self",
+          "queryShape": [
+            1,
+            1,
+            4096,
+            256
+          ],
+          "keyShape": [
+            1,
+            1,
+            4096,
+            256
+          ],
+          "valueShape": [
+            1,
+            1,
+            4096,
+            256
+          ],
+          "dtype": "fp32",
+          "maskSource": null
+        },
+        {
+          "output": "output",
+          "kind": "cross",
+          "queryShape": [
+            1,
+            1,
+            4096,
+            256
+          ],
+          "keyShape": [
+            1,
+            1,
+            3648,
+            256
+          ],
+          "valueShape": [
+            1,
+            1,
+            3648,
+            256
+          ],
+          "dtype": "fp32",
+          "maskSource": "bias_5_cast_fp16_to_fp32"
+        }
+      ],
+      "modifications": [
+        {
+          "oldOutput": "output_1",
+          "newOutput": "bwmemoryfp16q1024_0_restore",
+          "attentionPrecision": "fp16",
+          "outputInterface": "fp32",
+          "maskCast": null,
+          "allQueriesAndKeysRetained": true,
+          "queryChunkSize": 1024,
+          "queryRanges": [
+            [
+              0,
+              1024
+            ],
+            [
+              1024,
+              2048
+            ],
+            [
+              2048,
+              3072
+            ],
+            [
+              3072,
+              4096
+            ]
+          ],
+          "chunks": 4,
+          "keysPerChunk": 4096,
+          "nativeSDPARetained": true
+        },
+        {
+          "oldOutput": "output_3",
+          "newOutput": "bwmemoryfp16q1024_1_restore",
+          "attentionPrecision": "fp16",
+          "outputInterface": "fp32",
+          "maskCast": "fp16",
+          "allQueriesAndKeysRetained": true,
+          "queryChunkSize": 1024,
+          "queryRanges": [
+            [
+              0,
+              1024
+            ],
+            [
+              1024,
+              2048
+            ],
+            [
+              2048,
+              3072
+            ],
+            [
+              3072,
+              4096
+            ]
+          ],
+          "chunks": 4,
+          "keysPerChunk": 3648,
+          "nativeSDPARetained": true
+        },
+        {
+          "oldOutput": "output_5",
+          "newOutput": "bwmemoryfp16q1024_2_restore",
+          "attentionPrecision": "fp16",
+          "outputInterface": "fp32",
+          "maskCast": null,
+          "allQueriesAndKeysRetained": true,
+          "queryChunkSize": 1024,
+          "queryRanges": [
+            [
+              0,
+              1024
+            ],
+            [
+              1024,
+              2048
+            ],
+            [
+              2048,
+              3072
+            ],
+            [
+              3072,
+              4096
+            ]
+          ],
+          "chunks": 4,
+          "keysPerChunk": 4096,
+          "nativeSDPARetained": true
+        },
+        {
+          "oldOutput": "output",
+          "newOutput": "bwmemoryfp16q1024_3_restore",
+          "attentionPrecision": "fp16",
+          "outputInterface": "fp32",
+          "maskCast": "fp16",
+          "allQueriesAndKeysRetained": true,
+          "queryChunkSize": 1024,
+          "queryRanges": [
+            [
+              0,
+              1024
+            ],
+            [
+              1024,
+              2048
+            ],
+            [
+              2048,
+              3072
+            ],
+            [
+              3072,
+              4096
+            ]
+          ],
+          "chunks": 4,
+          "keysPerChunk": 3648,
+          "nativeSDPARetained": true
+        }
+      ],
+      "unrelatedOperationsPreserved": true,
+      "externalInterfacesPreserved": true,
+      "attentionPrecision": "fp16",
+      "memoryNote": "Score tensor size is per chunk, not a measured or guaranteed peak allocation.",
+      "files": {
+        "Manifest.json": "cbb8e93ae4565dcf4d9725727c3d15190e4a5196bfb5c99472f4f45ae4b44ddb",
+        "Data/com.apple.CoreML/model.mlmodel": "220a5a36520fa594e32194b4ec5b79496ae2ac969b4734feeea9a12d340c8c13",
+        "Data/com.apple.CoreML/weights/weight.bin": "3e679bfdc49fc43e895434b8c8bb6e75bad20a2cad37fd0aa2d5019cd186386e"
+      }
+    }
+  },
+  "runs": {
+    "unchanged-cpu": {
+      "returnCode": 0,
+      "log": "unchanged-cpu.log",
+      "passed": true,
+      "framesCompared": 20,
+      "report": "unchanged-cpu/report.json",
+      "minimumMaskIoU": 0.9957401490947817,
+      "minimumPointerCosine": 0.9990273321442846,
+      "minimumMemoryCosine": 0.9965700094527923,
+      "finalState": {
+        "acceptedFrames": 20,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      },
+      "medianWarmPropagatorMillisecondsDiagnosticOnly": 97.67456259578466,
+      "latestSameInputControl": {
+        "passed": true,
+        "maskIoUAgainstReference": 1.0,
+        "sameObjectPresence": true,
+        "outputs": {
+          "low_res_mask": {
+            "maximumAbsoluteError": 0.0,
+            "cosineSimilarity": 1.0,
+            "float32Close": true
+          },
+          "high_res_mask": {
+            "maximumAbsoluteError": 0.0,
+            "cosineSimilarity": 1.0,
+            "float32Close": true
+          },
+          "best_iou": {
+            "maximumAbsoluteError": 0.0,
+            "cosineSimilarity": 1.0,
+            "float32Close": true
+          },
+          "object_pointer": {
+            "maximumAbsoluteError": 0.0,
+            "cosineSimilarity": 0.9999999999999998,
+            "float32Close": true
+          },
+          "object_score": {
+            "maximumAbsoluteError": 0.0,
+            "cosineSimilarity": 1.0,
+            "float32Close": true
+          },
+          "memory_features": {
+            "maximumAbsoluteError": 0.0,
+            "cosineSimilarity": 0.9999999999999999,
+            "float32Close": true
+          },
+          "memory_positions": {
+            "maximumAbsoluteError": 0.0,
+            "cosineSimilarity": 0.9999999999999998,
+            "float32Close": true
+          }
+        },
+        "allOutputsFloat32Close": true
+      }
+    },
+    "memoryfp16-cpu": {
+      "returnCode": 0,
+      "log": "memoryfp16-cpu.log",
+      "passed": true,
+      "framesCompared": 20,
+      "report": "memoryfp16-cpu/report.json",
+      "minimumMaskIoU": 0.9960965223562811,
+      "minimumPointerCosine": 0.9986517092492037,
+      "minimumMemoryCosine": 0.9965594449059627,
+      "finalState": {
+        "acceptedFrames": 20,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      },
+      "medianWarmPropagatorMillisecondsDiagnosticOnly": 102.39031258970499
+    },
+    "memoryfp16-gpu": {
+      "returnCode": 0,
+      "log": "memoryfp16-gpu.log",
+      "passed": true,
+      "framesCompared": 20,
+      "report": "memoryfp16-gpu/report.json",
+      "minimumMaskIoU": 0.9968039772727273,
+      "minimumPointerCosine": 0.99902288067456,
+      "minimumMemoryCosine": 0.9965916361494648,
+      "finalState": {
+        "acceptedFrames": 20,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      },
+      "medianWarmPropagatorMillisecondsDiagnosticOnly": 26.244271080940962
+    },
+    "memoryfp16q1024-cpu": {
+      "returnCode": 0,
+      "log": "memoryfp16q1024-cpu.log",
+      "passed": true,
+      "framesCompared": 20,
+      "report": "memoryfp16q1024-cpu/report.json",
+      "minimumMaskIoU": 0.9960965223562811,
+      "minimumPointerCosine": 0.9986517092492037,
+      "minimumMemoryCosine": 0.9965594449059627,
+      "finalState": {
+        "acceptedFrames": 20,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      },
+      "medianWarmPropagatorMillisecondsDiagnosticOnly": 123.84962453506887
+    },
+    "memoryfp16q1024-gpu": {
+      "returnCode": 0,
+      "log": "memoryfp16q1024-gpu.log",
+      "passed": true,
+      "framesCompared": 20,
+      "report": "memoryfp16q1024-gpu/report.json",
+      "minimumMaskIoU": 0.9968039772727273,
+      "minimumPointerCosine": 0.99902288067456,
+      "minimumMemoryCosine": 0.9965916361494648,
+      "finalState": {
+        "acceptedFrames": 20,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      },
+      "medianWarmPropagatorMillisecondsDiagnosticOnly": 28.657562448643148
+    }
+  },
+  "performanceBaselineVariant": "memoryfp16",
+  "experimentScope": "Four native 1024-query FP16 SDPA calls replace each full-query memory SDPA. All keys/values and broadcast masks remain; not the closed explicit FP32 chunk256 rewrite. Accuracy checks precede a separate paired GPU benchmark against memoryfp16."
+}

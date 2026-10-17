@@ -1,0 +1,75 @@
+{
+  "source": "User-pasted Mac propagator-convs-01/report.json; selected fields transcribed, not the full report.",
+  "completed": true,
+  "passed": true,
+  "readyForDeviceValidation": false,
+  "scope": "20-frame original-PyTorch correctness comparison, CPU components except selected propagator. Unpaired Mac call timings; no GPU/NE speedup or device validation claim.",
+  "sourceManifestSHA256": "47b7b85eef755ff7a440c0017f232a82ac7213af622d15d30a04f3487e07dd67",
+  "sourceFrameReportSHA256": "8768eab4331ad57994782ee244861b64f3c3eb27fa6c970cc881a843618af9a6",
+  "sourceInspectionSHA256": "0ddc805c5ac38882c1ffb0aabc09ca1e94c22cc5025b6a35bf73b2b1e16725ca",
+  "conv2Files": {
+    "Manifest.json": "e5695a5b2b55bcebaa23fbd6040dc18f143e4d0c0906ec5876cf0f97eb622f54",
+    "Data/com.apple.CoreML/model.mlmodel": "d24ed7a12babc62a3a370a13ade0a308860ba851ef79995b7022fefaba6de5b2",
+    "Data/com.apple.CoreML/weights/weight.bin": "69db9b2de01d311a2644cf696f6b7875e5beb637f2c785a4002f605827d41615"
+  },
+  "latestUnchangedSameInputControl": {
+    "passed": true,
+    "allOutputsFloat32Close": true,
+    "maximumAbsoluteErrorAllOutputs": 0.0,
+    "scope": "Latest control comparison included in the parent report; all prior control steps passed their gates."
+  },
+  "runs": {
+    "unchanged-cpu": {
+      "passed": true,
+      "framesCompared": 20,
+      "minimumMaskIoU": 0.9957401490947817,
+      "minimumPointerCosine": 0.9990273321442846,
+      "minimumMemoryCosine": 0.9965700094527923,
+      "medianWarmPropagatorMillisecondsDiagnosticOnly": 96.99304192326963,
+      "finalState": {
+        "acceptedFrames": 20,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      }
+    },
+    "conv2-cpu": {
+      "passed": true,
+      "framesCompared": 20,
+      "minimumMaskIoU": 0.9964476021314387,
+      "minimumPointerCosine": 0.9989020560232945,
+      "minimumMemoryCosine": 0.9963268984885428,
+      "medianWarmPropagatorMillisecondsDiagnosticOnly": 101.3178329449147,
+      "finalState": {
+        "acceptedFrames": 20,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      }
+    },
+    "conv2-gpu": {
+      "passed": true,
+      "framesCompared": 20,
+      "minimumMaskIoU": 0.9968039772727273,
+      "minimumPointerCosine": 0.9990249081676001,
+      "minimumMemoryCosine": 0.9965559194814708,
+      "medianWarmPropagatorMillisecondsDiagnosticOnly": 27.486666454933584,
+      "finalState": {
+        "acceptedFrames": 20,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      }
+    },
+    "conv2-ne": {
+      "passed": true,
+      "framesCompared": 20,
+      "minimumMaskIoU": 0.9957356076759062,
+      "minimumPointerCosine": 0.9989175418270962,
+      "minimumMemoryCosine": 0.9944885709092623,
+      "medianWarmPropagatorMillisecondsDiagnosticOnly": 179.95450017042458,
+      "finalState": {
+        "acceptedFrames": 20,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      }
+    }
+  }
+}

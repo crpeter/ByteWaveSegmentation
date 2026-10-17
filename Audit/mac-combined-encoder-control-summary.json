@@ -1,0 +1,183 @@
+{
+  "contract": "bytewave.edgetam-temporal-owned.v2",
+  "readyForDeviceValidation": false,
+  "diagnosticComplete": true,
+  "scope": "Each Core ML component is compared to PyTorch with the same actual inputs. Encoder output source is explicit below; masks and stored state come from Core ML. End-to-end comparison uses separate original PyTorch history. No parity gates are changed.",
+  "encoderOutputSource": "pytorch-control",
+  "torchThreads": {
+    "intraOp": 1,
+    "interOp": 1
+  },
+  "pointNormalizedTopLeft": [
+    0.4912,
+    0.4706
+  ],
+  "coremlComputeUnits": "CPU_ONLY",
+  "precisionPolicy": "fp16-with-fp32-attention-and-iou.v1",
+  "modelsManifestSHA256": "f0684ef5926971f2c3d8c84594267c2948e37d9156e082e3bba6f5114c374ba4",
+  "allRequestedFramesPassedComparison": true,
+  "sourceAttachment": "Pasted markdown(20260915-121513).md",
+  "sourceSHA256": "63bf35c3b449f2928d6910dcf8acf82eb096ed4ad1d7255e73ba887d3fbabcc8",
+  "frames": [
+    {
+      "index": 0,
+      "imageSHA256": "df4fd26c6e7c6cce4cd9e6c04ace316788f125eb4f953f0aad96882e7b474dd9",
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.9999846591804731,
+      "memoryCosine": 0.9999160634150852
+    },
+    {
+      "index": 1,
+      "imageSHA256": "8c59ab89ffc2586f78ef4ef021e62e9747201bc5ef42e32d8f6efa7854618b3f",
+      "passed": true,
+      "maskIoU": 0.9996193376475067,
+      "pointerCosine": 0.9999806447069808,
+      "memoryCosine": 0.9997727777025947
+    },
+    {
+      "index": 2,
+      "imageSHA256": "105621e87fbb3ffbd493d3256d4e672d453603a91bf2db14bfc36226a013f15f",
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.9998524560201737,
+      "memoryCosine": 0.9998841935343976
+    },
+    {
+      "index": 3,
+      "imageSHA256": "a5ff112a614abf780a0ee0a275e0890599673f0cf03a84d4e7d0a65abb4a8767",
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.9998160487800427,
+      "memoryCosine": 0.9998817452348777
+    },
+    {
+      "index": 4,
+      "imageSHA256": "62f93ffbadcdcf628dcc60349c18fa0a12df52ccbf0658b2f20312d3d1af018e",
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.9999482254859311,
+      "memoryCosine": 0.9999295658367461
+    },
+    {
+      "index": 5,
+      "imageSHA256": "f6a40decba22d155c87c3c1266d596fd2bd6196f17b8aa8a8e331ce6f5cd4e2d",
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.9999852772828192,
+      "memoryCosine": 0.9999452700784024
+    },
+    {
+      "index": 6,
+      "imageSHA256": "2ac9074fac47bc62545f8737795e6a64f267b59a0ad55d10b1a85150bcbaa59f",
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.9999846730902323,
+      "memoryCosine": 0.9999257825163337
+    },
+    {
+      "index": 7,
+      "imageSHA256": "bdc67ced61153a28b0569c2781bdb6aff68dd07dd278389e9ec387fe11e9dc9a",
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.9999901080071573,
+      "memoryCosine": 0.9998839731627516
+    },
+    {
+      "index": 8,
+      "imageSHA256": "74ab3b24632b67dd4d82592166b5c02da84d02aa8a00d0aeff6724b6e98d9816",
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.999989343927502,
+      "memoryCosine": 0.9999130284055402
+    },
+    {
+      "index": 9,
+      "imageSHA256": "0a7e27e0429e46facf8d23eb41c4ab25e8cebf9b579a9f5c679125bb06cdc782",
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.999987861400989,
+      "memoryCosine": 0.9998744719992418
+    },
+    {
+      "index": 10,
+      "imageSHA256": "e4257f051a23bb1524c2a20ae52414fa2791055db7e7a7dbb167f3f38af38eda",
+      "passed": true,
+      "maskIoU": 0.9996300406955235,
+      "pointerCosine": 0.9999831470652999,
+      "memoryCosine": 0.9999277734519503
+    },
+    {
+      "index": 11,
+      "imageSHA256": "399ed04cfbb7808f567feb7165eb91011183ef33b2974d8b0bda2d917c2561d5",
+      "passed": true,
+      "maskIoU": 0.9996440014239943,
+      "pointerCosine": 0.9999917650206165,
+      "memoryCosine": 0.9995859735699051
+    },
+    {
+      "index": 12,
+      "imageSHA256": "ff7db0909555b0146117f02782d1239dee34abe6bb449a74ed55810aecd501b9",
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.9999862889484729,
+      "memoryCosine": 0.9999241462872771
+    },
+    {
+      "index": 13,
+      "imageSHA256": "f38ef5b23bc0ab5ee6d09f4713dcaaa89cebee59b82ec68ce9f7a55f38a5fbe1",
+      "passed": true,
+      "maskIoU": 0.9993552546744036,
+      "pointerCosine": 0.9999871478200579,
+      "memoryCosine": 0.9997619411154581
+    },
+    {
+      "index": 14,
+      "imageSHA256": "19ac8be183ee9a5566c9bad4c3b46cc2fde023da81f6ee81650fd7e3b87a54b1",
+      "passed": true,
+      "maskIoU": 0.9993866911990187,
+      "pointerCosine": 0.999988988507784,
+      "memoryCosine": 0.9999695717887588
+    },
+    {
+      "index": 15,
+      "imageSHA256": "a1f6f364fc6b52333e04ce09c28846a3605aa2a56ba3ff3614dcdd52533b987d",
+      "passed": true,
+      "maskIoU": 0.9997183098591549,
+      "pointerCosine": 0.9999907946194385,
+      "memoryCosine": 0.9999393803022475
+    },
+    {
+      "index": 16,
+      "imageSHA256": "9769759d13e3292cd9f6c52fda09ac76903c406362fe801c399c4fa7a1b05a53",
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.9999940386551183,
+      "memoryCosine": 0.9997893136543827
+    },
+    {
+      "index": 17,
+      "imageSHA256": "547d222bd5a2f255779e7afc5269080924c0b7d2475607e930cc59342c0f2a59",
+      "passed": true,
+      "maskIoU": 0.9997431946584489,
+      "pointerCosine": 0.9999954197858067,
+      "memoryCosine": 0.9998823200474829
+    },
+    {
+      "index": 18,
+      "imageSHA256": "a29dd4d4ec155aef133fe670ff73065aa2558101d980f187e24752dd0976bab9",
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.9999706086404688,
+      "memoryCosine": 0.999107009628943
+    },
+    {
+      "index": 19,
+      "imageSHA256": "05ef5ea441e42bb439f0a87c950f827d4b3cf5e2e6ddcee5125c2462295137a6",
+      "passed": true,
+      "maskIoU": 1.0,
+      "pointerCosine": 0.9999195144265255,
+      "memoryCosine": 0.9998503003989914
+    }
+  ]
+}

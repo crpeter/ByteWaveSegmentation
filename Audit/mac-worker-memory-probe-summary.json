@@ -1,0 +1,887 @@
+{
+  "scope": "Probe older tracking memory during occlusion without a new selection.\n\nNormal GPU tracking advances unchanged. From its first previously observed\nempty-mask frame, side calls use either the original conditioning slots only,\nor a frozen copy of the normal input bank immediately before that frame.\nSide outputs NEVER enter any history. All calls share current encoder features.\nFrozen slots keep their capture-time relative-age semantics; this deliberately\ntests stale banks, not an age-correct retention policy or automatic recovery.\nNo conversion, export, installed model, app, or correctness-gate changes.\n",
+  "contract": "bytewave.occlusion-memory-probe.diagnostic.v1",
+  "completed": true,
+  "readyForDeviceValidation": false,
+  "sourceVideoSHA256": "a8a9d3fd5b85fbdf2770027353d6d19971845c13f83ffdcc6058ae5e6a0b1833",
+  "sourceFileBytes": 10796435,
+  "phoneReportSHA256": "7c807a77903c90fc90d23dcad387e82bb454a315f690acb1d517bf8b73c4dc65",
+  "fixtureSHA256": "760dd45c6eed6972f434dd324920b74dbfa262fb6648983606c2872581430a61",
+  "modelFiles": {
+    "models/BWTemporalImageEncoder.mlpackage/Manifest.json": "df20c1178e37ef2d4587281d5feca5979f2db8b859ffe7357161e4d5b51c254f",
+    "models/BWTemporalImageEncoder.mlpackage/Data/com.apple.CoreML/model.mlmodel": "a3046d4fbd83b7974d0b01d92ca30a55adad08aca218789b97034245023bbeba",
+    "models/BWTemporalImageEncoder.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "90e112d95a98e30486b768a2397f253766ceaa95bfd3cdb5a31a8db0341f61c3",
+    "models/BWTemporalInitializer.mlpackage/Data/com.apple.CoreML/model.mlmodel": "a70da7906ee21086122e9c24479b149308337f49609854455ae9cf65f790625f",
+    "models/BWTemporalInitializer.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "9409edf81128013f2ff61ef2565832f0a35782304e7adc54466e0396b5ab94c2",
+    "models/BWTemporalInitializer.mlpackage/Manifest.json": "d2311a29bb658bd6f16e801e91893985eb5aea3f7a6587f718e3e93539bc3068",
+    "models/BWTemporalInitialMemoryEncoder.mlpackage/Data/com.apple.CoreML/model.mlmodel": "613c7a310f1fae1b698aaba6e5a70c3afb842f459d3ec96cf9e0f4b6b4b9438a",
+    "models/BWTemporalInitialMemoryEncoder.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "21ae511f368835d55fe519b9b4ae9032bf9256cdb3cc0e91fdf5b4c467311563",
+    "models/BWTemporalInitialMemoryEncoder.mlpackage/Manifest.json": "64fb8412cf6229dda7ec7227113c7c8cf1a5278a96b62b94e2a0a76f6d790b52",
+    "models/BWTemporalPropagator.mlpackage/Manifest.json": "aec4bf7ef5dafc3816e3a645f93b134824268f4b0e8184170452e10c8c5618c1",
+    "models/BWTemporalPropagator.mlpackage/Data/com.apple.CoreML/model.mlmodel": "dec2227edc7d22832a3726a68237b6789f2d79ede1a5b0cc6f76d400c69d08d9",
+    "models/BWTemporalPropagator.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "3e679bfdc49fc43e895434b8c8bb6e75bad20a2cad37fd0aa2d5019cd186386e"
+  },
+  "upstream": "7711e012a30a2402c4eaab637bdb00a521302c91",
+  "checkpointSHA256": "ed2d4850b8792c239689b043c47046ec239b6e808a3d9b6ae676c803fd8780df",
+  "sourceComparisonSHA256": "29ff27150c14715aca3375a82e9336eb3ff9628ae523b88bcfd2cc16a5d67fd3",
+  "pointNormalizedTopLeft": [
+    0.6468468468468468,
+    0.5888513513513512
+  ],
+  "referenceNumFrames": 276,
+  "requestedFrames": 276,
+  "snapshotInputFrame": 112,
+  "snapshotChoice": "First empty normal GPU mask in completed prior report. Retrospective diagnostic boundary, not a new online absence detector. Capture input bank before this frame; latest entry may already be partially occluded.",
+  "visualReviewRange": [
+    175,
+    205
+  ],
+  "computeUnits": "CPU_AND_GPU",
+  "policy": {
+    "maskIoUMinimum": 0.95,
+    "cosineMinimum": 0.99,
+    "float32Atol": 0.001,
+    "float32Rtol": 0.001
+  },
+  "comparisonMeaning": "Normal GPU/reference must reproduce prior comparison dictionaries exactly. Probe/reference metrics are descriptive under the same gates; changing memory intentionally changes outputs. No promotion or identity verdict follows.",
+  "memoryPolicy": "Normal GPU alone commits to bounded state every decoded frame, including absence. Both side banks are fixed, retain frame-0 conditioning, and receive no new outputs, prompts or reference tensors. Original reference advances its independent history.",
+  "timeLimit": "Normal frame clock and exact source PTS advance. Frozen bank slots retain capture-time relative-age meanings; original source indices and actual ages are reported separately. No claim that this models correct temporal aging or isolates tensor content from slot age.",
+  "torchThreads": {
+    "intraOp": 1,
+    "interOp": 1
+  },
+  "versions": {
+    "torch": "2.7.0",
+    "coremltools": "9.0",
+    "numpy": "1.26.4",
+    "av": "15.0.0",
+    "Pillow": "11.2.1"
+  },
+  "snapshot": {
+    "inputFrame": 112,
+    "ptsSeconds": 3.735,
+    "spatialSourceFrames": [
+      0,
+      106,
+      107,
+      108,
+      109,
+      110,
+      111
+    ],
+    "pointerSourceFrames": [
+      0,
+      111,
+      110,
+      109,
+      108,
+      107,
+      106,
+      105,
+      104,
+      103,
+      102,
+      101,
+      100,
+      99,
+      98,
+      97
+    ],
+    "banks": {
+      "retainedBank": {
+        "spatial_bank": {
+          "shape": [
+            1,
+            7,
+            512,
+            64
+          ],
+          "dtype": "float32",
+          "sha256": "3f0dfa874a08b9953026f6d3e2cbcb177df91fb04cad274ae43fce7f15759dfb"
+        },
+        "spatial_positions": {
+          "shape": [
+            1,
+            7,
+            512,
+            64
+          ],
+          "dtype": "float32",
+          "sha256": "ce17dfa5ef075b2bc3b9666568e2fd07298e48a1cc9b81dc6ddd535a061c046b"
+        },
+        "pointer_bank": {
+          "shape": [
+            1,
+            16,
+            256
+          ],
+          "dtype": "float32",
+          "sha256": "866c8552a2f5712785375e9c47326e9fcf71f6cdb388f2f881cb9c9a87f1a84e"
+        },
+        "valid_slots": {
+          "shape": [
+            1,
+            23
+          ],
+          "dtype": "float32",
+          "sha256": "ea2cdb38f18bd23b566c7831694d2bd584985cc3aea1b6e8ee38b4c8a9a956e6"
+        }
+      },
+      "conditioningOnly": {
+        "spatial_bank": {
+          "shape": [
+            1,
+            7,
+            512,
+            64
+          ],
+          "dtype": "float32",
+          "sha256": "ec5c70de6c34a3f6bc2ff33f67ebd162da416c7003dcd02c330cbf8c6eca9600"
+        },
+        "spatial_positions": {
+          "shape": [
+            1,
+            7,
+            512,
+            64
+          ],
+          "dtype": "float32",
+          "sha256": "43cb5465fd8262adf0ee31ff55e8d5e7ecfdb8ff71e92b814582074ac8feef96"
+        },
+        "pointer_bank": {
+          "shape": [
+            1,
+            16,
+            256
+          ],
+          "dtype": "float32",
+          "sha256": "366e425cd96b3d900dcf97c870ba8b2bddc8d49f7c779eb73d3698a4abd83c62"
+        },
+        "valid_slots": {
+          "shape": [
+            1,
+            23
+          ],
+          "dtype": "float32",
+          "sha256": "3e66529e3847d1ca88932f1c232ea40a06be47b57b2c15fa524cb8bcff789951"
+        }
+      }
+    },
+    "normalStateBefore": {
+      "acceptedFrames": 112,
+      "spatialEntries": 7,
+      "pointerEntries": 16
+    }
+  },
+  "forkControlAllOutputsExact": true,
+  "frozenBanksUnchangedAtEnd": true,
+  "summary": {
+    "framesReplayed": 276,
+    "framesProbed": 164,
+    "baselineMismatchFrames": [],
+    "forkControlAllOutputsExact": true,
+    "interpretationAllowed": true,
+    "streams": {
+      "original": {
+        "nonemptyFramesAfterSnapshot": [
+          117,
+          118
+        ],
+        "nonemptyFramesInVisualReviewRange": [],
+        "visualReviewFramesCompared": 31
+      },
+      "normalGPU": {
+        "nonemptyFramesAfterSnapshot": [
+          117
+        ],
+        "nonemptyFramesInVisualReviewRange": [],
+        "visualReviewFramesCompared": 31
+      },
+      "conditioningOnly": {
+        "nonemptyFramesAfterSnapshot": [
+          148,
+          150,
+          154,
+          155,
+          156,
+          157,
+          158,
+          159,
+          160,
+          161,
+          162,
+          163,
+          164,
+          165,
+          166,
+          167,
+          168,
+          169,
+          170,
+          171,
+          172,
+          173,
+          174,
+          175,
+          176,
+          177,
+          178,
+          179,
+          180,
+          181,
+          182,
+          183,
+          184,
+          185,
+          186,
+          187,
+          188,
+          189,
+          190,
+          191,
+          192,
+          193,
+          194,
+          195,
+          196,
+          197,
+          198,
+          199,
+          200,
+          201,
+          202,
+          203,
+          204,
+          205,
+          206,
+          207,
+          208,
+          209,
+          210,
+          211,
+          212,
+          213,
+          214
+        ],
+        "nonemptyFramesInVisualReviewRange": [
+          175,
+          176,
+          177,
+          178,
+          179,
+          180,
+          181,
+          182,
+          183,
+          184,
+          185,
+          186,
+          187,
+          188,
+          189,
+          190,
+          191,
+          192,
+          193,
+          194,
+          195,
+          196,
+          197,
+          198,
+          199,
+          200,
+          201,
+          202,
+          203,
+          204,
+          205
+        ],
+        "visualReviewFramesCompared": 31
+      },
+      "retainedBank": {
+        "nonemptyFramesAfterSnapshot": [
+          113,
+          114,
+          115,
+          116,
+          117,
+          154,
+          155,
+          156,
+          157,
+          158,
+          159,
+          160,
+          161,
+          162,
+          163,
+          164,
+          165,
+          166,
+          167,
+          168,
+          169,
+          170,
+          171,
+          172,
+          173,
+          174,
+          175,
+          176,
+          177,
+          178,
+          179,
+          180,
+          181,
+          182,
+          183,
+          184,
+          185,
+          186,
+          187,
+          188,
+          189,
+          190,
+          191,
+          192,
+          193,
+          194,
+          195,
+          196,
+          197,
+          198,
+          199,
+          200,
+          201,
+          202,
+          203,
+          204,
+          205,
+          206,
+          207,
+          208,
+          209,
+          210,
+          211,
+          212,
+          213,
+          214,
+          215
+        ],
+        "nonemptyFramesInVisualReviewRange": [
+          175,
+          176,
+          177,
+          178,
+          179,
+          180,
+          181,
+          182,
+          183,
+          184,
+          185,
+          186,
+          187,
+          188,
+          189,
+          190,
+          191,
+          192,
+          193,
+          194,
+          195,
+          196,
+          197,
+          198,
+          199,
+          200,
+          201,
+          202,
+          203,
+          204,
+          205
+        ],
+        "visualReviewFramesCompared": 31
+      }
+    },
+    "qualityMeaning": "Nonempty masks and agreement are not identity truth. Inspect previews during obstruction and visible return. This is a frozen-bank probe, not a deployed recovery policy."
+  },
+  "uploadedReportSHA256": "9ed19a4ecad97e5160d7b833cfdcb65a7ffe784a04eafdc147c1641880c32024",
+  "nonemptyIntervals": {
+    "original": [
+      {
+        "firstFrame": 117,
+        "lastFrame": 118,
+        "firstPTSSeconds": 3.901666666666667,
+        "lastPTSSeconds": 3.935
+      }
+    ],
+    "normalGPU": [
+      {
+        "firstFrame": 117,
+        "lastFrame": 117,
+        "firstPTSSeconds": 3.901666666666667,
+        "lastPTSSeconds": 3.901666666666667
+      }
+    ],
+    "conditioningOnly": [
+      {
+        "firstFrame": 148,
+        "lastFrame": 148,
+        "firstPTSSeconds": 4.935,
+        "lastPTSSeconds": 4.935
+      },
+      {
+        "firstFrame": 150,
+        "lastFrame": 150,
+        "firstPTSSeconds": 5.001666666666667,
+        "lastPTSSeconds": 5.001666666666667
+      },
+      {
+        "firstFrame": 154,
+        "lastFrame": 214,
+        "firstPTSSeconds": 5.135,
+        "lastPTSSeconds": 7.136666666666667
+      }
+    ],
+    "retainedBank": [
+      {
+        "firstFrame": 113,
+        "lastFrame": 117,
+        "firstPTSSeconds": 3.7683333333333335,
+        "lastPTSSeconds": 3.901666666666667
+      },
+      {
+        "firstFrame": 154,
+        "lastFrame": 215,
+        "firstPTSSeconds": 5.135,
+        "lastPTSSeconds": 7.17
+      }
+    ]
+  },
+  "selectedFrameObservations": [
+    {
+      "index": 112,
+      "ptsSeconds": 3.735,
+      "imageSHA256": "0c464d5b08277a77acf8dc8a1da68e8f957184f102f19a905842693028eabc9a",
+      "streams": {
+        "original": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -0.03388667106628418,
+          "predictedIoU": 7.746527330709796e-08
+        },
+        "normalGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -0.03253173828125,
+          "predictedIoU": 1.34827530473558e-07
+        },
+        "retainedBank": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -0.03253173828125,
+          "predictedIoU": 1.34827530473558e-07
+        },
+        "conditioningOnly": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -0.64013671875,
+          "predictedIoU": 6.2092585721984506e-06
+        }
+      },
+      "baselineReproduced": true,
+      "sameBankControlOutputsExact": {
+        "low_res_mask": true,
+        "high_res_mask": true,
+        "best_iou": true,
+        "object_pointer": true,
+        "object_score": true,
+        "memory_features": true,
+        "memory_positions": true
+      },
+      "preview": "previews/frame-0112.png"
+    },
+    {
+      "index": 115,
+      "ptsSeconds": 3.835,
+      "imageSHA256": "debc3e05b8f9e4d7b05ff10007117e7e0325da99d04b00f8468e2bf959a5b2f5",
+      "streams": {
+        "original": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -0.33352869749069214,
+          "predictedIoU": 2.1287220079102553e-05
+        },
+        "normalGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -0.345703125,
+          "predictedIoU": 2.045949804596603e-05
+        },
+        "conditioningOnly": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -0.9345703125,
+          "predictedIoU": 5.2745754430816305e-09
+        },
+        "retainedBank": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0008697509765625,
+          "objectScore": 0.24609375,
+          "predictedIoU": 0.3536679744720459
+        }
+      },
+      "baselineReproduced": true,
+      "preview": "previews/frame-0115.png"
+    },
+    {
+      "index": 148,
+      "ptsSeconds": 4.935,
+      "imageSHA256": "bd933c183f6003a43e9cc77785771a5b457a3279e07d975293650f32dee8062e",
+      "streams": {
+        "original": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -3.4224066734313965,
+          "predictedIoU": 3.237027207630551e-31
+        },
+        "normalGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -3.494140625,
+          "predictedIoU": 1.7024129849625602e-31
+        },
+        "retainedBank": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -2.025390625,
+          "predictedIoU": 4.108454647567973e-24
+        },
+        "conditioningOnly": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.001129150390625,
+          "objectScore": 0.1099853515625,
+          "predictedIoU": 0.6780577301979065
+        }
+      },
+      "baselineReproduced": true,
+      "preview": "previews/frame-0148.png"
+    },
+    {
+      "index": 150,
+      "ptsSeconds": 5.001666666666667,
+      "imageSHA256": "adc3ac0f5d9d2fa03b117f225a150c1a997b6e4072d0b21747d652b0c1ac5a37",
+      "streams": {
+        "original": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -3.1704647541046143,
+          "predictedIoU": 9.53551613432233e-31
+        },
+        "normalGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -3.21875,
+          "predictedIoU": 5.8767683382919055e-31
+        },
+        "retainedBank": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -1.6494140625,
+          "predictedIoU": 5.163716849880786e-19
+        },
+        "conditioningOnly": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0011138916015625,
+          "objectScore": 0.279541015625,
+          "predictedIoU": 0.7196155786514282
+        }
+      },
+      "baselineReproduced": true,
+      "preview": "previews/frame-0150.png"
+    },
+    {
+      "index": 154,
+      "ptsSeconds": 5.135,
+      "imageSHA256": "c8a37c0028625a44a15514d2c267204880cb41b37aba630a057383f6a87170e8",
+      "streams": {
+        "original": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -0.901716947555542,
+          "predictedIoU": 1.1483153095070975e-08
+        },
+        "normalGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -0.9130859375,
+          "predictedIoU": 9.009139212423634e-09
+        },
+        "retainedBank": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.000244140625,
+          "objectScore": 0.8798828125,
+          "predictedIoU": 0.6363704800605774
+        },
+        "conditioningOnly": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0003204345703125,
+          "objectScore": 0.290771484375,
+          "predictedIoU": 0.5918712615966797
+        }
+      },
+      "baselineReproduced": true,
+      "preview": "previews/frame-0154.png"
+    },
+    {
+      "index": 175,
+      "ptsSeconds": 5.835,
+      "imageSHA256": "c0de0dfacd1f80c508654f34ec5de1400853eae6f6142876840046062b0ed4c7",
+      "streams": {
+        "original": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -1.5627802610397339,
+          "predictedIoU": 7.753791711544456e-18
+        },
+        "normalGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -1.5654296875,
+          "predictedIoU": 8.752109375389805e-18
+        },
+        "conditioningOnly": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0016021728515625,
+          "objectScore": 1.5439453125,
+          "predictedIoU": 0.8937751650810242
+        },
+        "retainedBank": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0016632080078125,
+          "objectScore": 3.0078125,
+          "predictedIoU": 0.9123315811157227
+        }
+      },
+      "baselineReproduced": true,
+      "preview": "previews/frame-0175.png"
+    },
+    {
+      "index": 205,
+      "ptsSeconds": 6.836666666666667,
+      "imageSHA256": "240b5a31359b1f07386e615597abf20c6fd73594547194600ead76a92ecc945a",
+      "streams": {
+        "original": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -0.9872884750366211,
+          "predictedIoU": 2.1817425643888555e-09
+        },
+        "normalGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -0.9951171875,
+          "predictedIoU": 2.2308586089536675e-09
+        },
+        "conditioningOnly": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.001495361328125,
+          "objectScore": 2.642578125,
+          "predictedIoU": 0.9155920743942261
+        },
+        "retainedBank": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0015716552734375,
+          "objectScore": 2.783203125,
+          "predictedIoU": 0.9157478213310242
+        }
+      },
+      "baselineReproduced": true,
+      "preview": "previews/frame-0205.png"
+    },
+    {
+      "index": 214,
+      "ptsSeconds": 7.136666666666667,
+      "imageSHA256": "23b4970650c8e71f05f7c7206ab2a4120a181a6494f5b6a7584b281ebf2a6494",
+      "streams": {
+        "original": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -1.7116646766662598,
+          "predictedIoU": 1.5282747047200568e-18
+        },
+        "normalGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -1.7314453125,
+          "predictedIoU": 1.80058959340772e-18
+        },
+        "retainedBank": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0003662109375,
+          "objectScore": 1.537109375,
+          "predictedIoU": 0.8294574618339539
+        },
+        "conditioningOnly": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.000335693359375,
+          "objectScore": 0.578125,
+          "predictedIoU": 0.8339906334877014
+        }
+      },
+      "baselineReproduced": true,
+      "preview": "previews/frame-0214.png"
+    },
+    {
+      "index": 215,
+      "ptsSeconds": 7.17,
+      "imageSHA256": "206b66bf3e44929071d47ffa496fa57be7777342c9cc90b3fcf5a60410029091",
+      "streams": {
+        "original": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -2.1992015838623047,
+          "predictedIoU": 4.692969418330987e-24
+        },
+        "normalGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -2.212890625,
+          "predictedIoU": 3.9723106659622154e-24
+        },
+        "conditioningOnly": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -0.6728515625,
+          "predictedIoU": 4.9909529479919e-05
+        },
+        "retainedBank": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0002593994140625,
+          "objectScore": 0.1007080078125,
+          "predictedIoU": 0.6950604319572449
+        }
+      },
+      "baselineReproduced": true,
+      "preview": "previews/frame-0215.png"
+    },
+    {
+      "index": 216,
+      "ptsSeconds": 7.203333333333333,
+      "imageSHA256": "223005ff76972e4f7115fb9de80f97f304c1e990e2eee4eed1158634855c4531",
+      "streams": {
+        "original": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -2.417963743209839,
+          "predictedIoU": 6.880780081222384e-26
+        },
+        "normalGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -2.419921875,
+          "predictedIoU": 5.947599538581517e-26
+        },
+        "retainedBank": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -1.2314453125,
+          "predictedIoU": 2.405966322439196e-13
+        },
+        "conditioningOnly": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -1.642578125,
+          "predictedIoU": 4.500303255050575e-11
+        }
+      },
+      "baselineReproduced": true,
+      "preview": "previews/frame-0216.png"
+    },
+    {
+      "index": 275,
+      "ptsSeconds": 9.17,
+      "imageSHA256": "f2eca5a1d0a6f6dfc295bcdb5bd4b374f8017a60c1038d042666576be4078450",
+      "streams": {
+        "original": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -3.625586986541748,
+          "predictedIoU": 1.1170320796796217e-31
+        },
+        "normalGPU": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -3.6484375,
+          "predictedIoU": 8.328418617878186e-32
+        },
+        "conditioningOnly": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -3.26171875,
+          "predictedIoU": 1.1023053195797182e-24
+        },
+        "retainedBank": {
+          "lowMaskEmpty": true,
+          "highMaskEmpty": true,
+          "foregroundFraction": 0.0,
+          "objectScore": -1.9521484375,
+          "predictedIoU": 7.466410190864853e-22
+        }
+      },
+      "baselineReproduced": true,
+      "preview": "previews/frame-0275.png"
+    }
+  ],
+  "interpretationNotes": [
+    "All 276 baseline frames reproduce the prior report; duplicate capture-time call is exact and frozen bank hashes remain unchanged. Both probes are nonempty on all 31 visual-review frames 175\u2013205, while original and normal GPU remain empty.",
+    "Conditioning-only uses the original selection memory without a new tap. This is evidence that the original conditioning can produce masks at return when recent slots are removed. Correct identity is pending visual review of these new probe masks.",
+    "Retained bank has masks on 113\u2013117; conditioning-only has isolated masks at 148 and 150. These may be visible fragments or false positives. Do not assign ground-truth labels without previews.",
+    "Neither probe output is committed. Fixed capture-time slot ages and retrospective boundary prevent claiming a deployable recovery policy, preserved identity, or a uniquely isolated cause.",
+    "Requested previews: frame-0175.png for reappearance, frame-0115.png and frame-0148.png for earlier mask behavior. No new inference needed before visual review."
+  ]
+}

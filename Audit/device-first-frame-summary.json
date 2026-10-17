@@ -1,0 +1,392 @@
+{
+  "scope": "User-run first-frame predictions only. No propagator, sustained performance or measured hardware utilization. NE prompt differs slightly from GPU/Automatic. Hardware differs from earlier placement reports.",
+  "reports": [
+    {
+      "inputSHA256": "6331147896b948711f6f434888710917e4374cd49e89a1aea784515ce3931008",
+      "actualTimeScale": 600,
+      "actualTimeValue": 0,
+      "bestIoU": 0.966796875,
+      "compileAndLoadMilliseconds": 3907.7467083332067,
+      "foregroundFraction": 0.0370941162109375,
+      "generatedAt": "2026-09-14T22:41:57Z",
+      "hardware": "iPhone15,2",
+      "imagePreparation": "Display-oriented frame, long edge at most 1024; stretch to 1024x1024 RGB via BGRA pixel buffer. No extra mean/std normalization.",
+      "measurementScope": "One untimed warm-up and three measured repetitions of image encoder, initializer, and initial memory encoder on the SAME frame and point. Per-call wall time excludes compile/load, preprocessing, diagnostics and mask rendering. No propagator, video FPS, sustained performance or runtime hardware-utilization measurement.",
+      "mode": "CPU + Neural Engine",
+      "modelRevision": "6bfdd4765e42508c7707566fff52e65add8b8e3a",
+      "objectScore": 31.25,
+      "operatingSystem": "Version 26.5.2 (Build 23F84)",
+      "positivePointLabel": 1,
+      "preprocessingMilliseconds": 7.299000000102751,
+      "previewHeight": 1024,
+      "previewWidth": 576,
+      "promptModelXY": [
+        508.69067405355486,
+        485.5844875346261
+      ],
+      "promptNormalizedTopLeft": [
+        0.49676823638042467,
+        0.4742036011080333
+      ],
+      "samples": [
+        {
+          "imageEncoderMilliseconds": 17.797208333149683,
+          "initializerMilliseconds": 24.455250000073647,
+          "memoryEncoderMilliseconds": 11.64937499993357
+        },
+        {
+          "imageEncoderMilliseconds": 16.29800000000614,
+          "initializerMilliseconds": 23.680208333416886,
+          "memoryEncoderMilliseconds": 9.38654166679953
+        },
+        {
+          "imageEncoderMilliseconds": 16.013708333275645,
+          "initializerMilliseconds": 23.830999999972846,
+          "memoryEncoderMilliseconds": 7.815000000164218
+        }
+      ],
+      "schema": "bytewave.segmentation-first-frame.v1",
+      "succeeded": true,
+      "tensorChecks": [
+        {
+          "maximum": 17,
+          "minimum": -16.21875,
+          "name": "low_res_mask",
+          "shape": [
+            1,
+            1,
+            256,
+            256
+          ]
+        },
+        {
+          "maximum": 15.8515625,
+          "minimum": -15.7265625,
+          "name": "high_res_mask",
+          "shape": [
+            1,
+            1,
+            1024,
+            1024
+          ]
+        },
+        {
+          "maximum": 31.25,
+          "minimum": 31.25,
+          "name": "object_score",
+          "shape": [
+            1,
+            1
+          ]
+        },
+        {
+          "maximum": 0.966796875,
+          "minimum": 0.966796875,
+          "name": "best_iou",
+          "shape": [
+            1
+          ]
+        },
+        {
+          "maximum": 1.69140625,
+          "minimum": -1.44921875,
+          "name": "object_pointer",
+          "shape": [
+            1,
+            256
+          ]
+        },
+        {
+          "maximum": 5.2109375,
+          "minimum": -4.7734375,
+          "name": "memory_features",
+          "shape": [
+            1,
+            512,
+            64
+          ]
+        },
+        {
+          "maximum": 1,
+          "minimum": -1,
+          "name": "memory_positions",
+          "shape": [
+            1,
+            512,
+            64
+          ]
+        },
+        {
+          "maximum": 0.389404296875,
+          "minimum": -0.61767578125,
+          "name": "temporal_positions",
+          "shape": [
+            7,
+            64
+          ]
+        }
+      ],
+      "thermalStateAtEnd": "nominal",
+      "thermalStateAtStart": "nominal",
+      "meanPredictionTotalMilliseconds": 50.30876388893072
+    },
+    {
+      "inputSHA256": "a12cd0924de13a73f8d360c0715007655698f387ffc1e3321e8a243cdb26145c",
+      "actualTimeScale": 600,
+      "actualTimeValue": 0,
+      "bestIoU": 0.9697265625,
+      "compileAndLoadMilliseconds": 764.5441666666102,
+      "foregroundFraction": 0.0371856689453125,
+      "generatedAt": "2026-09-14T22:43:29Z",
+      "hardware": "iPhone15,2",
+      "imagePreparation": "Display-oriented frame, long edge at most 1024; stretch to 1024x1024 RGB via BGRA pixel buffer. No extra mean/std normalization.",
+      "measurementScope": "One untimed warm-up and three measured repetitions of image encoder, initializer, and initial memory encoder on the SAME frame and point. Per-call wall time excludes compile/load, preprocessing, diagnostics and mask rendering. No propagator, video FPS, sustained performance or runtime hardware-utilization measurement.",
+      "mode": "CPU + GPU",
+      "modelRevision": "6bfdd4765e42508c7707566fff52e65add8b8e3a",
+      "objectScore": 31.484375,
+      "operatingSystem": "Version 26.5.2 (Build 23F84)",
+      "positivePointLabel": 1,
+      "preprocessingMilliseconds": 2.461833333427421,
+      "previewHeight": 1024,
+      "previewWidth": 576,
+      "promptModelXY": [
+        503.0175438596491,
+        481.8614958448753
+      ],
+      "promptNormalizedTopLeft": [
+        0.49122807017543857,
+        0.47056786703601106
+      ],
+      "samples": [
+        {
+          "imageEncoderMilliseconds": 69.09854166678997,
+          "initializerMilliseconds": 36.26795833338292,
+          "memoryEncoderMilliseconds": 15.972874999988562
+        },
+        {
+          "imageEncoderMilliseconds": 69.20041666649013,
+          "initializerMilliseconds": 36.97750000014821,
+          "memoryEncoderMilliseconds": 16.211041666565507
+        },
+        {
+          "imageEncoderMilliseconds": 69.0254166665909,
+          "initializerMilliseconds": 39.27662500018414,
+          "memoryEncoderMilliseconds": 16.12795833329983
+        }
+      ],
+      "schema": "bytewave.segmentation-first-frame.v1",
+      "succeeded": true,
+      "tensorChecks": [
+        {
+          "maximum": 16.703125,
+          "minimum": -16.78125,
+          "name": "low_res_mask",
+          "shape": [
+            1,
+            1,
+            256,
+            256
+          ]
+        },
+        {
+          "maximum": 15.734375,
+          "minimum": -16.25,
+          "name": "high_res_mask",
+          "shape": [
+            1,
+            1,
+            1024,
+            1024
+          ]
+        },
+        {
+          "maximum": 31.484375,
+          "minimum": 31.484375,
+          "name": "object_score",
+          "shape": [
+            1,
+            1
+          ]
+        },
+        {
+          "maximum": 0.9697265625,
+          "minimum": 0.9697265625,
+          "name": "best_iou",
+          "shape": [
+            1
+          ]
+        },
+        {
+          "maximum": 1.662109375,
+          "minimum": -1.361328125,
+          "name": "object_pointer",
+          "shape": [
+            1,
+            256
+          ]
+        },
+        {
+          "maximum": 5.42578125,
+          "minimum": -4.734375,
+          "name": "memory_features",
+          "shape": [
+            1,
+            512,
+            64
+          ]
+        },
+        {
+          "maximum": 1,
+          "minimum": -1,
+          "name": "memory_positions",
+          "shape": [
+            1,
+            512,
+            64
+          ]
+        },
+        {
+          "maximum": 0.389404296875,
+          "minimum": -0.61767578125,
+          "name": "temporal_positions",
+          "shape": [
+            7,
+            64
+          ]
+        }
+      ],
+      "thermalStateAtEnd": "nominal",
+      "thermalStateAtStart": "nominal",
+      "meanPredictionTotalMilliseconds": 122.71944444448006
+    },
+    {
+      "inputSHA256": "98b6a612586d2c655f59fbef652e50aa823851515ad6f3a609b4783af42ad312",
+      "actualTimeScale": 600,
+      "actualTimeValue": 0,
+      "bestIoU": 0.97216796875,
+      "compileAndLoadMilliseconds": 3815.616458333352,
+      "foregroundFraction": 0.03717041015625,
+      "generatedAt": "2026-09-14T22:43:50Z",
+      "hardware": "iPhone15,2",
+      "imagePreparation": "Display-oriented frame, long edge at most 1024; stretch to 1024x1024 RGB via BGRA pixel buffer. No extra mean/std normalization.",
+      "measurementScope": "One untimed warm-up and three measured repetitions of image encoder, initializer, and initial memory encoder on the SAME frame and point. Per-call wall time excludes compile/load, preprocessing, diagnostics and mask rendering. No propagator, video FPS, sustained performance or runtime hardware-utilization measurement.",
+      "mode": "Automatic",
+      "modelRevision": "6bfdd4765e42508c7707566fff52e65add8b8e3a",
+      "objectScore": 31.765625,
+      "operatingSystem": "Version 26.5.2 (Build 23F84)",
+      "positivePointLabel": 1,
+      "preprocessingMilliseconds": 2.5164999999560678,
+      "previewHeight": 1024,
+      "previewWidth": 576,
+      "promptModelXY": [
+        503.0175438596491,
+        481.8614958448753
+      ],
+      "promptNormalizedTopLeft": [
+        0.49122807017543857,
+        0.47056786703601106
+      ],
+      "samples": [
+        {
+          "imageEncoderMilliseconds": 18.25487500013878,
+          "initializerMilliseconds": 25.50754166668412,
+          "memoryEncoderMilliseconds": 9.501208333404065
+        },
+        {
+          "imageEncoderMilliseconds": 18.94045833319069,
+          "initializerMilliseconds": 23.97941666663428,
+          "memoryEncoderMilliseconds": 8.078666666733625
+        },
+        {
+          "imageEncoderMilliseconds": 18.06391666673335,
+          "initializerMilliseconds": 24.060833333351184,
+          "memoryEncoderMilliseconds": 6.735250000019732
+        }
+      ],
+      "schema": "bytewave.segmentation-first-frame.v1",
+      "succeeded": true,
+      "tensorChecks": [
+        {
+          "maximum": 16.828125,
+          "minimum": -16.359375,
+          "name": "low_res_mask",
+          "shape": [
+            1,
+            1,
+            256,
+            256
+          ]
+        },
+        {
+          "maximum": 15.828125,
+          "minimum": -15.8359375,
+          "name": "high_res_mask",
+          "shape": [
+            1,
+            1,
+            1024,
+            1024
+          ]
+        },
+        {
+          "maximum": 31.765625,
+          "minimum": 31.765625,
+          "name": "object_score",
+          "shape": [
+            1,
+            1
+          ]
+        },
+        {
+          "maximum": 0.97216796875,
+          "minimum": 0.97216796875,
+          "name": "best_iou",
+          "shape": [
+            1
+          ]
+        },
+        {
+          "maximum": 1.716796875,
+          "minimum": -1.2978515625,
+          "name": "object_pointer",
+          "shape": [
+            1,
+            256
+          ]
+        },
+        {
+          "maximum": 5.1953125,
+          "minimum": -4.7734375,
+          "name": "memory_features",
+          "shape": [
+            1,
+            512,
+            64
+          ]
+        },
+        {
+          "maximum": 1,
+          "minimum": -1,
+          "name": "memory_positions",
+          "shape": [
+            1,
+            512,
+            64
+          ]
+        },
+        {
+          "maximum": 0.389404296875,
+          "minimum": -0.61767578125,
+          "name": "temporal_positions",
+          "shape": [
+            7,
+            64
+          ]
+        }
+      ],
+      "thermalStateAtEnd": "nominal",
+      "thermalStateAtStart": "nominal",
+      "meanPredictionTotalMilliseconds": 51.04072222229661
+    }
+  ]
+}

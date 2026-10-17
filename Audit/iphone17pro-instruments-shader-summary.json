@@ -1,0 +1,334 @@
+{
+  "schema": "bytewave.instruments-shader-summary.v1",
+  "scope": "User-recorded iPhone 17 Pro Instruments Run 2. Offline parsing only; no model or correctness changes. Shader Sample Duration intervals are profiler observations, not a complete per-operation execution accounting.",
+  "sourceZIP": {
+    "name": "4c466fbd-6098-4d2d-a351-e8415d4dfa61.zip",
+    "sha256": "69278d068d9924bad7e8363167e2c1b46f0c8bdd72df8a3f95a34360e42600fe"
+  },
+  "exports": {
+    "coreml-os-signpost.xml": {
+      "sha256": "faed9bb65674708b6422fa03fe13dfebe41f819dfbe7e59254c1c7821fc0ca9c",
+      "bytes": 106872
+    },
+    "metal-gpu-intervals.xml": {
+      "sha256": "7a95db987234f7d9edc16bf4e39d1280af0c5aca4e3adb27409b01c7a3073f9a",
+      "bytes": 8885244
+    },
+    "metal-shader-profiler-intervals.xml": {
+      "sha256": "be494c561dc0557e7aef9672dc4bbb791ca1ce43171f78d6d51f654a701fb3f1",
+      "bytes": 3288506
+    },
+    "metal-shader-profiler-shader-list.xml": {
+      "sha256": "10bab6607b9dfbab774dfff794f0932b80b6f9a93369259462261c15f1e005c6",
+      "bytes": 1528796
+    }
+  },
+  "runNumber": 2,
+  "targetPID": 6775,
+  "shaderTimelineEnabled": true,
+  "hardwareUserReported": "iPhone 17 Pro",
+  "operatingSystemFromTOC": "27.0 (24A435)",
+  "computeModeUserReported": "CPU + GPU",
+  "method": "Resolve XML id/ref within each document. Filter Active GPU intervals and shader intervals to target process. Clip to prediction spans and union overlapping intervals; exclude first prediction of each model from warm statistics. Shader family sums are not added to GPU or prediction wall time.",
+  "models": {
+    "BWTemporalImageEncoder": {
+      "predictionCount": 20,
+      "firstPredictionMilliseconds": 118.600667,
+      "warmCount": 19,
+      "medianWarmPredictionMilliseconds": 22.40625,
+      "medianWarmGPUActiveMilliseconds": 20.940622,
+      "warmPredictionTotalMilliseconds": 426.685374,
+      "warmGPUActiveUnionMilliseconds": 397.545082,
+      "warmShaderIntervalUnionMilliseconds": 216.228844,
+      "warmFrames": [
+        {
+          "predictionIndex": 1,
+          "startNanoseconds": 20554720041,
+          "durationMilliseconds": 22.12275,
+          "gpuActiveUnionMilliseconds": 20.53
+        },
+        {
+          "predictionIndex": 2,
+          "startNanoseconds": 20786809250,
+          "durationMilliseconds": 22.666291,
+          "gpuActiveUnionMilliseconds": 20.990836
+        },
+        {
+          "predictionIndex": 3,
+          "startNanoseconds": 20906107291,
+          "durationMilliseconds": 22.451334,
+          "gpuActiveUnionMilliseconds": 20.897833
+        },
+        {
+          "predictionIndex": 4,
+          "startNanoseconds": 21020794041,
+          "durationMilliseconds": 21.989834,
+          "gpuActiveUnionMilliseconds": 20.570377
+        },
+        {
+          "predictionIndex": 5,
+          "startNanoseconds": 21134953250,
+          "durationMilliseconds": 22.473208,
+          "gpuActiveUnionMilliseconds": 20.94454
+        },
+        {
+          "predictionIndex": 6,
+          "startNanoseconds": 21250476166,
+          "durationMilliseconds": 22.54375,
+          "gpuActiveUnionMilliseconds": 20.987003
+        },
+        {
+          "predictionIndex": 7,
+          "startNanoseconds": 21365218125,
+          "durationMilliseconds": 22.406,
+          "gpuActiveUnionMilliseconds": 20.908876
+        },
+        {
+          "predictionIndex": 8,
+          "startNanoseconds": 21480886791,
+          "durationMilliseconds": 23.017042,
+          "gpuActiveUnionMilliseconds": 21.397502
+        },
+        {
+          "predictionIndex": 9,
+          "startNanoseconds": 21597026875,
+          "durationMilliseconds": 22.9735,
+          "gpuActiveUnionMilliseconds": 21.347833
+        },
+        {
+          "predictionIndex": 10,
+          "startNanoseconds": 21715787083,
+          "durationMilliseconds": 22.574708,
+          "gpuActiveUnionMilliseconds": 21.023956
+        },
+        {
+          "predictionIndex": 11,
+          "startNanoseconds": 21831735250,
+          "durationMilliseconds": 22.305291,
+          "gpuActiveUnionMilliseconds": 20.751958
+        },
+        {
+          "predictionIndex": 12,
+          "startNanoseconds": 21945851958,
+          "durationMilliseconds": 22.099667,
+          "gpuActiveUnionMilliseconds": 20.625499
+        },
+        {
+          "predictionIndex": 13,
+          "startNanoseconds": 22061283041,
+          "durationMilliseconds": 22.166,
+          "gpuActiveUnionMilliseconds": 20.648624
+        },
+        {
+          "predictionIndex": 14,
+          "startNanoseconds": 22176515458,
+          "durationMilliseconds": 22.40625,
+          "gpuActiveUnionMilliseconds": 20.847623
+        },
+        {
+          "predictionIndex": 15,
+          "startNanoseconds": 22291239583,
+          "durationMilliseconds": 22.643958,
+          "gpuActiveUnionMilliseconds": 21.182791
+        },
+        {
+          "predictionIndex": 16,
+          "startNanoseconds": 22407737416,
+          "durationMilliseconds": 22.264292,
+          "gpuActiveUnionMilliseconds": 20.684833
+        },
+        {
+          "predictionIndex": 17,
+          "startNanoseconds": 22523107541,
+          "durationMilliseconds": 22.3495,
+          "gpuActiveUnionMilliseconds": 20.940622
+        },
+        {
+          "predictionIndex": 18,
+          "startNanoseconds": 22637645833,
+          "durationMilliseconds": 22.842708,
+          "gpuActiveUnionMilliseconds": 21.323123
+        },
+        {
+          "predictionIndex": 19,
+          "startNanoseconds": 22754578000,
+          "durationMilliseconds": 22.389291,
+          "gpuActiveUnionMilliseconds": 20.941253
+        }
+      ]
+    },
+    "BWTemporalInitializer": {
+      "predictionCount": 1,
+      "firstPredictionMilliseconds": 77.923209
+    },
+    "BWTemporalInitialMemoryEncoder": {
+      "predictionCount": 1,
+      "firstPredictionMilliseconds": 54.470333
+    },
+    "BWTemporalPropagator": {
+      "predictionCount": 19,
+      "firstPredictionMilliseconds": 181.949875,
+      "warmCount": 18,
+      "medianWarmPredictionMilliseconds": 67.497084,
+      "medianWarmGPUActiveMilliseconds": 62.1192925,
+      "warmPredictionTotalMilliseconds": 1216.640209,
+      "warmGPUActiveUnionMilliseconds": 1119.562244,
+      "warmShaderIntervalUnionMilliseconds": 926.211795,
+      "warmFrames": [
+        {
+          "predictionIndex": 1,
+          "startNanoseconds": 20818559250,
+          "durationMilliseconds": 69.718833,
+          "gpuActiveUnionMilliseconds": 62.177959,
+          "dominantShaderCombinedMilliseconds": 45.663083
+        },
+        {
+          "predictionIndex": 2,
+          "startNanoseconds": 20937897416,
+          "durationMilliseconds": 67.264792,
+          "gpuActiveUnionMilliseconds": 62.021667,
+          "dominantShaderCombinedMilliseconds": 47.606874
+        },
+        {
+          "predictionIndex": 3,
+          "startNanoseconds": 21051346958,
+          "durationMilliseconds": 67.413875,
+          "gpuActiveUnionMilliseconds": 62.443291,
+          "dominantShaderCombinedMilliseconds": 47.504666
+        },
+        {
+          "predictionIndex": 4,
+          "startNanoseconds": 21166066708,
+          "durationMilliseconds": 67.874042,
+          "gpuActiveUnionMilliseconds": 62.632748,
+          "dominantShaderCombinedMilliseconds": 35.916751
+        },
+        {
+          "predictionIndex": 5,
+          "startNanoseconds": 21282232541,
+          "durationMilliseconds": 66.977,
+          "gpuActiveUnionMilliseconds": 61.848375,
+          "dominantShaderCombinedMilliseconds": 39.096041
+        },
+        {
+          "predictionIndex": 6,
+          "startNanoseconds": 21395380041,
+          "durationMilliseconds": 67.462084,
+          "gpuActiveUnionMilliseconds": 62.114002,
+          "dominantShaderCombinedMilliseconds": 37.047875
+        },
+        {
+          "predictionIndex": 7,
+          "startNanoseconds": 21512546083,
+          "durationMilliseconds": 67.080958,
+          "gpuActiveUnionMilliseconds": 61.608497,
+          "dominantShaderCombinedMilliseconds": 44.177083
+        },
+        {
+          "predictionIndex": 8,
+          "startNanoseconds": 21630658875,
+          "durationMilliseconds": 67.559416,
+          "gpuActiveUnionMilliseconds": 62.095918,
+          "dominantShaderCombinedMilliseconds": 37.30054
+        },
+        {
+          "predictionIndex": 9,
+          "startNanoseconds": 21748069750,
+          "durationMilliseconds": 67.028875,
+          "gpuActiveUnionMilliseconds": 62.020499,
+          "dominantShaderCombinedMilliseconds": 36.738792
+        },
+        {
+          "predictionIndex": 10,
+          "startNanoseconds": 21863080416,
+          "durationMilliseconds": 67.909584,
+          "gpuActiveUnionMilliseconds": 62.56979,
+          "dominantShaderCombinedMilliseconds": 43.053918
+        },
+        {
+          "predictionIndex": 11,
+          "startNanoseconds": 21977138541,
+          "durationMilliseconds": 67.688042,
+          "gpuActiveUnionMilliseconds": 62.124583,
+          "dominantShaderCombinedMilliseconds": 45.338376
+        },
+        {
+          "predictionIndex": 12,
+          "startNanoseconds": 22092648250,
+          "durationMilliseconds": 67.873041,
+          "gpuActiveUnionMilliseconds": 62.624831,
+          "dominantShaderCombinedMilliseconds": 32.332916
+        },
+        {
+          "predictionIndex": 13,
+          "startNanoseconds": 22206475291,
+          "durationMilliseconds": 67.266792,
+          "gpuActiveUnionMilliseconds": 62.031083,
+          "dominantShaderCombinedMilliseconds": 46.486124
+        },
+        {
+          "predictionIndex": 14,
+          "startNanoseconds": 22322664916,
+          "durationMilliseconds": 67.532084,
+          "gpuActiveUnionMilliseconds": 62.414627,
+          "dominantShaderCombinedMilliseconds": 41.210625
+        },
+        {
+          "predictionIndex": 15,
+          "startNanoseconds": 22439647625,
+          "durationMilliseconds": 67.75025,
+          "gpuActiveUnionMilliseconds": 62.292127,
+          "dominantShaderCombinedMilliseconds": 46.8755
+        },
+        {
+          "predictionIndex": 16,
+          "startNanoseconds": 22553356625,
+          "durationMilliseconds": 68.011875,
+          "gpuActiveUnionMilliseconds": 62.741042,
+          "dominantShaderCombinedMilliseconds": 47.19175
+        },
+        {
+          "predictionIndex": 17,
+          "startNanoseconds": 22669688625,
+          "durationMilliseconds": 67.246291,
+          "gpuActiveUnionMilliseconds": 61.99154,
+          "dominantShaderCombinedMilliseconds": 45.083
+        },
+        {
+          "predictionIndex": 18,
+          "startNanoseconds": 22784681416,
+          "durationMilliseconds": 66.982375,
+          "gpuActiveUnionMilliseconds": 61.809665,
+          "dominantShaderCombinedMilliseconds": 39.290457
+        }
+      ],
+      "dominantShaders": [
+        {
+          "name": "sdpa_tile_fwd_8x8x8_doEdgeCheck (234)",
+          "warmIntervalCount": 36,
+          "warmIntervalUnionMilliseconds": 377.899041
+        },
+        {
+          "name": "sdpa_tile_fwd_8x8x8_noEdgeCheck (230)",
+          "warmIntervalCount": 36,
+          "warmIntervalUnionMilliseconds": 380.01533
+        }
+      ],
+      "dominantShaderCombinedUnionMilliseconds": 757.914371,
+      "medianWarmDominantShaderCombinedMilliseconds": 43.6155005
+    }
+  },
+  "interpretation": [
+    "Warm Propagator latency remains approximately 67.5 ms, consistent with Run 1.",
+    "Two SDPA shader IDs each appear twice per warm prediction; their combined observed intervals dominate shader samples.",
+    "Owned FixedMemoryAttention has two layers, each with self-attention and cross-attention. This is consistent with four expensive attention occurrences, but these exports do not identify each shader by MIL operation name.",
+    "Do not attribute these timings to the two feed-forward linear2 operations or infer a proven mapping from shader names alone.",
+    "No attention precision reduction, normal-export change or speed improvement is established. Next optimization must target attention and retain original PyTorch parity gates."
+  ],
+  "limitations": [
+    "Shader intervals cover only part of GPU Active time; gaps are not proof of idle GPU time.",
+    "FP32 attention previously prevented nonfinite outputs; do not broadly switch attention to FP16.",
+    "One 20-frame fixture; no sustained playback measurement.",
+    "Model and fixture hashes are not embedded in these XML exports; dog-09 identity is based on the user workflow, not reverified from trace bytes."
+  ]
+}

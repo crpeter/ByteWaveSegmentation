@@ -1,0 +1,405 @@
+{
+  "schema": "bytewave.mac-attention-experiment-summary.v1",
+  "scope": "User-run chunk256 temporal correctness and paired Mac GPU timings; no iPhone candidate result.",
+  "sourceValidationAttachmentSHA256": "866edbb739b949416f5272daa2e00b81cf134455d2b61ae1423c5902bd1dcb54",
+  "validation": {
+    "scope": "Compare explicit FP32 query-chunked memory attention on the saved fixture.\n\nUnchanged CPU reconversion control, then chunk256 CPU/GPU against original\nPyTorch over all 20 frames. Every query still attends to every original key.\nDiagnostic only: no normal exporter, installed model or correctness gate changes.\n",
+    "contract": "bytewave.propagator-attention.diagnostic.v1",
+    "completed": true,
+    "passed": true,
+    "readyForDeviceValidation": false,
+    "sourceManifestSHA256": "47b7b85eef755ff7a440c0017f232a82ac7213af622d15d30a04f3487e07dd67",
+    "sourceFrameReportSHA256": "8768eab4331ad57994782ee244861b64f3c3eb27fa6c970cc881a843618af9a6",
+    "variants": {
+      "unchanged": {
+        "variant": "unchanged",
+        "inspectedAttentions": [
+          {
+            "output": "output_1",
+            "kind": "self",
+            "queryShape": [
+              1,
+              1,
+              4096,
+              256
+            ],
+            "keyShape": [
+              1,
+              1,
+              4096,
+              256
+            ],
+            "valueShape": [
+              1,
+              1,
+              4096,
+              256
+            ],
+            "dtype": "fp32",
+            "maskSource": null
+          },
+          {
+            "output": "output_3",
+            "kind": "cross",
+            "queryShape": [
+              1,
+              1,
+              4096,
+              256
+            ],
+            "keyShape": [
+              1,
+              1,
+              3648,
+              256
+            ],
+            "valueShape": [
+              1,
+              1,
+              3648,
+              256
+            ],
+            "dtype": "fp32",
+            "maskSource": "bias_5_cast_fp16_to_fp32"
+          },
+          {
+            "output": "output_5",
+            "kind": "self",
+            "queryShape": [
+              1,
+              1,
+              4096,
+              256
+            ],
+            "keyShape": [
+              1,
+              1,
+              4096,
+              256
+            ],
+            "valueShape": [
+              1,
+              1,
+              4096,
+              256
+            ],
+            "dtype": "fp32",
+            "maskSource": null
+          },
+          {
+            "output": "output",
+            "kind": "cross",
+            "queryShape": [
+              1,
+              1,
+              4096,
+              256
+            ],
+            "keyShape": [
+              1,
+              1,
+              3648,
+              256
+            ],
+            "valueShape": [
+              1,
+              1,
+              3648,
+              256
+            ],
+            "dtype": "fp32",
+            "maskSource": "bias_5_cast_fp16_to_fp32"
+          }
+        ],
+        "modifications": [],
+        "unrelatedOperationsPreserved": true,
+        "externalInterfacesPreserved": true,
+        "attentionPrecision": "fp32",
+        "memoryNote": "Score tensor size is per chunk, not a measured or guaranteed peak allocation.",
+        "files": {
+          "Manifest.json": "59c138c19473bbac257530b65347c11119c5a0164a035fb0584487de32f2d2e4",
+          "Data/com.apple.CoreML/model.mlmodel": "a3994151e8e3059451e8d391344bce804e0f1b79466431582a164aae2d9cf45f",
+          "Data/com.apple.CoreML/weights/weight.bin": "3e679bfdc49fc43e895434b8c8bb6e75bad20a2cad37fd0aa2d5019cd186386e"
+        }
+      },
+      "chunk256": {
+        "variant": "chunk256",
+        "inspectedAttentions": [
+          {
+            "output": "output_1",
+            "kind": "self",
+            "queryShape": [
+              1,
+              1,
+              4096,
+              256
+            ],
+            "keyShape": [
+              1,
+              1,
+              4096,
+              256
+            ],
+            "valueShape": [
+              1,
+              1,
+              4096,
+              256
+            ],
+            "dtype": "fp32",
+            "maskSource": null
+          },
+          {
+            "output": "output_3",
+            "kind": "cross",
+            "queryShape": [
+              1,
+              1,
+              4096,
+              256
+            ],
+            "keyShape": [
+              1,
+              1,
+              3648,
+              256
+            ],
+            "valueShape": [
+              1,
+              1,
+              3648,
+              256
+            ],
+            "dtype": "fp32",
+            "maskSource": "bias_5_cast_fp16_to_fp32"
+          },
+          {
+            "output": "output_5",
+            "kind": "self",
+            "queryShape": [
+              1,
+              1,
+              4096,
+              256
+            ],
+            "keyShape": [
+              1,
+              1,
+              4096,
+              256
+            ],
+            "valueShape": [
+              1,
+              1,
+              4096,
+              256
+            ],
+            "dtype": "fp32",
+            "maskSource": null
+          },
+          {
+            "output": "output",
+            "kind": "cross",
+            "queryShape": [
+              1,
+              1,
+              4096,
+              256
+            ],
+            "keyShape": [
+              1,
+              1,
+              3648,
+              256
+            ],
+            "valueShape": [
+              1,
+              1,
+              3648,
+              256
+            ],
+            "dtype": "fp32",
+            "maskSource": "bias_5_cast_fp16_to_fp32"
+          }
+        ],
+        "modifications": [
+          {
+            "oldOutput": "output_1",
+            "newOutput": "bwattention_0_restore",
+            "queryChunkSize": 256,
+            "chunks": 16,
+            "keysPerChunk": 4096,
+            "scoreTensorBytesPerChunk": 4194304
+          },
+          {
+            "oldOutput": "output_3",
+            "newOutput": "bwattention_1_restore",
+            "queryChunkSize": 256,
+            "chunks": 16,
+            "keysPerChunk": 3648,
+            "scoreTensorBytesPerChunk": 3735552
+          },
+          {
+            "oldOutput": "output_5",
+            "newOutput": "bwattention_2_restore",
+            "queryChunkSize": 256,
+            "chunks": 16,
+            "keysPerChunk": 4096,
+            "scoreTensorBytesPerChunk": 4194304
+          },
+          {
+            "oldOutput": "output",
+            "newOutput": "bwattention_3_restore",
+            "queryChunkSize": 256,
+            "chunks": 16,
+            "keysPerChunk": 3648,
+            "scoreTensorBytesPerChunk": 3735552
+          }
+        ],
+        "unrelatedOperationsPreserved": true,
+        "externalInterfacesPreserved": true,
+        "attentionPrecision": "fp32",
+        "memoryNote": "Score tensor size is per chunk, not a measured or guaranteed peak allocation.",
+        "files": {
+          "Manifest.json": "99b9e6d9adaba5ff8b0822b23ef64af832b18be0566405bd167d857ca618c4c6",
+          "Data/com.apple.CoreML/model.mlmodel": "2b54b09e4eded553b74d17559086a491c907a2308cfda43bec398ed715142615",
+          "Data/com.apple.CoreML/weights/weight.bin": "3e679bfdc49fc43e895434b8c8bb6e75bad20a2cad37fd0aa2d5019cd186386e"
+        }
+      }
+    },
+    "runs": {
+      "unchanged-cpu": {
+        "returnCode": 0,
+        "log": "unchanged-cpu.log",
+        "passed": true,
+        "framesCompared": 20,
+        "report": "unchanged-cpu/report.json",
+        "minimumMaskIoU": 0.9957401490947817,
+        "minimumPointerCosine": 0.9990273321442846,
+        "minimumMemoryCosine": 0.9965700094527923,
+        "finalState": {
+          "acceptedFrames": 20,
+          "spatialEntries": 7,
+          "pointerEntries": 16
+        },
+        "medianWarmPropagatorMillisecondsDiagnosticOnly": 96.92306199576706,
+        "latestSameInputControl": {
+          "passed": true,
+          "maskIoUAgainstReference": 1.0,
+          "sameObjectPresence": true,
+          "outputs": {
+            "low_res_mask": {
+              "maximumAbsoluteError": 0.0,
+              "cosineSimilarity": 1.0,
+              "float32Close": true
+            },
+            "high_res_mask": {
+              "maximumAbsoluteError": 0.0,
+              "cosineSimilarity": 1.0,
+              "float32Close": true
+            },
+            "best_iou": {
+              "maximumAbsoluteError": 0.0,
+              "cosineSimilarity": 1.0,
+              "float32Close": true
+            },
+            "object_pointer": {
+              "maximumAbsoluteError": 0.0,
+              "cosineSimilarity": 0.9999999999999998,
+              "float32Close": true
+            },
+            "object_score": {
+              "maximumAbsoluteError": 0.0,
+              "cosineSimilarity": 1.0,
+              "float32Close": true
+            },
+            "memory_features": {
+              "maximumAbsoluteError": 0.0,
+              "cosineSimilarity": 0.9999999999999999,
+              "float32Close": true
+            },
+            "memory_positions": {
+              "maximumAbsoluteError": 0.0,
+              "cosineSimilarity": 0.9999999999999998,
+              "float32Close": true
+            }
+          },
+          "allOutputsFloat32Close": true
+        }
+      },
+      "chunk256-cpu": {
+        "returnCode": 0,
+        "log": "chunk256-cpu.log",
+        "passed": true,
+        "framesCompared": 20,
+        "report": "chunk256-cpu/report.json",
+        "minimumMaskIoU": 0.9964476021314387,
+        "minimumPointerCosine": 0.9989120605095864,
+        "minimumMemoryCosine": 0.996301681529998,
+        "finalState": {
+          "acceptedFrames": 20,
+          "spatialEntries": 7,
+          "pointerEntries": 16
+        },
+        "medianWarmPropagatorMillisecondsDiagnosticOnly": 74.9175000237301
+      },
+      "chunk256-gpu": {
+        "returnCode": 0,
+        "log": "chunk256-gpu.log",
+        "passed": true,
+        "framesCompared": 20,
+        "report": "chunk256-gpu/report.json",
+        "minimumMaskIoU": 0.9968039772727273,
+        "minimumPointerCosine": 0.99902288067456,
+        "minimumMemoryCosine": 0.9965916361494648,
+        "finalState": {
+          "acceptedFrames": 20,
+          "spatialEntries": 7,
+          "pointerEntries": 16
+        },
+        "medianWarmPropagatorMillisecondsDiagnosticOnly": 47.257854021154344
+      }
+    }
+  },
+  "pairedGPU": {
+    "source": "User pasted attention-paired-gpu-01/summary.json into chat",
+    "candidateReportSHA256": "18c31d934eac487b1ed0da0db6c1775fc101e2f8b3f8ac093a82dc6799798605",
+    "sourceManifestSHA256": "47b7b85eef755ff7a440c0017f232a82ac7213af622d15d30a04f3487e07dd67",
+    "sourceFrameReportSHA256": "8768eab4331ad57994782ee244861b64f3c3eb27fa6c970cc881a843618af9a6",
+    "candidateFiles": {
+      "Manifest.json": "99b9e6d9adaba5ff8b0822b23ef64af832b18be0566405bd167d857ca618c4c6",
+      "Data/com.apple.CoreML/model.mlmodel": "2b54b09e4eded553b74d17559086a491c907a2308cfda43bec398ed715142615",
+      "Data/com.apple.CoreML/weights/weight.bin": "3e679bfdc49fc43e895434b8c8bb6e75bad20a2cad37fd0aa2d5019cd186386e"
+    },
+    "completed": true,
+    "passed": true,
+    "readyForDeviceValidation": false,
+    "computeUnits": "CPU_AND_GPU",
+    "macOS": "26.5.2",
+    "machine": "arm64",
+    "coremltoolsVersion": "9.0",
+    "measuredPairs": 76,
+    "pairsPerFrame": 4,
+    "warmupCallsPerModel": 1,
+    "medianMilliseconds": {
+      "original": 14.36156255658716,
+      "chunk256": 34.52606254722923
+    },
+    "ratioOfMediansOriginalOverCandidate": 0.4159629421090676,
+    "medianPairedRatioOriginalOverCandidate": 0.41622657974156374,
+    "medianLatencyReductionPercent": -140.40603110692368,
+    "allMeasuredOutputsPassed": true,
+    "medianMillisecondsByFirstModel": {
+      "original": {
+        "original": 14.414833509363234,
+        "chunk256": 34.463874995708466
+      },
+      "chunk256": {
+        "original": 14.317666413262486,
+        "chunk256": 34.604125074110925
+      }
+    },
+    "timingScope": "Serialized co-resident predict calls only; checked warm-up excluded, four balanced-order pairs per propagated frame with identical original CPU state. No thermals, observed hardware utilization or playback FPS."
+  },
+  "decision": "Do not promote chunk256: numerically valid on the fixture but 2.404 times original median Mac GPU latency. This does not establish iPhone performance. Keep the original dog-09 export."
+}

@@ -1,0 +1,109 @@
+{
+  "scope": "Offline visual review of ten supplied dog recovery triptychs. No inference, model conversion, benchmark or app changes.",
+  "sourceReportSHA256": "62cc7c87f35f421b50a595f9dc34c97689ffb1da54e497a8b5ec947c002d0bc1",
+  "sourceVideoSHA256": "48df10abcbcd12df835d8f91edcf5fd8863506a40f190a4788e338ce1e460bce",
+  "files": [
+    {
+      "file": "frame-0052-1 (dragged).tiff",
+      "sha256": "63d33d9cf0f5dd61799494d39d80f6043be0f2a11121516412eef6761c819b89"
+    },
+    {
+      "file": "frame-0053-1 (dragged).tiff",
+      "sha256": "9516042307002339cb838348d4b723bbb60cf5afcfd0bbe4718a28cf2bb01e4d"
+    },
+    {
+      "file": "frame-0054-1 (dragged).tiff",
+      "sha256": "0b6def2ae403cf993c3d4586f15e8c6cae81293d8389389a8b38b07c8b10ec97"
+    },
+    {
+      "file": "frame-0060-1 (dragged).tiff",
+      "sha256": "625f83c10863277f28466ff8416c66eac62db8e6113ed817989950b1864a9ede"
+    },
+    {
+      "file": "frame-0075-1 (dragged).tiff",
+      "sha256": "df7fcc79c8999a97f451af1ac3b770edae8eda8438feb5e3745fd3ac21ce0c17"
+    },
+    {
+      "file": "frame-0084-1 (dragged).tiff",
+      "sha256": "85261b43a81ab702de4573d4f16ef3b9dd5eaa7a2ce732e26932524a50f0870b"
+    },
+    {
+      "file": "frame-0085-1 (dragged).tiff",
+      "sha256": "2e7be21ab49f9682da2d4eb5f1d1c79eb63879e6114c5dd4c9148675225c39e5"
+    },
+    {
+      "file": "frame-0086-1 (dragged).tiff",
+      "sha256": "8df0c80dcb1eec141de4c475a532119cbef6d0b75fd6e3ca3918e65d61c6a5da"
+    },
+    {
+      "file": "frame-0247-1 (dragged).tiff",
+      "sha256": "69620f867ccf96e910387b892e3dc0f36dfcb230f50418b0698ea91ff1668964"
+    },
+    {
+      "file": "frame-0251-1 (dragged).tiff",
+      "sha256": "349ad929edf47e81f49293c74d1efe84e1fb5be829665250b2fa2de15e673465"
+    }
+  ],
+  "panels": [
+    "normal GPU",
+    "raw search candidate (blank when not queried)",
+    "confirmed recovery display"
+  ],
+  "findings": [
+    {
+      "frames": [
+        52,
+        53
+      ],
+      "finding": "Dog not visibly identifiable. Raw search masks broad blurred upper-image background/occluding content. Normal and recovery display remain empty; these are pending candidates."
+    },
+    {
+      "frames": [
+        54
+      ],
+      "finding": "First acceptance copies the broad upper-image non-dog region into displayed recovery. Normal stays empty. Visually confirmed false recovery, not earlier dog reacquisition."
+    },
+    {
+      "frames": [
+        60,
+        75
+      ],
+      "finding": "Recovery continues masking broad upper-image background/occluding content while dog is hidden. Middle panel is blank because search is not queried; this is ordinary propagation after the wrong acceptance."
+    },
+    {
+      "frames": [
+        84
+      ],
+      "finding": "Recovery still masks upper-right background. Pizza box and a small brown portion near the left side of the pillar are appearing; normal mask remains empty. Do not assert that every pixel of dog is invisible throughout 54-84."
+    },
+    {
+      "frames": [
+        85
+      ],
+      "finding": "Normal masks returning dog head and excludes pizza box. Recovery display is empty: one-frame regression on the baseline return."
+    },
+    {
+      "frames": [
+        86
+      ],
+      "finding": "Both normal and recovery mask visible dog head/body fragment and paw near pillar, largely excluding pizza box. Boundaries differ; this is a spot check, not pixel-perfect quality."
+    },
+    {
+      "frames": [
+        247
+      ],
+      "finding": "Normal masks small dog fragment at left edge near vehicle wheel. Search also has a small edge mask, but recovery display remains empty."
+    },
+    {
+      "frames": [
+        251
+      ],
+      "finding": "Normal follows visible clipped dog portion. Search and accepted recovery include a much larger region covering the vehicle wheel/wheel arch along with the dog fragment. Second acceptance is also visually incorrect; delay is not the only regression."
+    }
+  ],
+  "decision": "Reject this fixed recovery rule for promotion. Preserve working app and baseline. Worker development success did not generalize to this dog clip.",
+  "interpretation": "Predicted IoU and consecutive-mask overlap accepted a stable wrong region. They did not establish subject identity in these examples. High predicted score is not an identity probability.",
+  "nextStep": "Design a diagnostic that preserves ordinary tracking and measures candidate consistency with trusted pre-occlusion subject evidence on both clips before selecting an identity gate. Do not treat pointer cosine as calibrated identity confidence or tune thresholds solely to these two clips. Keep speculative recovery separate from accepted history.",
+  "limits": "Ten supplied frames reviewed; report establishes display interval54-84, but not all intermediate images were provided. No new universal recovery method or threshold validated.",
+  "readyForDeviceValidation": false
+}

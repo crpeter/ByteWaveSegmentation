@@ -1,0 +1,73 @@
+{
+  "scope": "Two sequential physical iPhone runs, current memoryfp16 first and fused encoder second. Observed warm latency difference; reverse-order confirmation pending. Not playback FPS or measured hardware utilization.",
+  "hardware": "iPhone18,1",
+  "operatingSystem": "Version 27.0 (Build 24A435)",
+  "mode": "CPU + GPU",
+  "swiftDebugCompilation": false,
+  "sameInputAndReferenceIdentities": true,
+  "samePropagatorProvenance": true,
+  "candidateReferencesBaselineFixture": true,
+  "coldExclusions": {
+    "ImageEncoder": "Exclude frame index 0",
+    "Propagator": "Exclude first propagated frame (index 1); no call at index 0",
+    "predictionAndState": "Exclude indices 0 and 1"
+  },
+  "runs": {
+    "memoryfp16": {
+      "report": "iphone17pro-encoder-projection-memoryfp16-report.json",
+      "sourceUpload": "8c9cdd2e-e246-4e24-b397-421802359eb7.json",
+      "reportSHA256": "17801b45cc3f2b873c3870b4c0bb4ddbcce7f13807eddd119b1e61659f5e3c8a",
+      "generatedAt": "2026-09-16T18:13:52Z",
+      "fixtureSHA256": "f6b8e78c142538375ff6bf6fee5516975543f06e2f0780f959ffd3abc0dbbc9f",
+      "passed": true,
+      "framesCompared": 20,
+      "thermalStart": "nominal",
+      "thermalEnd": "nominal",
+      "minimumMaskIoU": 0.9968039772727273,
+      "minimumPointerCosine": 0.9989310422512354,
+      "minimumMemoryCosine": 0.9961403122331987,
+      "warmMedianMilliseconds": {
+        "ImageEncoder": 21.845583323738538,
+        "Propagator": 32.41435416566674,
+        "predictionAndState": 58.766416666912846
+      },
+      "finalState": {
+        "acceptedFrames": 20,
+        "pointerEntries": 16,
+        "spatialEntries": 7
+      }
+    },
+    "memoryfp16projection": {
+      "report": "iphone17pro-encoder-projection-memoryfp16projection-report.json",
+      "sourceUpload": "33740519-efec-4e3a-aae3-ae3ed481cf70.json",
+      "reportSHA256": "ac9597b491b72e82e8a8d3b8e8d581eb62be6fec9a0ecd5230aba196cd38952a",
+      "generatedAt": "2026-09-16T18:14:13Z",
+      "fixtureSHA256": "760dd45c6eed6972f434dd324920b74dbfa262fb6648983606c2872581430a61",
+      "passed": true,
+      "framesCompared": 20,
+      "thermalStart": "nominal",
+      "thermalEnd": "nominal",
+      "minimumMaskIoU": 0.9968039772727273,
+      "minimumPointerCosine": 0.9989240193051645,
+      "minimumMemoryCosine": 0.9961267421380079,
+      "warmMedianMilliseconds": {
+        "ImageEncoder": 18.692249999730848,
+        "Propagator": 32.51162500237115,
+        "predictionAndState": 55.67449999944074
+      },
+      "finalState": {
+        "acceptedFrames": 20,
+        "pointerEntries": 16,
+        "spatialEntries": 7
+      }
+    }
+  },
+  "latencyReductionPercent": {
+    "ImageEncoder": 14.434649225324714,
+    "Propagator": -0.30008568490140775,
+    "predictionAndState": 5.261366683282809
+  },
+  "maximumDifferenceInPerFrameMaskIoUVsReference": 0.00036968475324639094,
+  "qualityNote": "Both pass original gates; numerical metrics are not identical. Identical minimum IoU alone does not establish identical masks.",
+  "decision": "Repeat fused encoder first, current memoryfp16 second on same 17 Pro/build; share both temporal reports before adoption."
+}

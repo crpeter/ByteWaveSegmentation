@@ -3,6 +3,23 @@ xcuserdata/
 DerivedData/
 *.xcuserstate
 
+# Local owned-export dependencies and generated validation artifacts.
+/.venv-temporal/
+/.upstream-edgetam/
+/.temporal-runs/
+__pycache__/
+
+# Local profiling recordings, exports, and configuration backups.
+/LocalArtifacts/*
+!/LocalArtifacts/.gitkeep
+
+# User-supplied videos; validation commands reference this directory.
+/assets/
+
 # Reassembled by restore_models.py
 /Models/EdgeTAMVideoInitializer.mlpackage/Data/com.apple.CoreML/weights/weight.bin
 /Models/EdgeTAMVideoPropagator.mlpackage/Data/com.apple.CoreML/weights/weight.bin
+
+# Locally prepared, fixed-size temporal device validation fixture.
+/DeviceValidationData/*
+!/DeviceValidationData/.gitkeep

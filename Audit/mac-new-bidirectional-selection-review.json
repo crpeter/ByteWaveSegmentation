@@ -1,0 +1,632 @@
+{
+  "contract": "bytewave.bidirectional-saved-review.v1",
+  "completed": true,
+  "readyForDeviceValidation": false,
+  "sourceReportSHA256": "c09965caefbabf1da7af6de571f729e4a1a3e5bf1422e95254149086be696cf4",
+  "sourceReviewSHA256": "4e81c9caaeea476c5e01dc74dc27f6d0fa01e0390140bc661878f90f86c635cc",
+  "scriptSHA256": "c64d0da6b79b4354c62477fc2c1f043ebc4aa0038dab2b6ae8babbbd4b1871fd",
+  "sourceVideoSHA256": "5170ab7d885e131cbcd79be302d422f58e014f0c7ffbde51dcdcf8ad27bfa1e9",
+  "policy": {
+    "reviewIoUBelow": 0.9,
+    "sharedAbsenceBoundaryFramesPerEnd": 2,
+    "seedExcludedFromRuleComparison": true,
+    "automaticMaskSelection": false
+  },
+  "sourceChecks": {
+    "binaryMasksVerified": 422,
+    "overlapRowsRecomputed": 211,
+    "previewFilesVerified": 211,
+    "allSourceControlsPassed": true
+  },
+  "limitations": [
+    "No model execution, source video decoding, speed measurement or app change.",
+    "Manual later seed comes from forward prediction; direction evidence is correlated.",
+    "Presence logits are not calibrated identity probabilities or mask quality scores.",
+    "Cutoffs only organize review. Similar masks and shared absence can both be wrong.",
+    "Absence boundaries sample shared misses; interior misses may remain unflagged.",
+    "No mask fusion, chosen-mask export, acceptance threshold or held-out accuracy result."
+  ],
+  "summary": {
+    "comparedFrames": 211,
+    "evaluatedFramesExcludingSeed": 210,
+    "sourcePresenceCounts": {
+      "oneNonempty": 73,
+      "bothEmpty": 68,
+      "bothNonempty": 69
+    },
+    "disagreementFrames": 105,
+    "disagreementIntervals": [
+      {
+        "firstFrame": 165,
+        "lastFrame": 179,
+        "frames": 15,
+        "firstSeconds": 5.5,
+        "lastSeconds": 5.966666666666667
+      },
+      {
+        "firstFrame": 191,
+        "lastFrame": 197,
+        "frames": 7,
+        "firstSeconds": 6.366666666666666,
+        "lastSeconds": 6.566666666666666
+      },
+      {
+        "firstFrame": 224,
+        "lastFrame": 226,
+        "frames": 3,
+        "firstSeconds": 7.466666666666667,
+        "lastSeconds": 7.533333333333333
+      },
+      {
+        "firstFrame": 229,
+        "lastFrame": 231,
+        "frames": 3,
+        "firstSeconds": 7.633333333333334,
+        "lastSeconds": 7.7
+      },
+      {
+        "firstFrame": 233,
+        "lastFrame": 236,
+        "frames": 4,
+        "firstSeconds": 7.766666666666667,
+        "lastSeconds": 7.866666666666666
+      },
+      {
+        "firstFrame": 261,
+        "lastFrame": 309,
+        "frames": 49,
+        "firstSeconds": 8.7,
+        "lastSeconds": 10.3
+      },
+      {
+        "firstFrame": 343,
+        "lastFrame": 364,
+        "frames": 22,
+        "firstSeconds": 11.433333333333334,
+        "lastSeconds": 12.133333333333333
+      },
+      {
+        "firstFrame": 367,
+        "lastFrame": 368,
+        "frames": 2,
+        "firstSeconds": 12.233333333333333,
+        "lastSeconds": 12.266666666666667
+      }
+    ],
+    "sharedAbsenceIntervals": [
+      {
+        "firstFrame": 180,
+        "lastFrame": 190,
+        "frames": 11,
+        "firstSeconds": 6.0,
+        "lastSeconds": 6.333333333333333
+      },
+      {
+        "firstFrame": 237,
+        "lastFrame": 260,
+        "frames": 24,
+        "firstSeconds": 7.9,
+        "lastSeconds": 8.666666666666666
+      },
+      {
+        "firstFrame": 310,
+        "lastFrame": 342,
+        "frames": 33,
+        "firstSeconds": 10.333333333333334,
+        "lastSeconds": 11.4
+      }
+    ],
+    "sharedAbsenceBoundaryFrames": [
+      180,
+      181,
+      189,
+      190,
+      237,
+      238,
+      259,
+      260,
+      310,
+      311,
+      341,
+      342
+    ],
+    "queuedFrames": 117,
+    "unqueuedFramesExcludingSeed": 93,
+    "thresholdSensitivity": [
+      {
+        "iouBelow": 0.5,
+        "flaggedFrames": 95,
+        "intervals": [
+          {
+            "firstFrame": 165,
+            "lastFrame": 179,
+            "frames": 15,
+            "firstSeconds": 5.5,
+            "lastSeconds": 5.966666666666667
+          },
+          {
+            "firstFrame": 191,
+            "lastFrame": 196,
+            "frames": 6,
+            "firstSeconds": 6.366666666666666,
+            "lastSeconds": 6.533333333333333
+          },
+          {
+            "firstFrame": 229,
+            "lastFrame": 231,
+            "frames": 3,
+            "firstSeconds": 7.633333333333334,
+            "lastSeconds": 7.7
+          },
+          {
+            "firstFrame": 235,
+            "lastFrame": 236,
+            "frames": 2,
+            "firstSeconds": 7.833333333333333,
+            "lastSeconds": 7.866666666666666
+          },
+          {
+            "firstFrame": 261,
+            "lastFrame": 309,
+            "frames": 49,
+            "firstSeconds": 8.7,
+            "lastSeconds": 10.3
+          },
+          {
+            "firstFrame": 343,
+            "lastFrame": 361,
+            "frames": 19,
+            "firstSeconds": 11.433333333333334,
+            "lastSeconds": 12.033333333333333
+          },
+          {
+            "firstFrame": 364,
+            "lastFrame": 364,
+            "frames": 1,
+            "firstSeconds": 12.133333333333333,
+            "lastSeconds": 12.133333333333333
+          }
+        ]
+      },
+      {
+        "iouBelow": 0.75,
+        "flaggedFrames": 101,
+        "intervals": [
+          {
+            "firstFrame": 165,
+            "lastFrame": 179,
+            "frames": 15,
+            "firstSeconds": 5.5,
+            "lastSeconds": 5.966666666666667
+          },
+          {
+            "firstFrame": 191,
+            "lastFrame": 196,
+            "frames": 6,
+            "firstSeconds": 6.366666666666666,
+            "lastSeconds": 6.533333333333333
+          },
+          {
+            "firstFrame": 224,
+            "lastFrame": 226,
+            "frames": 3,
+            "firstSeconds": 7.466666666666667,
+            "lastSeconds": 7.533333333333333
+          },
+          {
+            "firstFrame": 229,
+            "lastFrame": 231,
+            "frames": 3,
+            "firstSeconds": 7.633333333333334,
+            "lastSeconds": 7.7
+          },
+          {
+            "firstFrame": 233,
+            "lastFrame": 236,
+            "frames": 4,
+            "firstSeconds": 7.766666666666667,
+            "lastSeconds": 7.866666666666666
+          },
+          {
+            "firstFrame": 261,
+            "lastFrame": 309,
+            "frames": 49,
+            "firstSeconds": 8.7,
+            "lastSeconds": 10.3
+          },
+          {
+            "firstFrame": 343,
+            "lastFrame": 362,
+            "frames": 20,
+            "firstSeconds": 11.433333333333334,
+            "lastSeconds": 12.066666666666666
+          },
+          {
+            "firstFrame": 364,
+            "lastFrame": 364,
+            "frames": 1,
+            "firstSeconds": 12.133333333333333,
+            "lastSeconds": 12.133333333333333
+          }
+        ]
+      },
+      {
+        "iouBelow": 0.9,
+        "flaggedFrames": 105,
+        "intervals": [
+          {
+            "firstFrame": 165,
+            "lastFrame": 179,
+            "frames": 15,
+            "firstSeconds": 5.5,
+            "lastSeconds": 5.966666666666667
+          },
+          {
+            "firstFrame": 191,
+            "lastFrame": 197,
+            "frames": 7,
+            "firstSeconds": 6.366666666666666,
+            "lastSeconds": 6.566666666666666
+          },
+          {
+            "firstFrame": 224,
+            "lastFrame": 226,
+            "frames": 3,
+            "firstSeconds": 7.466666666666667,
+            "lastSeconds": 7.533333333333333
+          },
+          {
+            "firstFrame": 229,
+            "lastFrame": 231,
+            "frames": 3,
+            "firstSeconds": 7.633333333333334,
+            "lastSeconds": 7.7
+          },
+          {
+            "firstFrame": 233,
+            "lastFrame": 236,
+            "frames": 4,
+            "firstSeconds": 7.766666666666667,
+            "lastSeconds": 7.866666666666666
+          },
+          {
+            "firstFrame": 261,
+            "lastFrame": 309,
+            "frames": 49,
+            "firstSeconds": 8.7,
+            "lastSeconds": 10.3
+          },
+          {
+            "firstFrame": 343,
+            "lastFrame": 364,
+            "frames": 22,
+            "firstSeconds": 11.433333333333334,
+            "lastSeconds": 12.133333333333333
+          },
+          {
+            "firstFrame": 367,
+            "lastFrame": 368,
+            "frames": 2,
+            "firstSeconds": 12.233333333333333,
+            "lastSeconds": 12.266666666666667
+          }
+        ]
+      },
+      {
+        "iouBelow": 0.95,
+        "flaggedFrames": 111,
+        "intervals": [
+          {
+            "firstFrame": 165,
+            "lastFrame": 179,
+            "frames": 15,
+            "firstSeconds": 5.5,
+            "lastSeconds": 5.966666666666667
+          },
+          {
+            "firstFrame": 191,
+            "lastFrame": 198,
+            "frames": 8,
+            "firstSeconds": 6.366666666666666,
+            "lastSeconds": 6.6
+          },
+          {
+            "firstFrame": 224,
+            "lastFrame": 226,
+            "frames": 3,
+            "firstSeconds": 7.466666666666667,
+            "lastSeconds": 7.533333333333333
+          },
+          {
+            "firstFrame": 229,
+            "lastFrame": 231,
+            "frames": 3,
+            "firstSeconds": 7.633333333333334,
+            "lastSeconds": 7.7
+          },
+          {
+            "firstFrame": 233,
+            "lastFrame": 236,
+            "frames": 4,
+            "firstSeconds": 7.766666666666667,
+            "lastSeconds": 7.866666666666666
+          },
+          {
+            "firstFrame": 261,
+            "lastFrame": 309,
+            "frames": 49,
+            "firstSeconds": 8.7,
+            "lastSeconds": 10.3
+          },
+          {
+            "firstFrame": 343,
+            "lastFrame": 369,
+            "frames": 27,
+            "firstSeconds": 11.433333333333334,
+            "lastSeconds": 12.3
+          },
+          {
+            "firstFrame": 371,
+            "lastFrame": 372,
+            "frames": 2,
+            "firstSeconds": 12.366666666666667,
+            "lastSeconds": 12.4
+          }
+        ]
+      }
+    ],
+    "qualitativeCases": [
+      {
+        "frame": 165,
+        "ptsSeconds": 5.5,
+        "preferred": "savedForward",
+        "reject": null,
+        "note": "Forward retains a genuine left-edge target partial; backward is blank.",
+        "choices": {
+          "higherObjectScore": "savedForward",
+          "largerMask": "savedForward",
+          "smallerNonemptyMask": "savedForward"
+        },
+        "reviewReasons": [
+          "maskDisagreement"
+        ],
+        "higherScoreSelectsKnownWrong": false
+      },
+      {
+        "frame": 191,
+        "ptsSeconds": 6.366666666666666,
+        "preferred": null,
+        "reject": null,
+        "note": "Tiny backward edge fragment; identity unresolved.",
+        "choices": {
+          "higherObjectScore": "backward",
+          "largerMask": "backward",
+          "smallerNonemptyMask": "backward"
+        },
+        "reviewReasons": [
+          "maskDisagreement"
+        ],
+        "higherScoreSelectsKnownWrong": false
+      },
+      {
+        "frame": 224,
+        "ptsSeconds": 7.466666666666667,
+        "preferred": "savedForward",
+        "reject": "backward",
+        "note": "Backward adds the foreground man's pointing hand/forearm.",
+        "choices": {
+          "higherObjectScore": "backward",
+          "largerMask": "backward",
+          "smallerNonemptyMask": "savedForward"
+        },
+        "reviewReasons": [
+          "maskDisagreement"
+        ],
+        "higherScoreSelectsKnownWrong": true
+      },
+      {
+        "frame": 225,
+        "ptsSeconds": 7.5,
+        "preferred": "savedForward",
+        "reject": "backward",
+        "note": "Backward adds the foreground man's hand/forearm.",
+        "choices": {
+          "higherObjectScore": "savedForward",
+          "largerMask": "backward",
+          "smallerNonemptyMask": "savedForward"
+        },
+        "reviewReasons": [
+          "maskDisagreement"
+        ],
+        "higherScoreSelectsKnownWrong": false
+      },
+      {
+        "frame": 229,
+        "ptsSeconds": 7.633333333333334,
+        "preferred": "savedForward",
+        "reject": "backward",
+        "note": "Backward adds the foreground man's hand/forearm.",
+        "choices": {
+          "higherObjectScore": "savedForward",
+          "largerMask": "backward",
+          "smallerNonemptyMask": "savedForward"
+        },
+        "reviewReasons": [
+          "maskDisagreement"
+        ],
+        "higherScoreSelectsKnownWrong": false
+      },
+      {
+        "frame": 261,
+        "ptsSeconds": 8.7,
+        "preferred": null,
+        "reject": null,
+        "note": "Narrow backward strip at the occluder boundary; identity unresolved.",
+        "choices": {
+          "higherObjectScore": "backward",
+          "largerMask": "backward",
+          "smallerNonemptyMask": "backward"
+        },
+        "reviewReasons": [
+          "maskDisagreement"
+        ],
+        "higherScoreSelectsKnownWrong": false
+      },
+      {
+        "frame": 277,
+        "ptsSeconds": 9.233333333333333,
+        "preferred": "backward",
+        "reject": null,
+        "note": "Backward has more useful target coverage; neither outline is perfect.",
+        "choices": {
+          "higherObjectScore": "backward",
+          "largerMask": "backward",
+          "smallerNonemptyMask": "savedForward"
+        },
+        "reviewReasons": [
+          "maskDisagreement"
+        ],
+        "higherScoreSelectsKnownWrong": false
+      },
+      {
+        "frame": 300,
+        "ptsSeconds": 10.0,
+        "preferred": "backward",
+        "reject": null,
+        "note": "Backward recovers target head/torso; forearm coverage is incomplete.",
+        "choices": {
+          "higherObjectScore": "backward",
+          "largerMask": "backward",
+          "smallerNonemptyMask": "backward"
+        },
+        "reviewReasons": [
+          "maskDisagreement"
+        ],
+        "higherScoreSelectsKnownWrong": false
+      },
+      {
+        "frame": 310,
+        "ptsSeconds": 10.333333333333334,
+        "preferred": null,
+        "reject": null,
+        "note": "Both blank despite a visible target sliver. Neither pass supplies the missing mask.",
+        "choices": {
+          "higherObjectScore": "bothEmpty",
+          "largerMask": "bothEmpty",
+          "smallerNonemptyMask": "bothEmpty"
+        },
+        "reviewReasons": [
+          "sharedAbsenceBoundary"
+        ],
+        "higherScoreSelectsKnownWrong": false
+      },
+      {
+        "frame": 343,
+        "ptsSeconds": 11.433333333333334,
+        "preferred": null,
+        "reject": "savedForward",
+        "note": "Forward paints the foreground hand; backward is blank. No complete mask asserted.",
+        "choices": {
+          "higherObjectScore": "savedForward",
+          "largerMask": "savedForward",
+          "smallerNonemptyMask": "savedForward"
+        },
+        "reviewReasons": [
+          "maskDisagreement"
+        ],
+        "higherScoreSelectsKnownWrong": true
+      },
+      {
+        "frame": 346,
+        "ptsSeconds": 11.533333333333333,
+        "preferred": "backward",
+        "reject": "savedForward",
+        "note": "Backward follows target head; forward selects the foreground hand.",
+        "choices": {
+          "higherObjectScore": "backward",
+          "largerMask": "savedForward",
+          "smallerNonemptyMask": "backward"
+        },
+        "reviewReasons": [
+          "maskDisagreement"
+        ],
+        "higherScoreSelectsKnownWrong": false
+      },
+      {
+        "frame": 354,
+        "ptsSeconds": 11.8,
+        "preferred": "backward",
+        "reject": "savedForward",
+        "note": "Backward avoids much of the foreground woman/hand mixed into forward.",
+        "choices": {
+          "higherObjectScore": "backward",
+          "largerMask": "savedForward",
+          "smallerNonemptyMask": "backward"
+        },
+        "reviewReasons": [
+          "maskDisagreement"
+        ],
+        "higherScoreSelectsKnownWrong": false
+      },
+      {
+        "frame": 360,
+        "ptsSeconds": 12.0,
+        "preferred": "backward",
+        "reject": "savedForward",
+        "note": "Backward retains target head/body and excludes much of the wrong foreground.",
+        "choices": {
+          "higherObjectScore": "backward",
+          "largerMask": "savedForward",
+          "smallerNonemptyMask": "backward"
+        },
+        "reviewReasons": [
+          "maskDisagreement"
+        ],
+        "higherScoreSelectsKnownWrong": false
+      }
+    ],
+    "higherScoreKnownWrongFrames": [
+      224,
+      343
+    ],
+    "note": "Cases are selected qualitative comparisons, not complete annotations or a measured accuracy rate. Neither rule ranking nor queue membership validates identity."
+  },
+  "templateSHA256": "0d9fc07d46550ef28e9968c4592fdd047526a3bf74ba75773d10ae8f77be4611",
+  "reviewContract": "bytewave.bidirectional-selection-review.v1",
+  "analysisReportSHA256": "6dcaf54ab59e4c163bb39b01b3fd14d750f8f3230ba0313cd46e6c7c58504d82",
+  "analysisSummarySHA256": "6e741017a345cb016a12e2506c590e038a7ec392d179e695e8995a3c49d3f8fc",
+  "method": {
+    "input": "Previously reviewed original-PyTorch CPU forward/backward masks; no model inference or source video decoding.",
+    "rules": {
+      "higherObjectScore": "Take the direction with higher raw presence logit; both-empty and seed have no selection.",
+      "largerMask": "Take the direction with more foreground pixels; ties explicit.",
+      "smallerNonemptyMask": "Among nonempty masks choose fewer foreground pixels; if just one is nonempty use it."
+    },
+    "queue": "IoU below 0.90 for nonempty union, plus first/last two frames of each shared-empty interval. Thresholds 0.50/0.75/0.90/0.95 reported for review sensitivity, not fitted acceptance gates.",
+    "qualitativeEvidence": "Thirteen selected cases from prior visual review; frames224 and343 additionally viewed full size in this turn. Relative preference is not perfect-mask ground truth. No headline accuracy percentage.",
+    "seed": "Frame375 excluded from rule comparison and queue; its backward score is forced and mask is identical by construction."
+  },
+  "findings": [
+    "Higher raw score selects a known wrong mask at224 (wrong foreground hand in backward) and343 (wrong foreground hand in forward). It favors the useful direction in many other reviewed cases, but cannot be adopted as an identity decision.",
+    "Larger masks include wrong foreground at224/225/229/346/354/360. Smaller-nonempty chooses the less useful forward mask at277 and still selects the wrong lone foreground hand at343.",
+    "Both directions miss the visible target sliver310. Score/area selection and overlap cannot recover a mask neither direction produced. This case is brought into view by shared-absence boundary inspection, not solved.",
+    "At IoU0.90,105 frames form8 disagreement intervals. Adding12 shared-absence boundary frames queues117 of210 nonseed frames. This is a large review burden, not a demonstrated automatic-efficiency improvement.",
+    "Sensitivity queues95/101/105/111 disagreement frames at IoU0.50/0.75/0.90/0.95. The0.50 queue misses the wrong-hand224..226 disagreement (IoU about0.61..0.65). No cutoff is validated.",
+    "Unflagged high-overlap masks or shared-empty interiors remain unverified; queue membership is not a label. No generalization claim beyond this development clip."
+  ],
+  "decision": {
+    "promoteAutomaticSelector": false,
+    "appModelFixtureExporterGatesRecoveryPolicyChanged": false,
+    "next": "Use this compact set of missed-target and wrong-foreground cases to evaluate a separately justified identity or correction mechanism. Preserve both directions and explicit unresolved state. Do not fit per-video switching times or declare a score threshold from these same cases.",
+    "userAction": "Optional local HTML inspection; no new recording, model run or uploaded report required."
+  },
+  "verification": {
+    "offlineDataAnalysisExecuted": true,
+    "pythonASTParsed": true,
+    "inlineJavaScriptSyntaxParsed": true,
+    "embeddedHTMLDataEqualsReport": true,
+    "all211CopiedPreviewsByteIdentical": true,
+    "browserInteractionTested": false,
+    "modelRuntimeTestsBuildsConversionInferenceBenchmarksRun": false
+  }
+}

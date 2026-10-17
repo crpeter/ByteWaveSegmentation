@@ -1,0 +1,47 @@
+{
+  "scope": "One complete user-run video on iPhone 17 Pro Release; API wall-time attribution, not ground-truth quality, observed hardware utilization or playback FPS. Only latest 120 frame rows retained.",
+  "sourceReport": "Audit/iphone17pro-video-preparation-report.json",
+  "sourceReportSHA256": "39ca65d144cb36d1efea850d08f65c195639a68e2239c111efb011e5d386e71c",
+  "hardware": "iPhone18,1",
+  "operatingSystem": "Version 27.0 (Build 24A435)",
+  "swiftDebugCompilation": false,
+  "fixtureSHA256": "f6b8e78c142538375ff6bf6fee5516975543f06e2f0780f959ffd3abc0dbbc9f",
+  "timingInstrumentation": "video-preparation-stages.v1",
+  "framesPredicted": 835,
+  "segmentsStarted": 1,
+  "seeks": 0,
+  "emptyMasks": 0,
+  "reachedEnd": true,
+  "lastState": {
+    "acceptedFrames": 835,
+    "pointerEntries": 16,
+    "spatialEntries": 7
+  },
+  "thermalStateAtStart": "nominal",
+  "thermalStateAtSnapshot": "nominal",
+  "reportedError": null,
+  "retainedFrames": 120,
+  "checks": {
+    "allWarmCountsMatch": true,
+    "retainedPTSStrictlyIncreasing": true,
+    "retainedStateAdvances": true,
+    "retainedBanksBounded": true
+  },
+  "warmFrames": 834,
+  "warmMeanMilliseconds": {
+    "preparation": 30.901606964774885,
+    "predictionAndState": 76.5948732513993,
+    "maskRendering": 0.414213129522768,
+    "request": 108.0345865309902
+  },
+  "preparationStageMeanMilliseconds": {
+    "modelBufferAllocation": 0.12836460829463986,
+    "modelInputRender": 1.1629138690236915,
+    "orientationGraphSetup": 0.022028927163363878,
+    "previewImageCreation": 0.9286091624382533,
+    "previewPNGEncoding": 28.37794489407721,
+    "sampleAcquisition": 0.2792285172781311
+  },
+  "previewPNGShareOfPreparationPercent": 91.83323354809855,
+  "nextChange": "Replace preview PNG encode/decode transport with an eagerly rendered CGImage. Preserve model input, geometry, state and scheduling. Actual improvement requires another device run."
+}

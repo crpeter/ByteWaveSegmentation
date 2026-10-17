@@ -1,0 +1,407 @@
+{
+  "scope": "Offline visual review of new continuation-quality worker history. No model inference, policy change or pixel ground truth.",
+  "sourceZipSHA256": "67fa42615c11c0aa58dfc690aab646a8972d94b677c1c058d9cff93f87a75cdf",
+  "sourceReportSHA256": "8f96e8dfdf79cb7f9b406cdf123160db342486fbb1a2180de93ec10b09c48c9c",
+  "framesReviewed": [
+    169,
+    170,
+    171,
+    172,
+    173,
+    174,
+    175,
+    176,
+    177,
+    178,
+    179,
+    180,
+    181,
+    182,
+    183,
+    184,
+    185,
+    186,
+    187,
+    188,
+    189,
+    190,
+    191,
+    192,
+    193,
+    194,
+    195,
+    196,
+    197,
+    198,
+    199,
+    200,
+    201,
+    202,
+    203,
+    204,
+    205,
+    206,
+    207,
+    208,
+    209,
+    210
+  ],
+  "previewSHA256": {
+    "frame-0169.png": "55fde712bf8f60357b9ef0ec3c69a58844e956f0af99907cf9e261b3833da8c1",
+    "frame-0170.png": "78319465ed17dfd7ac3ad76674c0bd563ddaaa26b955d739beceb19293e311ec",
+    "frame-0171.png": "0453387329add25428745f41988ebedcd8cfe98ee4096b4d912fcde964dfe60f",
+    "frame-0172.png": "17d8b6bd7c01c090545a9840137b5349c1a3c31f3a1fad47d270e8f3503bd007",
+    "frame-0173.png": "e7dd2136888de9d006dd78e068198833a2fb0403a4b2f8dbc28b67ea84eb1f9f",
+    "frame-0174.png": "9ba4790dfa620d7b54b8ccb43317493d816488003266f63606b81e2f6a285356",
+    "frame-0175.png": "682165af6b1b9b3cff9d95a1eaeacd32519d4b721e1a5cf15e5e4bb6dd9d4c57",
+    "frame-0176.png": "31f74302c29cb36628024c5958c3d350ccfc4f6a89d7bea9312dbb9c06c83320",
+    "frame-0177.png": "00f2b1926787179156bfe40ac7a1d05fd322b2ee210a6b1f638b74ffb0ab13d9",
+    "frame-0178.png": "acc14f79408973473453e6fee38af997ae8671ca51866a7d591c8226bb160a61",
+    "frame-0179.png": "6c1f1f3936cbd8b7e49690d75645681fb0d7f8e347be705c8e01256b90d616fb",
+    "frame-0180.png": "ec655ec8871d51bc625fd118e18b418c854892a2ccf6c57169f4e42dacc34e19",
+    "frame-0181.png": "678d39cc733d13d242e0073e732eaa521c3c1b866ced033925f5441c2e3a7a22",
+    "frame-0182.png": "5a0a75a5d11998c9f20401dc8894160e8fb34da29a7f449f64cd96ce601e08f5",
+    "frame-0183.png": "549c14537e99980e4966763d4b3277e9a684fe4ee17095eedc009afe998ace6c",
+    "frame-0184.png": "12656f349afdbe28933194119c5c43f1e0d866ed2c8c0d6ef4a8d2b4d5237a38",
+    "frame-0185.png": "e10a05529273de127e1292a6c3fac75e31679c8d12cc219879a005b0ae7714bf",
+    "frame-0186.png": "bfe9e53f7839464333d138f7644d8a64431c9e7e5d1a6513763cedfd84a25f93",
+    "frame-0187.png": "262a7f729e032ad2d25208c5895ef769f4f0a195a905641ec82f058f3dd7e8db",
+    "frame-0188.png": "c5761e6a30a8291fa11de0034b7a2a2626b1086b586a85b884625b4f14df5344",
+    "frame-0189.png": "1c588a1f8586acaaaedea70595437bba0869422eda85b3c81d24c1b641619280",
+    "frame-0190.png": "cd8a269c061a6cea32b669427909452a634c7ec6f7beebf3dd203c6d118591e6",
+    "frame-0191.png": "2ace2653832273250d24c4fe9cd571361b97249c4678fce25ca3a520d7f34537",
+    "frame-0192.png": "d5c593493d7658880250208f419a96ee1fb4d39611ceaacbd1c63f4a3144ba6f",
+    "frame-0193.png": "429f6ab0ea305c828dc4b5f5862eb241394329c583ce9f769b95f4869136316f",
+    "frame-0194.png": "fdaa3172155e8b11f69001c427cc09f30425221e38d367e1c1e4a004a9fa8980",
+    "frame-0195.png": "b49fc1473108873f4559b9f194831d6dc7201aef94c7964b1846ccf62e2e656e",
+    "frame-0196.png": "f2c9a934e972651061179fe9a1a5dd0996c1a540e3559985f48d11c656e3624c",
+    "frame-0197.png": "9d2146d8265f89e3b7c022c7f94eb75377c80649783741892c2da60a228ef3cf",
+    "frame-0198.png": "945dee3dea0f85e896debb903c43144281aae03aacacec67b3ca074ef4c9763a",
+    "frame-0199.png": "c8d7d4e73db88c31bcf3e5db70acd8f6f67b05d773c9de266486d5260bf8527e",
+    "frame-0200.png": "17d38743a8e81c3f9b6a81a9de4fd8bb6fb181139292433d8ebb8fd06a1aa67e",
+    "frame-0201.png": "753abcb7614d3c103c73ce59c404e585b366bfefcd4e7103867b851c9743f81b",
+    "frame-0202.png": "705ec378311084ec961d2dac59324c0ba402fd4c1f1cbe5c6a2252854560b0af",
+    "frame-0203.png": "71de5c76356caabf6bafd3c7dd24dad8c62a0719ba6505143193dd2769216e23",
+    "frame-0204.png": "5d08f2c3698b65f2260af477c21e422bfd76c5e7546f78e16e5feebbbedaafe0",
+    "frame-0205.png": "e8c6237132fbad09a241b4ed9a6b45ab21a1b1f23ac32c18d1b7b60e33179f14",
+    "frame-0206.png": "7bf0dfe2fe305a1e36fcea1194cd5fe4bf0009960c9b00896c1a455744edd339",
+    "frame-0207.png": "4b8261c6a31dc1c8900129f62effc02d80071f39075f8ec0ac4eba696128e7f7",
+    "frame-0208.png": "ec245fe7af9b7db130f49b549eb716b798dcc6ac2390bca1f92273ff5796a2ae",
+    "frame-0209.png": "cd2ba0eb64d19aba0236183340a2e35de96d2f37fe56be40a8c20db68ca20d37",
+    "frame-0210.png": "8c3ff3dcc9f1d9f676317cd0b02c142ebb13c44f8db0d3886ba6259bc2ff8899"
+  },
+  "displayMaskBounds": {
+    "169": [
+      173,
+      624,
+      240,
+      661
+    ],
+    "170": [
+      167,
+      624,
+      236,
+      662
+    ],
+    "171": [
+      161,
+      623,
+      232,
+      662
+    ],
+    "172": [
+      156,
+      622,
+      228,
+      662
+    ],
+    "173": [
+      151,
+      622,
+      223,
+      663
+    ],
+    "174": [
+      146,
+      621,
+      218,
+      663
+    ],
+    "175": [
+      141,
+      620,
+      215,
+      663
+    ],
+    "176": [
+      136,
+      620,
+      211,
+      662
+    ],
+    "177": [
+      128,
+      620,
+      205,
+      659
+    ],
+    "178": [
+      121,
+      619,
+      201,
+      656
+    ],
+    "179": [
+      114,
+      619,
+      196,
+      655
+    ],
+    "180": [
+      108,
+      619,
+      192,
+      651
+    ],
+    "181": [
+      103,
+      619,
+      187,
+      649
+    ],
+    "182": [
+      99,
+      619,
+      184,
+      646
+    ],
+    "183": [
+      95,
+      619,
+      181,
+      645
+    ],
+    "184": [
+      93,
+      618,
+      179,
+      647
+    ],
+    "185": [
+      90,
+      618,
+      175,
+      647
+    ],
+    "186": [
+      84,
+      618,
+      172,
+      646
+    ],
+    "187": [
+      81,
+      617,
+      169,
+      645
+    ],
+    "188": [
+      78,
+      617,
+      165,
+      647
+    ],
+    "189": [
+      76,
+      617,
+      163,
+      648
+    ],
+    "190": [
+      73,
+      617,
+      159,
+      648
+    ],
+    "191": [
+      71,
+      616,
+      156,
+      650
+    ],
+    "192": [
+      69,
+      616,
+      153,
+      653
+    ],
+    "193": [
+      68,
+      615,
+      150,
+      656
+    ],
+    "194": [
+      66,
+      614,
+      145,
+      655
+    ],
+    "195": [
+      65,
+      614,
+      142,
+      652
+    ],
+    "196": [
+      61,
+      614,
+      137,
+      652
+    ],
+    "197": [
+      56,
+      614,
+      133,
+      651
+    ],
+    "198": [
+      50,
+      614,
+      130,
+      650
+    ],
+    "199": [
+      44,
+      614,
+      123,
+      650
+    ],
+    "200": [
+      38,
+      614,
+      116,
+      650
+    ],
+    "201": [
+      31,
+      614,
+      110,
+      649
+    ],
+    "202": [
+      24,
+      615,
+      101,
+      649
+    ],
+    "203": [
+      17,
+      615,
+      94,
+      649
+    ],
+    "204": [
+      11,
+      616,
+      83,
+      650
+    ],
+    "205": [
+      3,
+      616,
+      74,
+      650
+    ],
+    "206": [
+      0,
+      616,
+      68,
+      652
+    ],
+    "207": [
+      0,
+      615,
+      62,
+      649
+    ],
+    "208": [
+      0,
+      614,
+      56,
+      644
+    ],
+    "209": [
+      0,
+      613,
+      51,
+      643
+    ]
+  },
+  "cropCoverage": "All41 normal-vs-display image differences below headers fall within native-resolution inspected x0..469,y520..799 crop; no distant displayed mask region omitted.",
+  "observations": [
+    {
+      "frames": [
+        169,
+        170,
+        171,
+        172,
+        173,
+        174,
+        175,
+        176,
+        177,
+        178,
+        179,
+        180,
+        181,
+        182,
+        183,
+        184,
+        185,
+        186,
+        187,
+        188,
+        189,
+        190,
+        191,
+        192,
+        193,
+        194,
+        195,
+        196,
+        197,
+        198,
+        199,
+        200,
+        201,
+        202,
+        203,
+        204,
+        205,
+        206,
+        207,
+        208,
+        209
+      ],
+      "finding": "All41 consecutive displayed masks visually follow the selected bent-over worker visible upper body/back under bucket and toward left image edge. No visible identity switch to machinery/rubble. Shapes change with current image, with no empty output gaps. Silhouette quality not pixel-perfect or ground-truth scored."
+    },
+    {
+      "frames": [
+        170,
+        171,
+        173,
+        174
+      ],
+      "finding": "Newly retained frames mask the same visible worker. The prior two two-frame gaps are removed without an observed wrong-subject mask in the reviewed sequence."
+    },
+    {
+      "frames": [
+        210
+      ],
+      "finding": "Worker still visibly partly inside left image edge. Raw backup and search mask the remaining visible fragment; displayed mask is empty. Continued false rejection agrees with encoder appearance score .796826 below .8, not subject fully out of view."
+    }
+  ],
+  "decision": "Positive development result for removing accepted-backup predictedIoU cutoff, with dog report unchanged. Keep as diagnostic candidate, not production promotion. Edge-of-frame continuation still unresolved.",
+  "nextStep": "Investigate partial-view continuation with current-frame evidence while preserving strict acquisition and baseline priority. Avoid globally lowering appearance threshold solely to fit this frame. Any next rule needs both full development replays and independent clip validation."
+}

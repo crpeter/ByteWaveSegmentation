@@ -1,0 +1,892 @@
+{
+  "contract": "bytewave.edgetam-temporal-owned.v2",
+  "readyForDeviceValidation": false,
+  "diagnosticComplete": true,
+  "scope": "Each Core ML component is compared to PyTorch with the same actual inputs. Encoder output source is explicit below; masks and stored state come from Core ML. End-to-end comparison uses separate original PyTorch history. No parity gates are changed.",
+  "encoderOutputSource": "coreml-fp16-conv-control",
+  "torchThreads": {
+    "intraOp": 1,
+    "interOp": 1
+  },
+  "pointNormalizedTopLeft": [
+    0.4912,
+    0.4706
+  ],
+  "coremlComputeUnits": "CPU_ONLY",
+  "precisionPolicy": "fp16-with-fp32-attention-and-iou.v1",
+  "modelsManifestSHA256": "f0684ef5926971f2c3d8c84594267c2948e37d9156e082e3bba6f5114c374ba4",
+  "encoderOverride": {
+    "computePrecision": "fp32-with-fp16-conv.v1",
+    "tensorOutputs": "float32",
+    "files": {
+      "Data/com.apple.CoreML/model.mlmodel": "367ee7c395f89958c9a19e3401dbd964c8b972c0a3706cee9ea5347779ba6db8",
+      "Data/com.apple.CoreML/weights/weight.bin": "609257063611b39d89f67570d6639bcba68e947a0dde828f75fa34d03008b173",
+      "Manifest.json": "42b330db5522fe7937ecafdd05246c01c25b5e6eb811c3a2c0498e3f386a6c1c"
+    },
+    "convolutionsSelectedForFP16Transform": [
+      {
+        "name": "input.5",
+        "type": "conv"
+      },
+      {
+        "name": "input.11",
+        "type": "conv"
+      },
+      {
+        "name": "116",
+        "type": "conv"
+      },
+      {
+        "name": "129",
+        "type": "conv"
+      },
+      {
+        "name": "input.19",
+        "type": "conv"
+      },
+      {
+        "name": "x.3",
+        "type": "conv"
+      },
+      {
+        "name": "input.27",
+        "type": "conv"
+      },
+      {
+        "name": "x.5",
+        "type": "conv"
+      },
+      {
+        "name": "199",
+        "type": "conv"
+      },
+      {
+        "name": "212",
+        "type": "conv"
+      },
+      {
+        "name": "input.43",
+        "type": "conv"
+      },
+      {
+        "name": "x.7",
+        "type": "conv"
+      },
+      {
+        "name": "267",
+        "type": "conv"
+      },
+      {
+        "name": "280",
+        "type": "conv"
+      },
+      {
+        "name": "input.59",
+        "type": "conv"
+      },
+      {
+        "name": "x.9",
+        "type": "conv"
+      },
+      {
+        "name": "input.69",
+        "type": "conv"
+      },
+      {
+        "name": "input.73",
+        "type": "conv"
+      },
+      {
+        "name": "input.77",
+        "type": "conv"
+      },
+      {
+        "name": "x.11",
+        "type": "conv"
+      },
+      {
+        "name": "388",
+        "type": "conv"
+      },
+      {
+        "name": "401",
+        "type": "conv"
+      },
+      {
+        "name": "input.91",
+        "type": "conv"
+      },
+      {
+        "name": "x.15",
+        "type": "conv"
+      },
+      {
+        "name": "input.99",
+        "type": "conv"
+      },
+      {
+        "name": "x.17",
+        "type": "conv"
+      },
+      {
+        "name": "471",
+        "type": "conv"
+      },
+      {
+        "name": "484",
+        "type": "conv"
+      },
+      {
+        "name": "input.115",
+        "type": "conv"
+      },
+      {
+        "name": "x.19",
+        "type": "conv"
+      },
+      {
+        "name": "539",
+        "type": "conv"
+      },
+      {
+        "name": "552",
+        "type": "conv"
+      },
+      {
+        "name": "input.131",
+        "type": "conv"
+      },
+      {
+        "name": "x.21",
+        "type": "conv"
+      },
+      {
+        "name": "input.141",
+        "type": "conv"
+      },
+      {
+        "name": "input.145",
+        "type": "conv"
+      },
+      {
+        "name": "input.149",
+        "type": "conv"
+      },
+      {
+        "name": "x.23",
+        "type": "conv"
+      },
+      {
+        "name": "672",
+        "type": "conv"
+      },
+      {
+        "name": "685",
+        "type": "conv"
+      },
+      {
+        "name": "input.163",
+        "type": "conv"
+      },
+      {
+        "name": "x.27",
+        "type": "conv"
+      },
+      {
+        "name": "input.171",
+        "type": "conv"
+      },
+      {
+        "name": "x.29",
+        "type": "conv"
+      },
+      {
+        "name": "755",
+        "type": "conv"
+      },
+      {
+        "name": "768",
+        "type": "conv"
+      },
+      {
+        "name": "input.187",
+        "type": "conv"
+      },
+      {
+        "name": "x.31",
+        "type": "conv"
+      },
+      {
+        "name": "818",
+        "type": "conv"
+      },
+      {
+        "name": "831",
+        "type": "conv"
+      },
+      {
+        "name": "input.201",
+        "type": "conv"
+      },
+      {
+        "name": "x.35",
+        "type": "conv"
+      },
+      {
+        "name": "input.209",
+        "type": "conv"
+      },
+      {
+        "name": "x.37",
+        "type": "conv"
+      },
+      {
+        "name": "901",
+        "type": "conv"
+      },
+      {
+        "name": "914",
+        "type": "conv"
+      },
+      {
+        "name": "input.225",
+        "type": "conv"
+      },
+      {
+        "name": "x.39",
+        "type": "conv"
+      },
+      {
+        "name": "964",
+        "type": "conv"
+      },
+      {
+        "name": "977",
+        "type": "conv"
+      },
+      {
+        "name": "input.239",
+        "type": "conv"
+      },
+      {
+        "name": "x.43",
+        "type": "conv"
+      },
+      {
+        "name": "input.247",
+        "type": "conv"
+      },
+      {
+        "name": "x.45",
+        "type": "conv"
+      },
+      {
+        "name": "1047",
+        "type": "conv"
+      },
+      {
+        "name": "1060",
+        "type": "conv"
+      },
+      {
+        "name": "input.263",
+        "type": "conv"
+      },
+      {
+        "name": "x.47",
+        "type": "conv"
+      },
+      {
+        "name": "1110",
+        "type": "conv"
+      },
+      {
+        "name": "1123",
+        "type": "conv"
+      },
+      {
+        "name": "input.277",
+        "type": "conv"
+      },
+      {
+        "name": "x.51",
+        "type": "conv"
+      },
+      {
+        "name": "input.285",
+        "type": "conv"
+      },
+      {
+        "name": "x.53",
+        "type": "conv"
+      },
+      {
+        "name": "1193",
+        "type": "conv"
+      },
+      {
+        "name": "1206",
+        "type": "conv"
+      },
+      {
+        "name": "input.301",
+        "type": "conv"
+      },
+      {
+        "name": "x.55",
+        "type": "conv"
+      },
+      {
+        "name": "1256",
+        "type": "conv"
+      },
+      {
+        "name": "1269",
+        "type": "conv"
+      },
+      {
+        "name": "input.315",
+        "type": "conv"
+      },
+      {
+        "name": "x.59",
+        "type": "conv"
+      },
+      {
+        "name": "input.323",
+        "type": "conv"
+      },
+      {
+        "name": "x.61",
+        "type": "conv"
+      },
+      {
+        "name": "1339",
+        "type": "conv"
+      },
+      {
+        "name": "1352",
+        "type": "conv"
+      },
+      {
+        "name": "input.339",
+        "type": "conv"
+      },
+      {
+        "name": "x.63",
+        "type": "conv"
+      },
+      {
+        "name": "1402",
+        "type": "conv"
+      },
+      {
+        "name": "1415",
+        "type": "conv"
+      },
+      {
+        "name": "input.353",
+        "type": "conv"
+      },
+      {
+        "name": "x.67",
+        "type": "conv"
+      },
+      {
+        "name": "input.361",
+        "type": "conv"
+      },
+      {
+        "name": "x.69",
+        "type": "conv"
+      },
+      {
+        "name": "1485",
+        "type": "conv"
+      },
+      {
+        "name": "1498",
+        "type": "conv"
+      },
+      {
+        "name": "input.377",
+        "type": "conv"
+      },
+      {
+        "name": "x.71",
+        "type": "conv"
+      },
+      {
+        "name": "1548",
+        "type": "conv"
+      },
+      {
+        "name": "1561",
+        "type": "conv"
+      },
+      {
+        "name": "input.391",
+        "type": "conv"
+      },
+      {
+        "name": "x.75",
+        "type": "conv"
+      },
+      {
+        "name": "input.399",
+        "type": "conv"
+      },
+      {
+        "name": "x.77",
+        "type": "conv"
+      },
+      {
+        "name": "1631",
+        "type": "conv"
+      },
+      {
+        "name": "1644",
+        "type": "conv"
+      },
+      {
+        "name": "input.415",
+        "type": "conv"
+      },
+      {
+        "name": "x.79",
+        "type": "conv"
+      },
+      {
+        "name": "1699",
+        "type": "conv"
+      },
+      {
+        "name": "1712",
+        "type": "conv"
+      },
+      {
+        "name": "input.431",
+        "type": "conv"
+      },
+      {
+        "name": "x.81",
+        "type": "conv"
+      },
+      {
+        "name": "input.441",
+        "type": "conv"
+      },
+      {
+        "name": "input.445",
+        "type": "conv"
+      },
+      {
+        "name": "input.449",
+        "type": "conv"
+      },
+      {
+        "name": "x.83",
+        "type": "conv"
+      },
+      {
+        "name": "1820",
+        "type": "conv"
+      },
+      {
+        "name": "1833",
+        "type": "conv"
+      },
+      {
+        "name": "input.463",
+        "type": "conv"
+      },
+      {
+        "name": "x.87",
+        "type": "conv"
+      },
+      {
+        "name": "input.471",
+        "type": "conv"
+      },
+      {
+        "name": "x.89",
+        "type": "conv"
+      },
+      {
+        "name": "1903",
+        "type": "conv"
+      },
+      {
+        "name": "1916",
+        "type": "conv"
+      },
+      {
+        "name": "input.487",
+        "type": "conv"
+      },
+      {
+        "name": "x.91",
+        "type": "conv"
+      },
+      {
+        "name": "x.93",
+        "type": "conv"
+      },
+      {
+        "name": "lateral_features",
+        "type": "conv"
+      },
+      {
+        "name": "x.97",
+        "type": "conv"
+      },
+      {
+        "name": "x",
+        "type": "conv"
+      },
+      {
+        "name": "2021",
+        "type": "conv"
+      },
+      {
+        "name": "2032",
+        "type": "conv"
+      }
+    ]
+  },
+  "allRequestedFramesPassedComparison": false,
+  "sourceAttachment": "Pasted markdown(20260915-133325).md",
+  "sourceSHA256": "cbcf86fafe3517ec95ce1cfed61e8710d5531f15027ccdce23a890cd2a4cd467",
+  "frames": [
+    {
+      "index": 0,
+      "ptsNumerator": 0,
+      "ptsDenominator": 1,
+      "imageSHA256": "df4fd26c6e7c6cce4cd9e6c04ace316788f125eb4f953f0aad96882e7b474dd9",
+      "passed": true,
+      "maskIoU": 0.9979959919839679,
+      "pointerCosine": 0.9995058918605072,
+      "memoryCosine": 0.9968436544615374,
+      "encoderRawFeatureCosine": 0.998589360137401,
+      "state": {
+        "acceptedFrames": 1,
+        "spatialEntries": 1,
+        "pointerEntries": 1
+      }
+    },
+    {
+      "index": 1,
+      "ptsNumerator": 1,
+      "ptsDenominator": 30,
+      "imageSHA256": "8c59ab89ffc2586f78ef4ef021e62e9747201bc5ef42e32d8f6efa7854618b3f",
+      "passed": true,
+      "maskIoU": 0.99885801294252,
+      "pointerCosine": 0.9989540053471847,
+      "memoryCosine": 0.9931823369457851,
+      "encoderRawFeatureCosine": 0.9985542590752818,
+      "state": {
+        "acceptedFrames": 2,
+        "spatialEntries": 2,
+        "pointerEntries": 2
+      }
+    },
+    {
+      "index": 2,
+      "ptsNumerator": 1,
+      "ptsDenominator": 15,
+      "imageSHA256": "105621e87fbb3ffbd493d3256d4e672d453603a91bf2db14bfc36226a013f15f",
+      "passed": false,
+      "maskIoU": 0.9992576095025983,
+      "pointerCosine": 0.9896460003033114,
+      "memoryCosine": 0.9962748253754633,
+      "encoderRawFeatureCosine": 0.9985536544367634,
+      "state": {
+        "acceptedFrames": 3,
+        "spatialEntries": 3,
+        "pointerEntries": 3
+      }
+    },
+    {
+      "index": 3,
+      "ptsNumerator": 1,
+      "ptsDenominator": 10,
+      "imageSHA256": "a5ff112a614abf780a0ee0a275e0890599673f0cf03a84d4e7d0a65abb4a8767",
+      "passed": true,
+      "maskIoU": 0.9985549132947977,
+      "pointerCosine": 0.9924128872874303,
+      "memoryCosine": 0.9959832713451239,
+      "encoderRawFeatureCosine": 0.9985356733158178,
+      "state": {
+        "acceptedFrames": 4,
+        "spatialEntries": 4,
+        "pointerEntries": 4
+      }
+    },
+    {
+      "index": 4,
+      "ptsNumerator": 2,
+      "ptsDenominator": 15,
+      "imageSHA256": "62f93ffbadcdcf628dcc60349c18fa0a12df52ccbf0658b2f20312d3d1af018e",
+      "passed": true,
+      "maskIoU": 0.9992917847025495,
+      "pointerCosine": 0.9932014871155995,
+      "memoryCosine": 0.9975372414704695,
+      "encoderRawFeatureCosine": 0.9985869263740428,
+      "state": {
+        "acceptedFrames": 5,
+        "spatialEntries": 5,
+        "pointerEntries": 5
+      }
+    },
+    {
+      "index": 5,
+      "ptsNumerator": 1,
+      "ptsDenominator": 6,
+      "imageSHA256": "f6a40decba22d155c87c3c1266d596fd2bd6196f17b8aa8a8e331ce6f5cd4e2d",
+      "passed": true,
+      "maskIoU": 0.9982020855807263,
+      "pointerCosine": 0.9985840337242925,
+      "memoryCosine": 0.9980765336714357,
+      "encoderRawFeatureCosine": 0.9986038987572623,
+      "state": {
+        "acceptedFrames": 6,
+        "spatialEntries": 6,
+        "pointerEntries": 6
+      }
+    },
+    {
+      "index": 6,
+      "ptsNumerator": 1,
+      "ptsDenominator": 5,
+      "imageSHA256": "2ac9074fac47bc62545f8737795e6a64f267b59a0ad55d10b1a85150bcbaa59f",
+      "passed": true,
+      "maskIoU": 0.9988884772137829,
+      "pointerCosine": 0.999152308259101,
+      "memoryCosine": 0.9969020224537256,
+      "encoderRawFeatureCosine": 0.9985388566414114,
+      "state": {
+        "acceptedFrames": 7,
+        "spatialEntries": 7,
+        "pointerEntries": 7
+      }
+    },
+    {
+      "index": 7,
+      "ptsNumerator": 7,
+      "ptsDenominator": 30,
+      "imageSHA256": "bdc67ced61153a28b0569c2781bdb6aff68dd07dd278389e9ec387fe11e9dc9a",
+      "passed": true,
+      "maskIoU": 0.9992444276539478,
+      "pointerCosine": 0.9994286160364658,
+      "memoryCosine": 0.9979490882093635,
+      "encoderRawFeatureCosine": 0.9985430187028593,
+      "state": {
+        "acceptedFrames": 8,
+        "spatialEntries": 7,
+        "pointerEntries": 8
+      }
+    },
+    {
+      "index": 8,
+      "ptsNumerator": 4,
+      "ptsDenominator": 15,
+      "imageSHA256": "74ab3b24632b67dd4d82592166b5c02da84d02aa8a00d0aeff6724b6e98d9816",
+      "passed": true,
+      "maskIoU": 0.9981067777357062,
+      "pointerCosine": 0.9986671942503365,
+      "memoryCosine": 0.9959723007138781,
+      "encoderRawFeatureCosine": 0.998559861120443,
+      "state": {
+        "acceptedFrames": 9,
+        "spatialEntries": 7,
+        "pointerEntries": 9
+      }
+    },
+    {
+      "index": 9,
+      "ptsNumerator": 3,
+      "ptsDenominator": 10,
+      "imageSHA256": "0a7e27e0429e46facf8d23eb41c4ab25e8cebf9b579a9f5c679125bb06cdc782",
+      "passed": true,
+      "maskIoU": 0.9981082103670071,
+      "pointerCosine": 0.9989480875948518,
+      "memoryCosine": 0.9959633647784152,
+      "encoderRawFeatureCosine": 0.9985632196633197,
+      "state": {
+        "acceptedFrames": 10,
+        "spatialEntries": 7,
+        "pointerEntries": 10
+      }
+    },
+    {
+      "index": 10,
+      "ptsNumerator": 1,
+      "ptsDenominator": 3,
+      "imageSHA256": "e4257f051a23bb1524c2a20ae52414fa2791055db7e7a7dbb167f3f38af38eda",
+      "passed": true,
+      "maskIoU": 0.9966777408637874,
+      "pointerCosine": 0.9993980025854454,
+      "memoryCosine": 0.9968765625248635,
+      "encoderRawFeatureCosine": 0.9985285385630707,
+      "state": {
+        "acceptedFrames": 11,
+        "spatialEntries": 7,
+        "pointerEntries": 11
+      }
+    },
+    {
+      "index": 11,
+      "ptsNumerator": 11,
+      "ptsDenominator": 30,
+      "imageSHA256": "399ed04cfbb7808f567feb7165eb91011183ef33b2974d8b0bda2d917c2561d5",
+      "passed": true,
+      "maskIoU": 0.99609375,
+      "pointerCosine": 0.998766936809457,
+      "memoryCosine": 0.997527639956822,
+      "encoderRawFeatureCosine": 0.9985703334317259,
+      "state": {
+        "acceptedFrames": 12,
+        "spatialEntries": 7,
+        "pointerEntries": 12
+      }
+    },
+    {
+      "index": 12,
+      "ptsNumerator": 2,
+      "ptsDenominator": 5,
+      "imageSHA256": "ff7db0909555b0146117f02782d1239dee34abe6bb449a74ed55810aecd501b9",
+      "passed": true,
+      "maskIoU": 0.9983050847457627,
+      "pointerCosine": 0.9989513098413051,
+      "memoryCosine": 0.9978299291119718,
+      "encoderRawFeatureCosine": 0.9985488021339826,
+      "state": {
+        "acceptedFrames": 13,
+        "spatialEntries": 7,
+        "pointerEntries": 13
+      }
+    },
+    {
+      "index": 13,
+      "ptsNumerator": 13,
+      "ptsDenominator": 30,
+      "imageSHA256": "f38ef5b23bc0ab5ee6d09f4713dcaaa89cebee59b82ec68ce9f7a55f38a5fbe1",
+      "passed": true,
+      "maskIoU": 0.9993552546744036,
+      "pointerCosine": 0.9993665174278058,
+      "memoryCosine": 0.998162477054742,
+      "encoderRawFeatureCosine": 0.9985331185416417,
+      "state": {
+        "acceptedFrames": 14,
+        "spatialEntries": 7,
+        "pointerEntries": 14
+      }
+    },
+    {
+      "index": 14,
+      "ptsNumerator": 7,
+      "ptsDenominator": 15,
+      "imageSHA256": "19ac8be183ee9a5566c9bad4c3b46cc2fde023da81f6ee81650fd7e3b87a54b1",
+      "passed": true,
+      "maskIoU": 0.9990803188228081,
+      "pointerCosine": 0.999641761429016,
+      "memoryCosine": 0.9966485471098712,
+      "encoderRawFeatureCosine": 0.9985349935010279,
+      "state": {
+        "acceptedFrames": 15,
+        "spatialEntries": 7,
+        "pointerEntries": 15
+      }
+    },
+    {
+      "index": 15,
+      "ptsNumerator": 1,
+      "ptsDenominator": 2,
+      "imageSHA256": "a1f6f364fc6b52333e04ce09c28846a3605aa2a56ba3ff3614dcdd52533b987d",
+      "passed": true,
+      "maskIoU": 0.9980287243030133,
+      "pointerCosine": 0.9989863083053807,
+      "memoryCosine": 0.9969073063140146,
+      "encoderRawFeatureCosine": 0.9985363952636546,
+      "state": {
+        "acceptedFrames": 16,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      }
+    },
+    {
+      "index": 16,
+      "ptsNumerator": 8,
+      "ptsDenominator": 15,
+      "imageSHA256": "9769759d13e3292cd9f6c52fda09ac76903c406362fe801c399c4fa7a1b05a53",
+      "passed": true,
+      "maskIoU": 0.9994682265354958,
+      "pointerCosine": 0.9994035929110193,
+      "memoryCosine": 0.9971430279388802,
+      "encoderRawFeatureCosine": 0.9984874769004496,
+      "state": {
+        "acceptedFrames": 17,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      }
+    },
+    {
+      "index": 17,
+      "ptsNumerator": 17,
+      "ptsDenominator": 30,
+      "imageSHA256": "547d222bd5a2f255779e7afc5269080924c0b7d2475607e930cc59342c0f2a59",
+      "passed": true,
+      "maskIoU": 0.9989730423620026,
+      "pointerCosine": 0.9984363549926176,
+      "memoryCosine": 0.9962931764552088,
+      "encoderRawFeatureCosine": 0.9985165387737442,
+      "state": {
+        "acceptedFrames": 18,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      }
+    },
+    {
+      "index": 18,
+      "ptsNumerator": 3,
+      "ptsDenominator": 5,
+      "imageSHA256": "a29dd4d4ec155aef133fe670ff73065aa2558101d980f187e24752dd0976bab9",
+      "passed": true,
+      "maskIoU": 0.9994946942900454,
+      "pointerCosine": 0.996524950639582,
+      "memoryCosine": 0.9959337094949415,
+      "encoderRawFeatureCosine": 0.998517493996862,
+      "state": {
+        "acceptedFrames": 19,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      }
+    },
+    {
+      "index": 19,
+      "ptsNumerator": 19,
+      "ptsDenominator": 30,
+      "imageSHA256": "05ef5ea441e42bb439f0a87c950f827d4b3cf5e2e6ddcee5125c2462295137a6",
+      "passed": false,
+      "maskIoU": 0.9984954864593781,
+      "pointerCosine": 0.98767196419585,
+      "memoryCosine": 0.9944057618124701,
+      "encoderRawFeatureCosine": 0.9985338072383039,
+      "state": {
+        "acceptedFrames": 20,
+        "spatialEntries": 7,
+        "pointerEntries": 16
+      }
+    }
+  ],
+  "minimumMetrics": {
+    "maskIoU": 0.99609375,
+    "pointerCosine": 0.98767196419585,
+    "memoryCosine": 0.9931823369457851,
+    "encoderRawFeatureCosine": 0.9984874769004496
+  },
+  "failedFrameIndices": [
+    2,
+    19
+  ]
+}

@@ -1,0 +1,652 @@
+{
+  "allPlansLoaded": true,
+  "completed": true,
+  "contract": "bytewave.edgetam-temporal-owned.v2",
+  "fixtureSHA256": "80bfbde3da5d8d650a68d60a1f61e2da0050abbe576e0bc848da46d640298455",
+  "generatedAt": "2026-09-15T21:13:17Z",
+  "graphRevision": "dense-points-encoder-fanout.v1",
+  "hardware": "iPhone18,1",
+  "isIOSAppOnMac": false,
+  "lastCheckpoint": "Plan inspection completed",
+  "operatingSystem": "Version 27.0 (Build 24A435)",
+  "precisionPolicy": "mixed-encoder-late-conv33-fanout-and-fp32-attention-iou.v1",
+  "schema": "bytewave.temporal-compute-plan.v1",
+  "scope": "Verified owned ImageEncoder and Propagator plans under CPU_AND_GPU and CPU_AND_NE. No predictions or numerical validation. Constants excluded. Relative costs are compiler estimates within each model/plan, not measured milliseconds, runtime device utilization, or comparable absolute costs across plans. Missing cost is unreported, not zero.",
+  "sourceModelsManifestSHA256": "47b7b85eef755ff7a440c0017f232a82ac7213af622d15d30a04f3487e07dd67",
+  "sourceReportSHA256": "8768eab4331ad57994782ee244861b64f3c3eb27fa6c970cc881a843618af9a6",
+  "verifiedModelFileCount": 12,
+  "sourceAttachment": "bb249b70-0aa3-4b38-9b35-2f5c0f137427.json",
+  "sourceAttachmentSHA256": "ffa24547702d894b7a9b1da14a24a01061721bac6b8c8cb6ea60980953e0f6e9",
+  "archiveScope": "Summary and selected operations from the supplied full plan; no measured per-operation timing.",
+  "selectedPropagatorOutputs": [
+    "linear_9_cast_fp16",
+    "linear_19_cast_fp16",
+    "linear_74_cast_fp16",
+    "linear_76_cast_fp16"
+  ],
+  "plans": [
+    {
+      "component": "ImageEncoder",
+      "constantOperationsExcluded": 1189,
+      "estimatedRelativeCostByPreferredDevice": {
+        "GPU": 0.999999999999999
+      },
+      "operationsWithEstimatedCost": 489,
+      "preferredCounts": {
+        "GPU": 489
+      },
+      "requestedComputeUnits": "CPU_AND_GPU",
+      "highestEstimatedCostOperations": [
+        {
+          "estimatedRelativeCost": 0.0245038863947404,
+          "operation": "ios18.conv",
+          "outputs": [
+            "x"
+          ],
+          "path": "main/1663",
+          "preferredDevice": "GPU",
+          "supportedDevices": [
+            "CPU",
+            "GPU"
+          ]
+        },
+        {
+          "estimatedRelativeCost": 0.016199089846007503,
+          "operation": "ios18.conv",
+          "outputs": [
+            "high_res_feature_0"
+          ],
+          "path": "main/1669",
+          "preferredDevice": "GPU",
+          "supportedDevices": [
+            "CPU",
+            "GPU"
+          ]
+        },
+        {
+          "estimatedRelativeCost": 0.014098065847632953,
+          "operation": "ios18.conv",
+          "outputs": [
+            "input_11_cast_fp16"
+          ],
+          "path": "main/49",
+          "preferredDevice": "GPU",
+          "supportedDevices": [
+            "CPU",
+            "GPU"
+          ]
+        },
+        {
+          "estimatedRelativeCost": 0.012188788850992003,
+          "operation": "ios18.conv",
+          "outputs": [
+            "x_97"
+          ],
+          "path": "main/1655",
+          "preferredDevice": "GPU",
+          "supportedDevices": [
+            "CPU",
+            "GPU"
+          ]
+        },
+        {
+          "estimatedRelativeCost": 0.009188957398027648,
+          "operation": "ios18.conv",
+          "outputs": [
+            "input_27_cast_fp16"
+          ],
+          "path": "main/113",
+          "preferredDevice": "GPU",
+          "supportedDevices": [
+            "CPU",
+            "GPU"
+          ]
+        },
+        {
+          "estimatedRelativeCost": 0.009188957398027648,
+          "operation": "ios18.conv",
+          "outputs": [
+            "input_43_cast_fp16"
+          ],
+          "path": "main/168",
+          "preferredDevice": "GPU",
+          "supportedDevices": [
+            "CPU",
+            "GPU"
+          ]
+        },
+        {
+          "estimatedRelativeCost": 0.009188957398027648,
+          "operation": "ios18.conv",
+          "outputs": [
+            "input_59_cast_fp16"
+          ],
+          "path": "main/223",
+          "preferredDevice": "GPU",
+          "supportedDevices": [
+            "CPU",
+            "GPU"
+          ]
+        },
+        {
+          "estimatedRelativeCost": 0.009141591638244,
+          "operation": "ios18.conv",
+          "outputs": [
+            "x_5_cast_fp16"
+          ],
+          "path": "main/127",
+          "preferredDevice": "GPU",
+          "supportedDevices": [
+            "CPU",
+            "GPU"
+          ]
+        },
+        {
+          "estimatedRelativeCost": 0.009141591638244,
+          "operation": "ios18.conv",
+          "outputs": [
+            "x_7_cast_fp16"
+          ],
+          "path": "main/182",
+          "preferredDevice": "GPU",
+          "supportedDevices": [
+            "CPU",
+            "GPU"
+          ]
+        },
+        {
+          "estimatedRelativeCost": 0.009141591638244,
+          "operation": "ios18.conv",
+          "outputs": [
+            "x_9_cast_fp16"
+          ],
+          "path": "main/237",
+          "preferredDevice": "GPU",
+          "supportedDevices": [
+            "CPU",
+            "GPU"
+          ]
+        },
+        {
+          "estimatedRelativeCost": 0.009141591638244,
+          "operation": "ios18.conv",
+          "outputs": [
+            "input_77_cast_fp16"
+          ],
+          "path": "main/269",
+          "preferredDevice": "GPU",
+          "supportedDevices": [
+            "CPU",
+            "GPU"
+          ]
+        },
+        {
+          "estimatedRelativeCost": 0.009141591638244,
+          "operation": "ios18.conv",
+          "outputs": [
+            "input_99_cast_fp16"
+          ],
+          "path": "main/353",
+          "preferredDevice": "GPU",
+          "supportedDevices": [
+            "CPU",
+            "GPU"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "ImageEncoder",
+      "constantOperationsExcluded": 1189,
+      "estimatedRelativeCostByPreferredDevice": {
+        "CPU": 0.9582239186699483,
+        "Neural Engine": 0.04177608133004605
+      },
+      "operationsWithEstimatedCost": 489,
+      "preferredCounts": {
+        "CPU": 406,
+        "Neural Engine": 83
+      },
+      "requestedComputeUnits": "CPU_AND_NE",
+      "highestEstimatedCostOperations": [
+        {
+          "estimatedRelativeCost": 0.04525022339477667,
+          "operation": "ios18.conv",
+          "outputs": [
+            "x"
+          ],
+          "path": "main/1663",
+          "preferredDevice": "CPU",
+          "supportedDevices": [
+            "CPU"
+          ]
+        },
+        {
+          "estimatedRelativeCost": 0.029914129641134577,
+          "operation": "ios18.conv",
+          "outputs": [
+            "high_res_feature_0"
+          ],
+          "path": "main/1669",
+          "preferredDevice": "CPU",
+          "supportedDevices": [
+            "CPU"
+          ]
+        },
+        {
+          "estimatedRelativeCost": 0.022508487410288398,
+          "operation": "ios18.conv",
+          "outputs": [
+            "x_97"
+          ],
+          "path": "main/1655",
+          "preferredDevice": "CPU",
+          "supportedDevices": [
+            "CPU"
+          ]
+        },
+        {
+          "estimatedRelativeCost": 0.016837631450053823,
+          "operation": "ios18.conv",
+          "outputs": [
+            "input_399"
+          ],
+          "path": "main/1419",
+          "preferredDevice": "CPU",
+          "supportedDevices": [
+            "CPU"
+          ]
+        },
+        {
+          "estimatedRelativeCost": 0.016837631450053823,
+          "operation": "ios18.conv",
+          "outputs": [
+            "input_415"
+          ],
+          "path": "main/1456",
+          "preferredDevice": "CPU",
+          "supportedDevices": [
+            "CPU"
+          ]
+        },
+        {
+          "estimatedRelativeCost": 0.016837631450053823,
+          "operation": "ios18.conv",
+          "outputs": [
+            "input_431"
+          ],
+          "path": "main/1493",
+          "preferredDevice": "CPU",
+          "supportedDevices": [
+            "CPU"
+          ]
+        },
+        {
+          "estimatedRelativeCost": 0.014957064820567289,
+          "operation": "ios18.conv",
+          "outputs": [
+            "high_res_feature_1"
+          ],
+          "path": "main/1675",
+          "preferredDevice": "CPU",
+          "supportedDevices": [
+            "CPU"
+          ]
+        },
+        {
+          "estimatedRelativeCost": 0.011225087633369213,
+          "operation": "ios18.conv",
+          "outputs": [
+            "lateral_features"
+          ],
+          "path": "main/1643",
+          "preferredDevice": "CPU",
+          "supportedDevices": [
+            "CPU"
+          ]
+        },
+        {
+          "estimatedRelativeCost": 0.010899804928763607,
+          "operation": "ios18.add",
+          "outputs": [
+            "var_130"
+          ],
+          "path": "main/71",
+          "preferredDevice": "CPU",
+          "supportedDevices": [
+            "CPU"
+          ]
+        },
+        {
+          "estimatedRelativeCost": 0.010899804928763607,
+          "operation": "ios18.add",
+          "outputs": [
+            "x_1"
+          ],
+          "path": "main/73",
+          "preferredDevice": "CPU",
+          "supportedDevices": [
+            "CPU"
+          ]
+        },
+        {
+          "estimatedRelativeCost": 0.010899804928763607,
+          "operation": "ios18.add",
+          "outputs": [
+            "input_33"
+          ],
+          "path": "main/132",
+          "preferredDevice": "CPU",
+          "supportedDevices": [
+            "CPU"
+          ]
+        },
+        {
+          "estimatedRelativeCost": 0.010899804928763607,
+          "operation": "ios18.add",
+          "outputs": [
+            "var_213"
+          ],
+          "path": "main/155",
+          "preferredDevice": "CPU",
+          "supportedDevices": [
+            "CPU"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "Propagator",
+      "constantOperationsExcluded": 929,
+      "estimatedRelativeCostByPreferredDevice": {
+        "CPU": 0.027696464528408304,
+        "GPU": 0.9722743824956247
+      },
+      "operationsWithEstimatedCost": 722,
+      "preferredCounts": {
+        "CPU": 18,
+        "GPU": 704
+      },
+      "requestedComputeUnits": "CPU_AND_GPU",
+      "highestEstimatedCostOperations": [
+        {
+          "estimatedRelativeCost": 0.23060443074755904,
+          "operation": "ios18.linear",
+          "outputs": [
+            "linear_9_cast_fp16"
+          ],
+          "path": "main/239",
+          "preferredDevice": "GPU",
+          "supportedDevices": [
+            "CPU",
+            "GPU"
+          ]
+        },
+        {
+          "estimatedRelativeCost": 0.23060443074755904,
+          "operation": "ios18.linear",
+          "outputs": [
+            "linear_19_cast_fp16"
+          ],
+          "path": "main/407",
+          "preferredDevice": "GPU",
+          "supportedDevices": [
+            "CPU",
+            "GPU"
+          ]
+        },
+        {
+          "estimatedRelativeCost": 0.05765110897549242,
+          "operation": "ios18.linear",
+          "outputs": [
+            "linear_74_cast_fp16"
+          ],
+          "path": "main/1181",
+          "preferredDevice": "GPU",
+          "supportedDevices": [
+            "CPU",
+            "GPU"
+          ]
+        },
+        {
+          "estimatedRelativeCost": 0.05765110897549242,
+          "operation": "ios18.linear",
+          "outputs": [
+            "linear_76_cast_fp16"
+          ],
+          "path": "main/1221",
+          "preferredDevice": "GPU",
+          "supportedDevices": [
+            "CPU",
+            "GPU"
+          ]
+        },
+        {
+          "estimatedRelativeCost": 0.013728858718374617,
+          "operation": "ios18.conv_transpose",
+          "outputs": [
+            "var_1437_has_output_shape_cast_fp16"
+          ],
+          "path": "main/827",
+          "preferredDevice": "CPU",
+          "supportedDevices": [
+            "CPU",
+            "GPU"
+          ]
+        },
+        {
+          "estimatedRelativeCost": 0.010455141324138663,
+          "operation": "ios18.linear",
+          "outputs": [
+            "linear_8_cast_fp16"
+          ],
+          "path": "main/235",
+          "preferredDevice": "GPU",
+          "supportedDevices": [
+            "CPU",
+            "GPU"
+          ]
+        },
+        {
+          "estimatedRelativeCost": 0.010455141324138663,
+          "operation": "ios18.linear",
+          "outputs": [
+            "linear_18_cast_fp16"
+          ],
+          "path": "main/403",
+          "preferredDevice": "GPU",
+          "supportedDevices": [
+            "CPU",
+            "GPU"
+          ]
+        },
+        {
+          "estimatedRelativeCost": 0.010455121382615222,
+          "operation": "ios18.linear",
+          "outputs": [
+            "linear_73_cast_fp16"
+          ],
+          "path": "main/1176",
+          "preferredDevice": "GPU",
+          "supportedDevices": [
+            "CPU",
+            "GPU"
+          ]
+        },
+        {
+          "estimatedRelativeCost": 0.010455121382615222,
+          "operation": "ios18.linear",
+          "outputs": [
+            "linear_75_cast_fp16"
+          ],
+          "path": "main/1216",
+          "preferredDevice": "GPU",
+          "supportedDevices": [
+            "CPU",
+            "GPU"
+          ]
+        },
+        {
+          "estimatedRelativeCost": 0.009031851607956092,
+          "operation": "ios18.conv",
+          "outputs": [
+            "x_129_cast_fp16"
+          ],
+          "path": "main/1108",
+          "preferredDevice": "GPU",
+          "supportedDevices": [
+            "CPU",
+            "GPU"
+          ]
+        },
+        {
+          "estimatedRelativeCost": 0.006472157789791719,
+          "operation": "ios16.upsample_bilinear",
+          "outputs": [
+            "high_res_multimasks_cast_fp16"
+          ],
+          "path": "main/961",
+          "preferredDevice": "GPU",
+          "supportedDevices": [
+            "CPU",
+            "GPU"
+          ]
+        },
+        {
+          "estimatedRelativeCost": 0.005003421580443685,
+          "operation": "ios18.conv_transpose",
+          "outputs": [
+            "var_1407_has_output_shape_cast_fp16"
+          ],
+          "path": "main/794",
+          "preferredDevice": "CPU",
+          "supportedDevices": [
+            "CPU",
+            "GPU"
+          ]
+        }
+      ],
+      "selectedOperations": [
+        {
+          "estimatedRelativeCost": 0.23060443074755904,
+          "operation": "ios18.linear",
+          "outputs": [
+            "linear_9_cast_fp16"
+          ],
+          "path": "main/239",
+          "preferredDevice": "GPU",
+          "supportedDevices": [
+            "CPU",
+            "GPU"
+          ]
+        },
+        {
+          "estimatedRelativeCost": 0.23060443074755904,
+          "operation": "ios18.linear",
+          "outputs": [
+            "linear_19_cast_fp16"
+          ],
+          "path": "main/407",
+          "preferredDevice": "GPU",
+          "supportedDevices": [
+            "CPU",
+            "GPU"
+          ]
+        },
+        {
+          "estimatedRelativeCost": 0.05765110897549242,
+          "operation": "ios18.linear",
+          "outputs": [
+            "linear_74_cast_fp16"
+          ],
+          "path": "main/1181",
+          "preferredDevice": "GPU",
+          "supportedDevices": [
+            "CPU",
+            "GPU"
+          ]
+        },
+        {
+          "estimatedRelativeCost": 0.05765110897549242,
+          "operation": "ios18.linear",
+          "outputs": [
+            "linear_76_cast_fp16"
+          ],
+          "path": "main/1221",
+          "preferredDevice": "GPU",
+          "supportedDevices": [
+            "CPU",
+            "GPU"
+          ]
+        }
+      ],
+      "selectedEstimatedCostSum": 0.5765110794461029
+    },
+    {
+      "component": "Propagator",
+      "constantOperationsExcluded": 929,
+      "estimatedRelativeCostByPreferredDevice": {},
+      "operationsWithEstimatedCost": 0,
+      "preferredCounts": {
+        "CPU": 181,
+        "Neural Engine": 489,
+        "Unreported": 52
+      },
+      "requestedComputeUnits": "CPU_AND_NE",
+      "highestEstimatedCostOperations": [],
+      "selectedOperations": [
+        {
+          "operation": "ios18.linear",
+          "outputs": [
+            "linear_9_cast_fp16"
+          ],
+          "path": "main/239",
+          "preferredDevice": "Neural Engine",
+          "supportedDevices": [
+            "CPU",
+            "GPU",
+            "Neural Engine"
+          ]
+        },
+        {
+          "operation": "ios18.linear",
+          "outputs": [
+            "linear_19_cast_fp16"
+          ],
+          "path": "main/407",
+          "preferredDevice": "Neural Engine",
+          "supportedDevices": [
+            "CPU",
+            "GPU",
+            "Neural Engine"
+          ]
+        },
+        {
+          "operation": "ios18.linear",
+          "outputs": [
+            "linear_74_cast_fp16"
+          ],
+          "path": "main/1181",
+          "preferredDevice": "CPU",
+          "supportedDevices": [
+            "CPU",
+            "GPU"
+          ]
+        },
+        {
+          "operation": "ios18.linear",
+          "outputs": [
+            "linear_76_cast_fp16"
+          ],
+          "path": "main/1221",
+          "preferredDevice": "CPU",
+          "supportedDevices": [
+            "CPU",
+            "GPU"
+          ]
+        }
+      ],
+      "selectedEstimatedCostSum": null
+    }
+  ]
+}

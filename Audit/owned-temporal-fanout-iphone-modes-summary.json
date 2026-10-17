@@ -1,0 +1,63 @@
+{
+  "scope": "Five user-run fixed-fixture correctness comparisons. Timing medians exclude cold frame zero, cover frames 1 through 19, and are diagnostic; not a sustained playback benchmark or measured hardware utilization. Older reports do not record build configuration or Metal validation settings.",
+  "fixtureSHA256": "80bfbde3da5d8d650a68d60a1f61e2da0050abbe576e0bc848da46d640298455",
+  "sourceModelsManifestSHA256": "47b7b85eef755ff7a440c0017f232a82ac7213af622d15d30a04f3487e07dd67",
+  "hardware": "iPhone15,2",
+  "modes": [
+    {
+      "mode": "CPU only",
+      "framesPassed": 20,
+      "minimumMaskIoU": 0.9975115535015997,
+      "minimumPointerCosine": 0.99858881752082,
+      "minimumMemoryCosine": 0.9966179748403006,
+      "medianEncoderMilliseconds": 104.0383750005276,
+      "medianPropagatorMilliseconds": 207.4478333324805,
+      "medianSummedModelMilliseconds": 310.60508333393955,
+      "medianPredictionAndStateMilliseconds": 1158.9574166664534
+    },
+    {
+      "mode": "Encoder NE + CPU tracker",
+      "framesPassed": 20,
+      "minimumMaskIoU": 0.9971590909090909,
+      "minimumPointerCosine": 0.9987312651859955,
+      "minimumMemoryCosine": 0.9961381514914804,
+      "medianEncoderMilliseconds": 157.88729166706617,
+      "medianPropagatorMilliseconds": 208.88250000098196,
+      "medianSummedModelMilliseconds": 367.23708333374816,
+      "medianPredictionAndStateMilliseconds": 1217.6917083324952
+    },
+    {
+      "mode": "CPU + Neural Engine",
+      "framesPassed": 20,
+      "minimumMaskIoU": 0.9968039772727273,
+      "minimumPointerCosine": 0.998240174294943,
+      "minimumMemoryCosine": 0.9927675932442027,
+      "medianEncoderMilliseconds": 168.03691666791565,
+      "medianPropagatorMilliseconds": 392.5049166664394,
+      "medianSummedModelMilliseconds": 564.0242916670104,
+      "medianPredictionAndStateMilliseconds": 1419.1382083336066
+    },
+    {
+      "mode": "CPU + GPU",
+      "framesPassed": 20,
+      "minimumMaskIoU": 0.9964488636363636,
+      "minimumPointerCosine": 0.998735446241952,
+      "minimumMemoryCosine": 0.9962377999137907,
+      "medianEncoderMilliseconds": 76.8143749992305,
+      "medianPropagatorMilliseconds": 188.3904166679713,
+      "medianSummedModelMilliseconds": 265.23970833659405,
+      "medianPredictionAndStateMilliseconds": 1136.8054583326739
+    },
+    {
+      "mode": "Automatic",
+      "framesPassed": 20,
+      "minimumMaskIoU": 0.9968017057569296,
+      "minimumPointerCosine": 0.9969972961038254,
+      "minimumMemoryCosine": 0.9929428765683008,
+      "medianEncoderMilliseconds": 185.45683333286433,
+      "medianPropagatorMilliseconds": 395.11945833146456,
+      "medianSummedModelMilliseconds": 580.6667500000913,
+      "medianPredictionAndStateMilliseconds": 1466.9592499994906
+    }
+  ]
+}

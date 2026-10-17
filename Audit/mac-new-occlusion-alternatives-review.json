@@ -1,0 +1,32 @@
+{
+  "scope": "Offline review of all nine first-frame masks; no assistant inference.",
+  "archiveSHA256": "a47fb239001b18ef3ca66b6eb7fab30afd870ee195eb5f21cababb30dd2dfbbb",
+  "reportSHA256": "63435cf6da089c6a5802ef3aab2c924db5e82828a4e05fc262879bfca3b702c1",
+  "sourceVideoSHA256": "5170ab7d885e131cbcd79be302d422f58e014f0c7ffbde51dcdcf8ad27bfa1e9",
+  "completed": true,
+  "allPriorSummaryControlsReproduced": true,
+  "observations": [
+    "Head point: candidate 1 covers body with many holes; automatic candidate 2 covers head fragment.",
+    "Shoulder point: candidate 1 broadly covers person head to shoes, with holes/imperfect boundaries; automatic candidate 2 selects shirt; candidate 3 selects shoulder/sleeve.",
+    "Forearm point: candidate 1 broadly covers person with holes; automatic candidate 3 selects raised arm; candidate 2 includes other skin fragments."
+  ],
+  "selectedForDiagnostic": {
+    "pointNumber": 2,
+    "pointNormalizedTopLeft": [
+      0.36,
+      0.4
+    ],
+    "candidate": 1,
+    "predictedIoU": 0.4044136703014374,
+    "maskSHA256": "96bab27fab6073f724c8540c520e49631bbdd979e696050209fa8ba78fbda363",
+    "automaticCandidate": 2,
+    "automaticPredictedIoU": 0.5077220797538757
+  },
+  "decision": "Replay original automatic vs chosen initialization with native matching pointer and freshly encoded memory. Subsequent tracking unchanged; independent histories.",
+  "limitations": [
+    "One frame visually inspected; not perfect segmentation, identity ground truth or occlusion success.",
+    "Original PyTorch CPU alternatives only; no Core ML parity or device readiness.",
+    "Estimated mask quality is not evidence of intended subject extent.",
+    "Earlier prototype recovery policy remains frozen; no recovery logic in this replay."
+  ]
+}

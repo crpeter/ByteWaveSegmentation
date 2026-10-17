@@ -1,0 +1,67 @@
+{
+  "scope": "Reverse-order iPhone confirmation: fused encoder first, existing FP16 second. Warm medians exclude startup; no sustained playback FPS claim.",
+  "hardware": "iPhone18,1",
+  "operatingSystem": "Version 27.0 (Build 24A435)",
+  "mode": "CPU + GPU",
+  "swiftDebugCompilation": false,
+  "sameInputsReferencesAndTracker": true,
+  "coldExclusions": {
+    "ImageEncoder": "Exclude index 0",
+    "Propagator": "Exclude indices 0/1 (first call is index 1)",
+    "predictionAndState": "Exclude indices 0/1"
+  },
+  "runs": {
+    "memoryfp16": {
+      "sourceUpload": "c36a47e6-b05f-496a-8802-ea8ae63e701d.json",
+      "report": "iphone17pro-encoder-projection-reverse-memoryfp16-report.json",
+      "reportSHA256": "38764a2ede01b6e39ec350017bad7b42a8cae949c98d53e8ab93dc2cf51e0cb7",
+      "fixtureSHA256": "f6b8e78c142538375ff6bf6fee5516975543f06e2f0780f959ffd3abc0dbbc9f",
+      "generatedAt": "2026-09-16T18:16:13Z",
+      "passed": true,
+      "framesCompared": 20,
+      "thermalStart": "nominal",
+      "thermalEnd": "nominal",
+      "qualityFieldsMatchFirstRun": true,
+      "minimumMaskIoU": 0.9968039772727273,
+      "minimumPointerCosine": 0.9989310422512354,
+      "minimumMemoryCosine": 0.9961403122331987,
+      "warmMedianMilliseconds": {
+        "ImageEncoder": 21.99770833249204,
+        "Propagator": 32.60422917082906,
+        "predictionAndState": 59.474979163496755
+      }
+    },
+    "memoryfp16projection": {
+      "sourceUpload": "b4819aee-62df-4b9f-b400-058e9ec838fd.json",
+      "report": "iphone17pro-encoder-projection-reverse-memoryfp16projection-report.json",
+      "reportSHA256": "c34fb8f407cdfc70b786d995a5f9c3f5d78edd7d812f9c6a109728cede71eabf",
+      "fixtureSHA256": "760dd45c6eed6972f434dd324920b74dbfa262fb6648983606c2872581430a61",
+      "generatedAt": "2026-09-16T18:16:03Z",
+      "passed": true,
+      "framesCompared": 20,
+      "thermalStart": "nominal",
+      "thermalEnd": "nominal",
+      "qualityFieldsMatchFirstRun": true,
+      "minimumMaskIoU": 0.9968039772727273,
+      "minimumPointerCosine": 0.9989240193051645,
+      "minimumMemoryCosine": 0.9961267421380079,
+      "warmMedianMilliseconds": {
+        "ImageEncoder": 18.76950000587385,
+        "Propagator": 32.50829166790936,
+        "predictionAndState": 55.851562501629815
+      }
+    }
+  },
+  "latencyReductionPercent": {
+    "ImageEncoder": 14.67520287942865,
+    "Propagator": 0.2942486461404603,
+    "predictionAndState": 6.092337841609263
+  },
+  "firstPairSummarySHA256": "a9c9aea2e9c7e98c959d9c8588dc9317f630cb388dc901e1ffcbe9f94f5c6810",
+  "firstPairLatencyReductionPercent": {
+    "ImageEncoder": 14.434649225324714,
+    "Propagator": -0.30008568490140775,
+    "predictionAndState": 5.261366683282809
+  },
+  "decision": "Encoder gain retained with reversed order and all accuracy checks pass; use fused encoder plus existing FP16 tracker in prototype Track a video for longer-clip visual/seek check. Normal exports and production app unchanged."
+}

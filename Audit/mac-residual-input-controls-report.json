@@ -1,0 +1,350 @@
+{
+  "sourceAttachment": "Pasted text(20260915-190651).txt",
+  "sourceAttachmentSHA256": "30a0310412b3ade832d7f16ab4b75e81d3f84c31a26ccd5c03fff8ab0db38c32",
+  "interpretation": "Both isolated blocks pass CPU_AND_NE (all cosine values above 0.9999999), with both convolutions preferring NE. CPU outputs exactly match prefix CPU. Sharing an external input alone does not reproduce the failure; the larger-prefix execution context remains implicated. This is not a full encoder fix or proof of actual NE execution.",
+  "report": {
+    "scope": "Compare one shared residual input with separate FP32/FP16 branch inputs.\n\nUses identical saved CPU tensors and unchanged extracted convolutions/additions.\nCutting the graph changes placement and lifetimes; this is not a full encoder fix.\n",
+    "completed": true,
+    "readyForDeviceValidation": false,
+    "sourceManifestSHA256": "8e3855c53deda132d4c378d3a93343ac3bc6a678b1a95a8cf5bb7c6bd99e61c1",
+    "sourcePrefixReportSHA256": "5e35df9a3941efd4f45229647b7b2ed6be93026c86736df50468142db839c570",
+    "sourceCPUTensorSHA256s": {
+      "input_33": "0a989cffd8dd96be37706f66a94199468a77f47d80810be915f4101d95c711ea",
+      "input_39": "e97104a35e4084c67ca266ffa5ea50136a4cecf4aa1f661f29de9d7efdb9c40d"
+    },
+    "inputFileSHA256": "2bab76daeb53f323500d70ca323c3f9664684c77fff80dd0404c153b6ea4db6c",
+    "imageSHA256": "df4fd26c6e7c6cce4cd9e6c04ace316788f125eb4f953f0aad96882e7b474dd9",
+    "coremltoolsVersion": "9.0",
+    "variants": {
+      "shared": {
+        "inputs": [
+          "input_33"
+        ],
+        "outputs": [
+          "input_39",
+          "input_39_to_fp16"
+        ],
+        "files": {
+          "Manifest.json": "c5e0963a07e2208111dd352fa5c5c6c0c84eb5c602996c8a703e0607ba9091c4",
+          "Data/com.apple.CoreML/model.mlmodel": "f241acf682664325a472fb3e2f47b9311bcdab6e640cc2513cef384a8e6c0de7",
+          "Data/com.apple.CoreML/weights/weight.bin": "4a9190c3e90caf3af16b219e90de3a1712c9d59fb36972c7e057ec5b73db3922"
+        },
+        "preferredCounts": {
+          "MLNeuralEngineComputeDevice": 3,
+          "MLCPUComputeDevice": 5
+        },
+        "operations": [
+          {
+            "location": "main/8",
+            "type": "ios18.cast",
+            "outputs": [
+              "input_33_to_fp16"
+            ],
+            "preferred": "MLNeuralEngineComputeDevice",
+            "supported": [
+              "MLCPUComputeDevice",
+              "MLNeuralEngineComputeDevice"
+            ]
+          },
+          {
+            "location": "main/9",
+            "type": "ios18.conv",
+            "outputs": [
+              "var_199_cast_fp16"
+            ],
+            "preferred": "MLNeuralEngineComputeDevice",
+            "supported": [
+              "MLCPUComputeDevice",
+              "MLNeuralEngineComputeDevice"
+            ]
+          },
+          {
+            "location": "main/18",
+            "type": "ios18.conv",
+            "outputs": [
+              "var_212_cast_fp16"
+            ],
+            "preferred": "MLNeuralEngineComputeDevice",
+            "supported": [
+              "MLCPUComputeDevice",
+              "MLNeuralEngineComputeDevice"
+            ]
+          },
+          {
+            "location": "main/20",
+            "type": "ios18.cast",
+            "outputs": [
+              "var_212_cast_fp16_to_fp32"
+            ],
+            "preferred": "MLCPUComputeDevice",
+            "supported": [
+              "MLCPUComputeDevice"
+            ]
+          },
+          {
+            "location": "main/21",
+            "type": "ios18.cast",
+            "outputs": [
+              "var_199_cast_fp16_to_fp32"
+            ],
+            "preferred": "MLCPUComputeDevice",
+            "supported": [
+              "MLCPUComputeDevice"
+            ]
+          },
+          {
+            "location": "main/22",
+            "type": "ios18.add",
+            "outputs": [
+              "var_213"
+            ],
+            "preferred": "MLCPUComputeDevice",
+            "supported": [
+              "MLCPUComputeDevice"
+            ]
+          },
+          {
+            "location": "main/23",
+            "type": "ios18.add",
+            "outputs": [
+              "input_39"
+            ],
+            "preferred": "MLCPUComputeDevice",
+            "supported": [
+              "MLCPUComputeDevice"
+            ]
+          },
+          {
+            "location": "main/25",
+            "type": "ios18.cast",
+            "outputs": [
+              "input_39_to_fp16"
+            ],
+            "preferred": "MLCPUComputeDevice",
+            "supported": [
+              "MLCPUComputeDevice"
+            ]
+          }
+        ],
+        "bothConvolutionsPreferNE": true,
+        "cpuAgainstPrefixCPU": {
+          "input_39": {
+            "shape": [
+              1,
+              48,
+              256,
+              256
+            ],
+            "nonfinite": 0,
+            "minimum": -4.505957126617432,
+            "maximum": 4.178852558135986,
+            "maximumAbsoluteError": 0.0,
+            "cosineSimilarity": 0.9999999999999999
+          },
+          "input_39_to_fp16": {
+            "shape": [
+              1,
+              48,
+              256,
+              256
+            ],
+            "nonfinite": 0,
+            "minimum": -4.5078125,
+            "maximum": 4.1796875,
+            "maximumAbsoluteError": 0.0,
+            "cosineSimilarity": 1.0
+          }
+        },
+        "neAgainstSameInputCPU": {
+          "input_39": {
+            "shape": [
+              1,
+              48,
+              256,
+              256
+            ],
+            "nonfinite": 0,
+            "minimum": -4.50537109375,
+            "maximum": 4.178955078125,
+            "maximumAbsoluteError": 0.004124283790588379,
+            "cosineSimilarity": 0.9999999347697031
+          },
+          "input_39_to_fp16": {
+            "shape": [
+              1,
+              48,
+              256,
+              256
+            ],
+            "nonfinite": 0,
+            "minimum": -4.50390625,
+            "maximum": 4.1796875,
+            "maximumAbsoluteError": 0.004150390625,
+            "cosineSimilarity": 0.9999999034522732
+          }
+        },
+        "neAllFinite": true,
+        "neCosineAtLeast099": true
+      },
+      "separate": {
+        "inputs": [
+          "input_33",
+          "input_33_to_fp16"
+        ],
+        "outputs": [
+          "input_39",
+          "input_39_to_fp16"
+        ],
+        "files": {
+          "Manifest.json": "71d116dd65ddecd1be26dfd07a1319f32680cca6cca210c14087e39aceeeba15",
+          "Data/com.apple.CoreML/model.mlmodel": "f29479d68d8a161e23a5792c65a89fa473742d1e57de8f4e9b538fe9bf13e597",
+          "Data/com.apple.CoreML/weights/weight.bin": "4a9190c3e90caf3af16b219e90de3a1712c9d59fb36972c7e057ec5b73db3922"
+        },
+        "preferredCounts": {
+          "MLNeuralEngineComputeDevice": 2,
+          "MLCPUComputeDevice": 5
+        },
+        "operations": [
+          {
+            "location": "main/7",
+            "type": "ios18.conv",
+            "outputs": [
+              "var_199_cast_fp16"
+            ],
+            "preferred": "MLNeuralEngineComputeDevice",
+            "supported": [
+              "MLCPUComputeDevice",
+              "MLNeuralEngineComputeDevice"
+            ]
+          },
+          {
+            "location": "main/16",
+            "type": "ios18.conv",
+            "outputs": [
+              "var_212_cast_fp16"
+            ],
+            "preferred": "MLNeuralEngineComputeDevice",
+            "supported": [
+              "MLCPUComputeDevice",
+              "MLNeuralEngineComputeDevice"
+            ]
+          },
+          {
+            "location": "main/18",
+            "type": "ios18.cast",
+            "outputs": [
+              "var_212_cast_fp16_to_fp32"
+            ],
+            "preferred": "MLCPUComputeDevice",
+            "supported": [
+              "MLCPUComputeDevice"
+            ]
+          },
+          {
+            "location": "main/19",
+            "type": "ios18.cast",
+            "outputs": [
+              "var_199_cast_fp16_to_fp32"
+            ],
+            "preferred": "MLCPUComputeDevice",
+            "supported": [
+              "MLCPUComputeDevice"
+            ]
+          },
+          {
+            "location": "main/20",
+            "type": "ios18.add",
+            "outputs": [
+              "var_213"
+            ],
+            "preferred": "MLCPUComputeDevice",
+            "supported": [
+              "MLCPUComputeDevice"
+            ]
+          },
+          {
+            "location": "main/21",
+            "type": "ios18.add",
+            "outputs": [
+              "input_39"
+            ],
+            "preferred": "MLCPUComputeDevice",
+            "supported": [
+              "MLCPUComputeDevice"
+            ]
+          },
+          {
+            "location": "main/23",
+            "type": "ios18.cast",
+            "outputs": [
+              "input_39_to_fp16"
+            ],
+            "preferred": "MLCPUComputeDevice",
+            "supported": [
+              "MLCPUComputeDevice"
+            ]
+          }
+        ],
+        "bothConvolutionsPreferNE": true,
+        "cpuAgainstPrefixCPU": {
+          "input_39": {
+            "shape": [
+              1,
+              48,
+              256,
+              256
+            ],
+            "nonfinite": 0,
+            "minimum": -4.505957126617432,
+            "maximum": 4.178852558135986,
+            "maximumAbsoluteError": 0.0,
+            "cosineSimilarity": 0.9999999999999999
+          },
+          "input_39_to_fp16": {
+            "shape": [
+              1,
+              48,
+              256,
+              256
+            ],
+            "nonfinite": 0,
+            "minimum": -4.5078125,
+            "maximum": 4.1796875,
+            "maximumAbsoluteError": 0.0,
+            "cosineSimilarity": 1.0
+          }
+        },
+        "neAgainstSameInputCPU": {
+          "input_39": {
+            "shape": [
+              1,
+              48,
+              256,
+              256
+            ],
+            "nonfinite": 0,
+            "minimum": -4.505957126617432,
+            "maximum": 4.178120136260986,
+            "maximumAbsoluteError": 0.004364013671875,
+            "cosineSimilarity": 0.9999999502215825
+          },
+          "input_39_to_fp16": {
+            "shape": [
+              1,
+              48,
+              256,
+              256
+            ],
+            "nonfinite": 0,
+            "minimum": -4.5078125,
+            "maximum": 4.1796875,
+            "maximumAbsoluteError": 0.00439453125,
+            "cosineSimilarity": 0.9999999286271662
+          }
+        },
+        "neAllFinite": true,
+        "neCosineAtLeast099": true
+      }
+    }
+  }
+}

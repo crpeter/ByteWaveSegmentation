@@ -1,0 +1,490 @@
+{
+  "scope": "Compare original, owned FP32 and installed Core ML tracking on an occlusion clip.\n\nRun locally on Mac. Independent histories, identical decoded pixels and prompt.\nNumerical mismatches are recorded and tracing continues to observe recovery;\nshape/nonfinite errors stop immediately. No model export or state-policy change.\nEdited clips require --new-video and an explicit --point for inference.\n--preview-only saves a tentative selection image without model inference.\nThis is diagnostic evidence, not ground-truth identity or device validation.\n",
+  "completed": true,
+  "readyForDeviceValidation": false,
+  "contract": "bytewave.occlusion-comparison.diagnostic.v1",
+  "sourceVideoSHA256": "48df10abcbcd12df835d8f91edcf5fd8863506a40f190a4788e338ce1e460bce",
+  "sourceFileBytes": 117721190,
+  "phoneReportSHA256": "7c807a77903c90fc90d23dcad387e82bb454a315f690acb1d517bf8b73c4dc65",
+  "fixtureSHA256": "760dd45c6eed6972f434dd324920b74dbfa262fb6648983606c2872581430a61",
+  "modelFiles": {
+    "models/BWTemporalImageEncoder.mlpackage/Manifest.json": "df20c1178e37ef2d4587281d5feca5979f2db8b859ffe7357161e4d5b51c254f",
+    "models/BWTemporalImageEncoder.mlpackage/Data/com.apple.CoreML/model.mlmodel": "a3046d4fbd83b7974d0b01d92ca30a55adad08aca218789b97034245023bbeba",
+    "models/BWTemporalImageEncoder.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "90e112d95a98e30486b768a2397f253766ceaa95bfd3cdb5a31a8db0341f61c3",
+    "models/BWTemporalInitializer.mlpackage/Data/com.apple.CoreML/model.mlmodel": "a70da7906ee21086122e9c24479b149308337f49609854455ae9cf65f790625f",
+    "models/BWTemporalInitializer.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "9409edf81128013f2ff61ef2565832f0a35782304e7adc54466e0396b5ab94c2",
+    "models/BWTemporalInitializer.mlpackage/Manifest.json": "d2311a29bb658bd6f16e801e91893985eb5aea3f7a6587f718e3e93539bc3068",
+    "models/BWTemporalInitialMemoryEncoder.mlpackage/Data/com.apple.CoreML/model.mlmodel": "613c7a310f1fae1b698aaba6e5a70c3afb842f459d3ec96cf9e0f4b6b4b9438a",
+    "models/BWTemporalInitialMemoryEncoder.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "21ae511f368835d55fe519b9b4ae9032bf9256cdb3cc0e91fdf5b4c467311563",
+    "models/BWTemporalInitialMemoryEncoder.mlpackage/Manifest.json": "64fb8412cf6229dda7ec7227113c7c8cf1a5278a96b62b94e2a0a76f6d790b52",
+    "models/BWTemporalPropagator.mlpackage/Manifest.json": "aec4bf7ef5dafc3816e3a645f93b134824268f4b0e8184170452e10c8c5618c1",
+    "models/BWTemporalPropagator.mlpackage/Data/com.apple.CoreML/model.mlmodel": "dec2227edc7d22832a3726a68237b6789f2d79ede1a5b0cc6f76d400c69d08d9",
+    "models/BWTemporalPropagator.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "3e679bfdc49fc43e895434b8c8bb6e75bad20a2cad37fd0aa2d5019cd186386e"
+  },
+  "upstream": "7711e012a30a2402c4eaab637bdb00a521302c91",
+  "checkpointSHA256": "ed2d4850b8792c239689b043c47046ec239b6e808a3d9b6ae676c803fd8780df",
+  "requestedFrames": 600,
+  "pointNormalizedTopLeft": [
+    0.45,
+    0.27
+  ],
+  "sourceMode": "new-video",
+  "phoneSourceGuardsApplied": false,
+  "pointSource": "explicit",
+  "effectiveFrames": 600,
+  "previewOnly": false,
+  "inferencePerformed": true,
+  "phoneComparisonLimit": "Edited/new source: phone video identity, timing and selection equivalence are NOT asserted. Phone report is used only to identify exact model packages. All three Mac streams receive the same newly decoded pixels and selection point; previews may use a tentative phone point. No phone parity claim.",
+  "memoryPolicy": "Initial conditioning frame retained; all validated outputs, including absent frames, enter recent memory. No confidence filtering or recovery modification.",
+  "qualityMeaning": "Empty/nonempty transitions do not establish identity. Inspect preview panels. Numerical comparisons use unchanged validate_export gates; failures are retained while this diagnostic continues.",
+  "activeFrameIndex": 599,
+  "activeStream": null,
+  "summary": {
+    "framesCompared": 600,
+    "streams": {
+      "original": {
+        "emptyFrames": 43,
+        "emptyIntervals": [
+          {
+            "firstFrame": 48,
+            "firstPTSSeconds": 1.6,
+            "frames": 37,
+            "lastFrame": 84,
+            "lastPTSSeconds": 2.8,
+            "nextNonemptyFrame": 85
+          },
+          {
+            "firstFrame": 241,
+            "firstPTSSeconds": 8.033333333333333,
+            "frames": 6,
+            "lastFrame": 246,
+            "lastPTSSeconds": 8.2,
+            "nextNonemptyFrame": 247
+          }
+        ]
+      },
+      "ownedFP32": {
+        "emptyFrames": 43,
+        "emptyIntervals": [
+          {
+            "firstFrame": 48,
+            "firstPTSSeconds": 1.6,
+            "frames": 37,
+            "lastFrame": 84,
+            "lastPTSSeconds": 2.8,
+            "nextNonemptyFrame": 85
+          },
+          {
+            "firstFrame": 241,
+            "firstPTSSeconds": 8.033333333333333,
+            "frames": 6,
+            "lastFrame": 246,
+            "lastPTSSeconds": 8.2,
+            "nextNonemptyFrame": 247
+          }
+        ]
+      },
+      "coremlGPU": {
+        "emptyFrames": 43,
+        "emptyIntervals": [
+          {
+            "firstFrame": 48,
+            "firstPTSSeconds": 1.6,
+            "frames": 37,
+            "lastFrame": 84,
+            "lastPTSSeconds": 2.8,
+            "nextNonemptyFrame": 85
+          },
+          {
+            "firstFrame": 241,
+            "firstPTSSeconds": 8.033333333333333,
+            "frames": 6,
+            "lastFrame": 246,
+            "lastPTSSeconds": 8.2,
+            "nextNonemptyFrame": 247
+          }
+        ]
+      }
+    },
+    "comparisons": {
+      "ownedFP32AgainstOriginal": {
+        "failedFrames": 119,
+        "firstFailedFrame": 94,
+        "allFramesWithinExistingGates": false
+      },
+      "coremlGPUAgainstOriginal": {
+        "failedFrames": 45,
+        "firstFailedFrame": 105,
+        "allFramesWithinExistingGates": false
+      }
+    }
+  },
+  "sourceReportSHA256": "f1bd9abde3a424f7c5bbfefff1ed0b40284602470b021a078d8f3c2a20b62102",
+  "processedPTSRangeSeconds": [
+    0.0,
+    19.966666666666665
+  ],
+  "numericalReview": {
+    "ownedFP32AgainstOriginal": {
+      "failedFrames": [
+        94,
+        95,
+        103,
+        104,
+        105,
+        169,
+        178,
+        179,
+        180,
+        181,
+        182,
+        183,
+        184,
+        185,
+        186,
+        187,
+        188,
+        189,
+        190,
+        191,
+        192,
+        193,
+        194,
+        195,
+        196,
+        197,
+        198,
+        199,
+        200,
+        201,
+        206,
+        207,
+        208,
+        209,
+        210,
+        212,
+        213,
+        214,
+        215,
+        216,
+        218,
+        222,
+        223,
+        224,
+        225,
+        226,
+        227,
+        228,
+        229,
+        230,
+        231,
+        232,
+        233,
+        234,
+        235,
+        236,
+        238,
+        239,
+        254,
+        255,
+        256,
+        258,
+        262,
+        263,
+        264,
+        267,
+        268,
+        270,
+        271,
+        272,
+        273,
+        274,
+        276,
+        277,
+        278,
+        279,
+        280,
+        281,
+        282,
+        283,
+        284,
+        285,
+        286,
+        287,
+        288,
+        289,
+        290,
+        291,
+        292,
+        293,
+        302,
+        306,
+        312,
+        322,
+        328,
+        330,
+        331,
+        333,
+        349,
+        373,
+        377,
+        378,
+        379,
+        381,
+        382,
+        383,
+        384,
+        385,
+        386,
+        387,
+        388,
+        389,
+        390,
+        391,
+        393,
+        485,
+        487,
+        494,
+        495
+      ],
+      "outputFailureCounts": {
+        "memory_featuresFloat32CloseFailures": 119,
+        "high_res_maskFloat32CloseFailures": 8,
+        "low_res_maskFloat32CloseFailures": 5
+      },
+      "minimumMaskIoU": 0.9999042695768715,
+      "minimumMaskIoUFrame": 116,
+      "objectPresenceMismatchFrames": []
+    },
+    "coremlGPUAgainstOriginal": {
+      "failedFrames": [
+        105,
+        106,
+        174,
+        175,
+        181,
+        187,
+        188,
+        190,
+        191,
+        192,
+        200,
+        201,
+        202,
+        203,
+        220,
+        221,
+        223,
+        224,
+        225,
+        226,
+        227,
+        228,
+        229,
+        231,
+        232,
+        236,
+        240,
+        263,
+        325,
+        330,
+        331,
+        373,
+        376,
+        377,
+        382,
+        383,
+        384,
+        385,
+        386,
+        389,
+        390,
+        391,
+        515,
+        539,
+        583
+      ],
+      "outputFailureCounts": {
+        "memory_featuresCosineFailures": 33,
+        "object_pointerCosineFailures": 34,
+        "low_res_maskCosineFailures": 1,
+        "high_res_maskCosineFailures": 1
+      },
+      "minimumMaskIoU": 0.32560834298957125,
+      "minimumMaskIoUFrame": 331,
+      "objectPresenceMismatchFrames": []
+    }
+  },
+  "gpuMaskFailures": [
+    {
+      "frame": 174,
+      "ptsSeconds": 5.8,
+      "maskIoU": 0.649546827794562,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0201263427734375,
+          "objectScore": 6.147404670715332,
+          "predictedIoU": 0.7185826897621155
+        },
+        "ownedFP32": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0201263427734375,
+          "objectScore": 6.147417068481445,
+          "predictedIoU": 0.7185848355293274
+        },
+        "coremlGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0131988525390625,
+          "objectScore": 6.1796875,
+          "predictedIoU": 0.7154906988143921
+        }
+      }
+    },
+    {
+      "frame": 175,
+      "ptsSeconds": 5.833333333333333,
+      "maskIoU": 0.9272540983606558,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.01385498046875,
+          "objectScore": 6.215341567993164,
+          "predictedIoU": 0.8269138932228088
+        },
+        "ownedFP32": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.01385498046875,
+          "objectScore": 6.215357303619385,
+          "predictedIoU": 0.8269125819206238
+        },
+        "coremlGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0148468017578125,
+          "objectScore": 6.18359375,
+          "predictedIoU": 0.8188468813896179
+        }
+      }
+    },
+    {
+      "frame": 200,
+      "ptsSeconds": 6.666666666666667,
+      "maskIoU": 0.9450327786182552,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0603179931640625,
+          "objectScore": 8.025856018066406,
+          "predictedIoU": 0.9372513890266418
+        },
+        "ownedFP32": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0603179931640625,
+          "objectScore": 8.025930404663086,
+          "predictedIoU": 0.9372487664222717
+        },
+        "coremlGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0573883056640625,
+          "objectScore": 7.6953125,
+          "predictedIoU": 0.9385477304458618
+        }
+      }
+    },
+    {
+      "frame": 201,
+      "ptsSeconds": 6.7,
+      "maskIoU": 0.9442517343904856,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0613555908203125,
+          "objectScore": 7.855584144592285,
+          "predictedIoU": 0.9340759515762329
+        },
+        "ownedFP32": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0613555908203125,
+          "objectScore": 7.855599880218506,
+          "predictedIoU": 0.9340747594833374
+        },
+        "coremlGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.058380126953125,
+          "objectScore": 7.3671875,
+          "predictedIoU": 0.9491559267044067
+        }
+      }
+    },
+    {
+      "frame": 330,
+      "ptsSeconds": 11.0,
+      "maskIoU": 0.9138253152732368,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0653076171875,
+          "objectScore": 5.209994792938232,
+          "predictedIoU": 0.43997272849082947
+        },
+        "ownedFP32": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0653076171875,
+          "objectScore": 5.209997177124023,
+          "predictedIoU": 0.43997272849082947
+        },
+        "coremlGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0597381591796875,
+          "objectScore": 5.1484375,
+          "predictedIoU": 0.4355018436908722
+        }
+      }
+    },
+    {
+      "frame": 331,
+      "ptsSeconds": 11.033333333333333,
+      "maskIoU": 0.32560834298957125,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0657196044921875,
+          "objectScore": 4.625312805175781,
+          "predictedIoU": 0.4179357886314392
+        },
+        "ownedFP32": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0657196044921875,
+          "objectScore": 4.625314235687256,
+          "predictedIoU": 0.41793403029441833
+        },
+        "coremlGPU": {
+          "lowMaskEmpty": false,
+          "highMaskEmpty": false,
+          "foregroundFraction": 0.0215606689453125,
+          "objectScore": 4.5625,
+          "predictedIoU": 0.4356923997402191
+        }
+      }
+    }
+  ],
+  "interpretation": "All streams have identical empty intervals and object-presence decisions. Nonempty output resumes at 85 and 247; subject identity and occlusion causes are not yet visually verified. Baseline GPU fails existing comparison gates on 45/600 frames; six mask IoU failures include a large difference at 331. No full parity pass or recovery-policy result is claimed. FP32 has 119 strict allclose failures, all involving memory_features, while mask IoU stays >=0.999904.",
+  "nextStep": "Inspect existing baseline previews, especially obstruction and return around 48-85 and 241-247 and later GPU mask disagreement around 330. Request previews folder zip without inference rerun. Keep worker recovery thresholds fixed for subsequent separate comparison."
+}

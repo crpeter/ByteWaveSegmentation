@@ -1,0 +1,53 @@
+{
+  "schema": "bytewave.mac-attention-native-query-paired-summary.v1",
+  "source": "User-pasted attention-native-query-paired-01/summary.json; selected fields transcribed, not a byte-identical source archive.",
+  "completed": true,
+  "passed": true,
+  "passedMeaning": "All accuracy checks completed; does not imply a speed improvement.",
+  "readyForDeviceValidation": false,
+  "candidateVariant": "memoryfp16q1024",
+  "baselineVariant": "memoryfp16",
+  "computeUnits": "CPU_AND_GPU",
+  "macOS": "26.5.2",
+  "machine": "arm64",
+  "coremltoolsVersion": "9.0",
+  "sourceManifestSHA256": "47b7b85eef755ff7a440c0017f232a82ac7213af622d15d30a04f3487e07dd67",
+  "sourceFrameReportSHA256": "8768eab4331ad57994782ee244861b64f3c3eb27fa6c970cc881a843618af9a6",
+  "candidateReportSHA256": "74f054a3d9ba3c678657580f9efb762203c4010fe7a4c1070965eed9d172df74",
+  "baselineFiles": {
+    "Manifest.json": "23adec82383df189eb09d7ec17584c711f496c1908459cb5999ad118223d0643",
+    "Data/com.apple.CoreML/model.mlmodel": "de2c880bcd444ca6bade5d922a162bcce62876fac51462d688cebdbc3f48f214",
+    "Data/com.apple.CoreML/weights/weight.bin": "3e679bfdc49fc43e895434b8c8bb6e75bad20a2cad37fd0aa2d5019cd186386e"
+  },
+  "candidateFiles": {
+    "Manifest.json": "cbb8e93ae4565dcf4d9725727c3d15190e4a5196bfb5c99472f4f45ae4b44ddb",
+    "Data/com.apple.CoreML/model.mlmodel": "220a5a36520fa594e32194b4ec5b79496ae2ac969b4734feeea9a12d340c8c13",
+    "Data/com.apple.CoreML/weights/weight.bin": "3e679bfdc49fc43e895434b8c8bb6e75bad20a2cad37fd0aa2d5019cd186386e"
+  },
+  "pairsPerFrame": 4,
+  "warmupCallsPerModel": 1,
+  "summary": {
+    "measuredPairs": 76,
+    "medianMilliseconds": {
+      "memoryfp16": 13.767082942649722,
+      "memoryfp16q1024": 16.004333621822298
+    },
+    "ratioOfMediansBaselineOverCandidate": 0.8602096949464969,
+    "medianPairedRatioBaselineOverCandidate": 0.8605718000347584,
+    "medianLatencyReductionPercent": -16.25072419838256,
+    "allMeasuredOutputsPassed": true,
+    "medianMillisecondsByFirstModel": {
+      "memoryfp16": {
+        "memoryfp16": 13.8190210564062,
+        "memoryfp16q1024": 15.890542068518698
+      },
+      "memoryfp16q1024": {
+        "memoryfp16": 13.718854053877294,
+        "memoryfp16q1024": 16.087916563265026
+      }
+    }
+  },
+  "decision": "Close native query-batching experiment without promotion; retain working memoryfp16 model.",
+  "limitations": "Paired serialized Mac predict calls on identical original-CPU-state inputs. Warm-up excluded. No thermal or hardware-utilization measurement, significance claim, sustained playback FPS or candidate iPhone result.",
+  "nextStep": "Profile the current memoryfp16 path on iPhone 17 Pro before choosing another model rewrite; archived shader trace predates the FP16 improvement."
+}

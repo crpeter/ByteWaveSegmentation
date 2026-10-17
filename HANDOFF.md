@@ -1,16 +1,3596 @@
 # ByteWave segmentation: continuation handoff
 
+## Current work: manual same-subject correction in the probe
+
+User authorized a practical correction path: when tracking loses the intended
+subject or includes the wrong hand/person, manually reselect the intended subject
+as part of the same logical track. No automatic hand/loss classification.
+
+OwnedVideoTracking.swift now separates a stable subject UUID from model-memory
+segments. Seeking preserves the cache but resets inference memory. "Correct
+tracking from here" removes cached masks at/after the displayed frame, retaining
+the earlier prefix. Seek to a clear frame at/after that boundary, tap the intended
+subject and choose "Continue same subject": initialization uses fresh memory under
+the same UUID. "New subject" is a separate confirmed action that clears the cache.
+There is no undo of invalidation in this first implementation.
+
+Replay decodes the source timeline, checks exact cached PTS/ownership/hash, and
+shows no overlay for missing entries with "Not tracked" text. A missing mask is
+not a model-predicted empty mask. The old timeline end is retained across correction
+so an invalidated but not yet rerun tail remains explicitly untracked.
+Replay does not predict or advance inference banks, and restores the working frame
+when finished/stopped. Seek explicitly to the desired correction frame afterward.
+
+Cache remains temporary, single-subject, bounded to 2048 binary masks / 256 MiB.
+Disk append repair truncates to indexed retained records and refuses a short prefix.
+A failed truncation cannot republish invalidated metadata; seek then retry reselection.
+A failed cache write stops further cache writes and displays a notice. No export,
+production ByteWave integration, automatic identity proof or persistent project cache.
+
+Report schema is bytewave.requested-video-tracking.v2, cache implementation
+subject-correction-bitmask-replay.v2. Includes UUID, correction boundaries and
+replacement segments, retained/invalidated counts, prefix metadata digest, cached
+segment summaries, and replay mask/untracked counts plus state/prediction snapshots.
+Prefix metadata SHA is not a runtime proof of unchanged disk bytes; individual
+cached masks are still hash-checked when read. Historical v1 single-segment Mac
+diagnostics deliberately reject v2 reports; their source/selection guards are unchanged.
+
+Validation: static source review only. No assistant build, Swift compiler, runtime
+test, inference, conversion or benchmark. Device/build validation is pending.
+See Audit/manual-subject-correction-implementation.json for the expected test cases.
+
+Next device check:
+1. Build/run probe; track a clip until after an obvious mistake.
+2. Pause, seek to the first wrong frame, choose Correct tracking from here.
+3. Seek later to a clear view; tap the intended subject, Continue same subject,
+   then Run tracking.
+4. Replay: earlier masks retained, gap untracked, corrected segment uses new masks.
+5. Repeat a correction earlier in the clip; ensure the old later correction is
+   discarded too. Share video tracking report after replay.
+Report checks: one current UUID across cachedSegments, expected correction bounds,
+completed count, no replayError/cacheError, unchanged replay prediction/state/UUID.
+Visual review is still required to establish the intended subject.
+
+```bash
+cd /Users/petercody/Documents/Projects/ByteWaveSegmentation &&
+export DEVELOPER_DIR="/Applications/Xcode-beta.app/Contents/Developer" &&
+git pull --ff-only &&
+open -a "/Applications/Xcode-beta.app" "/Users/petercody/Documents/Projects/ByteWaveSegmentation/ByteWaveSegmentationProbe.xcodeproj"
+```
+
+## Prior step: saved bidirectional selection analysis and local review page
+
+Evidence: Audit/mac-new-bidirectional-selection-review.json.
+Added Temporal/review_bidirectional_masks.py and Temporal/bidirectional_review.html.
+This is offline JSON/PNG arithmetic and a read-only local HTML report. It imports
+no model code and requires no source video, Torch, Core ML, inference or builds.
+Defaults read the previously reviewed backward run and its exact Audit-bound
+report hash; all422 mask hashes/shape/binary values/fractions,211 overlaps,
+source frame order/controls and211 paired previews are verified before output.
+Original paired JPEG bytes are copied unchanged and verified again.
+
+Compared descriptive rules: higher raw object-presence logit, larger mask, smaller
+nonempty mask. These do NOT output a final chosen mask. Seed375 is excluded from
+rule comparisons because its mask/presence are set by the explicit input.
+Thirteen selected visual cases are reported individually;224/343 additionally
+inspected at full resolution this turn. No ground-truth accuracy percentage.
+
+Results:
+- Higher score picks the wrong foreground hand at224 (backward) and343 (forward).
+  It often picks the more useful pass in the other reviewed examples, but presence
+  logits do not establish identity or comparable mask quality between histories.
+- Larger mask selects wrong foreground in several cases. Smaller-nonempty loses
+  the more useful backward coverage at277 and still selects the wrong sole hand343.
+- Both blank310 still miss a visible target sliver. Selection cannot recover a
+  mask absent from both inputs; this requires additional evidence/correction.
+- IoU<.90 flags105 of210 nonseed frames in8 intervals. First/last2 frames of3
+  shared-empty intervals add12 boundary frames, including310/311:117 queued total.
+  This is review organization, not reliable automatic acceptance or small workload.
+- Threshold sensitivity .50/.75/.90/.95 flags95/101/105/111 frames. At.50 the queue
+  misses wrong-hand224..226. None of these display cutoffs is a correctness gate.
+  Similar masks and unqueued empty interiors can still be wrong.
+
+Generated index.html has a chronological slider, queue/all/disagreement/absence
+filters, interval jumps,13 reviewed-example buttons, raw metrics and source hashes.
+All frames remain accessible, including shared misses and seed. Opens locally with
+relative copied previews, no server/network requests or annotation upload.
+Output preserves existing directories by refusing to overwrite them.
+
+Assistant executed saved-data analysis only, AST-parsed Python and syntax-parsed
+inline JavaScript. Embedded HTML data equals report;211 preview copies hash-match.
+Browser interaction was not exercised. No model tests/builds/inference/conversion/
+benchmarks. No app/models/fixtures/exporter/gates/frozen recovery rule changes.
+Analysis report SHA6dcaf54ab59e4c163bb39b01b3fd14d750f8f3230ba0313cd46e6c7c58504d82;
+summary SHA6e741017a345cb016a12e2506c590e038a7ec392d179e695e8995a3c49d3f8fc.
+
+Next: use this bounded evidence set to assess a separately justified identity or
+correction mechanism. Keep unresolved cases explicit; do not fit video-specific
+switch times or invent a validated confidence cutoff from this same clip.
+No new recording/model run/upload is needed for this review. Optional inspection:
+
+```bash
+cd /Users/petercody/Documents/Projects/ByteWaveSegmentation &&
+export DEVELOPER_DIR="/Applications/Xcode-beta.app/Contents/Developer" &&
+git pull --ff-only &&
+.venv-temporal/bin/python Temporal/review_bidirectional_masks.py &&
+open .temporal-runs/occlusion-new-bidirectional-review-01/index.html
+```
+
+
+## Prior step: backward tracking reviewed; useful recovery with remaining identity errors
+
+Evidence: Audit/mac-new-backward-reacquisition-review.json.
+Uploaded occlusion-new-backward-01.zip SHA
+09cdf76d3f6f6a698a91795d8d00e3ae3d2a300bc8461146a9322acc9538a85b.
+Report SHA c09965caefbabf1da7af6de571f729e4a1a3e5bf1422e95254149086be696cf4.
+Completed all211 compared frames375 down to165. All initialization and211
+reverse-index controls passed. Controls verify same-input temporal indexing,
+not identity. Original PyTorch CPU only; no device/Core ML performance result.
+
+Offline checked source replay/anchor/script hashes, all211 source image hashes/PTS
+and saved-forward observations,422 binary mask files/hashes/fractions/emptiness,
+exact211 saved-forward PNGs against prior replay, all211 recomputed mask-agreement
+rows, reverse frame order/ordinals,210 actual attention budgets and exact seed PNG.
+All211 paired previews inspected; enlarged165/191/225/229/234/261/277/300/310/
+346/354/360. Assistant performed saved-data arithmetic and image review only.
+
+Useful complementary evidence:
+- Approximately265..309: backward follows intended man's visible head/body while
+  forward is blank except277. Frame300 (10.0s) is a clear recovery, though the
+  backward mask still omits his forearm. Early strips261..264 are ambiguous.
+-343..364: backward avoids many wrong foreground hand/woman inclusions seen in
+  forward. Frame346 selects target partial head instead of foreground hand;
+  354/360 exclude much of the blonde woman and hand mixed into forward masks.
+
+Remaining errors prohibit globally preferring backward:
+-165..179: backward loses genuine edge partials preserved by forward.
+-224..226 and229..231: backward adds the foreground man's pointing hand/forearm.
+  Enlarged225/229 make the wrong inclusion clear; forward avoids it.
+-235..236: backward blank versus tiny forward edge fragments.
+-310: both blank despite visible target sliver.
+-191..196 and261..264 tiny fragments are not established clean recoveries.
+-375 exact agreement is the seed by construction, not validation.
+
+Presence only: forward89/backward124 of211; both nonempty70, backward-only54,
+forward-only19, both empty68. Do not call the54 additions correct recovered frames.
+The later seed is a manually reviewed forward prediction; passes are correlated,
+and changed seed/future evidence/direction are not isolated causal factors.
+
+Decision: useful offline backward candidate, no automatic fusion or promotion.
+Next direction is controlled choice/review of disagreeing forward/backward segments
+using saved outputs, preserving true partials while rejecting wrong foreground.
+No global preference, union/intersection, automatic identity threshold or seed
+selector has been validated. Fits calculate-once/cache extraction research, but
+no runtime support or cost claim. App/models/fixtures/exporter/gates/frozen recovery
+policy unchanged. No additional Mac run requested for this review.
+
+
+## Prior step: backward tracking diagnostic prepared
+
+Added Temporal/diagnose_backward_reacquisition.py. Source review of pinned
+sam2_base.track_step, _track_step, _use_mask_as_output and memory selection confirms
+reverse=True selects larger source indices for recent memories and past pointers.
+For stride1, relabeling source t to 375-t produces equivalent forward-time input
+selection. Pinned config uses direct-mask input and past-direction pointers.
+
+Visually reviewed saved chosen frame375 again: intended Kool-Aid-shirt man broadly
+covered (head, torso, visible arm/lower body), imperfect outline and occlusion by
+foreground woman. This is a predicted development reference, not a ground-truth
+mask or an automatically selected identity reference. Exact seed PNG SHA:
+8f5c205d46986543443bcefbb951dc6a8b90c4076dabbfa6501c4573703fed9d.
+
+Use that binary mask as an explicit input at frame375. Native track_step builds a
+fresh mask-conditioned object pointer and memory; no pointer from another mask and
+no forward-history tensors are borrowed. Upstream preserves input mask using
+logits -10/+10 and forces presence logit +10 for nonempty input; this is NOT
+measured identity confidence. Compare seed initialization against the same pixels
+and mask at relabeled frame0, checking mask/pointer/memory and exact binary masks.
+
+Reverse rollout advances independently from375 down to165 inclusive (211 frames).
+Keep seed conditioning and commit every reverse output including absence/wrong
+masks. At each propagated frame, compare native reverse=True with reverse history
+reindexed into increasing indices and reverse=False. Only actual reverse results
+advance history; the relabeled calls are same-input indexing controls, not a second
+independent tracker. Existing FP32 tensor-close/exact-binary checks remain intact.
+Read-only attention hook checks actual spatial/pointer budgets: one conditioning
+record plus up to6 recent spatial records and15 recent pointers (maximum7/64).
+Record every control, source index/PTS/hash and per-frame mask agreement.
+
+Compare with hash-verified SAVED chosen forward outputs (no forward inference
+rerun). Exact prior replay SHA5f9378e84e1b78ca19e00574245434e07180065dbcd608bdb34051338156cc56
+and extra-reference report SHAce4496788c83d981cf4c5391b9ae5cd6ecad4b8f1715db4887633715d478c6ce
+bind all211 forward PNGs to previously reproduced native output. Decode0..375
+using existing reader and check image hashes/PTS. Cache only RGB bytes165..375
+temporarily (~633MiB), verify hashes on reload, remove cache after run; ZIP excludes
+cache even on partial failure. Needs about1.2GiB free for cache and outputs.
+
+Every compared frame saves two full1024 overlays and both binary masks. One ZIP
+under .temporal-runs/share, automatically revealed in Finder, including partial
+reports on failure. Review missed visible targets, genuine shoe/partials,
+wrong hands/people and mixed masks together. Empty/empty IoU is null. No merged
+mask, direction-selection cutoff, automatic identity decision or quality claim.
+Different initialization and future evidence change jointly. Later seed comes
+from forward prediction, so direction agreement is correlated evidence.
+
+App, weights, installed fixtures, exporter, numerical gates and frozen recovery
+policies unchanged. Original PyTorch CPU diagnostic only; no speed, device,
+deployment or Core ML reverse-support claim. Assistant checked source/AST and
+existing report/seed/all211 mask hashes only; no inference, runtime model tests,
+conversion, builds or benchmarks. Mac execution still pending.
+
+```bash
+cd /Users/petercody/Documents/Projects/ByteWaveSegmentation &&
+export DEVELOPER_DIR="/Applications/Xcode-beta.app/Contents/Developer" &&
+git pull --ff-only &&
+.venv-temporal/bin/python Temporal/diagnose_backward_reacquisition.py \
+  --video assets/occlusion-new.mov
+```
+
+Upload only .temporal-runs/share/occlusion-new-backward-01.zip.
+
+
+## Prior step: extra conditioning reference reviewed; partial benefit, no promotion
+
+Evidence: Audit/mac-new-reacquisition-anchor-review.json. Report SHA
+ce4496788c83d981cf4c5391b9ae5cd6ecad4b8f1715db4887633715d478c6ce.
+Completed387 native frames,84 four-way comparisons. All initialization/snapshot
+controls passed. Offline source/report/script hashes,387 native image/PTS/mask
+hashes/observations,336 binary masks,84 conditioning-only masks/observations,
+frame60 anchor mask and336 attention budgets checked. All84 previews reviewed,
+with enlarged359/362/367. No assistant inference/build/export/benchmark.
+
+Adding reviewed native frame60 to frame0-only conditioning fixes wrong foreground
+man selection at197 while retaining shoe. It also recovers intended man366..368
+where frame0-only is blank; native already succeeds there. Reference-only
+nonempty second-window count increases22 to27 (added359/361/366/367/368).
+This is not five clean recoveries:359 and361 include extraneous foreground.
+At362 enlarged preview also shows substantial wrong foreground patches.
+Both reference-only versions still select wrong woman233..236 and lose partial386.
+
+Adding frame60 to normal native recent memory does NOT remove wrong-hand343..348/
+350..351 or later mixed masks. Wrong hand344 grows from.029109 to.075638 image
+fraction. First-window true partials broadly preserved, but no demonstrated
+identity fix. NativePlusAnchor is present all84 inspected frames, as is native;
+presence count does not measure correctness.
+
+Actual attention budgets: native7 spatial/64 pointer tokens; nativePlusAnchor8/68;
+conditioningOnly1/4; conditioningPlusAnchor2/8. Corresponding pointers and memory
+were promoted together. Probe outputs never entered any history; nativePlusAnchor
+still received original recent mistakes. No independently advancing candidate,
+automatic reference selector, fixed-budget Core ML fit, device or speed result.
+Extra memory content, temporal position and budget change jointly.
+
+Decision: keep app/models/gates/frozen recovery rules unchanged. Extra reviewed
+reference is useful proposal evidence, insufficient for accepting identity.
+Next direction worth inspecting: reverse-time tracking from a later clear view,
+since final extraction can be computed once and cached. Need pinned reverse
+semantics and consistent initializer/pointer before preparing any diagnostic.
+Compare independent directions across disappearance; agreement alone cannot
+establish identity and wrong/mixed masks must remain visible in review.
+No new Mac run requested this turn.
+
+
+## Prior step: extra reviewed conditioning reference diagnostic prepared
+
+Added Temporal/diagnose_reacquisition_anchor.py after reviewing pinned upstream
+sam2_base._prepare_memory_conditioned_features, select_closest_cond_frames and
+memory_attention.forward. Conditioning memories are selected separately from
+recent records, receive conditioning temporal position, and supply corresponding
+object pointers. Multiple conditioning records are supported in original PyTorch;
+this is not the installed fixed Core ML contract.
+
+Reviewed saved chosen frame60 again: intended man broadly covered, partially
+occluded by foreground person, imperfect boundaries; not a ground-truth mask.
+Promote its actual native memory AND pointer together to conditioning in probes.
+No new click, mask re-encoding, inferred pointer or future frame. Fixed frame60
+is a manually reviewed development reference, not automatic identity detection.
+
+Same prefix387 of original590, originalCPU, point(.36,.4), candidate1.
+Require exact reviewed history-report SHA
+012d0cd5b86526e2e212430e2113a63dafcda7489f4ca017a73b3e0ab19f487e,
+matching replay/source/helper hashes and successful prior controls.
+Repeat initializer controls and check every native frame against saved pixels,
+PTS, mask hashes, binary masks, fractions/emptiness and object logit tolerance.
+At window starts repeat no-op history snapshot mask/pointer/memory control.
+
+At each frame197..236 and343..386, independently compare:
+1. native: original advancing history, unchanged.
+2. nativePlusAnchor: fresh native snapshot with60 moved into conditioning.
+3. conditioningOnly: frame0 only, must reproduce previous experiment each frame.
+4. conditioningPlusAnchor: frames0+60 only.
+All probe outputs discarded; only native outputs enter history. NativePlusAnchor
+still receives native recent wrong masks. This isolates immediate reference effect;
+it does not test an independently advancing candidate tracker.
+
+Read-only memory-attention pre-hook records actual input shapes/spatial-record
+counts/pointer tokens. Enforce expected native7/64 tokens, plus-anchor8/68,
+conditioning-only1/4, conditioning-plus-anchor2/8. Both references must be selected;
+no duplicate record in conditioning/nonconditioning buckets. Native source frame60
+stays in original nonconditioning history. Extra reference changes content,
+temporal encoding AND token budget; no fixed-budget, speed or deployment claim.
+
+Save anchor preview/mask and all84 four-panel comparisons with336 binary masks.
+One ZIP under .temporal-runs/share; reveal with Finder, preserve partial reports.
+No model/fixture/export/app/gate/frozen-recovery changes. Assistant read sources,
+reviewed saved frame60 and AST-parsed script/data constants only. No inference,
+runtime model tests, conversion, build or benchmark. Mac execution pending.
+
+```bash
+cd /Users/petercody/Documents/Projects/ByteWaveSegmentation &&
+export DEVELOPER_DIR="/Applications/Xcode-beta.app/Contents/Developer" &&
+git pull --ff-only &&
+.venv-temporal/bin/python Temporal/diagnose_reacquisition_anchor.py \
+  --video assets/occlusion-new.mov
+```
+
+Upload .temporal-runs/share/occlusion-new-reacquisition-anchor-01.zip.
+Review both wrong-identity suppression and genuine partial-target preservation,
+especially197/200/232..236/343..360/366..368/386. No promotion on nonempty counts.
+
+
+## Prior step: history probes reviewed; blanket memory freezing rejected
+
+Evidence: Audit/mac-new-reacquisition-history-review.json.
+User run completed387 native frames and84 three-way window comparisons.
+All initialization and first-window same-input mask/pointer/memory controls passed.
+Offline verified source replay hash, all387 image hashes/PTS/native observations
+and prior mask hashes; all252 binary masks have correct shapes/values/fractions;
+all84 saved native masks equal prior chosen masks. Probe entry counts remain
+fixed across both windows. Script hash matches prepared source.
+
+Visual review of all84 previews found mixed outcomes:
+-197: native/frozen preserve correct shoe; conditioning-only selects wrong man too.
+-200 and later first-window frames: frozen/conditioning add wrong foreground hand.
+-232..236: both probes select a different woman. All40 frames being nonempty
+does NOT mean40 correct recoveries.
+-343: native/frozen select wrong hand; probes are blank344..359 (conditioning
+already blank343), reducing false masks but also missing visible target portions.
+-360: probe output resumes with extraneous fragments; not clean identity recovery.
+-366..368: probes miss clearly visible intended man while native tracks him.
+-369..385: all broadly recover intended man;386 probes lose remaining partial.
+
+Nonempty counts197..236: native40/frozen40/conditioning40.
+Nonempty counts343..386: native44/frozen23/conditioning22.
+Frozen and conditioning binary masks match from212 and344 through window ends;
+reported observations match from212 and358. Do not infer internal tensor equality.
+The intervention combines withheld updates and aging/missing recent slots;
+it does not prove bad-mask feedback alone caused native failure.
+
+Decision: do not disable normal memory updates or promote conditioning-only
+replacement. No new identity cutoff, app/model/fixture/export/gate/recovery change.
+This is selected original-CPU development evidence, not device or held-out accuracy.
+Assistant performed saved-data checks and image review only; no inference/build.
+
+Next direction: inspect pinned upstream conditioning selection before designing
+a controlled additional-clean-reference experiment. An earlier visually reviewed
+target frame used as conditioning would be a manual experimental reference,
+not an automatic identity solution. Preserve native control and jointly review
+correct shoe/partial returns, wrong-person grabs and missing visible subject.
+No additional Mac run requested for this review.
+
+
+## Prior step: reacquisition history probes prepared after sequence review
+
+Evidence: Audit/mac-new-reacquisition-sequence-review.json. Saved chosen replay
+hash matches archived source. Offline inspected20 consecutive binary masks:
+correct shoe return197..206 and wrong-hand return343..352.
+Correct197 follows17 empty frames180..196; wrong343 follows65 empty278..342.
+Raw object logits start similarly (.346 versus .389). Wrong343..345 remains
+present three frames with adjacent high-mask IoU .505/.659; correct197..199
+has .476/.554. Simple three-frame plus.5 overlap would admit wrong onset while
+delaying correct onset. This is not the full frozen recovery rule, and logits
+are not calibrated identity confidence. Wrong sequence later fluctuates.
+No single-frame appearance/geometry or short persistence gate promoted.
+
+Added Temporal/diagnose_reacquisition_history.py, pending Mac execution.
+OriginalCPU only, prefix387 frames; passes original full590 as num_frames to
+preserve native temporal context. Same reviewed candidate1 at point(.36,.4).
+Source/replay/script hashes and all prior controls must match. Repeats initial
+automatic-choice/scores, forced-auto mask/pointer/memory and native-assembly
+controls. Native chosen output at EVERY prefix frame must match saved binary
+high mask exactly, mask fractions/emptiness exactly and object logit within
+rtol1e-5/atol1e-6. Decoded image hash and PTS must match every frame.
+
+Fixed reviewed windows197..236(correct partial return) and343..386(wrong hand
+then mixed/real subject). At each start make separate fixed history containers:
+frozenPreWindow retains all pre-window records; conditioningOnly retains frame0
+only. Shared tensors remain read-only under pinned upstream; no probe output is
+ever inserted into native or probe state. Initial frozenPreWindow must reproduce
+native mask/pointer/memory under existing FP32 control including exact binary masks.
+Subsequent differences combine withheld updates AND aging/unavailable recent slots;
+not a pure causal attribution to poisoned memory. Native always advances unchanged.
+Probes are experiments, not automatic acceptance or proposed production policies.
+
+Every window frame gets three-panel JPEG and binary masks; one ZIP under share,
+Finder reveal including partial failures. Fresh output only. No weights, export,
+installed fixture, correctness gates, app or frozen recovery rules changed.
+Assistant performed offline mask calculations, pinned-source review and AST parse;
+no model inference, runtime model tests, build or benchmark. Mac runtime pending.
+
+```bash
+cd /Users/petercody/Documents/Projects/ByteWaveSegmentation &&
+export DEVELOPER_DIR="/Applications/Xcode-beta.app/Contents/Developer" &&
+git pull --ff-only &&
+.venv-temporal/bin/python Temporal/diagnose_reacquisition_history.py --video assets/occlusion-new.mov
+```
+
+Upload .temporal-runs/share/occlusion-new-reacquisition-history-01.zip.
+Review wrong-region persistence AND preservation of genuine partial recovery.
+No claim of improved tracking until this evidence is reviewed.
+
+
+## Prior step: spatial coherence still admits a wrong hand
+
+Added offline-only Temporal/analyze_saved_mask_geometry.py and recorded results
+in Audit/mac-new-local-geometry-review.json. Uses saved local correspondence
+coordinates and checks all22 NPZ hashes; no model inference, conversion, build,
+training or performance benchmark. Source reportSHA f4103b4b9312e4478ba345f50972c56c044146114d93c1e4d9ab0d5a007cd52a
+is the previously validated local-parts upload.
+
+Exploratory orientation-preserving similarity fit: fixed96 sampled pair hypotheses
+plus weighted least squares, training weighted-median selection, one lower-half
+refit, scale[1/8,8]. Checkerboard two-fold scoring on held-out cells, minimum6 per
+fold;16 deterministic shuffled-reference baselines repeat whole fitting procedure.
+Both majority and fully interior reference sets, every earlier anchor independently.
+No labels used to fit or choose cutoff; no identity cutoff chosen.
+102 measured fits,12 insufficient-cell results (tiny179/235),1632 shuffled fits;
+nine absent frames remain null. Adjacent cells share context, so this is not
+independent validation. Shuffle comparisons are descriptive, not calibrated p values.
+
+Shoe197 has low held-out reference errors1.027/.656/1.200 cells versus shuffled
+4.529/3.307/4.750; genuine210/225 also show coherent structure.
+BUT wrong-hand345 fits anchor60 at .809 reference cells,63.5% within2cells.
+Correct partial165 is4.502/36.3%; clear intended375 is3.458/27.4%.
+Wrong-hand scale .207/.201 compresses to small earlier subject region.
+Normalizing each residual by fitted scale gives query-space median3.900 for
+wrong345, still below correct1655.017 and correct3756.269. No simple error
+cutoff separates these examples. Fully interior references do not fix it:
+wrong345 .748 reference-cell error vs correct1658.194/correct3753.421.
+Reviewed coordinate overlays197/165/345/375 againstanchor60; wrong hand's
+coherent cluster matches subject shorts/leg area. Generic local resemblance
+can be spatially consistent without identifying the same person.
+
+Decision: no normal-mask veto or memory filtering from these signals.
+Stop tuning single-frame local thresholds on this development clip.
+Next investigate sequence-level continuity at wrong acquisition (normal absence
+278..342 then wrong hand343), with correct whole-person initialization and
+unchanged native control. A future proposal must handle genuine disappearance,
+pose/scale change and mixed masks; no claim of solved identity or speed gain.
+No new Mac run requested in this analysis turn; model/app/recovery unchanged.
+Script and compact results committed for reproducibility. Full per-cell inputs
+remain in user's original local-parts ZIP.
+
+
+## Prior step: local parts help shoe evidence but still match wrong hands
+
+Evidence: Audit/mac-new-local-parts-review.json. Completed551-frame decoding
+prefix,22 encoder calls,31 pooled-descriptor reproduction controls. Offline linked
+all requested source/mask hashes/observations/PTS to prior report and hashed22 NPZ
+archives. Independently recomputed all114 local comparisons (19 nonempty frames,
+3 anchors,2 reference-coverage modes), including coordinates, background margins,
+colour distances, mutual flags and distributions; max difference1.78e-15.
+Script SHA matches committed source. No assistant model run/test/benchmark.
+
+Reviewed all19 nonempty masks and57 per-anchor margin maps in contact sheets;
+enlarged197/277/345/358. Early-reference correspondence overlay confirms shoe197
+matches mostly earlier shoe regions, with some outliers. Mean cosine now
+.6985/.7229/.7400 and subject-minus-background .1899/.2165/.2593.
+These local scores differ in definition from prior pooled scores, not an accuracy
+improvement measurement.
+
+Wrong hand345 still has positive mean margins .1589/.1340/.1233. At anchor0 its
+cosine .6611 exceeds correct partial165 .5901 and its margin .1589 exceeds
+correct375 .1326. Its matches scatter over face, arms, shorts/legs and shoes.
+Mixed277 includes positive extraneous hand area. Wrong hand portions in355/358/360
+remain positive amid mixed red/green regions. Do not claim clean pixelwise separation.
+Fully interior references do not resolve overlap: anchor60 wrong345 margin .1143,
+correct165 .0882, correct375 .0777. Shoe197 cosine drops .7400 to .6686.
+Mutual-nearest fraction also depends on mask size: tiny179 near1 versus clear375
+about.14-.18. No simple cutoff justified. Empty300 cannot be recovered by filtering.
+
+Decision: no normal-mask veto, no recovery/memory-policy edit, no model/app promotion.
+Useful descriptive partial-view evidence, still insufficient identity evidence.
+Next offline direction: spatial consistency of groups of matches using saved
+vectors/coordinates, jointly checking correct partials and wrong/mixed masks.
+Do not accept generic skin/clothing because any earlier patch matches; preserve
+pose/scale/tiny-fragment limitations. No additional Mac run needed to begin analysis.
+Current clip remains selected development evidence, not held-out accuracy validation.
+
+
+## Prior step: local appearance evidence prepared
+
+Added Temporal/diagnose_saved_mask_local_parts.py, a measurement-only follow-up
+to the global appearance false rejections. Uses the same fixed anchors0/30/60
+and28 inspection frames as the completed pooled-identity report. Original CPU
+image encoder only at present requested frames; no temporal rerun or state change.
+Existing replay controls/source/script hashes and prior identity report must match.
+Every decoded frame through550 checks pixel hash, PTS and saved binary-mask
+shape/values/fraction/emptiness. Requested masks additionally match prior identity
+mask hashes/observations. Recomputed pooled descriptors must reproduce at
+atol1e-7/rtol1e-6; absent descriptors must remain absent. Defaults expect22 encoder
+calls and31 requested-frame controls, including9 null inspections.
+
+Local measurements: every foreground-touched64x64 grid cell, weighted by exact
+16x16 binary-mask coverage. Compare independently against each early anchor:
+nearest raw encoder feature in reference cells with coverage>=.5, plus a fully
+covered-cell sensitivity check. Save per-cell reference coordinates/cosines,
+same-match masked mean-RGB distances, mutual-nearest flag and unique reference
+cell count. Report weighted distributions, not a single maximum or acceptance.
+Compare nearest subject feature with a fixed sampled outside-mask bank (every
+fourth grid row/column with zero coverage). This is contextual contrast, not
+labeled distractors or exhaustive background; bank-size imbalance can bias maxima.
+Raw features have receptive fields beyond the displayed16x16 tiles, especially
+problematic for tiny fragments. They are not semantic body-part/identity embeddings.
+No new identity thresholds, normal-output veto, recovery or memory-policy edits.
+
+Save raw local vectors/coverage/coordinates/colours as compressed NPZ for offline
+recomputation and per-anchor spatial match maps with fixed scales. Existing global
+appearance clause retained as observational context only. Missing output stays null;
+this diagnostic cannot recover a visible subject whose predicted mask is absent.
+Evaluate reviewed true partial masks150/165/197/210/225 against wrong hands and mixed
+hair/hand masks jointly. Do not tune a rule to this selected development sample.
+
+Source reviewed and AST parsed only; no assistant inference, builds, tests or
+benchmarks. Runtime and reproducibility controls pending user's Mac.
+One fresh result directory, one share ZIP, Finder reveal including partial failure.
+
+```bash
+cd /Users/petercody/Documents/Projects/ByteWaveSegmentation &&
+export DEVELOPER_DIR="/Applications/Xcode-beta.app/Contents/Developer" &&
+git pull --ff-only &&
+.venv-temporal/bin/python Temporal/diagnose_saved_mask_local_parts.py --video assets/occlusion-new.mov
+```
+
+Upload .temporal-runs/share/occlusion-new-local-parts-01.zip.
+No installed model, app, export, numerical parity gate or production change.
+
+
+## Prior step: global appearance gate rejects wrong regions AND valid partial target
+
+Evidence: Audit/mac-new-saved-mask-identity-review.json. Completed identity evidence
+report linked to exact whole-person replay;551 decoded frames checked,22 encoder
+calls,3 fixed anchors and28 inspected frames.19 have descriptors,9 are absent.
+Offline independently recomputed all reported encoder cosines/RGB intersections
+and match lists from saved vectors. All inspected mask hashes, image hashes and
+observations match archived replay. No assistant inference or runtime test.
+
+Reviewed all3 anchor and28 inspection previews in contact sheets. Early references
+0/30/60 broadly cover intended man (imperfect masks, not ground truth).
+Only90 and375 pass the existing same-anchor .8 pooled-encoder/.5 RGB clause.
+Wrong hands343/345/346/545/549 and contaminated hair+hand355/358/360 all fail.
+But valid partial-target150/165/197/210/225 also fail: best encoder similarities
+150=.7349,210=.7495,225=.7744, despite colour passing. Shoe197 is .4883/.2451
+against anchor60 and also fails. Mixed277 fails. Null at300 cannot restore missing
+target; filtering only affects masks that already exist.
+
+Decision: DO NOT enable this clause as a veto on normal predictions. It would
+remove real visible target portions as well as bad masks. Do not simply lower
+global cutoff to fit the clip. This is selected development evidence, not an
+accuracy score, held-out validation or Core ML/iPhone performance claim.
+No model, app, history or frozen recovery-policy changes.
+
+Next diagnostic direction: visibility-aware/local feature comparison to fixed
+earlier subject references instead of pooling whole-body/partial masks into one
+vector. Assess genuine partial regions and wrong-person regions together, including
+mixed masks; avoid patch matching that accepts skin/background merely because some
+local descriptor matches. Need evidence separation before proposing any suppression
+or memory filtering. Current whole-mask result remains a useful conservative
+indicator, not a sufficient identity decision. No new Mac run requested this turn.
+
+
+## Prior step: measure identity evidence on saved native masks
+
+Added Temporal/diagnose_saved_mask_identity.py. User runs original CPU image
+encoder only at fixed early references0/30/60 and28 selected later frames.
+Uses saved CHOSEN masks from completed whole-person replay; no tracking rerun,
+no state/filtering/recovery changes, no pointer reconstruction or Core ML export.
+Prior replay contract/completion/all controls, source hash/bytes, pinned upstream/
+checkpoint and replay script hash must match. Decoded image hashes/timestamps
+and chosen-mask binary shape/value/fraction/emptiness checked through frame550.
+Each measured mask hash archived. Fractions/emptiness are consistency checks,
+not proof of pixelwise equality to an otherwise unsaved original tensor.
+
+Descriptors mirror diagnose_occlusion_identity.py: raw backbone_fpn[2] pooled
+by exact16x16 high-mask coverage, joint8x8x8 RGB histogram; box and area reported.
+Pointer metric explicitly omitted because replay did not save pointer tensors.
+Anchors fixed before all measured later frames and saved for visual confirmation;
+no updating after absence, no selecting anchors by later similarity.
+Nonpositive score or empty low/high output yields null descriptor.
+
+Reports raw metrics against every anchor and an OBSERVATIONAL match against
+the existing .8 pooled-encoder / .5 RGB same-anchor clause from backup RULE.
+No new threshold, no output decisions. This is not the complete backup rule,
+not calibrated identity confidence, and CPU features differ from prior GPU work.
+Defaults include genuine partial views197/210/225, mixed277/358, missed-visible300,
+wrong-hand343/545/549 and correct-person375. Labels are sparse review examples,
+not exhaustive or held-out ground truth. Measure false positives AND false rejections
+before any policy edits. No claimed improvement yet.
+
+One fresh output folder and ZIP, reveals Finder even after partial error.
+Source reviewed, AST parsed, saved JSON inspected; no assistant inference/tests.
+Mac runtime pending. User command:
+
+```bash
+cd /Users/petercody/Documents/Projects/ByteWaveSegmentation &&
+export DEVELOPER_DIR="/Applications/Xcode-beta.app/Contents/Developer" &&
+git pull --ff-only &&
+.venv-temporal/bin/python Temporal/diagnose_saved_mask_identity.py --video assets/occlusion-new.mov
+```
+Upload .temporal-runs/share/occlusion-new-identity-evidence-01.zip.
+Then inspect signal separation and partial-body reference failures; do not enable
+normal-output suppression or change tracking history based on one clip alone.
+
+
+## Prior step: whole-person start helps extent, identity failures remain
+
+Evidence: Audit/mac-new-whole-person-replay-review.json. Uploaded replay completed
+590 frames; all initialization controls pass (native assembly and forced-auto
+mask/pointer/memory, including exact binary masks). Source/prior artifact hashes
+match, script SHA matches commit8a5a816. All1180 saved high masks agree with report
+fractions/emptiness, frames ordered590. Offline inspection only, no model execution.
+
+Visually reviewed all62 saved chosen previews in contact sheets; enlarged paired
+197/277/300/343/358/375/549. Not every frame is manually labeled.
+Whole-person initial candidate broadly tracks intended head/body/limbs in sampled
+early frames. At197 the target shoe is recovered;210/225 show target at left.
+At277 target body fragments plus small extraneous hand patch. At300 intended man
+is visible but both masks empty. At343 chosen mask is foreground hand; at358 large
+foreground hair/head+hand contamination along with target hair. At375 intended
+man broadly reacquired. At545/549 false foreground-hand fragments when target
+not visible. Do not call all nonempty returns correct identity recovery.
+
+Automatic367 empty vs chosen323:44 additional nonempty frames, NOT accuracy gain
+count. This is original PyTorch CPU, not optimized Core ML/iPhone validation.
+Initialization is controlled; correct subject extent alone does not prevent
+misses or wrong-subject output. No policy/export/app change or promotion made.
+
+Next diagnostic direction: measure appearance/identity evidence on native NORMAL
+outputs against earlier trusted subject references, including wrong-present hand/
+hair frames and genuine partial-target frames. Existing frozen backup recovery
+only overrides absence; normal-present output wins, so it would not directly reject
+these contaminated normal masks. First establish evidence separation without
+changing histories or tuning thresholds to this one clip. Preserve prior worker/
+dog controls. No new run requested yet; current replay and video are available.
+
+
+## Prior step: replay reviewed whole-person alternative
+
+Evidence: Audit/mac-new-occlusion-alternatives-review.json. Uploaded alternatives
+completed; all prior summary controls reproduce. Reviewed all nine masks.
+Shoulder point(.36,.40), candidate1 broadly covers the intended person head to
+shoes, with holes/imperfect boundaries. Its predicted IoU .4044 ranks below the
+shirt candidate2 .5077. This explains automatic part selection; it is not proof
+of robust tracking, accurate identity or Core ML behavior.
+
+New Temporal/diagnose_initial_candidate_replay.py runs original PyTorch CPU:
+automatic vs visually chosen initialization, independent histories, shared
+read-only image features. Defaults point-number2/candidate1 from prior alternatives.
+Source video hash/bytes, pinned upstream/checkpoint, first image hash/timestamp,
+prior quality scores, automatic choice and chosen binary mask must reproduce.
+
+Initial selection uses a temporary mask-decoder forward hook that returns
+artificial ranking scores ONLY to upstream _forward_sam_heads. Upstream then
+selects both the desired mask and its corresponding decoder token, computes
+object pointer including absence handling. Hook always removed in finally;
+real scores restored before returning/reporting; no weight/tensor mutation.
+Pinned edgetam.yaml use_multimask_token_for_obj_ptr=true and decoder source
+confirmed one token per alternative. Shape/finite guard requires three tokens.
+Initial spatial memory freshly encoded from each selected high-resolution mask.
+
+Before propagation, forcing automatic candidate must reproduce unchanged
+mask/pointer/memory outputs, and initial assembly must reproduce native track_step,
+using existing FP32 allclose tolerances(.001/.001) plus exact binary masks. Selected alternative mask must
+exactly reproduce reviewed PNG. These controls are not cross-stream parity.
+From frame1 both streams use untouched native track_step with independent histories.
+All outputs including absence enter history; original temporal selection retained.
+No recovery backup, model export/promotion, app/fixture modification or speed claim.
+
+Every frame's binary high mask saved. Preview pairs every15 frames, low-mask
+empty/nonempty transitions and last frame. One ZIP in .temporal-runs/share, revealed
+in Finder even on partial failure. Output fresh-only. Default cap600 covers590
+frames of this clip. Source reviewed and AST parsed only; no assistant model run,
+conversion, build, benchmark or test. Actual runtime/controls pending user Mac.
+
+```bash
+cd /Users/petercody/Documents/Projects/ByteWaveSegmentation &&
+export DEVELOPER_DIR="/Applications/Xcode-beta.app/Contents/Developer" &&
+git pull --ff-only &&
+.venv-temporal/bin/python Temporal/diagnose_initial_candidate_replay.py --video assets/occlusion-new.mov
+```
+Upload .temporal-runs/share/occlusion-new-whole-person-01.zip.
+Review subject extent, wrong-person switches and disappearance/return before
+deciding how to validate this initialization in Core ML or compare frozen recovery.
+
+
+## Prior step: all three first-frame points select parts; inspect alternatives
+
+Evidence: Audit/mac-new-occlusion-three-point-review.json. All three one-frame
+runs completed, none selects the intended whole person. Head(.50,.28) selects
+head/face/hair fragment; shoulder(.36,.40) selects shirt; forearm(.50,.45) selects
+raised arm/hand. Shoulder/arm numerical checks pass; head checks fail, including
+GPU maskIoU about .697. Semantic selection and numerical agreement are separate.
+Do not use these as whole-person occlusion trials or rerun long tracking yet.
+
+Source inspection of pinned upstream sam2_base._forward_sam_heads confirms three
+candidate masks, with highest predicted IoU automatically selected. This score
+is not whole-person identity evidence. New Temporal/diagnose_initial_mask_alternatives.py
+uses original _track_step on frame0 with the same decoded pixels and reviewed
+points. It saves all three masks/scores per point, marks automatic selection,
+and checks prior original summary values (not full tensor parity). No candidate
+pointer is exposed/used, no memory encoding/propagation, no new export, no installed
+model or recovery-policy changes. Original CPU only; not Core ML validation.
+
+The diagnostic verifies prior report completion, initialization-only mode, source
+hash/bytes, upstream/checkpoint, first-frame image hash and timestamp. One ZIP,
+fresh-output guard, partial reports retained on error. Source reviewed and Python
+AST parsed only; inference/runtime remains to be run by user on Mac.
+
+```bash
+cd /Users/petercody/Documents/Projects/ByteWaveSegmentation &&
+export DEVELOPER_DIR="/Applications/Xcode-beta.app/Contents/Developer" &&
+git pull --ff-only &&
+.venv-temporal/bin/python Temporal/diagnose_initial_mask_alternatives.py --video assets/occlusion-new.mov
+```
+Upload .temporal-runs/share/occlusion-new-mask-alternatives-01.zip (Finder revealed).
+Inspect alternatives for whole-person semantics before deciding next experiment.
+If alternate selection is later used for tracking, its object pointer and initial
+memory must correspond to that mask; never reuse top-mask pointer blindly.
+
+## Prior step: new clip baseline reveals wrong initial target; verify mask first
+
+Evidence: Audit/mac-new-occlusion-initial-selection-review.json.
+Uploaded occlusion-new-comparison-01.zip completed590 frames for19.667s clip.
+Source SHA5170ab7d885e131cbcd79be302d422f58e014f0c7ffbde51dcdcf8ad27bfa1e9,
+35866195bytes. Selected intended man in black graphic shirt/shorts. Point(.50,.58)
+chosen by assistant actually selects the shirt GRAPHIC in all three streams at0,
+not the entire person. Coordinate-only preview did not reveal this ambiguity.
+Do not interpret this as a full-person occlusion/recovery test or promote changes.
+
+Numerical result:174 GPU failures (first0) and57 FP32 (first8); report remains
+diagnostic complete, not parity passed. At0 maskIoU .99122 but memory cosine
+.989268<.99. Some original/FP32 false foreground fragments visible at352.
+Reviewed all57 saved GPU preview panels in contact sheets and full triptychs0/352.
+Sparse review is not every-frame ground truth. No assistant inference performed.
+
+Added --initialization-only to diagnose_occlusion.py: requires new-video and explicit
+point, mutually exclusive with preview-only, compares exactly first frame in all3
+streams and marks initializationOnly=true. Existing full-run behavior/gates unchanged.
+New Temporal/run_occlusion_selection.py defaults to three tentative points for this
+clip: head(.50,.28), shoulder(.36,.40), previous forearm(.50,.45).
+No candidate is guaranteed to select full person; visually inspect actual masks.
+One first-frame initialization per point, no temporal propagation; models unchanged.
+Runner collects reports/mask previews in one ZIP, reveals Finder; fresh output guard.
+Source reviewed and AST parsed only. Mac runtime/inference still pending.
+
+Mac command:
+```bash
+cd /Users/petercody/Documents/Projects/ByteWaveSegmentation &&
+export DEVELOPER_DIR="/Applications/Xcode-beta.app/Contents/Developer" &&
+git pull --ff-only &&
+.venv-temporal/bin/python Temporal/run_occlusion_selection.py --video assets/occlusion-new.mov
+```
+Upload .temporal-runs/share/occlusion-new-mask-selection-01.zip.
+Then choose full-person mask by first-frame semantics before rerunning baseline.
+No recovery rule changes or model/app promotion. Preserve this failed-target run.
+
+
+## Prior step: edge continuation reviewed; independent clip next
+
+Evidence: Audit/mac-continuation-edge-pair-review.json.
+Uploaded continuation-edge-01-review.zip SHA256
+8afdbbc7382cf607587ad371c567f8eeefdc7ca2c4e176ff1ab3bc2713aa4b8f.
+Both runs completed with all baseline/probe/normal-output controls, original
+conditioning and fixed appearance references reproduced. Offline analysis only.
+
+Worker: backup accepted169 as before; now continuous169..214, 46 frames.
+Exactly five added display frames210..214, about0.167 seconds. No removed frames.
+First policy divergence210; prefix211 includes matching raw output at210.
+All prior169..209 PNGs are byte-identical to the already visually reviewed v2
+previews. New210..214 inspected at native resolution: masks stay on shrinking
+visible worker clothing at left boundary, no observed machine/rubble switch.
+Overlay-difference bounds verified all rendered overlay pixels are in inspected
+crops. Edge timer advances1/30..5/30 seconds from last full appearance209, never
+renews during grace, common colour anchor60 retained. Both resolutions pass
+presence, boundary, overlap and non-growing-area requirements.
+
+At215 a tiny clothing fragment is still visible. Backup prediction is present,
+passes time(.2s), boundary, overlap and area checks; rejected by colour match.
+Do not call this a complete exit or perfect segmentation. Avoid more tuning to
+this fragment. Normal history and113 normal-present outputs preserved.
+
+Dog: all600 streams, comparisons, display decisions and normal state counts
+identical to v2;557 normal-present outputs preserved. No backup acceptance or
+edge allowance, normal returns85 and247 unchanged. Controls establish development
+preservation, not general identity robustness.
+
+Next: freeze current v3 rules and obtain an independent clip not used to choose
+thresholds/anchors. Prefer clear identity before/after a few seconds of occlusion,
+ideally with a distractor. Assess wrong-object acquisition and recovery delay.
+Keep commands rooted at the explicit Mac project path and per-shell Xcode-beta;
+one share ZIP containing report plus relevant previews. No model/app promotion,
+selection changes or production ByteWave integration yet. No further files needed
+from this edge run.
+
+
+## Prior step: bounded edge continuation prepared; awaiting Mac replay
+
+Temporal/diagnose_occlusion_backup.py now offers --continuation-policy appearance-edge
+(v3), using the reviewed appearance-only v2 replay as its required control.
+This is a development experiment motivated by the visible worker cutoff at210,
+not a successful result yet. No installed models, app code, export or parity gates
+changed. Assistant performed source review and AST parsing only, no inference,
+runtime tests, builds or benchmarks.
+
+Strict acquisition remains unchanged: three missing normal frames; three consecutive
+present candidates with predictedIoU>=.8, encoder>=.8 AND colour>=.5 against the
+same common anchor and consecutive low-mask overlap>=.5. Normal output always wins.
+
+An already accepted backup ordinarily continues using v2 full appearance checks.
+If those fail, edge grace additionally requires current positive presence, previous
+AND current low/high masks touching the same exact boundary, consecutive overlap
+>=.5 at BOTH resolutions, non-growing positive mask area at BOTH resolutions, and
+colour>=.5 against a common anchor from its last full appearance match. Retain
+boundary/colour-anchor intersections throughout grace. Limit grace to .25 seconds
+since the last full appearance match, using source PTS. Grace updates geometry only,
+never the timer or reference descriptors. A full appearance match resets the timer.
+Every displayed/committed mask is the fresh prediction. Failure discards the backup
+and restarts strict search. This may still reject correct fragments or accept wrong
+regions; visual review and independent holdout remain necessary.
+
+Require complete v2 control with script SHA
+a1b72d75ee8a2a0c5c379960ee4c9998cc67ff94e13a21d7039769f45d877741,
+matching source/model/reference identities and rules. Every normal history must
+reproduce. Before first decision divergence, raw backup/search and anchor metrics
+must reproduce too; only passing new edge grace can explain that first difference.
+Log edge checks, edgeContinuationFrames and firstPolicyDivergenceFrame. Existing
+baseline, conditioning-only probe, fixed anchor and original conditioning controls
+remain mandatory. Both worker and dog are development clips.
+
+Run from the Mac:
+```bash
+cd /Users/petercody/Documents/Projects/ByteWaveSegmentation &&
+export DEVELOPER_DIR="/Applications/Xcode-beta.app/Contents/Developer" &&
+git pull --ff-only &&
+.venv-temporal/bin/python Temporal/run_occlusion_continuation_pair.py --experiment edge
+```
+
+Runner checks both clips' paths, replays worker276 then dog600 using controls in
+.temporal-runs/continuation-quality-01/{worker,dog}/report.json, and writes fresh
+.temporal-runs/continuation-edge-01. Refuses existing output/ZIP. It packages both
+reports plus every backup-display/continuation-attempt preview (including rejection)
+into .temporal-runs/share/continuation-edge-01-review.zip and reveals it in Finder.
+One upload, no separate picture-packaging step. Partial reports are collected if a
+run fails. Next: review controls first, then all changed masks and the exit boundary;
+verify dog preservation. Do not claim improved recovery before those results.
+
+
+## Prior step: uninterrupted worker continuation visually confirmed; edge cutoff remains
+
+Evidence: Audit/worker-continuation-quality-visual-review.json.
+ZIP SHA25667fa42615c11c0aa58dfc690aab646a8972d94b677c1c058d9cff93f87a75cdf.
+Embedded report matches previously reviewed
+8f96e8dfdf79cb7f9b406cdf123160db342486fbb1a2180de93ec10b09c48c9c.
+All42 PNGs169..210 reviewed, with hashes archived. All41 displayed masks169..209
+stay on selected worker visible upper body/back beneath bucket then toward left
+edge. No observed switch to machine/rubble. Newly retained170/171/173/174 correctly
+follow same visible worker; both previous two-frame gaps removed. Masks remain
+partial silhouettes, not pixel-perfect ground-truth validation. Pixel-difference
+bounds verified every displayed overlay lies in inspected native-resolution crops.
+
+At210 worker still partially visible at left edge. Raw backup/search cover visible
+fragment but displayed output is empty. False rejection remains at appearance
+cosine .796826 <.8; not an actual complete exit. Dog report unchanged as below.
+Removing continuation-only quality gate is a positive DEVELOPMENT result;
+not production/device readiness or general identity proof.
+
+Next focus: investigate continuation under partial visibility/frame-edge clipping
+using current-frame evidence while retaining strict acquisition and normal priority.
+Avoid merely lowering global appearance threshold to fit210. Preserve this version
+as control for any next isolated experiment; full worker/dog replays plus independent
+holdout before promotion. No further files needed for this run. Assistant only
+performed offline image/JSON review, no inference/tests/builds or model/app edits.
+Keep future user commands simple and share-folder ZIP handoffs.
+
+
+## Prior step: continuation-cutoff paired reports pass controls
+
+Evidence: Audit/mac-continuation-quality-pair-summary.json.
+ZIP SHA2563eefaceca70829bacc2599a6564690b0e9dcba6a3dea8d8f2354608bceb45ab2.
+Worker report SHA2568f96e8dfdf79cb7f9b406cdf123160db342486fbb1a2180de93ec10b09c48c9c.
+Dog report SHA256e501ebe995302b4ce8e9d60a0d486f2c78bb2dc5e740121aa2b7ad06ee4e1e90.
+Both completed with script SHA256
+a1b72d75ee8a2a0c5c379960ee4c9998cc67ff94e13a21d7039769f45d877741.
+
+Offline full-row review:276 worker/600 dog ordered completed frames, all original
+baseline/probe and backup-control normal rows reproduce, original conditioning/
+anchors preserved. All normal observations, comparisons and state counts match
+prior v1 runs.113 worker and557 dog normal-present outputs preserved.
+
+Worker backup169..209 now one uninterrupted41-frame interval; adds exactly
+170,171,173,174 and removes no displayed frames versus v1. Acceptance still169.
+First decision divergence170 after matching raw control through170 (prefix171
+including frame0). Only170 is displayed below acquisition-quality threshold:
+.00100837. Retaining it changes subsequent memory;171 .901142,173 .901089,
+174 .889112 now pass .8 anyway. Do not describe this as simply filling in stale
+masks or infer unchanged later pixel masks from previous visual review.
+At210 still rejected by appearance: best encoder .796826 below .8; predictedIoU
+.913715 and anchor60 colour .684421 pass. Edge cutoff remains deliberately
+unresolved by this single-variable experiment.
+
+Dog all600 streams, comparisons and display-source decisions exactly match
+previous appearance-backup run; zero backup acceptances, same empty intervals
+48..84/241..246, normal returns85/247. Full600-prefix control, no divergence.
+This establishes development-clip preservation, not general identity validation.
+
+NEXT request new worker previews169..210 inclusive (all41 backup frames plus
+rejection) from .temporal-runs/continuation-quality-01/worker, with report, packaged
+into .temporal-runs/share/continuation-quality-01-worker-previews.zip; reveal with
+open -R. No inference rerun or dog previews needed. Visually assess changed
+feedback history before next policy change or promotion. Both clips development;
+independent holdout still needed. Assistant only inspected JSON, no inference/tests.
+
+
+## Prior step: continuation quality-cutoff ablation prepared
+
+Updated Temporal/diagnose_occlusion_backup.py adds explicit --continuation-policy
+appearance-only, with quality-and-appearance retained as default. This removes
+ONLY predictedIoU>=.8 from continuation of an already accepted backup. Acquisition
+still requires presence, predictedIoU>=.8, encoder>=.8 AND colour>=.5 on the same
+anchor, three consecutive frames, overlap>=.5, common anchor. Continuation still
+requires positive presence/nonempty masks and both appearance thresholds against
+one acceptance anchor. Normal present output always wins. No stale-mask holding,
+new model export, weights, app change, reference update or relaxed parity gates.
+The rule records continuationPredictedIoUUsedAsGate and distinct v2 version.
+
+Source inspection: owned.selected_masks takes max of upstream _forward_sam_heads
+IoU estimates; pinned sam2_base.py documents estimated mask IoU separately from
+object-score logits, selects argmax mask and uses object-score sign for absence.
+This is an estimate, not identity probability or measured overlap. No output wiring
+change is proposed. The cause of the numerical score drop itself is not proven.
+Source: facebookresearch/EdgeTAM at7711e012a30a2402c4eaab637bdb00a521302c91,
+sam2/modeling/sam2_base.py. Existing owned.py unchanged.
+
+Appearance-only requires --backup-control pointing to reviewed original full
+appearance-backup report. Verify original rule/script SHA e821c6ac..., completed
+controls, source/model/reference hashes, full ordered rows. Normal observation/
+clock matches that control every frame; raw backup/search observations and anchor
+metrics match until first decision difference. At that first difference only the
+low-quality-but-present appearance-matching continuation may change; old fresh
+search is skipped because backup continues. Later feedback histories are expected
+to differ and are NOT required to reproduce old backup. All normal/comparison,
+conditioning-only probe, reference descriptor and model/pixel controls still apply.
+Reports include firstPolicyDivergenceFrame, backupControlPrefixFrames (includes
+first divergent-decision frame whose raw continuation is matched) and displayed
+continuation frames below original acquisition-quality cutoff.
+
+New Temporal/run_occlusion_continuation_pair.py checks both cases' input paths,
+runs worker276 then dog600 using same Python, and collects report.json files into
+.temporal-runs/share/continuation-quality-01-reports.zip and reveals in Finder.
+Default output .temporal-runs/continuation-quality-01/{worker,dog}; refuse existing
+output/ZIP; optional fresh --output inside .temporal-runs. Packages available
+partial reports even if a run errors. No cleanup/deletion or permissions changes.
+Use explicit project cd, export DEVELOPER_DIR=/Applications/Xcode-beta.app/Contents/Developer,
+git pull --ff-only, then .venv-temporal/bin/python Temporal/run_occlusion_continuation_pair.py.
+Both existing appearance-backup-01 reports are controls. No manual folder hunting.
+
+Assistant performed static source/API/control-flow and ast.parse checks only.
+No model inference, tests, builds, conversion or benchmark. User Mac execution
+pending. Expected question: does this remove early worker flicker while dog remains
+unchanged? Do NOT claim it will fix edge cutoff; appearance thresholds deliberately
+unchanged and feedback may alter outcomes. Review all new accepted/continuation
+intervals; both clips remain development evidence and independent holdout required.
+
+
+## Prior step: worker backup previews reviewed; continuation causes false rejection
+
+Evidence: Audit/worker-appearance-backup-visual-review.json records52 PNG hashes,
+zip/report hashes, review findings and displayed-mask bounds.
+ZIP SHA25623ec00adb47fae85351cfb0bf9836c096e6f78ba3c75c6780613fe87534c266c.
+Embedded report exactly matches reviewed worker report
+12bb1b25cdb1e117c8faa1ad6e5d14cf4b7aefcb792221508f9dfc5abfede9e2.
+
+Inspected148 and167..217. All37 displayed backup frames169,172,175..209 visually
+follow selected worker's visible upper body/back, beneath bucket then toward left
+edge. No observed switch to rubble/machine in these frames. Compared normal vs
+display panel pixels to verify all displayed overlay differences lie in inspected
+native-resolution crops (x0..469,y520..799); no omitted distant mask regions.
+Masks are partial-body silhouettes; no pixel-level ground truth.
+
+148 wrong rubble search withheld.167/168/171/174 correct-looking worker search
+withheld pending confirmation. At170/173 BOTH propagated backup and new search
+look correct, but output is empty. Appearance matches all3; predictedIoU .00100837
+and .25776285 cause continuation rejection. These gates produce two two-frame gaps.
+At210 raw backup and search still cover worker visible at left edge; cutoff is
+encoder cosine .796691 just below .8 despite predictedIoU .912562 and colour pass.
+211..214 search follows diminishing worker fragment but remains undisplayed.
+215..217 empty search/display; tiny light clothing fragment remains at image edge.
+Do not claim subject completely exited at210 or217.
+
+Conclusion: recovery adds correct-looking worker masks on reviewed frames and dog
+regression remains preserved, but current continuation rule flickers/cuts off early.
+NOT ready for promotion or general identity claim. No new model inference, model/
+app edits, threshold changes or runtime tests by assistant.
+
+Next narrow experiment: investigate predictedIoU semantics and distinguish strict
+three-frame acquisition from continuation of already accepted identity. Keep normal
+priority, strict acquisition and appearance controls; do not simultaneously loosen
+exit appearance thresholds. Any replacement must evaluate current-frame masks, not
+freeze stale masks, and rerun full worker/dog histories then independent holdout.
+No need for more files from this completed run. User prefers single share-folder ZIP
+handoffs; all Mac commands include explicit project cd and per-shell Xcode-beta.
+
+
+## Prior step: both appearance-backup reports reviewed
+
+Worker evidence: Audit/mac-worker-appearance-backup-summary.json.
+Report SHA25612bb1b25cdb1e117c8faa1ad6e5d14cf4b7aefcb792221508f9dfc5abfede9e2.
+Completed276 ordered rows. All baseline/search controls reproduce; all113 present
+normal outputs preserved; normal clock advances once/frame; conditioning and
+reference descriptors unchanged. Same fixed rule/script as dog.
+
+Backup displays37 frames:169,172,175..209. Accepts169 after167..169 confirmation,
+rejects170; accepts172, rejects173; accepts175, holds through209, rejects210.
+Thus gaps170..171 and173..174 introduce flicker; not ready for promotion.
+At170 and173 appearance matches ALL3 anchors, but continuation predictedIoU
+.00100837 and .25776285 fail .8. These are quality-head rejections, not appearance
+mismatches. Fresh searches on those frames qualify but restart confirmation.
+At210 continuation predictedIoU .912562 passes, but maximum encoder cosine
+.796691 falls below .8; colour still passes anchor60. Fresh search also fails
+encoder (.797863 maximum). Do not lower thresholds before reviewing actual masks.
+Normal remains absent throughout these intervals; correct worker identity is
+not established by this report's nonempty masks alone.
+
+Dog results below remain valid: no backup acceptances, baseline present frames and
+return timing preserved. Both clips informed thresholds, so neither is a holdout.
+Next ask for worker previews148 and167..217 inclusive (all37 displayed backup
+frames plus confirmation/rejection/exit context). Provide ONE copy/paste command
+that packages report and exact previews into .temporal-runs/share/
+worker-appearance-review.zip and reveals it in Finder. User is overwhelmed by
+many experiment folders; identify uploads by contents, and consolidate future
+handoffs into clearly named share bundles instead of asking them to navigate
+multiple directories. Do not rerun either completed experiment.
+No production/app/model changes; offline JSON inspection only.
+
+
+## Prior step: dog appearance-backup replay reviewed
+
+Evidence: Audit/mac-dog-appearance-backup-summary.json. User report SHA256
+dadee4d83f681bf59a2bd178966ee3eed2b8177d7ce3206755765afbaea0330e.
+Completed600 frames using diagnostic script
+e821c6ac1dd4887590aab7809e48efb58c5c2fd3b39bfdb7ca99b72c9aa68377.
+Offline row inspection: all600 ordered/completed, all baseline controls reproduce,
+all39 search controls reproduce, normal state counts advance exactly once/frame.
+Original conditioning and all anchor descriptors reproduce.
+
+All557 normal-present outputs preserved; no backup accepted or committed.
+All39 searches have zero confirmation streak / no qualifying anchors.
+32 nonempty search candidates rejected. Known wrong background54 fails appearance.
+Display stays empty48..84 and241..246, exactly baseline; normal returns85 and247
+without the old recovery delay. Frame251 wheel search is NOT evaluated: normal
+already present, so baseline priority avoids that old false acceptance. Do not
+claim appearance rejected the wheel in this run.
+
+This is a positive dog DEVELOPMENT-clip regression result, not successful recovery,
+general identity validation, speed measurement or device readiness. Existing normal
+tracker errors remain, including prior visually overlarge masks around330/331.
+The45 normal numerical gate failures reproduce prior baseline; they are not new
+backup regressions. No new preview request needed to establish baseline preservation
+because no backup masks were displayed.
+
+NEXT: obtain .temporal-runs/worker-appearance-backup-01/report.json from user.
+The prior command ran worker then dog sequentially; do not ask to rerun dog.
+Check worker controls, acceptances/continuation, all new backup intervals and their
+previews before deciding whether this rule retains useful recovery. Independent
+holdout still required before promotion. No app/model changes. Assistant performed
+offline JSON checks only, no inference/tests/builds/exports.
+
+## Prior step: baseline-first appearance backup diagnostic prepared; Mac replays pending
+
+New Temporal/diagnose_occlusion_backup.py implements one FIXED exploratory rule,
+informed by the sparse worker AND dog measurements. No production/app/model edits.
+No inference/tests/builds/exports run by assistant; AST/API/state-flow and whitespace
+review only. Native runtime still needs user Mac execution.
+
+Normal GPU state always advances unchanged and every prior observation/comparison
+must reproduce exactly. Present means positive object score plus nonempty low/high
+masks. Present normal output always wins, with all seven output tensors checked
+unchanged; it immediately discards pending search and any backup. This priority is
+not an identity verdict: baseline identity switches remain possible.
+
+Only after three consecutive normal-absent frames and all fixed reference frames
+have occurred, search with original conditioning only. Candidate must be present,
+predictedIoU>=.8, pooled encoder cosine>=.8 AND RGB histogram intersection>=.5
+against the SAME anchor. Require3 consecutive qualifying masks with IoU>=.5 and
+at least one common qualifying anchor across the whole streak. Pointer cosine
+and area are logged but not gates. No threshold CLI sweep in this version.
+
+On acceptance, deep-copy pre-commit normal state, clear recent/pointer banks only,
+preserve original conditioning and actual frame clock/PTS, and commit CURRENT
+candidate in separate backup state. Pending candidates never commit. Subsequent
+backup propagation while normal absent must meet presence, predictedIoU and both
+appearance thresholds against one of its acceptance anchors. No overlap gate
+during continuation. Failure discards backup before display/commit, then restarts
+search on same frame; new candidates still require3-frame confirmation.
+
+Normal state is checked unmodified by side work before its sole commit each frame.
+Conditioning tensors checked in both states. Search must exactly reproduce linked
+memory-probe control each time. Anchors are recomputed from earlier normal frames
+and their complete descriptors/observations must exactly match reviewed appearance
+report. Appearance helper script hash must match. No future image features, current
+frame identity labels or later reference updates enter decisions. Previously chosen
+anchor indices are an offline diagnostic convenience, not automatic app selection.
+
+Runs automatically cover the ENTIRE archived comparison (worker276, dog600);
+require full memory-probe controls and linked completed appearance report. Original
+reference num_frames unchanged. Source, package, fixture, report hashes and decoded
+pixels/PTS checked. Fresh output directories. Report logs all decisions, per-anchor
+metrics, streaks, backup commits, baseline preservation and display intervals.
+Save every search/backup frame plus display transitions/references. A rejection and
+new search on same frame yields4 panels to retain both raw outputs.
+
+User Mac worker command uses appearance-report
+.temporal-runs/worker-identity-signals-01/report.json; comparison
+.temporal-runs/worker-occlusion-trim-01/report.json; memory-probe
+.temporal-runs/worker-memory-probe-01/report.json; video assets/worker-occlusion.mov;
+output .temporal-runs/worker-appearance-backup-01.
+Dog uses dog-identity-signals-01/report.json, dog-pillar-comparison-01/report.json,
+dog-pillar-memory-probe-01/report.json, assets/dog-occlusion.mov;
+output .temporal-runs/dog-appearance-backup-01.
+Both exact fixture DeviceValidationData/memoryfp16projection and phone-report
+Audit/iphone17pro-worker-occlusion-report.json for package identity only.
+Use project cd, per-shell Xcode-beta DEVELOPER_DIR; run sequentially with &&.
+Ask for both report.json files first; then select previews from new intervals.
+
+Success is NOT yet claimed. Worker should retain useful recovery; dog full absence
+intervals may reveal uninspected false positives. Small/partial true backup masks
+may fail the conservative continuation gate. Both clips are development evidence.
+Any useful result needs visual review of all backup intervals and a separate holdout
+before promotion. Baseline-first alone cannot prevent wrong masks while absent.
+
+## Prior step: appearance diagnostics reviewed; useful signals but no universal identity gate
+
+Evidence: Audit/occlusion-identity-signals-review.json includes per-anchor values,
+source/report hashes and six reference-image hashes. Worker report SHA256
+f994a29da75e68b32fb3cbdf40f0f7e0c68dd891306366250afa1088261b306b;
+dog report SHA2566a96030a69ccb3ccc2656efa3862c7fc725de6ae26f513167f444b2b52dff231.
+Both used diagnostic script SHA256
+b6f483e4473dd573447486eda72150634d0a4b03d7bbcf520f8d2d811bb53d90.
+Worker218frames/13side calls and dog256frames/17side calls completed; all baseline
+and probe controls reproduced; original conditioning unchanged. No new recovery.
+
+All6 anchors inspected. Worker0/30/60 cover small bent-over worker's visible back/
+upper-body region to right of excavator; NOT standing worker at left.60 especially
+partial. Dog0 whole visible dog largely excludes box;15 head clipped at edge;
+30 hindquarters with front behind pillar. Reference masks are partial observations,
+not universal identity truth.
+
+Descriptive maxima across anchors (different metrics may choose different anchors):
+                    pointer   encoder   colour
+worker rubble148     .5462     .6792     .2683
+worker correct169    .3368     .9095     .8367
+dog background54     .6209     .6638     .4186
+dog wheel251         .6248     .7921     .2327
+dog normal head85    .6227     .6964     .2992
+dog normal edge247   .6736     .5858     .6443
+Pointer-only ranking fails worker case. Encoder/colour help with sampled worker
+recovery but a universal cutoff could reject correct partial dog while accepting
+wrong masks. Do not present cosine/intersection as percentages of identity trust.
+
+Next proposed experiment, NOT implemented: retain independent unchanged baseline;
+never suppress its present output just because experimental search is pending.
+Evaluate appearance agreement only for search candidates filling baseline absence,
+without committing pending candidates. Baseline-first routing alone cannot stop
+false positives during absence. Document any exploratory thresholds before full
+causal worker/dog replays, inspect all accepted intervals/feedback, then test a
+separate holdout. Both current clips now inform development, not holdout proof.
+No production/app/model changes or threshold promotion. Assistant performed offline
+JSON/image analysis only; no model inference/tests/build/export.
+
+## Prior step: appearance-signal diagnostic prepared; user Mac runs pending
+
+New Temporal/diagnose_occlusion_identity.py measures candidate/anchor similarities
+without any recovery decisions. No app/model/gate changes. Only normal GPU outputs
+commit to TemporalState; original PyTorch reference has independent history.
+Conditioning-only side calls are discarded. Baseline observations/comparisons must
+exactly reproduce completed comparison on every frame, and every measured search
+must reproduce linked completed memory-probe observations/comparisons.
+
+Explicit earlier anchor frames must precede the probe snapshot. Save anchor
+previews and vectors for review; these are normal predictions, NOT certified
+identity labels. Descriptors: object-pointer cosine; raw 64x64 encoder map pooled
+by binary high-mask area coverage over 16x16 image tiles; normalized joint RGB
+8x8x8 histogram intersection. Also mask area ratio/XYXY/feature coverage.
+Absent output gives null descriptor, zero norms give null cosine. Context,
+illumination, tiny masks, partial views and same-model coupling are limitations.
+No recommended thresholds, acceptance, automatic reference updates or re-ID claim.
+
+Suggested worker run: video assets/worker-occlusion.mov; comparison
+.temporal-runs/worker-occlusion-trim-01/report.json; memory probe
+.temporal-runs/worker-memory-probe-01/report.json; anchors0,30,60;
+inspect112,115,148,150,154,160,167,168,169,175,205,216,217;
+output .temporal-runs/worker-identity-signals-01. Replays218frames while retaining
+full original reference num_frames276.
+
+Suggested dog run: video assets/dog-occlusion.mov; comparison
+.temporal-runs/dog-pillar-comparison-01/report.json; memory probe
+.temporal-runs/dog-pillar-memory-probe-01/report.json; anchors0,15,30;
+inspect48,51,52,53,54,60,75,84,85,86,241,247,248,249,250,251,255;
+output .temporal-runs/dog-identity-signals-01. Replays256frames while retaining
+full original reference num_frames600. Both use exact memoryfp16projection fixture
+and Audit/iphone17pro-worker-occlusion-report.json for package identity only.
+All source/model/fixture hashes and decoded pixels/PTS checked. Fresh output
+directories required. Script hash, versions and source report hashes recorded.
+
+Ask for both report.json files and anchor previews0/30/60 worker,0/15/30 dog.
+Inspect anchor quality before drawing identity conclusions. Both clips now
+development evidence; any later rule requires independent holdout validation.
+No inference/tests/builds/conversion performed here. AST, API and source-flow
+review only; native runtime remains untested. User commands must include project
+cd and per-shell DEVELOPER_DIR Xcode-beta, never global xcode-select.
+
+## Prior step: dog previews confirm false recovery; rule rejected for promotion
+
+Evidence: Audit/dog-confirmed-recovery-visual-review.json. All ten supplied
+triptychs52,53,54,60,75,84,85,86,247,251 inspected; original TIFF hashes recorded.
+Linked report SHA25662cc7c87f35f421b50a595f9dc34c97689ffb1da54e497a8b5ec947c002d0bc1.
+
+52/53 pending search masks broad blurred upper-image non-dog content. At54
+that wrong region is accepted.60/75 ordinary propagation continues masking
+background/occluding content while dog is hidden; middle search panel is blank
+because no search call occurred.84 still masks upper-right background while
+pizza box/small brown part begin emerging left of pillar. Do not claim every
+frame54-84 has zero visible dog pixels, or label the blurred region as a specific
+physical object without evidence.
+
+85 normal correctly masks returning head but recovery is empty;86 both mask dog.
+247 normal already masks dog fragment at left edge, recovery is suppressed.
+251 accepted search/recovery covers vehicle wheel/wheel arch as well as dog
+fragment, whereas normal remains on dog. This SECOND acceptance also fails
+visually; it is not merely a four-frame recovery delay.
+
+Conclusion: fixed worker-derived confidence/overlap rule does not generalize.
+Reject promotion; current app and model packages unchanged. Stable masks with
+high predicted IoU did not establish identity. Do not fix by arbitrarily raising
+thresholds against this dog clip. Both worker and dog are now development evidence.
+
+Next proposed direction (NOT IMPLEMENTED): preserve ordinary tracking independently
+and measure recovery-candidate consistency with trusted pre-occlusion subject
+evidence on BOTH clips before choosing a gate. Candidate pointer/feature similarity
+is an unvalidated diagnostic signal, not calibrated identity probability.
+Avoid overwriting accepted history with speculative recovery. Any new rule needs
+these regression cases plus an independent clip. No new Mac run requested yet.
+Assistant only performed offline image/JSON review; no tests/builds/inference.
+
+## Prior step: fixed worker recovery rule regresses on dog baseline; inspect previews
+
+Evidence: Audit/mac-dog-confirmed-recovery-summary.json.
+Uploaded recovery report SHA256
+62cc7c87f35f421b50a595f9dc34c97689ffb1da54e497a8b5ec947c002d0bc1.
+Completed 600 frames with exact baseline and available search-probe reproduction;
+conditioning unchanged. interpretationAllowed means controls passed, NOT quality.
+
+Worker settings stayed fixed: missing3, confirmation3, predictedIoU.8, overlap.5.
+Dog search starts50, accepts54 (1.8s) after52-54. Candidate predictedIoU .97504,
+foreground fraction .18047. Recovery then displays continuously54-84 (31 frames)
+while baseline is empty. Prior baseline previews60/75 show dog fully hidden.
+This is a strong false-recovery regression signal; new recovery panels are needed
+to identify what is masked. Do not describe this as earlier successful recovery.
+
+At baseline return85 recovery is empty; it displays again86. Second search243,
+acceptance251 versus baseline return247: four-frame/133ms delay. Ordinary recovery
+outputs247-250 are nonempty but display is suppressed while searching. These are
+two distinct issues: wrong candidate acceptance and withholding ordinary return.
+No threshold adjustment or production integration justified by this report.
+
+Next user opens EXISTING recovery previews52,53,54,60,75,84,85,86,247,251 from
+.temporal-runs/dog-pillar-confirmed-recovery-01/previews.
+Request those panels, not a zip of the entire >500-image directory. No rerun.
+Memory probe report was not separately supplied; its hash is recorded by recovery.
+No new inference/tests/builds/exports by assistant. Only offline JSON analysis.
+Keep current app/models unchanged until visual review and a justified next experiment.
+
+## Prior step: dog baseline previews reviewed; fixed-rule recovery ready to run
+
+Evidence: Audit/dog-pillar-baseline-visual-review.json.
+Uploaded previews(1).zip SHA256
+5b5c6a700b190a5131edb0940163378c908be31192c5f324ffe75d56b855c7a2.
+45 saved PNGs: selected19 triptychs inspected, remaining26 GPU panels screened;
+85,247,330 also viewed individually. No new inference by assistant.
+
+Baseline selects dog and generally excludes pizza box. First gap is consistent
+with pillar obstruction;85 masks the returning head,90 visible body. Second gap
+241-246 appears to be dog leaving the LEFT IMAGE EDGE near a parked vehicle,
+not established hand obstruction;247/255 show the return. Treat baseline as
+already working for these absence/return events.
+
+At330 (11s) ALL three streams have an oversized mask extending into nearby
+vehicle/background. GPU boundaries differ but qualitative failure is not
+GPU-exclusive. Exact worst disagreement331 and failed174/175 are not saved;
+do not invent their visual contents. Later345/375/390/599 show dog tracking
+again. Sample review is not exhaustive 600-frame ground truth.
+
+Next user runs EXISTING scripts without edits: diagnose_occlusion_memory.py
+with dog paths, --frames600 --review-range85 120, fresh dog-pillar-memory-probe-01.
+Then diagnose_occlusion_recovery.py linked to that successful probe, --frames600
+and SAME worker settings: missing3, confirmation3, predictedIoU.8, overlap.5.
+Fresh output dog-pillar-confirmed-recovery-01. Use && to stop on any failed control.
+This checks whether fixed recovery harms already-good baseline reacquisition,
+causes false positives or delay, and how subsequent tracking behaves. Review
+range85-120 summarizes first return only; inspect second return separately using
+per-frame report/previews. Original reference length remains600 in both replays.
+
+No production changes, threshold tuning, model conversion, tests or assistant
+inference. User runs on Mac with project cd and per-shell Xcode-beta path.
+Ask for recovery report.json; if a command fails, inspect its saved error report.
+## Prior step: independent dog/pillar baseline completed; previews requested
+
+User ran diagnose_occlusion.py on assets/dog-occlusion.mov with --new-video,
+--point 0.45 0.27, --frames 600 into .temporal-runs/dog-pillar-comparison-01.
+Source 117721190 bytes, SHA256
+48df10abcbcd12df835d8f91edcf5fd8863506a40f190a4788e338ce1e460bce.
+Initial uploaded preview showed dog carrying pizza box; point is inside torso.
+Existing worker phone report identifies exact memoryfp16projection packages only.
+
+Report SHA256 f1bd9abde3a424f7c5bbfefff1ed0b40284602470b021a078d8f3c2a20b62102.
+Evidence: Audit/mac-dog-pillar-comparison-summary.json.
+Completed 600 frames spanning 0 through 19.966667 seconds. This may be a prefix,
+not confirmed whole-video completion. No recovery-policy modification applied.
+
+All three streams have identical low-mask empty intervals: 48-84 (1.6-2.8 s)
+and 241-246 (8.0333-8.2 s), with nonempty output returning at 85 and 247.
+No GPU/reference or owned-FP32/reference object-presence mismatches.
+Do not equate nonempty returns with identity until previews are inspected.
+
+Owned FP32 fails strict gates on 119 frames, all including memory_features
+allclose failures; low/high masks also fail allclose on 5/8 frames respectively.
+Minimum mask IoU 0.99990427 at 116, minimum pointer cosine 0.9999999857.
+GPU fails 45/600 frames: six mask-IoU failures at 174,175,200,201,330,331;
+minimum 0.32560834 at 331 (11.0333 s). Pointer cosine minimum 0.84204773
+at 373; memory cosine minimum 0.87646953 at 331. No full parity pass.
+This is independent history evidence; do not assign the differences to a
+specific precision/backend operation without shared-input controls.
+
+Next request zip of existing previews (45 PNGs) without rerunning inference.
+Inspect initial selection, absence/return pairs and frame330 neighborhood.
+Baseline already resumes masks after both gaps: fixed recovery should be
+evaluated for regression as well as possible improvement. Keep worker rule
+3 missing / 3 confirmation / predicted IoU .8 / consecutive-mask IoU .5 fixed.
+No app integration or tuning on this second clip. Recovery diagnostic currently
+requires linked completed comparison AND memory-probe report; dog probe/recovery
+have not run. Do not pass worker probe to dog recovery or invent linked reports.
+Assistant performed offline JSON review only; no tests, models or benchmarks.
+
+## Prior step: worker confirmed recovery visual spot checks completed
+
+Evidence: Audit/worker-confirmed-recovery-visual-review.json, linked to the
+276-frame confirmed-recovery report and preceding numerical summary.
+User supplied previews 169, 205, 216 and 217. Full panels and enlarged crops
+reviewed; uploaded TIFF hashes and overlay bounds recorded.
+
+169: first acceptance correctly masks the intended worker's visible upper body
+below the bucket. 205: resumed ordinary propagation still masks that worker,
+now at the left image boundary. 216: tiny remaining mask aligns with his visible
+edge sliver (six low-resolution foreground pixels in the report). 217: empty
+display; an extremely small light/yellow-green sliver appears still visible at
+the boundary. This is a slight early cutoff near exit, NOT pixel-perfect exit.
+
+Together with frame 175, these samples support correct automatic reacquisition
+and continued ordinary tracking on this development clip, without an observed
+switch to rubble/machine in inspected samples. This is not an exhaustive visual
+review or identity benchmark. The known rubble candidate 148 was rejected.
+Do not equate all 48 nonempty frames with visually verified correctness.
+
+Next: keep thresholds fixed and test an independent occlusion clip, preferably
+the already discussed dog/pillar example. Need its actual local source path and
+selection/fixture inputs before giving executable inference commands. Do not
+retune on this clip or integrate into the app yet. No assistant inference,
+tests, builds or exports; this update only archives offline visual evidence.
+
+## Prior step: confirmed recovery report reviewed; previews requested
+
+User ran all 276 frames of the causal confirmed-recovery diagnostic.
+Evidence: Audit/mac-worker-confirmed-recovery-summary.json.
+Report SHA256: 53ee51c569af2681e0d5701618e9a9c2d20b38f1c492c96a3caa58a688d013e9.
+All baseline and available search-probe controls reproduced exactly.
+Original conditioning hashes remained unchanged. No model/app changes.
+
+Search started at frame 114 (3.801667 s). One recovery was accepted at frame
+169 (5.635 s), following qualifying candidates 167-169 with consecutive-mask
+IoUs 0.71698 and 0.69027. No new tap or initializer. Recent banks were cleared
+only upon acceptance; state then held original conditioning plus current output.
+Ordinary propagation resumed from that output and its own subsequent history.
+
+The previously visually confirmed rubble false positive at 148 was rejected
+(predicted IoU 0.67806 < 0.8), never displayed or committed as a candidate.
+Frame 150 was also rejected (0.71962), but lacks visual identity annotation.
+Seventeen nonempty search candidates were held back, including 154-168:
+confirmation imposes a recovery delay; no claim of immediate reacquisition.
+
+Displayed masks were continuously nonempty from 169 through 216 (48 frames).
+At 175, supplied preview visually confirms the intended worker's visible upper
+body below the bucket, without obvious machine/rubble spill. Search is not
+queried on this frame: it is ordinary propagation six frames after acceptance.
+Normal GPU is empty. Across review interval 175-205, recovery displays 31/31
+frames while normal displays 0/31. Nonempty counts alone do not verify identity.
+
+Frame 216 has only six low-resolution foreground pixels. Frame 217 is empty,
+and search resumes at 219; no further acceptance or displayed masks to 275.
+Do NOT describe this as a verified clean exit until previews are inspected.
+Only frame 175 from this run has been visually reviewed. Next: request previews
+169, 205, 216 and 217 to inspect first acceptance, later propagation and ending.
+Then test this fixed exploratory rule on an independent occlusion clip before
+app integration. It remains development-clip evidence, not general identity
+validation or iPhone readiness. Original-reference mismatches are descriptive,
+since the unchanged original model itself loses the worker here.
+
+Assistant performed offline JSON/image review only, no inference, tests,
+builds, export, benchmark or model changes. Mac output:
+.temporal-runs/worker-confirmed-recovery-01.
+
+## Prior step: causal confirmed-recovery diagnostic prepared
+
+User approved testing confirmation across frames followed by ordinary tracking
+with feedback. New Temporal/diagnose_occlusion_recovery.py uses exact installed
+GPU packages and the original frame-0 selection; no model conversion or app edit.
+
+Two bounded GPU histories: unchanged baseline and experimental recovery.
+Original PyTorch also advances its independent reference history. Shared current
+encoder features. Before first acceptance, packed bank hashes must match and
+both histories receive the same ordinary GPU outputs. After acceptance, separate
+ordinary propagator calls use their respective histories. Every baseline frame
+must reproduce prior original/GPU observations and comparison dictionary exactly.
+
+Exploratory default rule, fixed before this run:
+- Enter search after 3 consecutive absent ordinary predictions.
+- Search with original conditioning-only bank, no new point.
+- A candidate needs positive object score, nonempty low/high masks and predicted
+  IoU >=0.8; require 3 consecutive qualified candidates.
+- Consecutive binary low-resolution masks must overlap with IoU >=0.5.
+  A failed confidence/nonempty check clears the streak; failed overlap starts
+  a new streak at the current qualifying candidate.
+- While searching, suppress display; do not commit pending search candidates.
+  Ordinary outputs still advance the experimental state once per source frame.
+- Upon confirmation only: clear recent spatial/pointer entries, retain the
+  original conditioning, generation, absolute frame index and previous PTS,
+  then commit the CURRENT search output at its actual source index/PTS.
+- Resume ordinary propagation on the next frame. Re-enter search if later lost.
+  No backfill, new initializer, cached-mask shortcut or relative-age relabeling.
+
+This removes the prior frozen-bank timing limitation for this candidate:
+the search bank has ONLY original conditioning, while accepted recent entries
+retain real source indices and naturally occupy their correct lag slots.
+Conditioning tensor hashes checked throughout. Search calls reproduce archived
+conditioning-only probe comparisons/observations wherever available, otherwise
+report prior control unavailable. Linked reports, source pixels/PTS, model and
+fixture bytes checked. Prior report/review frames affect controls and summaries
+only, not recovery decisions. Duplicate original report gates are unchanged.
+
+Limits: these are exploratory thresholds informed by the same development clip,
+NOT calibrated identity confidence. Stable wrong masks may pass; fast motion
+may fail unaligned consecutive-mask IoU. Require independent occlusion clips
+before promotion. Original reference itself loses the subject, so recovery/
+reference comparisons are descriptive, not ground-truth success/failure.
+No claimed improvement until user-run report and previews are reviewed.
+
+Three panels: normal GPU; raw search candidate (blank when not queried);
+confirmed recovery output. Display-only blank masks NEVER enter numerical
+comparisons or state. Full report logs mode changes, acceptance frame and
+confirmation start, scores, overlap, held-back candidates, state size and PTS.
+Summary lists acceptance events and display results over the existing visual
+review interval. Check first accepted frame and subsequent tracking, obstruction
+false positives and exit. App/models/selection UX remain unchanged.
+
+Static Python AST and helper/state/API source review only. No tests, inference,
+conversion, builds or benchmarks run by assistant. User runs on Mac with explicit
+project cd and per-shell Xcode-beta DEVELOPER_DIR:
+Temporal/diagnose_occlusion_recovery.py, usual upstream/video/phone-report/
+fixture/comparison, --memory-probe .temporal-runs/worker-memory-probe-01/report.json,
+--frames 276 --missing-frames 3 --confirmation-frames 3
+--minimum-predicted-iou 0.8 --minimum-temporal-iou 0.5,
+fresh output .temporal-runs/worker-confirmed-recovery-01.
+Share report.json and previews/frame-0175.png; summary identifies first acceptance.
+
+## Current work: memory-probe previews confirm reacquisition AND rubble false positives
+
+User supplied three 3072x1064 TIFF previews from the memory probe.
+Evidence and image hashes: Audit/worker-memory-probe-visual-review.json.
+Inspected full panels and source-resolution crops; RGB differences locate
+overlays against the unmasked normal panel, excluding the 40-pixel header.
+
+Frame 175 (5.835 s): BOTH probes highlight the intended worker's visible upper
+body below the raised bucket; normal GPU remains empty. This is visual evidence
+of reacquisition without a new tap at this frame.
+
+Frame 115 (3.835 s): retained-bank mask lies on rubble behind the bucket.
+Normal GPU and conditioning-only are empty. Qualitative false positive.
+Frame 148 (4.935 s): conditioning-only mask lies on a pale rubble patch to the
+RIGHT of the orange marker, away from the worker. Normal and retained-bank are
+empty. Qualitative false positive. This small overlay was outside the initial
+worker-centered crop; full-panel pixel differences identified its location.
+
+Therefore both memory alternatives show useful recovery ability and erroneous
+masks. Do NOT promote a policy accepting any nonempty mask, equate positive
+object score with identity, or claim all 31 return frames are visually validated.
+Frame 175 overlay bounds match, but masks need not be pixel-identical.
+
+Next proposed research: controlled recovery acceptance and subsequent tracking
+with feedback, preserving actual frame-clock semantics and explicitly reviewing
+false positives. A consecutive-frame/confidence check is a candidate heuristic,
+not proof of identity, and needs separate evaluation on other occlusion clips.
+No new policy implemented this turn; no app/model/gate change. The current
+experiment's stale slot ages, retrospective start boundary and discarded side
+outputs still limit what can be inferred about an online tracker.
+
+Only offline image inspection, TIFF decoding/crops for analysis, and evidence/
+HANDOFF archival performed. No inference, tests, builds or conversions of models.
+
+## Current work: memory probes return masks without another tap; visual review pending
+
+Completed user-run report SHA256:
+9ed19a4ecad97e5160d7b833cfdcb65a7ffe784a04eafdc147c1641880c32024.
+Evidence: Audit/mac-worker-memory-probe-summary.json.
+276 frames replayed, 164 frames probed (112–275). Every baseline observation
+and comparison reproduces prior report exactly. Capture-time duplicate outputs
+all exact; frozen bank hashes unchanged. interpretationAllowed true.
+
+Known return interval 175–205:
+- original and normal GPU: 0/31 nonempty.
+- conditioningOnly and retainedBank: 31/31 nonempty, both low/high masks.
+No new tap, no reference tensors, no side predictions enter memory.
+
+All nonempty intervals after snapshot:
+- original: 117–118; normal GPU: 117 only.
+- conditioningOnly: 148, 150, then 154–214 continuously.
+- retainedBank: 113–117, then 154–215 continuously.
+Both probes empty from 216 through 275. Do not label that as correct exit
+handling without checking imagery; previous visual review noted a later pan.
+At 175: conditioning-only mask 105 low-resolution pixels, score 1.543945;
+retained bank 109 pixels, score 3.007812; normal GPU empty, score -1.565430.
+
+Interpretation: original conditioning alone can produce masks during the return
+interval when recent slots are removed. Full pre-absence bank does so as well.
+This supports memory-input sensitivity without needing a fresh prompt, but does
+not yet establish the masks identify the worker or isolate a unique cause.
+New probe previews have NOT been uploaded. The previous fresh-restart preview
+cannot validate these different outputs.
+
+Next, inspect EXISTING probe previews:
+.temporal-runs/worker-memory-probe-01/previews/frame-0175.png
+plus frame-0115.png (retained-bank early mask) and frame-0148.png
+(conditioning-only early mask). Early masks may be visible subject fragments
+or false positives; no ground-truth assertion from nonempty flags or scores.
+No rerun required. After visual review, consider a controlled online recovery
+branch, with explicit temporal semantics and identity/false-positive checks.
+
+These remain frozen-bank side probes: retrospective boundary, captured relative
+slot ages, no feedback of experimental outputs. No production policy, model,
+gate, app or selection UI change. Assistant performed offline report analysis
+and evidence archival only; all inference stays user-run on Mac.
+
+## Current work: fresh mask visually confirmed; memory probes prepared
+
+Fresh source-frame 175 preview uploaded and inspected. Both fresh original/GPU
+masks cover the intended worker's visible upper body below the bucket, with no
+obvious excavator/rubble spill at displayed scale. Lower body remains obscured.
+Single-frame qualitative review, not ground truth for the full restart.
+Evidence: Audit/worker-reappearance-fresh-visual-review.json.
+
+New Temporal/diagnose_occlusion_memory.py runs the exact installed packages on
+the same 276-frame source and original frame-0 point. Original PyTorch advances
+independent history; normal GPU advances unchanged bounded state, including
+absence. Each frame's normal comparison dictionary plus original/GPU observations
+must exactly reproduce the completed original occlusion report. Any mismatch
+stops the diagnostic before interpreting side calls.
+
+Snapshot boundary is derived from the first empty normal GPU mask in the prior
+report: frame 112. Capture the normal input bank BEFORE committing 112:
+frame-0 conditioning plus spatial frames 106–111 and pointer frames 111–97.
+This is a retrospective diagnostic boundary, not a deployed absence detector;
+the latest pre-absence entries may already contain partially occluded masks.
+
+From 112 onward, two side calls use shared current encoder features:
+- conditioningOnly: preserve only frame-0 spatial/position/pointer and valid slots.
+- retainedBank: preserve the entire captured pre-absence packed bank.
+Side predictions never enter history. No reference tensors, new prompts, argmax
+override, model conversion or app changes. Duplicate full-bank call at capture
+must match all seven normal outputs exactly. Every call receives array copies;
+frozen bank hashes checked each frame and at end. Source indices and actual ages
+are recorded, baseline clock/PTS continue normally.
+
+CRITICAL LIMIT: frozen packed slots keep capture-time relative-age semantics.
+This intentionally tests stale banks, NOT an age-correct retention policy.
+Do not conclude that a positive result proves memory contamination, isolates
+tensor content from temporal encoding, or supplies a deployable recovery rule.
+Likewise a negative result only rejects these particular frozen-bank probes.
+All existing comparison gates remain unchanged. Probe/reference metrics are
+descriptive; the original itself loses the worker. Nonempty masks need visual
+identity review, including the obstruction period to catch false positives.
+
+Three-panel previews for every probed frame: normal GPU, initial memory only,
+retained pre-absence bank. Summary includes nonempty frame lists and the known
+visual-review interval 175–205; this interval affects reporting only.
+No automatic quality-passed or device-readiness claim.
+
+Static Python AST and existing helper/source review completed by assistant;
+no inference, tests, builds, conversions or benchmark run. User runs on Mac:
+Temporal/diagnose_occlusion_memory.py with existing upstream/video/phone-report/
+fixture/comparison arguments, --frames 276 --review-range 175 205,
+fresh output .temporal-runs/worker-memory-probe-01.
+Share report.json and previews/frame-0175.png (plus any surprising mask).
+Always explicit project cd and per-shell Xcode-beta DEVELOPER_DIR.
+
+## Current work: fresh reappearance restart passed; visual confirmation pending
+
+Completed user-run report SHA256:
+0cf1b42618af2d019dd15fd26c18f35a72a1f89daadf661593c2a97f975edfd4.
+Evidence: Audit/mac-worker-reappearance-restart-summary.json.
+
+Both original PyTorch and installed GPU start with empty histories and the new
+explicit point at source frame 175 (5.835 s). All 31 frames, 175–205 inclusive,
+produce nonempty low- and high-resolution masks in both fresh streams. Every
+fresh GPU/original comparison passes unchanged gates. Minimum mask IoU:
+0.9741379310; pointer cosine: 0.9997481282; memory cosine: 0.9938067560.
+Stored ongoing original/GPU observations remain empty on all those frames.
+
+This supports fresh prompted segmentation capability at reappearance. It does
+not establish correct identity from numerical agreement, automatic recovery,
+or whether resetting history versus the new prompt caused the difference.
+Requested fresh preview previews/frame-0175.png has NOT been uploaded.
+The earlier previews.zip is the old choice-intervention run, not this restart.
+
+Next: visually confirm the fresh mask covers the intended bent-over worker.
+Open the existing preview on the user's Mac; no repeat inference needed.
+After confirmation, investigate pre-occlusion memory retention in isolation.
+Do not change production memory policy or implement selection UI yet.
+
+Only offline JSON analysis and evidence/HANDOFF archival this turn. No inference,
+conversion, builds, benchmarks, or tests run by assistant. Installed models,
+app behavior, and correctness gates unchanged.
+
+## Current work: reappearance visually located; fresh-prompt diagnostic prepared
+
+User uploaded previews.zip from the full choice-intervention run. Extracted252
+PNGs and inspected source-panel overview plus close crops around135..190.
+Evidence and exact preview hashes: Audit/worker-reappearance-visual-review.json.
+The selected worker is the bent-over subject initially right of the bucket,
+not the standing worker at left. Bright shirt starts emerging around155
+(5.168333s); approximate visual landmark, NOT exhaustive first-visible annotation.
+At175 (5.835s), upper body clearly visible below raised bucket; lower body still
+behind rubble. All original/normal/override masks are absent. Thus this clip
+contains visible reappearance with failed ongoing tracking. Later camera pan
+takes worker toward the left boundary; avoid confusing that exit with occlusion.
+
+New Temporal/diagnose_occlusion_restart.py tests fresh segmentation on175 and
+30 following frames (175..205). Explicit point [180,595] in1024-square decoded
+image, normalized [0.17578125,0.5810546875], inside bright upper back.
+Preview header40px is excluded from coordinates. No app selection change.
+
+Requires completed original occlusion comparison and exact source video/model/
+fixture/upstream/checkpoint identities. Decode sequentially and verify all
+source pixels/PTS including skipped prefix. No inference before selected175.
+Original and installed GPU both start empty independent histories and fresh point
+at local0; original num_frames=276-175=101; requested comparison31frames.
+Original source PTS preserved; GPU bounded state unchanged. No old tracking
+memory copied and no candidate-index override. No conversion, export or promotion.
+Compare fresh streams with existing .95IoU/.99cos gates; record failures without
+stopping except invalid shape/nonfinite errors. Prior ongoing observations are
+stored report context only, not live recomputation or same-prompt parity.
+Save marked initial-selection.png, two-panel fresh-original/GPU previews,
+full report and summary. Human mask review still required. Fresh prompting
+does NOT establish automatic identity recovery or a deployable correction policy.
+
+Static syntax and existing API/source review only; no inference, conversion,
+tests or builds run by assistant. Run on Mac with explicit project path and
+per-shell DEVELOPER_DIR=/Applications/Xcode-beta.app/Contents/Developer.
+Command script Temporal/diagnose_occlusion_restart.py, existing upstream/video/
+phone-report/fixture/comparison arguments, --start-frame175 --frames31,
+--point0.17578125 0.5810546875,
+fresh output .temporal-runs/worker-reappearance-restart-01.
+Share report.json plus first preview if fresh selection needs visual confirmation.
+
+## Current work: full-clip choice intervention completed; recovery unchanged
+
+Completed276-frame report SHA256
+918db23c64a80763fe756da5d87597cfd5ac3dbeb73ba8bd6c596e86b26844e0.
+Evidence: Audit/mac-worker-mask-choice-override-full-summary.json.
+All controls exact, interpretationAllowed true, no normal baseline or original
+observation mismatches across276. First49 comparison dictionaries exactly
+reproduce previous short intervention report.
+
+Normal GPU fails20 frames; one-time override fails8:
+27,28,32,33,41,42,43,118. Twelve normal failures resolved including26 and110;
+no new overall failing frames. Frame27 still locally worse, so not uniform
+improvement. Frame110 mask IoU 0.926829 -> 0.951220 crosses the existing gate.
+All gates unchanged. No installed model or app change.
+
+Recovery result: NO improvement from this intervention.
+All three streams empty112..116 (3.735..3.868333s), nonempty117 (3.901667s).
+Both normal and override GPU empty118..275 (3.935..9.17s), never return.
+Original empty119..275 (3.968333..9.17s), never returns.
+At118 original object score +0.02268797 vs normal -0.01001740 and override
+-0.00635147. Same presence mismatch remains; pointer/memory minima arise here.
+Both GPU states end276 accepted,7 spatial,16 pointer entries.
+
+Conclusion: frame26 candidate choice contributes to earlier numerical divergence,
+but correcting that one choice is insufficient for recovery on this clip.
+Do not claim all precision/selection effects excluded, or call original masks
+ground truth. Original reference also remains empty. Need visible reappearance
+landmark before interpreting masks as missed recovery.
+
+Next step uses EXISTING previews, not another inference run: ask user for the
+first frame where the selected worker clearly reappears after the obstruction
+(or confirm he remains out of view until clip ends). Folder:
+.temporal-runs/worker-mask-choice-override-full-01/previews.
+After landmark, proposed diagnostic is fresh initialization on that visible
+frame versus continuing lost tracking, to distinguish fresh segmentation ability
+from temporal recovery. Prompt/landmark must be explicit. No recovery heuristic,
+memory freezing, selection change or model promotion implemented.
+
+This turn: offline report analysis and evidence/HANDOFF only. All inference
+remains on user's Mac. Continue explicit project paths and per-shell Xcode-beta.
+
+## Current work: one-frame choice intervention completed; full clip next
+
+User supplied completed 49-frame report SHA256:
+f35d013d27ef57631c6acbfb4e755ef5e20b2c41ca2dff78800263748e610df7.
+Evidence: Audit/mac-worker-mask-choice-intervention-summary.json.
+
+All fork controls passed EXACTLY: tapped and normal-index override preserve all
+seven installed outputs; alternate index leaves scores, natural argmax, best_iou,
+object_score and memory_positions exact. Fork input hashes match prior tapped
+report. Normal GPU comparison dictionaries and original observations reproduce
+all prior frames exactly. Pre-fork branch comparisons identical. Interpretation
+allowed true; completed true; readyForDeviceValidation false.
+
+At frame26 only, index2 -> original-reference index1. Immediate mask IoU becomes
+1.0, pointer cosine 0.9999147303, memory cosine 0.9950305352: all gates pass.
+Across 23 frames26..48, normal fails18 and intervention fails7:
+27,28,32,33,41,42,43. Eleven failures resolved including fork (10 later frames);
+no previously passing frame becomes an overall failure. Worst mask IoU
+0.8571428571 -> 0.9405940594; worst memory cosine 0.8584682294 -> 0.9294400092.
+Mask-IoU failures normal [33,35,37,38,40,41,43,48], intervention [27].
+
+Crucial limitation: improvement is NOT uniform. Frame27 pointer cosine worsens
+0.9779055965 -> 0.7853672910 and its mask now fails. Normal worst pointer is
+0.7770946660 at35; intervention worst 0.7853672910 at27. Seven failures remain.
+This controlled intervention demonstrates a contribution of one choice to later
+numerical divergence on this prefix, not correct identity or a usable recovery
+policy. Reference choice remains an oracle; do not hard-code index1 or assume
+candidate indices represent stable subjects. Neither speed nor deployed quality
+changed. The prefix ends before occlusion.
+
+Next: existing diagnose_mask_choice_override.py with --frames276, same linked
+reports/model/video/prompt/fork26, fresh output
+.temporal-runs/worker-mask-choice-override-full-01. This extends the same
+intervention through occlusion to measure absence/recovery; inspect three-panel
+previews for identity rather than equating nonempty masks with correct recovery.
+No further code is required. Share report.json. Keep app/models/gates unchanged.
+Only offline report analysis and evidence/HANDOFF edits performed this turn;
+all inference remains user-run on Mac with explicit project path and per-shell
+Xcode-beta DEVELOPER_DIR.
+
+## Current work: one-frame candidate-choice intervention prepared
+
+User approved the next experiment. New Temporal/diagnose_mask_choice_override.py
+and Temporal/mask_choice_override.py implement a diagnostic-only fork at frame26
+(default replay49). Requires the completed original occlusion comparison plus
+completed mask-choice report, matching video/prompt/model identities, reference
+length, exact decoded pixels/PTS, and previously controlled choice disagreement.
+
+Both separate bounded states receive the SAME installed GPU outputs through
+frame25. At frame26, verify both packs equal and input tensor hashes reproduce
+the tapped report. Read-only original decoder hook reproduces its score/index.
+Unmodified GPU remains baseline. Prepare a tapped copy and ONE override model
+with an added int32[1] input replacing all uses of the candidate argmax index.
+Keep original scores/argmax exposed. Static operation signatures, normal inputs
+and outputs must be unchanged after accounting for that single input substitution.
+Verify override ancestry to low/high masks, pointer and memory_features.
+
+At the fork, tapped and override model fed normal index2 must reproduce ALL seven
+installed outputs EXACTLY; original/tapped scores, indices and prior comparisons
+must reproduce. Same override model then receives original-reference index1 on
+identical inputs. Its scores, natural argmax, best_iou, object_score and
+memory_positions must stay EXACTLY unchanged. Any failed control stops before
+alternate state is committed and retains the partial report/error. No relaxed gate.
+
+Only frame26 commits the alternate prediction. Thereafter both branches use the
+UNMODIFIED installed GPU propagator and their own bounded histories; shared GPU
+encoder runs once per frame, propagator order alternates. No original-reference
+tensor enters GPU state. best_iou remains maximum natural score (not forced-score
+reporting); it does not feed TemporalState. This is the joint effect on mask,
+pointer and generated memory, not a separate isolation of any one contribution.
+Original candidate index is a diagnostic oracle, not a deployable recovery policy.
+
+Reports record exact normal-baseline reproduction, per-frame unchanged accuracy
+gates, before/after input hashes, branch states, controls, resolved/new failures,
+and three-panel previews. interpretationAllowed requires completion, all controls
+and baseline reproduction. Default49 prefix precedes occlusion; no recovery,
+identity, speed or device-readiness claim. App/models/exporter untouched.
+Static syntax/API/source review only; NO model conversion, inference, builds or
+tests executed by assistant. Runtime validation remains user-run on Mac.
+
+Run from /Users/petercody/Documents/Projects/ByteWaveSegmentation with per-shell
+DEVELOPER_DIR=/Applications/Xcode-beta.app/Contents/Developer:
+.venv-temporal/bin/python Temporal/diagnose_mask_choice_override.py
+  --upstream .upstream-edgetam
+  --video assets/worker-occlusion.mov
+  --phone-report Audit/iphone17pro-worker-occlusion-report.json
+  --fixture DeviceValidationData/memoryfp16projection
+  --comparison .temporal-runs/worker-occlusion-trim-01/report.json
+  --choice-report .temporal-runs/worker-mask-choice-01/report.json
+  --output .temporal-runs/worker-mask-choice-override-01
+Then share report.json and inspect previews in that output directory.
+Output directory must be fresh. Do not rerun/overwrite an existing diagnostic.
+
+## Current work: candidate-mask choice results received
+
+Completed Mac diagnostic report SHA256:
+8fcce19a32a6573c97760258f3f50d5194634ba035aab0ecaa95ba420e4fc71a.
+Archived selected evidence in Audit/mac-worker-mask-choice-summary.json.
+
+49 frames replayed; 27 inspected (1,5,24..48). Unchanged reconversion and tapped
+copies preserve ALL seven installed outputs EXACTLY on every inspected frame.
+All normal GPU comparison dictionaries and original observations reproduce the
+prior comparison. No control failures; all 27 tapped frames interpretable.
+
+Eight candidate-index disagreements: 26,33,35,37,38,40,43,48. All fail existing
+accuracy gates. Ten other failing frames retain the same candidate index:
+27,28,30,32,34,36,41,42,45,47. These are candidate indices, not subject identities.
+
+At first numerical failure frame26 (0.866667s), original selects index1:
+scores [0.9148265123,0.9261739850,0.9258070588], top margin 0.0003669262.
+GPU selects index2: [0.9144673347,0.9259235263,0.9260018468],
+top margin 0.0000783205. Neither has an exact tie; both correctly choose their
+own maximum. Mask IoU 0.968421 passes, pointer cosine 0.984218 and memory cosine
+0.958620 fail. Selection scores are already FP32. Do not blame argmax precision.
+Earlier untapped frames mean this is NOT proven to be the first choice disagreement.
+
+Frame35 shows much larger candidate-score differences after independent histories
+diverged (candidate0 original 0.106224 vs GPU 0.933800). Do not explain every later
+switch as small rounding. Same-index failures and earlier seed/shared-input
+results remain relevant. This prefix precedes occlusion; no recovery or identity
+improvement has been demonstrated.
+
+Next proposed experiment (NOT implemented): diagnostic-only fork at frame26,
+normal GPU index2 versus one-time forced original index1, then both branches
+advance independent histories using unchanged GPU thereafter. Require an
+identical-input forced-index2 control to preserve all installed outputs before
+interpreting the index1 intervention. Keep exact source/model guards, unchanged
+accuracy gates, and original reference. This tests causal contribution of that
+one choice, not a deployable oracle or recovery policy. No app/model promotion,
+selection UX, confidence filtering, or production ByteWave changes.
+
+Only offline report analysis and evidence/documentation edits performed here.
+Mac inference remains user-run.
+
+## Current work: candidate-mask choice diagnostic prepared
+
+User approved inspecting candidate scores/selection after the seed experiment.
+New Temporal/diagnose_mask_choice.py and Temporal/mask_choice_taps.py prepare two
+diagnostic-only propagator copies from exact installed package bytes: unchanged
+reconversion, and the same graph with existing three-score and argmax variables
+exposed as extra outputs. coremltools9.0 required. Validate unique [1,3] FP32
+reduce_argmax, int32 index, axis and ancestry to low_res_mask/object_pointer and
+scores to best_iou. Reject unexpected topology rather than guessing tensor names.
+Static nonconstant operation signatures (including consumer constants), original
+input/output interfaces and dtypes must survive reconversion unchanged. Existing
+outputs remain; all packages live under the fresh diagnostic output directory.
+
+Default replay0..48; inspect1,5,24..48. Original dynamic reference keeps full prior
+num_frames=276. A read-only sam_mask_decoder forward hook captures three original
+candidate IoUs and token count. validate_export.reference_step calls the head
+twice; require identical scores and three tokens in both calls. No head-output
+replacement or choice-policy change. Pinned edgetam.yaml confirms multimask
+tracking and use_multimask_token_for_obj_ptr=true. Upstream selects highest IoU
+candidate and corresponding token; originalChoice uses equivalent first argmax.
+
+Unmodified installed GPU owns independent state. On inspected frames, unchanged
+and tapped side calls receive private copies of identical installed features and
+pre-commit GPU memory. Side outputs never enter state. Both side calls must match
+ALL seven installed outputs EXACTLY before interpreting the tapped index. Record
+normal numerical comparisons too, but do not relax exact instrumentation control
+to obtain an answer. Also require tapped index selects max score and best_iou
+equals max exposed score. Failed controls are reported per frame, not promoted.
+Matching final outputs cannot prove every internal operation executed identically.
+
+Report contains per-candidate scores, winner, top-two margin/ties, different-choice
+and parity-failure overlap, control results, source/model/diagnostic package/input
+hashes, original and installed-baseline reproducibility checks against prior report.
+Different choices may explain a pointer jump but cannot alone prove why histories
+initially drifted. Same choices with failed parity would point elsewhere. Prefix
+does not test occlusion recovery; no speed/device placement or ground-truth claim.
+No production models, selection/state policies, thresholds or precision changed.
+
+Next user: full project path and session Xcode-beta DEVELOPER_DIR, then:
+.venv-temporal/bin/python Temporal/diagnose_mask_choice.py
+--upstream .upstream-edgetam --video assets/worker-occlusion.mov
+--phone-report Audit/iphone17pro-worker-occlusion-report.json
+--fixture DeviceValidationData/memoryfp16projection
+--comparison .temporal-runs/worker-occlusion-trim-01/report.json
+--output .temporal-runs/worker-mask-choice-01
+Cat summary.json and share report.json. This prepares diagnostic copies on Mac,
+does not install them, and needs no phone rebuild. Assistant performed static
+source/AST/API review only, no builds/tests/conversion/inference.
+
+## Current result: original seed alters drift but does not fix it
+
+User completed worker-occlusion-seed-01:49frames,48propagations. Evidence:
+Audit/mac-worker-occlusion-seed-summary.json. Normal GPU comparison dictionaries
+match the prior run exactly on every propagated frame, as do original/normal
+observations. Both branches consume matching encoder feature hashes.
+
+Normal GPU:18failures, first26, minimum low-mask IoU .857143, pointer .777095,
+memory .858468. Original-seeded GPU:14failures, first27, minimum IoU .89,
+pointer .725431 (WORSE, frame32), memory .902865. Seed resolves7normal failures
+but introduces3 at29,39,44. No presence mismatches. Initialization passed with
+low-mask IoU1, pointer .9999897, memory .9999033. Exact initial logits/memory still
+differ. Starting from original memory alone is insufficient; do not promote this
+as an accuracy fix. First-frame conditioning is influential but later GPU-owned
+history still diverges. Direct pinned-anchor effects vs downstream history
+effects remain unseparated. Default prefix ends before occlusion.
+
+Next proposed investigation (not implemented): inspect candidate-mask score
+margins and selected indices near26..32, together with pointer selection.
+Static source confirms owned.selected_masks requests multimask_output=True;
+pinned upstream sam2_base._forward_sam_heads uses argmax(ious) for masks and the
+corresponding SAM token when multiple tokens are present, then obj_ptr_proj.
+Small score changes COULD cause discrete selection changes and large pointer
+differences. Current reports expose only max IoU, not candidate values/indices,
+so this hypothesis is unproven. Inspect exact installed graph before designing
+taps; preserve unchanged-output controls because exposing internal outputs can
+change compiled execution. Do not change selection policy, thresholds, memory
+policy, precision or installed model based solely on this result.
+No next command for the user yet. Assistant analyzed the uploaded JSON and
+reviewed pinned source only; no builds/tests/inference or runtime edits.
+
+## Current work: one-time original-seed comparison prepared
+
+User approved the next isolation after the shared-input results. New
+Temporal/diagnose_occlusion_seed.py replays 49 frames by default, comparing the
+original dynamic tracker with two independent GPU states:
+- normalGPU: GPU initializer and GPU initial-memory encoder seed frame0.
+- originalSeedGPU: frame0 memory_features/positions/object_pointer copied from
+  original PyTorch once. Frame0 is explicitly a reference intervention, not a GPU
+  prediction. Frames1 onward use only this branch's own GPU outputs for commits.
+Both receive one shared GPU encoder result per frame and use the exact same
+installed packages. Propagator call order alternates, private arrays are passed
+to each call, both state packs precede either commit, and state.commit copies
+tensors into separate histories. Initial anchor remains pinned under the normal
+policy; this intervention measures total seed effects, not direct-anchor versus
+downstream recent-history contributions.
+
+Uses completed worker-occlusion-trim-01/report.json for exact source/model hashes,
+prompt and per-frame decoded pixels/rational PTS. Original reference preserves
+num_frames=276. Initialization comparison is reported separately; propagation
+summary excludes frame0. Existing Core ML numerical gates are unchanged; failures
+recorded while continuing, invalid shapes/nonfinite stop. No model changes,
+exports, runtime memory changes, speed claims or device promotion. CPU_AND_GPU
+names allowed compute units, not measured hardware placement.
+
+Reports include first failed frame, failed-frame lists, minimum mask/pointer/
+memory agreement, seed and input hashes, initial-output comparison, independent
+state counts, prior-run observation comparisons and previews. Observation equality
+is not proof of full tensor equality. Interpret seeded improvement only if the
+normal branch reasonably reproduces the prior failing baseline. Remaining seed
+branch drift would not prove initialization has no effect. Neither outcome by
+itself fixes the upstream occlusion-recovery limitation.
+
+Next user (full project path + session DEVELOPER_DIR required):
+.venv-temporal/bin/python Temporal/diagnose_occlusion_seed.py
+--upstream .upstream-edgetam --video assets/worker-occlusion.mov
+--phone-report Audit/iphone17pro-worker-occlusion-report.json
+--fixture DeviceValidationData/memoryfp16projection
+--comparison .temporal-runs/worker-occlusion-trim-01/report.json
+--frames 49 --output .temporal-runs/worker-occlusion-seed-01
+Then cat summary.json, open output and share report.json. No iPhone rebuild.
+Assistant: static source/AST review only, no builds/tests/inference. Runtime
+validation awaits this Mac run.
+
+## Current result: shared-input GPU checks pass; history sensitivity remains
+
+User completed worker-occlusion-inputs-01 (49 frames replayed, 25 inspected:
+1,5,26..48). Selected report evidence and SHA are in
+Audit/mac-worker-occlusion-inputs-summary.json. All current original observations
+match prior original observations exactly on inspected frames; model/source
+identities and decoded-pixel/PTS checks passed.
+
+All GPU same-input comparisons pass: minimum low-resolution mask IoU 1.0,
+pointer cosine .9999816, memory cosine .9980992. GPU encoder substitution through
+FP32 also passes all25. Combined GPU encoder/propagator with original memory
+passes all25 against original (min IoU .9905660, pointer .9991920, memory .9979450).
+18 of these frames failed in the prior independent-history experiment. The
+shared-memory intervention supports history sensitivity; it does NOT distinguish
+initial conditioning differences from recurrent accumulation, locate a specific
+memory tensor, or prove a universal GPU correctness/recovery result.
+
+CPU_ONLY propagator fails27,39,44,48 on the SAME FP32 features/original memory.
+Minimum IoU .892157, pointer .972849, memory .981545. Do not switch to CPU as a
+presumed accuracy fix. Compute-unit settings do not establish actual placement.
+FP32 packing control fails only frame5 memory_features pointwise float32Close:
+max abs .00195503235, cosine .999999999694. All low-res mask IoUs1 and all presence
+decisions match. Strict FP32 parity is not universally passed.
+
+Next proposed diagnostic (not yet implemented): two GPU histories, identical GPU
+features per frame. Normal history starts from GPU initializer/initial memory;
+second history is seeded ONCE with original frame0 memory/pointer, then both
+advance independently. Original reference remains independent. Compare early
+drift and initial outputs, preserving exact bytes/input provenance and gates.
+This separates a conditioning-seed contribution from errors accumulated during
+later propagation without continuously correcting either history. A seed effect
+would still need finer separation of the pinned anchor from its downstream
+history effects. Avoid changing runtime memory policy or reducing precision
+until these mechanisms are distinguished. No new user command is required for
+archiving this result. Existing upstream occlusion-recovery limitation remains
+a separate issue. No model/runtime code changed; assistant only analyzed JSON
+and reviewed source, no builds/tests/inference.
+
+## Current update: worker comparison complete; shared-input localization prepared
+
+User completed worker-occlusion-trim-01 on the confirmed bent-over-worker prompt:
+276 frames, edited source SHA a8a9d3fd5b85fbdf2770027353d6d19971845c13f83ffdcc6058ae5e6a0b1833.
+Selected actual report metrics and source report SHA are archived in
+Audit/mac-worker-occlusion-trim-summary.json. This supersedes the pending-run
+instructions below. The original and owned FP32 thresholded LOW-resolution masks
+agree exactly on all276frames, including absence. Their36 failures are existing
+pointwise FP32 tolerances; do not call full numerical parity passed or infer
+high-resolution binary-mask equality. Both become empty112..116 and119..275.
+Core ML is empty112..116 and118..275. At118, original score +.022688 vs GPU -.010017
+crosses the presence boundary. All three remain empty119 through the end.
+This supports a recovery limitation also present upstream, not just conversion.
+It does not establish visible-subject identity from empty/nonempty flags alone.
+
+Separate issue: Core ML fails20frames; before first absence, minimum mask IoU
+.857143, pointer cosine .777095, memory cosine .858468. Do not dismiss these as
+only a one-frame threshold difference. Independent histories mix immediate
+backend error with accumulated drift. User approved isolating this next.
+
+New Temporal/diagnose_occlusion_inputs.py reads the completed comparison and
+verifies exact video/model/fixture/report identities, point, decoded pixel hashes
+and rational timestamps. Default replay0..48, inspections1,5,26..48. Original
+dynamic reference retains the prior num_frames=276; only its outputs advance
+bounded memory. Current-frame output is committed AFTER experimental calls.
+Experimental outputs never enter state. Private copies prevent input mutation
+across backends; shared/substituted input tensor shape/dtype/hashes are recorded.
+
+Checks per inspected frame:
+- FP32 encoder/propagator on packed original history vs original dynamic tracker
+  with existing strict FP32 gates (packing/control check, not new tolerance).
+- Exact installed CPU_ONLY and CPU_AND_GPU propagator packages on identical
+  FP32 features and original memory, each vs FP32 and GPU vs CPU.
+- CPU/GPU encoder feature metrics on the same image; descriptive, no new gate.
+- Substitute GPU encoder features into FP32 propagation, then GPU propagation,
+  keeping original memory fixed, to separate current encoder/propagator effects.
+All mask/output checks reuse validate_export.compare unchanged. Numerical fails
+are recorded while continuing; shape/nonfinite errors stop. completed means
+execution finished, not accuracy acceptance. No initializer localization at0,
+no speed/device-placement assertion, and no recovery/promotion/export changes.
+Four-panel previews and summary.json accompany fullreport. Prior independent
+history metrics are context, explicitly NOT an identical-input comparison.
+
+Next user command from /Users/petercody/Documents/Projects/ByteWaveSegmentation,
+with DEVELOPER_DIR=/Applications/Xcode-beta.app/Contents/Developer:
+.venv-temporal/bin/python Temporal/diagnose_occlusion_inputs.py
+--upstream .upstream-edgetam --video assets/worker-occlusion.mov
+--phone-report Audit/iphone17pro-worker-occlusion-report.json
+--fixture DeviceValidationData/memoryfp16projection
+--comparison .temporal-runs/worker-occlusion-trim-01/report.json
+--output .temporal-runs/worker-occlusion-inputs-01
+Then cat summary.json and share report.json. No iPhone rebuild required.
+Assistant performed offline report extraction, static source review and AST
+parsing only; no builds, tests or inference. Runtime validation awaits user.
+
+## Current update: explicitly support the user's shortened worker clip
+
+The user shortened the original source. The first invocation failed on a missing
+file; the second found it and correctly rejected its changed byte count before
+any inference. Do not alter archived phone evidence to make the edited file pass.
+
+diagnose_occlusion.py now supports --new-video, with explicit --point X Y required
+for inference. This mode keeps exact model/fixture hash verification and numerical
+gates, but labels video/PTS/selection identity with the old phone run as unasserted.
+New clip size/SHA and explicit prompt are recorded. It counts up to --frames before
+inference and uses the available prefix (at least20 frames), avoiding an EOF error
+when a trimmed clip is shorter than300 frames. The default matched-source mode
+retains its byte/dimension/duration/initialPTS guards and original point.
+
+--preview-only saves initial-selection.png without loading models or inference.
+With --new-video and no --point, it marks the old phone point as tentative, for
+visual inspection on the edited first frame. Trimming the start or cropping can
+require a different prompt. Preview reports remain completed=false and explicitly
+previewOnly/inferencePerformed=false; previewSaved=true on success. Use a separate
+fresh output directory for the subsequent actual comparison.
+
+Next: user pulls, runs --new-video --preview-only on assets/worker-occlusion.mov
+into .temporal-runs/worker-occlusion-trim-preview-01, opens initial-selection.png.
+Confirm marker is on the intended bent-over worker before issuing actual inference
+with --new-video --point (old coordinates only if still appropriate).
+Per-command project path and per-session Xcode-beta DEVELOPER_DIR still required.
+No assistant builds/tests/inference; static diff and AST review only.
+
+
+## Current work: worker occlusion diagnostic prepared, awaiting original-video Mac run
+
+User prioritizes occlusion/identity testing before selection changes or ByteWave
+integration. Cached replay has now been user-validated: full684-frame replay
+preserved prediction/state counts; separate pause/replay/resume advanced44more
+frames without reset after replay. Dog2157-frame clip recovered visually after
+>1s pillar occlusion and brief hand occlusion, excluded carried pizza box. Cache
+hit documented2048-frame/256MiB cap; last109frames were tracked but not cached.
+A couple of crossing-subject tests looked strong to user;272-frame report has
+no empty masks. Selected metrics/hashes: Audit/iphone17pro-cache-occlusion-review.json.
+These are user visual checks and diagnostic counters, not ground-truth passes.
+
+New failure: bent-over distant construction worker selected in a73.2967s clip.
+Phone ran only236frames/7.8367s,124empty masks; last120all empty. Sampled recording
+shows mask initially follows worker, bucket obscures him, visible shirt returns
+without highlight. No switch to machine observed in sampled frames. Preserve
+this as a regression case. Selected phone report including exact installed model
+hashes and prompt is Audit/iphone17pro-worker-occlusion-report.json.
+
+Static source audit: initial condition/pointer stay pinned until reset. Recent
+six spatial/fifteen pointer entries advance even when absent, consistent with
+pinned original EdgeTAM's stride-one policy and explicit no-object encoding.
+Do NOT silently freeze memory or describe this as a proven state bug.
+Details: Audit/worker-occlusion-source-audit.md.
+
+Temporal/diagnose_occlusion.py runs300frames locally on user Mac: original
+PyTorch dynamic track_step, owned FP32 graph, exact installed Core ML GPU
+packages; independent histories and identical Mac pixels/prompt. Original
+history keeps all requested entries, bounded states retain normal7/16 banks.
+Records unchanged numerical gates on every frame, continuing after mismatches
+solely to observe recovery; invalid/nonfinite outputs still stop. No promotion,
+normal exporter change, phone build, confidence threshold or recovery policy.
+validate_export helpers accept optional count/num_frames, preserving20defaults.
+
+Needs ORIGINAL worker source on Mac, not uploaded screen recording; expected
+122642940bytes,1920x1080encoded,73.2967s. Size/dimensions/duration/firstPTS guard
+wrong clips; no original phone source hash exists so content identity is not
+proven. Mac preprocessing differs from Core Image; phone-only failures need a
+later exact-input/device investigation. Mac summary/previews distinguish stages,
+not automatically establish identity or root cause. initial-selection.png is
+for checking exact prompt/orientation. previews/ contains three labeled panels
+every15frames and empty/nonempty transitions. Reports checkpoint each stream.
+No assistant builds/tests/inference. AST and static review only.
+
+Next user: full project path EVERY terminal command; per-session DEVELOPER_DIR
+/Applications/Xcode-beta.app/Contents/Developer, never global xcode-select.
+Save original video as assets/worker-occlusion.mov then run:
+.venv-temporal/bin/python Temporal/diagnose_occlusion.py
+--upstream .upstream-edgetam --video assets/worker-occlusion.mov
+--phone-report Audit/iphone17pro-worker-occlusion-report.json
+--fixture DeviceValidationData/memoryfp16projection --frames 300
+--output .temporal-runs/worker-occlusion-01
+Provide cat summary.json and open output folder inline. Share summary plus
+initial-selection.png, then targeted preview frames as needed. No iPhone rebuild
+or model export/preparation needed. Do not rerun rejected QKV optimization.
+
+
+## Hotfix: report exclusivity trap on first cached prediction
+
+User built c2f2be2 and hit Swift's simultaneous-access runtime trap after
+Track selected subject, at report?.cacheSelectionSegment = report?.segmentsStarted.
+Optional-chained mutation holds a write access to the optional report struct
+while the RHS reads the same storage. Fixed that assignment and the four
+matching replay count/state assignments by reading into local constants before
+mutation. Reviewed all report access sites; no same-report RHS assignment remains.
+Source review only; no assistant build/tests/inference. Pull/rebuild and repeat
+the same short tracking + cached replay check. Model/cache format unchanged.
+
+## Current work: bounded cached-mask replay, awaiting phone build/validation
+
+User reviewed new dog/person/excavator footage on Oct10 and said the sharper
+highlight looks good. Selected report fields/hashes and visual observations:
+Audit/iphone17pro-oct10-video-review.json. Person/arm reports share one clip
+session and accumulate counts/timings across selections; do not treat the
+aggregate timing/454 empty masks as an arm-only run. Arm selection briefly
+expands onto machine body and background inside bent arm; sampled recording
+shows background spill resolves but body inclusion partly remains. This is
+a regression clip for future add/remove prompts and correction, not proof of
+general accuracy. No model rewrite or selection correction is included here.
+
+OwnedVideoTracking.swift adds a first, session-local cache/replay step:
+- Same high_res_mask >0 at 1024x1024, packed losslessly relative to the binary
+  displayed mask (not logits) at 128KiB/frame. Shared RGBA overlay construction
+  keeps color, alpha, threshold, geometry and interpolation unchanged.
+- One actor-owned temporary masks.bin, at most2048 entries /256MiB payload;
+  bounded in-memory PTS/hash index, no tensors or full-video previews retained.
+  Writes publish index only after success. Failed writes stop further appends
+  and leave completed prefix readable; cache failures don't fail inference.
+  Cap retains cached prefix and reports truncation while tracking can continue.
+- Identity is confined to this owned immutable imported video, verified models,
+  transform and current selection. No reuse across imports/model loads/process
+  restart. Initialization/reselection, seek, errors and close clear the cache.
+  Normal close removes files; crashes may leave OS-managed temporary files.
+- Replay cached masks uses an independent AVAssetReader and the existing
+  orientation/preview path with model-buffer allocation/rendering disabled.
+  Each decoded source PTS must exactly equal the indexed CMTime; each payload
+  must have exact length and SHA256. Mismatch stops visibly, no nearest-frame
+  substitution and no inference fallback.
+- Replay never calls session.predict/reset or changes the inference decoder,
+  current prepared frame, selected point or temporal banks. Stop/completion
+  restores the latest tracked frame before enabling tracking/selection again.
+  It replays the current cached prefix from its beginning, paced by source PTS,
+  with no frame dropping/audio. This is not random-access seek/state resume.
+- Reports separate replay processing and cache-write times, cache segment/range,
+  byte/frame counts, errors and inference counts/state before/after last replay.
+  Inference request times now include cache packing/hash/write; old request
+  timings are therefore not strictly like-for-like. UI pacing/presentation
+  excluded; replayFrames counts decoded/verified frames, including a final
+  prefetched frame if the user stops before it is displayed.
+- No production integration, export support, persistent project cache, temporal
+  checkpoints, multi-point prompts or multi-subject tracking yet. Cached masks
+  reproduce segmentation mistakes too. Working memoryfp16projection unchanged.
+
+Static source/diff/ownership/bit-layout review only. No assistant builds, tests,
+model inference or benchmarks. Apple AVAssetReader timeRange and decoded sample
+presentation-order docs checked. Phone compilation and behavior unverified.
+
+Next user: full project path in EVERY terminal command; use
+/Applications/Xcode-beta.app/Contents/Developer via DEVELOPER_DIR, not global
+xcode-select (another experiment uses the other Xcode).
+Pull --ff-only, rebuild same physical17Pro Release with existing prepared models.
+Track the short construction clip once, then Replay cached masks (not Restart),
+share the video tracking report and visual alignment/smoothness observation.
+Expected: masks including the known glitch match, replayFrames advances while
+lastReplayPredictionCountBefore/After and state agree, no cache/replay errors.
+Also pause tracking partway, replay/stop, then Next frame to check restoration
+before extending tracking. No new model export/preparation or 20-frame parity
+benchmark is requested for this cache-only change. Actual replay benefit and
+first-pass cache cost await these measurements.
+
+## Current work: higher-resolution mask preview, awaiting visual/device check
+
+User approved preview improvement then broader subject/occlusion checks. Only
+OwnedVideoTracking.swift changes: Track a video now renders the existing validated
+high_res_mask[1,1,1024,1024], threshold >0, instead of magnifying a thresholded
+low_res_mask[1,1,256,256]. Pinned sam2_base upsamples logits with bilinear
+align_corners=False before output. This preserves sub-grid contour information
+relative to threshold-before-enlargement; it does not add model detail or matting.
+SwiftUI interpolation(.low) and CGImage interpolation enabled; same blue/opacity,
+same aspect and top-left orientation. Foreground fraction/empty-mask diagnostics
+still use low_res_mask for continuity; report now explicitly states their source.
+No model, state, pointer, selection, timing policy or fixed-fixture probe changes.
+
+Overlay now travels as owned sRGB RGBA8 CGImage, like the existing video preview,
+not PNG Data. CGDataProvider retains copied pixel data, never model tensor storage.
+RGBA transparent background is zero, foreground alpha255; one1024square overlay
+buffer is4MiB. Current frame only; no video mask cache. Larger rasterization has
+unmeasured cost, but avoids PNG compression/decode. Existing maskRendering timing
+covers bitmap/image construction; UIKit/SwiftUI presentation remains excluded.
+Report adds maskPreviewImplementation=high-res-threshold-cgimage.v1, maskPreview
+and foregroundFractionSource; transport/timing descriptions updated.
+
+Static source/diff/reference review only; no builds/tests/inference or video
+execution by assistant. User: git pull --ff-only and rebuild the same Release
+17Pro app, no model export/preparation. First view the same dog clip and share a
+screenshot plus Track a video report; assess contours/alignment/render time.
+Then try available person/other-moving-subject footage with brief occlusion;
+observe identity retention/recovery, background inclusion and thin edges. No
+need for another20-frame accuracy benchmark for this presentation-only edit.
+Working model remains memoryfp16projection; QKV candidate stays rejected.
+
+## Earlier decision: packed Q/K/V rejected on first CPU propagation
+
+User ran attention-qkv-01. Console reports unchanged-cpu, memoryfp16-cpu and
+memoryfp16-gpu all passed20frames. Candidate memoryfp16qkv-cpu fails at index1,
+its first propagator invocation; initialization index0 passed and no candidate
+propagation was committed. Final accepted state1/1/1. Mask IoU .987155 passes,
+but low-mask cosine .989440, pointer .596925 and memory .878520 fail .99.
+No runtime crash or nonfinite output reported: worker deliberately raises parity
+failure, parent stops before GPU. Full selected pasted metrics/provenance are in
+Audit/mac-attention-qkv-rejection-summary.json (transcription, not original bytes).
+
+Static review of packing found no obvious Q/K/V order, channel slice, weight/bias
+byte preservation or input-sharing error. This does not validate compiled
+execution or establish a Core ML bug. First-propagation failure excludes drift
+from earlier candidate propagations. Specific numerical cause remains unresolved.
+Reject current candidate; no speed benchmark, GPU bypass, gate relaxation or
+phone preparation. Retain diagnostic code for reproducibility. Keep working
+memoryfp16projection GPU video path and all validated packages unchanged.
+No additional user run required for this candidate; further localization would
+be a separate justified diagnostic, not another full temporal repeat. The next
+optimization is not selected yet. Preserve the measured gains and target actual
+remaining model cost; do not trade context/resolution/quality to inflate speed.
+Assistant performed source review and evidence transcription only, no execution.
+
+## Earlier: fused encoder video accepted; packed Q/K/V experiment prepared
+
+User supplied 076b4ee0-93be-4a17-bc20-3f16ef2a8f94.json and a screenshot of the
+rolling dog, reporting tracking looks good, not perfect. Selected exact report
+fields and attachment SHA256 are in Audit/iphone17pro-video-encoder-projection-summary.json.
+Report confirms memoryfp16projection, matching encoder/propagator packages,
+physical iPhone18,1 / iOS27.0(24A435), Release CPU_AND_GPU. 1,079 predictions,
+4 seeks, 4 segments, no empty masks/error recorded, final state 48/7/16.
+Snapshot reachedEnd=false after seeking, not a new uninterrupted EOF proof.
+Across 1,075 warm requests, MEANS: encoder20.2773 ms, propagator34.7614 ms,
+prediction/state59.7133 ms, request62.8766 ms. Thermal start/snapshot nominal.
+No ground-truth quality pass; predictedIoU is confidence. Screenshot blockiness
+is partly the thresholded256x256 low_res_mask enlarged without interpolation;
+smoothing cannot recover missing fur. Keep this working video model unchanged.
+
+Next isolated optimization: memoryfp16qkv. Pinned owned.FixedMemoryLayer feeds
+the same normalized tensor to Q/K/V in each of two self-attention layers.
+Temporal/propagator_qkv.py requires exactly these six semantic weight/bias names,
+shared input Var identity, shapes[1,4096,256], finite FP16 weights[256,256]/biases.
+Pack each trio by concatenating constant rows in Q/K/V order (byte-exact checks),
+replace three linears with one[256->768]linear and three256-channel slices.
+Same real-arithmetic expression, potentially different floating-point accumulation
+and scheduling; no speed or bitwise accuracy claim. No context/resolution loss,
+no new precision lowering, cross-projection/rotary/mask changes, or attention
+chunking. Added slices/larger GEMMs might negate any benefit. Apple's MIL linear
+and slice API documentation checked; native execution remains user-run.
+
+The existing attention diagnostic adds memoryfp16qkv on top of memoryfp16,
+with unchanged CPU reconversion and rebuilt memoryfp16 CPU/GPU controls, then
+candidate CPU/GPU independent-history20-frame comparisons against original PyTorch.
+Original CPU encoder and other tracker components isolate this experiment; it
+is not yet the fused encoder plus candidate device combination. Structural checks
+freeze all unrelated ops/constants/interfaces and all new ops through conversion.
+Paired benchmark automatically accepts the new variant only after all five
+comparisons pass; baseline is memoryfp16,76balanced pairs with original CPU state,
+checked warm-ups and unchanged numerical gates. No normal export, phone fixture,
+Swift selection, video renderer or production change. If accuracy/shape guards
+fail, stop and inspect report; no permissive fallback. No device preparation yet.
+
+User commands: diagnose_propagator_attention.py --experiment memoryfp16qkv
+--upstream .upstream-edgetam --run .temporal-runs/dog-09
+--output .temporal-runs/attention-qkv-01. Only on success, benchmark_propagator_convs.py
+--variant memoryfp16qkv --run .temporal-runs/dog-09
+--candidate .temporal-runs/attention-qkv-01 --output .temporal-runs/attention-qkv-paired-01.
+Provide cat for both report.json and paired summary.json in chat. Assistant
+performed AST parsing, static source/diff review and offline JSON extraction only;
+no builds/tests/conversion/inference/benchmark execution. Preserve prior models.
+
+## Earlier: reverse-order encoder gain confirmed; Track a video uses fused encoder
+
+User supplied b4819aee-62df-4b9f-b400-058e9ec838fd.json (fused encoder first,
+2026-09-16T18:16:03Z) and c36a47e6-b05f-496a-8802-ea8ae63e701d.json (memoryfp16
+second, 18:16:13Z). Original bytes preserved in
+Audit/iphone17pro-encoder-projection-reverse-{variant}-report.json; summary in
+Audit/iphone17pro-encoder-projection-reverse-summary.json. Exact fixture hashes,
+input/reference identities, tracker provenance, hardware/OS, Release settings and
+copy implementation match the first pair. Both 20/20 passed, banks 7/16, nominal
+thermal snapshots. Each variant's reported quality/state fields exactly repeat
+its own first run; this is not proof that different variants have identical masks.
+
+Reverse-order warm medians (baseline -> fused): encoder 21.99771 -> 18.76950 ms,
+14.6752% lower; propagator 32.60423 -> 32.50829 ms; prediction/state 59.47498 ->
+55.85156 ms, 6.0923% lower. Encoder excludes frame 0; propagator/session exclude
+indices 0/1. First-order improvement was 14.4346% encoder and 5.2614% session.
+The encoder gain holds in both orders; no further 20-frame repeats needed now.
+These remain short fixture measurements, not sustained playback FPS or general
+quality validation. Metal validation/debugger flags are not reported in JSON.
+
+OwnedVideoTracking.swift now loads the existing prepared memoryfp16projection
+fixture and strictly requires projection encoder + memoryfp16 propagator metadata.
+All package-file/hash/schema checks retained; report includes diagnosticEncoder,
+combined precision and modelVariant, and checkpoints/UI identify the fused model.
+Missing fixture produces an explicit message, never falls back silently. No model
+re-export/preparation, precision change, state/seek logic, decode, copy or mask
+rendering changes. Original FP16 remains available in Temporal comparison. This
+adopts the measured improvement in the standalone prototype, not ByteWave production.
+
+Next: user git pull --ff-only, rebuild same Release 17 Pro with Metal validation
+off, Track a video on the longer dog clip including hand-patting section; seek
+forward/backward as before, visually check edges/identity, share video tracking
+report. No Instruments or further temporal reports requested at this point.
+Assistant checked offline JSON identity/quality/arithmetic and Swift diff only;
+no builds/tests/model execution. Normal exports/fixture generation stay unchanged.
+
+## Earlier: encoder projection improves first iPhone pair; reverse order pending
+
+User supplied 8c9cdd2e-e246-4e24-b397-421802359eb7.json (memoryfp16,
+2026-09-16T18:13:52Z) and 33740519-efec-4e3a-aae3-ae3ed481cf70.json
+(memoryfp16projection, 18:14:13Z). Original bytes archived in
+Audit/iphone17pro-encoder-projection-{variant}-report.json and derived summary in
+Audit/iphone17pro-encoder-projection-summary.json, including upload/report hashes.
+Both physical iPhone18,1 iOS27.0(24A435), Release, CPU_AND_GPU for all components;
+same input/PTS/reference identities, propagator provenance and tensor-copy version.
+Candidate encoder provenance points to the exact baseline fixture hash and Mac
+paired report. Both all 20 frames passed, final 7/16 banks, nominal thermal snapshots.
+
+Warm median encoder (exclude frame 0): 21.84558 -> 18.69225 ms, 14.43465% lower.
+Warm propagator (exclude first call at frame 1): 32.41435 -> 32.51163 ms, essentially
+unchanged in these short runs. Prediction/state median (exclude frames 0 and 1):
+58.76642 -> 55.67450 ms, 5.26137% lower (~3.09 ms saved). These are fixture/model
+timings, not sustained video playback FPS. Minimum mask IoU both 0.996804; pointer
+cosine 0.998931/0.998924, memory cosine 0.996140/0.996127. Small numerical differences
+remain; no bitwise-mask identity claim. Per-frame IoU-against-reference metrics
+differ by at most 0.000370. Validation/debugger settings are not captured in JSON.
+
+Next user action needs NO code/model preparation or rebuild: same 17 Pro/Release
+build, let phone cool if warm, run Memory FP16 + fused encoder CPU + GPU FIRST,
+then Memory FP16 candidate CPU + GPU SECOND; share both temporal reports. This
+checks run-order sensitivity before adopting in Track a video. No Instruments or
+plan report needed. Current working video model stays memoryfp16. Evidence/handoff
+only in this commit; offline JSON identity/arithmetic checks, no execution/tests.
+
+## Earlier: encoder projection passed Mac; isolated iPhone comparison prepared
+
+User pasted encoder-projection-01/report.json: unchanged CPU, composed CPU and
+composed GPU all pass all 20 frames with banks 7/16. GPU minima IoU 0.998153,
+pointer cosine 0.999664, memory cosine 0.999381. Eighty paired encoder GPU calls
+all pass: original median 9.38894 ms, candidate 8.71958 ms, 7.129% lower latency.
+Both first-model strata favor candidate (9.33825/8.87450 and 9.41542/8.25221 ms).
+This is Mac encoder-call timing, not measured iPhone benefit or playback FPS.
+Selected pasted evidence archived in Audit/mac-encoder-projection-summary.json;
+source explicitly marked transcribed, not original report bytes.
+
+prepare_encoder_projection_device.py verifies actual three child reports/hashes,
+twenty encoder feature checks per mode, 80 paired checks/warm-ups/order, source
+models and projection package hashes. Shares original-fixture verification with
+prepare_attention_device.py (existing workflow unchanged). Also verifies existing
+memoryfp16 Mac accuracy/package evidence and the prepared memoryfp16 fixture
+against original inputs/references and attention bytes. It creates a NEW fixture
+combining only the projection encoder with the unchanged existing FP16 tracker.
+It copies original reference tensors/input bytes unchanged and publishes
+fixture.json last. No conversion or inference during preparation.
+
+Swift adds optional diagnosticEncoder provenance, exact known encoder+propagator
+combination validation and a separate picker choice "Memory FP16 + fused encoder"
+(DeviceValidationData/memoryfp16projection). Supports CPU/GPU only. Report records
+both diagnostics, combined precision encoder-projection-memoryfp16.diagnostic.v1
+and modelVariant memoryfp16projection. Existing fixtures decode with nil encoder;
+original, memoryfp16 and padded choices retain behavior. Plan inspection stays
+original-only. Track a video stays on memoryfp16 and explicitly rejects an encoder
+diagnostic; no production or arbitrary-video adoption yet.
+
+User command inputs: --run .temporal-runs/dog-09 --baseline DeviceValidationData/baseline
+--fp16 DeviceValidationData/memoryfp16 --attention .temporal-runs/attention-fp16-01
+--candidate .temporal-runs/encoder-projection-01 --output DeviceValidationData/memoryfp16projection.
+Include cat preparation-report.json in chat. Then physical 17 Pro, Release, Metal
+API/Shader Validation off: current Memory FP16 candidate CPU + GPU, followed by
+Memory FP16 + fused encoder CPU + GPU. Share both TEMPORAL reports; no Instruments
+or plan report needed. If useful gain appears, reverse order before adoption.
+Comparison now tests combined encoder+FP16 tracker against unchanged original
+references. Do not imply the earlier Mac temporal test used FP16 tracking.
+
+Assistant performed static Python AST, Swift source/selection/provenance review,
+offline summary arithmetic and diff checks only; no builds/tests/inference or
+fixture preparation executed.
+
+## Earlier: isolated encoder projection composition, awaiting Mac results
+
+User authorized the next optimization after closing key padding. Target encoder
+(about 22 ms warm on 17 Pro), not another attention variation. Upstream pinned
+edgetam.yaml sets fpn_top_down_levels=[2,3]: high-resolution FPN levels 0/1 each
+apply a 1x1 48/96->256 convolution, followed directly by SAM conv_s0/conv_s1
+256->32/64. Compose each pair into one FP32 1x1 convolution. This is equivalent
+in real arithmetic, but floating-point association changes and must be measured.
+No lower precision, learned-weight retraining, activation changes, or fanout edits.
+The composed constants are derived from the exact serialized source constants.
+
+Temporal/encoder_projection.py loads the serialized dog-09 encoder using the
+same Core ML Tools 9 MIL loader as prior diagnostics. It requires the exact
+two direct single-consumer FP32 1x1 chains, expected shapes and 132 source convs.
+Composes weights/biases in float64 and stores FP32; checks all unrelated ops and
+constant-consuming inputs, composed hashes/source inputs, and all interfaces.
+Preserves original image preprocessing; no new precision or optimization passes.
+Both an unchanged reconversion and the candidate are isolated diagnostic packages.
+
+Temporal/diagnose_encoder_projection.py verifies the complete passing source
+and every package hash. Runs unchanged CPU, candidate CPU, candidate GPU in
+separate 20-frame workers against pinned original PyTorch with independent
+bounded state and unchanged temporal gates. Tracker stays original CPU to isolate
+encoder changes. Also checks all four encoder outputs against same-image original
+CPU, with float32Close required for unchanged control. Reuses existing encoder
+worker through optional backend/evidence parameters; previous defaults preserved.
+Only after all pass: separate GPU paired worker, original/candidate identical
+images, one checked warm-up each per frame, four balanced pairs per frame (80
+pairs). Every measured output must be finite and cosine >=.99 vs original CPU.
+No iPhone speed or sustained FPS inference from Mac timings. Reports checkpoint
+before prediction and on Python errors; native crashes leave partial checkpoints.
+
+User runs --upstream .upstream-edgetam --run .temporal-runs/dog-09 --output
+.temporal-runs/encoder-projection-01. Share root report.json (includes compact
+accuracy and paired summaries); full paired data in paired-summary.json and each
+accuracy mode has report.json/log. Provide full command plus cat in chat. No new
+phone fixture, normal export, Swift model selection or Track a video changes.
+Current memoryfp16 GPU remains selected; no optimization is claimed yet.
+
+Assistant inspected upstream configuration/source and Apple's Core ML Tools 9
+Var/Block implementation, reviewed rewrite/provenance flow, Python AST and diff
+only. No model conversion, inference, tests, builds or benchmarks executed.
+
+## Earlier decision: key-padding experiment closed; retain current FP16 GPU
+
+User supplied ed97737a-129c-4afd-b443-792d81723256.json (current memoryfp16,
+13:16:49Z) and a6727ff9-8b2d-43a9-97ec-72072b93a8f1.json (memoryfp16k4096,
+13:17:06Z). Raw reports archived as `Audit/iphone17pro-key-padding-{variant}-report.json`;
+derived comparison and source hashes in `Audit/iphone17pro-key-padding-summary.json`.
+Both are physical iPhone18,1 / iOS 27.0 (24A435), Release CPU_AND_GPU, all 20
+frames passed. Identical frame identities and original-reference provenance,
+matching copy implementation; thermal snapshots nominal, final banks 7/16.
+Every reported quality/state field matches between runs (not proof of raw tensor
+identity). Both minima: IoU 0.996804, pointer cosine 0.998931, memory cosine 0.996140.
+
+Warm Propagator medians excluding first call: current 32.5066 ms, padded 32.6203 ms.
+Warm encoder: 21.8533 / 21.9677 ms. Session medians excluding frame zero:
+58.8134 / 59.4940 ms. First Propagator call 152.311 / 320.034 ms; cold calls are
+excluded from warm summaries. Separate short runs, not paired, no statistical
+regression claim. Debugger/Metal validation settings are not recorded in JSON.
+
+The tiny Mac difference did not yield useful iPhone acceleration. Close padding
+without promotion or another repeat; no reverse-order run is needed for this
+non-winning candidate. Track a video stays on memoryfp16 CPU_AND_GPU. The
+diagnostic option remains available for reproducibility. Existing FP16, direct
+preview and bulk-copy improvements remain intact. Attention is still the largest
+measured shader group, but no new rewrite is selected; do not repeat closed
+query-chunking, key-padding, conv2 or simple NE-placement experiments.
+Evidence/handoff only; offline JSON arithmetic/identity checks and static diff
+review, no assistant tests/builds/inference/conversion/benchmarks.
+
+## Earlier: small Mac padding difference; isolated iPhone comparison prepared
+
+User's inline paired Mac summary reports all 76 pairs passing accuracy. Selected
+fields/provenance are archived as `Audit/mac-attention-key-padding-paired-summary.json`.
+Median memoryfp16 13.8020 ms, memoryfp16k4096 13.6468 ms (1.1245% lower); both
+call-order strata favor the candidate, but the small difference is not established
+statistically or an iPhone result. Candidate/baseline file hash dictionaries match
+the archived full accuracy evidence. Candidate report hash is user-reported;
+the local Mac preparation step verifies it against the original bytes.
+
+An isolated iPhone comparison is justified because the hypothesis came from the
+17 Pro shader profile and earlier FP16 gains differed markedly between Mac and
+iPhone. This is not promotion. `prepare_attention_device.py --variant memoryfp16k4096`
+now verifies all five accuracy runs, original fixture inputs/references and exact
+package hashes, plus all 76 paired checks against rebuilt memoryfp16. It copies
+only into a new directory; no conversion/inference or baseline overwrite. Default
+memoryfp16 preparation stays supported with its original-vs-candidate evidence.
+
+Swift adds `Memory FP16 padded candidate`, folder DeviceValidationData/memoryfp16k4096,
+precision identity memory-sdpa-fp16-keypad4096.diagnostic.v1. Metadata validation
+requires the exact selected diagnostic variant and known matching precision.
+The padded option supports CPU only / CPU + GPU; existing memoryfp16 keeps its
+prior modes. Picker, mode reset and runner use the same variant-aware eligibility.
+Original fixture/modes remain supported. Track a video still explicitly requires
+memoryfp16; it cannot silently load the padded candidate. Report/checkpoint/schema,
+state limits and accuracy gates are unchanged. DeviceValidationData is already a
+folder resource so no project-file change is needed.
+
+Next: prepare from dog-09, DeviceValidationData/baseline, attention-key-padding-01
+and attention-key-padding-paired-01 into DeviceValidationData/memoryfp16k4096.
+Then physical 17 Pro, Release, Metal API/Shader Validation off: current Memory FP16
+candidate CPU + GPU followed by Memory FP16 padded candidate CPU + GPU. Share
+each temporal report. No Instruments/plan report or arbitrary-video promotion yet.
+If a useful device benefit appears, verify reverse order before adoption; otherwise
+close this padding experiment. Static Python AST, Swift source/selection review,
+JSON provenance and diff checks only; no assistant builds/tests/inference or
+preparation executed. User commands/report-reading steps remain in chat.
+
+## Earlier: key-padding accuracy passed; paired GPU timing pending
+
+User supplied Pasted text(20260916-125744).txt containing the complete parent
+report, source paste SHA256
+45354040dfc441bf02e87c7756c207eace5fd47e92611ac333e9cf2e154553ee.
+JSON normalized from terminal whitespace is archived as
+`Audit/mac-attention-key-padding-report.json`; these are not original report bytes
+and must not replace the Mac report for benchmark hash checks.
+
+All five runs pass all 20 frames: unchanged CPU, memoryfp16 CPU/GPU, and
+memoryfp16k4096 CPU/GPU. The unchanged same-input control reports zero output
+error. All final states are 20 accepted / 7 spatial / 16 pointers. Candidate GPU
+minimum mask IoU 0.996804, pointer cosine 0.999033, memory cosine 0.996588.
+Candidate modification records confirm only cross-attentions receive 448 extra
+excluded keys each, with native SDPA, original key order and interfaces preserved.
+The candidate weights file hash differs because the diagnostic adds padding
+constants; no learned-weight change is claimed or intended.
+
+Unpaired GPU medians: memoryfp16 25.996 ms, padded 25.399 ms. These sequential
+accuracy runs do not establish a speed improvement. Next is the existing paired
+GPU benchmark, variant memoryfp16k4096, candidate attention-key-padding-01, source
+dog-09, output attention-key-padding-paired-01. It validates all child reports
+and package hashes locally before timing the rebuilt FP16 baseline and candidate
+with identical CPU-owned inputs. No code/threshold/installed-model changes for
+this evidence update. Offline JSON parsing and static diff review only.
+
+## Earlier: isolated FP16 cross-attention key-padding experiment
+
+User asked to continue optimization after the NE placement result. New diagnostic
+variant `memoryfp16k4096` extends only the two 3648-key memory cross-attentions
+to 4096 keys: append 448 zero key/value rows and negative-infinity additive mask
+entries after rotary/validity construction. All original keys, values, query
+order, original mask entries and history remain. Self-attention retains baseline
+FP16 semantics. No query chunking. With finite queries and valid original keys,
+the appended scores are -inf and contribute zero probability under documented
+SDPA semantics. Floating-point/kernel differences still require validation.
+
+Motivation is a bounded shape hypothesis: current iPhone GPU trace includes
+sdpa_tile_fwd_16x16x16_doEdgeCheck and noEdgeCheck shader families. Their exact
+MIL attribution and reason for dispatch are not established. Padding may change
+kernel selection/boundary work, or be slower because it adds keys and copies.
+Do not claim alignment is the proven bottleneck or any improvement before data.
+MIL mask semantics verified against Apple's operation reference:
+https://apple.github.io/coremltools/source/coremltools.converters.mil.mil.ops.defs.html
+
+The isolated converter requires Core ML Tools 9.0 and the four expected source
+attention signatures; verifies 0/0/448/448 appended rows, replacement shapes,
+unrelated operations/constants/precisions and external interfaces. Original
+weights, initializer/decoder safeguards, normal export and iPhone fixtures stay
+unchanged. Explicit ignored padding is not input/output non-finite sanitization.
+
+diagnose_propagator_attention.py prepares unchanged, memoryfp16 and the candidate
+and runs the existing five 20-frame CPU/GPU/original-PyTorch comparisons with
+unchanged gates and bounded independent histories. benchmark_propagator_convs.py
+requires their complete passing evidence/package hashes and compares candidate
+against rebuilt memoryfp16 using 76 balanced-order pairs, checked warm-ups and
+identical CPU-owned state inputs. No normal export/promotion/device readiness.
+The existing native-query experiment remains available but closed; its behavior
+is unchanged by sharing the FP16-baseline variant list with this new experiment.
+
+Next user run uses dog-09 and .temporal-runs/attention-key-padding-01. If all
+accuracy gates pass, the paired output is .temporal-runs/attention-key-padding-paired-01.
+No new iPhone run until the Mac evidence is assessed. Static AST parsing, graph
+construction/source review and diff checks only; no assistant tests, compilation,
+conversion, inference or benchmarks. User commands/report-reading steps in chat.
+
+## Previous decision: retain FP16 GPU; NE placement experiment closed
+
+The user's Release rerun (5298e4db-6f91-44b3-b261-1ef869654aed.json) passes all
+20 frames on iPhone18,1 / iOS 27.0 (24A435). Raw bytes archived as
+`Audit/iphone17pro-memoryfp16-ne-propagator-release-report.json`; derived evidence
+and hashes in `Audit/iphone17pro-memoryfp16-ne-propagator-summary.json`.
+swiftDebugCompilation=false. CPU_AND_NE is requested only for Propagator;
+other components remain CPU_AND_GPU. Minimum IoU/pointer cosine/memory cosine
+0.996092/0.996693/0.993702; final accepted/spatial/pointer counts 20/7/16.
+Thermal snapshots nominal. Fixture inputs, model provenance and copy implementation
+match the archived Release GPU bulk-copy baseline exactly.
+
+Warm model medians excluding first call per component: Propagator 225.618 ms,
+encoder 32.326 ms. Prior Release GPU baseline: 32.497/21.922 ms respectively.
+Session medians excluding frame zero: 265.378 versus 58.950 ms. Propagator
+compile/load 18.336 seconds. Separate runs, not paired; do not claim an exact
+causal slowdown ratio. Current report does not record Metal validation/debugger
+settings or actual NE execution. User was instructed to disable Metal API and
+Shader Validation for this timing run; the JSON cannot confirm those settings.
+
+No useful performance benefit is demonstrated. Close this compute-placement
+experiment without promotion or another repeat. Retain working memoryfp16
+CPU_AND_GPU in Track a video. Original on-demand/local/bounded-state goal remains
+intact; no claim that other models cannot benefit from Neural Engine. Current
+profile still points to attention as the largest measured propagator shader
+group. No new graph rewrite selected; query batching and conv2 remain closed.
+Evidence/handoff only; offline JSON arithmetic and static diff review, no assistant
+tests, builds, inference, conversion or benchmarks.
+
+## Earlier: FP16 NE propagator passed Debug; Release timing pending
+
+User report f9ac2a27-378a-42c2-9ab7-4c79bc5b22bc.json is archived byte-for-byte
+as `Audit/iphone17pro-memoryfp16-ne-propagator-debug-report.json`; SHA256
+893f4d9429f43064e852b5c3c0e0a9aad319347563afe46a2648f3eaf76ad852.
+Physical iPhone18,1 / iOS 27.0 (24A435), current memoryfp16 fixture and package
+provenance, GPU + NE propagator. Requested units match the intended isolation:
+Propagator CPU_AND_NE, all other components CPU_AND_GPU. All 20 frames pass;
+minimum mask IoU 0.996092, pointer cosine 0.996693, memory cosine 0.993702.
+Final state 20 accepted / 7 spatial / 16 pointers; both thermal snapshots nominal.
+Input frame identities match the archived current FP16 GPU shader-capture run.
+
+The report explicitly records swiftDebugCompilation=true. Excluding the first
+call of each component, encoder median is 31.580 ms and propagator 220.296 ms.
+Do not compare these as controlled latency results against Release GPU or claim
+actual NE execution. Correctness passed for this fixture; speed remains pending.
+No model or gate changes are indicated. Next user action is the same mode/model
+on 17 Pro with Run scheme configuration explicitly set to Release, then share
+the temporal report. No further Instruments capture or package preparation.
+
+The preceding local cleanup added ignored LocalArtifacts/ and assets/. User was
+given commands to move traces/exports and back up then restore the tracked Xcode
+scheme. Its tracked Run configuration is Debug, consistent with this report.
+Use LocalArtifacts/profiling/ for future recordings/exports; keep video assets
+at assets/ so existing commands work. User-facing commands stay in chat. Offline
+JSON/identity checks only; no assistant tests, builds, inference or benchmarks.
+
+## Earlier: isolate current FP16 propagator with Neural Engine permitted
+
+User chose to continue optimizing EdgeTAM and asked how the original Neural
+Engine goal fits. Keep the current working model and on-demand video architecture.
+The earlier iPhone 17 Pro original-model CPU_AND_NE propagation was much slower
+than CPU_AND_GPU (~345 versus ~67 ms); this does not measure the newer FP16
+attention candidate. Current FP16 GPU propagation is ~32–34 ms in short runs.
+No energy or GPU-contention benefit from using NE has been measured.
+
+OwnedTemporalProbe now adds `GPU + NE propagator`: only Propagator requests
+CPU_AND_NE; ImageEncoder, Initializer and InitialMemoryEncoder retain CPU_AND_GPU.
+It is available for the memoryfp16 fixture and original fixture. Candidate
+availability is shared between the picker, selection reset and runner guard.
+The existing report records the exact per-component compute-unit requests,
+fixture/model provenance, timings, accuracy and pre-call crash checkpoints.
+Allowing NE does not establish actual NE execution; CPU remains permitted.
+
+Next user check: current prepared memoryfp16 fixture on physical iPhone 17 Pro,
+Release, this one new mode. Share the temporal report (plan inspection remains
+original-only). No model export/preparation or Instruments recording is required.
+If correctness passes and timing is promising, compare against same-build GPU
+before any promotion; if slower or invalid, keep the current GPU baseline.
+This is a placement experiment, not a demonstrated speed improvement. The
+arbitrary-video screen stays CPU_AND_GPU; package bytes, comparison gates and
+bounded state are unchanged. Static review/diff checks only; no assistant builds,
+tests, conversion, inference or benchmarks. User instructions stay in chat.
+
+## Completed: FP16 profiling baseline; accuracy confirmed
+
+The user identified mixed tool versions: recording with Xcode/Instruments 26.6,
+Terminal using Xcode 27 beta. The 26.6 UI warning was “GPU Service reported
+error: Selected counter profile is not supported on target device.” User then
+recorded again through Xcode 27 beta. New Run 1 uses Instruments 27.0 (27A5228h),
+iPhone 17 Pro / iOS 27.0 (24A435), PID 7849, 08:09:59.951–08:10:26.533 -04:00.
+Shader Timeline enabled, 6,934 exported shader rows now present. This supports
+a tooling compatibility explanation but does not prove the exact original cause.
+
+Archive `Audit/iphone17pro-instruments-memoryfp16-shader-summary.json` contains
+source ZIP/export hashes, per-model warm spans and sampled shader breakdowns.
+The 20 encoder / 19 propagator / 1 initializer / 1 initial-memory calls match the
+fixture workflow. Warm medians excluding first call of each model:
+encoder prediction/GPU-active union 22.791/21.212 ms; propagation 33.824/28.414 ms.
+Propagator SDPA shader union median 15.932 ms is the largest measured shader
+group. GEMM family median 4.844 ms, identity family 1.676 ms. These are overlapping
+sampled intervals, not additive complete accounting or exact MIL attribution.
+Encoder's largest sampled family is mmul_kernel_a16_float_float_float (4.627 ms);
+its name is insufficient to identify safe precision changes.
+
+The matching device report is now archived as
+`Audit/iphone17pro-instruments-memoryfp16-shader-device-report.json`. It confirms
+memoryfp16, unchanged fixture f6b8e78c..., iPhone18,1 / Release CPU + GPU and
+all 20 frames passed. Minimum IoU/pointer cosine/memory cosine are
+0.996804/0.998931/0.996140. Every reported input/quality/state field equals the
+prior bulk-copy FP16 baseline (not proof of raw tensor identity). Final banks
+7/16, nominal thermal snapshots. Report timestamp 12:10:08Z lies inside the
+trace; corresponding encoder/propagator call durations differ by at most
+0.013626/0.010876 ms. This strongly associates the artifacts with the same run,
+although XML does not carry a shared run ID or model package hashes.
+
+The profiling stage is complete; no repeat recording or fixture run needed now.
+Remaining attention cost is the main measured shader group for further bounded
+optimization. Retain working FP16, direct previews and bulk copies; closed query
+batching stays unpromoted. No new model rewrite is implemented or claimed faster.
+Evidence/handoff only; offline parsing and static checks, no assistant tests,
+builds, inference, conversion or profiling executed.
+
+## Earlier FP16 capture: shader timing export empty
+
+User recorded current memoryfp16 on iPhone 17 Pro, Release CPU + GPU. Device
+report completes/passes all 20 frames with bounded 7/16 banks, nominal thermal
+snapshots and current chunk-copy implementation. Raw report and offline trace
+summary archived in `Audit/iphone17pro-instruments-memoryfp16-{device-report,summary}.json`.
+Trace Run 1 / PID 7794 spans 07:49:22.873–07:49:47.925 -04:00 on September 16;
+report timestamp 11:49:40Z lies within it. Counts match (20 encoder, 19 propagator,
+one initializer and initial memory encoder), but no shared run ID proves identity.
+
+Excluding first call of each model, encoder median prediction/GPU-active union
+is 22.390/20.937 ms; propagator 33.200/28.184 ms. GPU work overlaps prediction,
+not additional time. Original archived trace had 67.497 ms warm propagation;
+new trace is consistent with retained FP16 gains, not a new paired benchmark.
+
+Shader Timeline was enabled, but metal-shader-profiler-intervals export has ZERO
+rows. The extra ZIP now also has zero raw gpu-shader-profiler-interval rows.
+Target PID 7794 has 726 ShaderTimeline signposts: 484 FunctionCompiled and 242
+ComputePipelineLabel, all instantaneous Event type. 4,840 corresponding argument
+rows describe metadata, not durations. See the companion
+`Audit/iphone17pro-instruments-memoryfp16-extra-summary.json` for counts/hashes.
+No shader execution timing can be recovered from these supplied tables. The
+cause is unknown; do not attribute it to user settings, model precision or OS.
+Next: inspect saved trace GPU/Compute detail in Instruments (screenshot of the
+prediction burst) to distinguish visible UI detail from an export limitation
+before another recording. No further speculative exports or model changes.
+User moved the trace into project folder after Desktop access errors. Do not
+request privacy permission changes; the original cause was not established.
+Static/offline parsing only; no assistant builds, tests, inference or profiling.
+
+## Native query-batching closed; retain memoryfp16
+
+User completed the paired Mac CPU_AND_GPU comparison. All 76 measured pairs
+pass the unchanged accuracy gates. Median calls are 13.7671 ms memoryfp16 and
+16.0043 ms memoryfp16q1024: candidate latency is 16.25% higher (2.2373 ms).
+Both balanced call-order strata favor the baseline. No useful Mac speed benefit;
+close this diagnostic without promotion. This is not an iPhone result or a
+statistical significance claim. Summary/provenance selected from the user's
+inline report is archived in `Audit/mac-attention-native-query-paired-summary.json`.
+Package hashes match the preceding accuracy report; the original report's hash
+is preserved as user-reported, not independently verified from inline text.
+
+Keep the existing working FP16 model, direct previews and bounded bulk copies.
+No further repeats or device fixture changes for this candidate. Next useful
+step is a fresh Instruments capture of current memoryfp16 on iPhone 17 Pro;
+the archived shader trace was taken before FP16 and cannot identify today's
+remaining model costs. Choose further model work from current observations.
+Evidence/handoff only: no runtime/model changes, no assistant tests, builds,
+conversions, inference or benchmarks. User-facing instructions remain in chat.
+
+## Native query-batching accuracy evidence (paired result above)
+
+User supplied the Mac diagnostic report for `memoryfp16q1024`; normalized JSON is
+archived in `Audit/mac-attention-native-query-report.json`. Source terminal paste:
+`Pasted text(20260916-014450).txt`, SHA256 `edfd1fde8b8e45ddea8bdd3afad9a4c60e398cb861a8f05a70618d35ae6690f9`.
+Normalization removes terminal whitespace; archive bytes are not original report
+bytes and must not replace the original report for benchmark provenance checks.
+
+All five runs pass all 20 frames: unchanged CPU, memoryfp16 CPU/GPU, and
+memoryfp16q1024 CPU/GPU. Unchanged reconversion has zero same-input output error.
+Candidate GPU minimum mask IoU/pointer cosine/memory cosine are
+0.996804/0.999023/0.996592, matching the baseline GPU's reported minima.
+This is equality of summary metrics, not proof of tensor identity. All final
+states have 20 accepted frames and bounded 7/16 banks.
+
+Unpaired GPU median propagation is 26.244 ms baseline versus 28.658 ms candidate;
+no improvement is established. Next is the already-implemented paired GPU
+benchmark against memoryfp16 using `.temporal-runs/attention-native-query-01`,
+with proposed output `.temporal-runs/attention-native-query-paired-01`.
+Both packages in that diagnostic are newly reconverted and validated; their
+hashes differ from the previously installed FP16 package. Preserve all recorded
+package identities. No candidate device preparation or runtime change yet.
+Assistant parsed the supplied report and reviewed source/diffs only; no tests,
+builds, conversions, inference or benchmarks executed. Commands stay in chat.
+
+## Native FP16 attention query-batching diagnostic implementation
+
+User authorized further model-speed work. Prepared `memoryfp16q1024` in the
+existing attention diagnostic, keeping the current working memoryfp16 model and
+iPhone app unchanged. For each of the four 4096-query memory attentions, cast Q,
+K, V and cross-attention mask exactly as the working FP16 baseline, split only Q
+into four ordered 1024-row slices, call native MIL scaled_dot_product_attention
+on each slice with the entire original K/V and broadcast validity mask, concat
+the four results in query order, then restore FP32 output as before. No context
+entries, queries or model weights are dropped. Decoder/initializer FP32 guards,
+interfaces and every unrelated graph operation remain checked and unchanged.
+
+Hypothesis: smaller native SDPA query batches may change GPU scheduling/kernel
+behavior favorably. This is not a proven current bottleneck attribution or speed
+gain: the archived Instruments shader capture predates memoryfp16. It is also
+not the closed chunk256 experiment, which expanded FP32 attention into explicit
+matmul/softmax operations and regressed. The new candidate retains native FP16
+SDPA, preserves full attention context and has no assumed memory-saving claim.
+Apple's [MIL SDPA definition](https://apple.github.io/coremltools/source/coremltools.converters.mil.mil.ops.defs.html)
+normalizes over keys independently for each query, supporting the row split;
+finite-precision backend differences still require numerical validation.
+
+`diagnose_propagator_attention.py --experiment memoryfp16q1024` produces three
+new diagnostic packages: unchanged reconversion, memoryfp16 control, and candidate.
+It runs the unchanged CPU control, then baseline CPU/GPU and candidate CPU/GPU
+20-frame comparisons against the original pinned PyTorch reference. It stops
+on any failed gate. Original reference history is independent, candidate history
+uses the existing bounded banks, and original thresholds are retained. Models,
+saved frames and transformation signatures are verified by the existing checks.
+Suggested new output root: `.temporal-runs/attention-native-query-01` using dog-09.
+
+The paired benchmark now accepts this variant and automatically compares it to
+memoryfp16 (NOT the slower original FP32 model). It requires both baseline and
+candidate CPU/GPU evidence and hashes, alternates four pairs per propagated
+frame, excludes warm-up and checks all outputs against identical-input original
+CPU. Summary labels explicitly identify the baseline; historical original-based
+fields remain for existing experiments. Candidate/baseline own histories are
+checked in the preceding temporal comparisons, not in paired timing. Later paired
+output root can be `.temporal-runs/attention-native-query-paired-01`.
+
+No normal export, device fixture, Swift code or installed model changes. Candidate
+is not accepted by the existing device preparer/app yet. Device preparation is a
+later step only if evidence supports it. Assistant validation: static source and
+graph-rewrite review, Python AST parsing, diff checks only; no tests, conversions,
+model loading, inference or benchmark executed. User-facing commands stay in chat.
+
+## Bulk-copy optimization validated on both model variants
+
+The requested Memory FP16 candidate / CPU + GPU report is now received and
+archived in `Audit/iphone17pro-chunk-copy-memoryfp16-report.json` with a companion
+summary. All 20 frames pass, all exact input hashes match the earlier candidate
+repeat, and every reported accuracy/state field equals that baseline report.
+This is equality of reported comparison metrics, not a raw tensor byte check.
+Minimum mask IoU is 0.996804, pointer cosine 0.998931, memory cosine 0.996140.
+State counts are correct through 20 accepted frames with 7/16 banks. iPhone 17
+Pro Release, iOS 27.0, nominal thermal snapshots, no reported error.
+
+Across 19 warm frames, combined encoder/propagator copy and validation mean fell
+8.362 -> 2.096 ms (74.94%). Session mean fell 71.900 -> 64.902 ms (9.73%); median
+fell 64.895 -> 58.950 ms. Propagator median is essentially unchanged at 32.351 ->
+32.504 ms, consistent with optimizing host copies rather than model math.
+These are successive runs, not paired timing or sustained playback FPS.
+
+Both Original and Memory FP16 numerical gates for the copy change are complete.
+Retain bulk copying and direct preview transport. No more fixed-fixture repeats
+are required for these changes. Next speed work should target actual model calls
+using a bounded diagnostic and the existing numerical checks; do not repeat
+closed conv2/chunk256 experiments or loosen checks. Short arbitrary-video
+validation and the user's hand-exclusion observation are recorded below.
+This turn changes evidence/handoff only; no Swift/model implementation change
+and no assistant test/build/inference execution.
+
+## First post-copy reports (Original fixture and short video)
+
+User supplied two reports after `903c940`. The 20-frame numerical comparison
+passed all gates, but its modelVariant is Original, not Memory FP16 candidate.
+Archive: `Audit/iphone17pro-chunk-copy-original-report.json`. Relative to the
+same Original fixture in the earlier repeat report, warm output copy/validation
+averages 8.627 -> 2.136 ms (75.25% reduction, 6.492 ms saved). All 20 input hashes
+match that baseline; all state counts are correct. Minimum mask IoU 0.996804,
+pointer cosine 0.998976, memory cosine 0.995975. Separate runs, not paired timing.
+The later candidate comparison completing this gate is recorded above.
+
+`Audit/iphone17pro-chunk-copy-short-video-report.json` is a 3.717-second clip,
+112 predictions, one segment, no seeks, EOF reached, zero empty masks/no error.
+It uses Memory FP16 candidate and the new copy implementation. All rows fit
+within the 120-row bound and have increasing timestamps/correct bounded state.
+111 warm frames average 63.504 ms request, 60.557 ms prediction/state and
+2.174 ms combined encoder/propagator output copy/validation. Device is iPhone
+17 Pro Release CPU + GPU, nominal thermal snapshots. This is a shorter source
+than the earlier 27.838-second clip; do not claim a 78.8 -> 63.5 ms same-video
+speed improvement. The companion `Audit/iphone17pro-chunk-copy-summary.json`
+records arithmetic, provenance and limitations.
+
+User reports the dog approaches the camera and is patted, and the tracking mask
+successfully excludes their hand. Preserve this useful qualitative interaction/
+occlusion observation without claiming annotated accuracy or general robustness.
+
+The requested candidate comparison has since completed, as recorded above.
+Assistant only parsed reports, checked arithmetic/state and archived evidence.
+
+## Contiguous tensor-copy implementation
+
+The user confirmed the direct preview looked identical to their eye. Retain it.
+Next bounded target is Swift model-output copying, not another model conversion.
+The existing `Audit/iphone17pro-memoryfp16-repeat-memoryfp16-report.json` has
+19 warm frames averaging 6.764 ms ImageEncoder.outputCopyAndValidation and
+1.598 ms Propagator.outputCopyAndValidation (8.362 ms combined). These are from
+the earlier fixed fixture, not stage measurements of the latest arbitrary clip.
+The latest video session averages 75.786 ms, with 66.343 ms in the model calls;
+its remaining ~9.44 ms has not yet been separated into session stages.
+
+`OwnedTensor.init(_:name:)` now checks the same strides, then validates and
+bulk-appends contiguous Float32 output in chunks of at most 16,384 values. It
+reserves owned Swift storage without first zero-filling it, avoiding individual
+destination writes and cancellation-modulo work on every value. Type/shape and
+finite-value checks remain; cancellation is checked before each chunk. Every
+logical value is copied exactly once, including short final chunks. Nothing is
+published until all values pass. The original strided fallback is unchanged.
+Source Core ML arrays are not retained as state or exposed as borrowed buffers.
+Model bytes, prediction math, thresholds, state pack/commit and scheduling are
+unchanged. Original-fixture timing gains are now measured above; the candidate's
+fixed numerical comparison remains pending.
+
+Both device report types identify `owned-float32-chunk-copy.v1`. Video reports
+now include the session's already-existing per-frame stage measurements and
+bounded warm totals: input preparation, output copy/validation, checkpoint hook,
+state pack and commit. Fixed-fixture reports already carry those timings.
+Next gates: the existing 20-frame Memory FP16 candidate / CPU + GPU comparison
+must pass unchanged; then repeat the same complete video to measure the actual
+effect. No model preparation/export required. Assistant only reviewed source,
+copy ownership, chunk boundaries, strided fallback and diffs; no tests, builds,
+decoding or inference were run. User-facing steps stay in chat.
+
+## Direct preview timing improvement confirmed
+
+The user's subsequent iPhone 17 Pro Release report confirms the v2 direct-image
+path completed 835 predictions and reached EOF, with one selection segment,
+zero seeks/empty masks, no reported error and final bounded 7/16 state. Nominal
+thermal snapshots at start/end. Raw report and comparison are archived in
+`Audit/iphone17pro-video-direct-preview-report.json` and its companion summary.
+All 834 warm counts match; retained 120 rows advance timestamps and state with
+bounded banks. Hardware, OS, model file hashes, fixture, video size/duration and
+orientation match the preceding PNG run. Selected points differ slightly, so
+these are successive-run timing results, not paired timings or mask parity.
+
+Mean preparation fell 30.902 -> 2.523 ms (91.83% reduction); total request fell
+108.035 -> 78.809 ms (27.05% reduction). The measured preparation saving of
+28.378 ms matches the removed PNG encoding cost. Eager preview creation is still
+only 0.903 ms. Prediction/state averaged 75.786 ms (previously 76.595), accounting
+for 96.16% of the new request time. Encoder/propagator means are 26.353/39.990 ms;
+do not interpret their individual run-to-run shifts as model implementation
+changes. Model bytes and inference/state implementation are unchanged.
+
+Retain direct preview transport. No repeat of this same preparation test is
+needed. The next performance target is inference/state; choose a bounded change
+from evidence rather than adding more preview micro-optimizations. UI render and
+presentation remain outside timing, so do not report 12.7 as measured playback
+FPS. The report alone cannot confirm visible color/orientation/mask alignment or
+ground-truth quality. The user subsequently confirmed that the preview looked
+identical to their eye; this is visual feedback, not numerical mask parity.
+This evidence-only update changes no Swift or model code. Assistant validation
+was JSON arithmetic, retained-row inspection and diff checks, not device execution.
+
+## Direct preview implementation and baseline
+
+The instrumented iPhone 17 Pro Release run completed the same 27.838-second clip:
+835 predictions, one segment, no seeks, zero empty masks, no reported error and
+EOF reached. Final state is 835 accepted frames with bounded 7/16 banks; thermal
+snapshots are nominal. Raw evidence and derived arithmetic are preserved in
+`Audit/iphone17pro-video-preparation-report.json` and its companion summary.
+All warm counters agree at 834; the retained 120 rows advance timestamps/state
+and stay within bank limits. This is not a ground-truth quality pass.
+
+Warm means: preparation 30.902 ms, prediction/state 76.595 ms, mask rendering
+0.414 ms, total request 108.035 ms. Preview PNG encoding alone averages 28.378 ms,
+91.83% of preparation. Sample acquisition is 0.279 ms, orientation setup 0.022 ms,
+buffer allocation 0.128 ms, model-input render 1.163 ms and preview creation
+0.929 ms. These are API wall times, not isolated CPU/GPU execution costs.
+
+`OwnedVideoTracking.swift` now passes a retained CGImage directly to the UI,
+which wraps it in UIImage at scale 1, orientation up. The already applied track
+transform, sRGB/RGBA8 preview, aspect ratio and dimensions stay the same. Preview
+creation explicitly uses deferred=false so rendering completes before actor
+handoff. CGImage uses the SDK Sendable conformance; no unchecked wrapper is added.
+Only the current/in-flight/displayed images are retained, not a video-wide cache.
+The small mask PNG path remains. Model input rendering, package bytes, numerical
+checks, bounded state and request scheduling are unchanged.
+
+Reports identify `video-preparation-stages.v2` and `previewTransport`. The PNG
+stage is absent; eager preview creation is measured under previewImageCreation.
+The completed device timing comparison is recorded above. UI construction and
+rendering are still excluded. Visual color/orientation/alignment confirmation is
+not encoded by either report.
+Static source/diff review only here; no tests, build, decoding or inference run.
+User-facing build/report steps belong in chat, not README.
+
+API references: Apple [CGImage Sendable conformance](https://developer.apple.com/documentation/coregraphics/cgimage),
+[eager preview rendering](https://developer.apple.com/documentation/coreimage/cicontext/createcgimage%28_%3Afrom%3Aformat%3Acolorspace%3Adeferred%3A%29),
+and [UIImage wrapping](https://developer.apple.com/documentation/uikit/uiimage/init%28cgimage%3Ascale%3Aorientation%3A%29-2ouhh).
+
+## Preparation instrumentation background (completed)
+
+The new-video and seek/reselection checks below are complete. The seek report
+averages 65.584 ms prediction/state and 95.150 ms total request across 176 warm
+predictions. The roughly 29.6 ms difference is not yet attributed to one stage.
+`OwnedVideoTracking.swift` now adds `video-preparation-stages.v1` instrumentation:
+sample acquisition, orientation graph setup, model buffer allocation, model-input
+render, preview CGImage creation and preview PNG encoding. Recent records retain
+these stage times; incremental warm aggregates also include total preparation
+and mask rendering. The 120-record bound is unchanged. Initialization has no
+preparation stages because it reuses the current prepared image; open/seek preview
+work is excluded from warm totals. These are API wall times, with possible lazy
+Core Image work, not isolated hardware timings. UI decoding/rendering remains
+outside request timing. Model bytes, pixels, state policy and scheduling are
+unchanged. This is measurement instrumentation, not a claimed speed improvement.
+
+That instrumented device run is now recorded above.
+Assistant review for this change is static source/diff inspection only; no build,
+test, decoding or inference was run. User-facing steps stay in chat.
+
+## Requested video frames
+
+`OwnedVideoTracking.swift` adds a separate **Track a video** screen using the
+existing verified `DeviceValidationData/memoryfp16` packages with CPU + GPU.
+It shares the fixture schema and unchanged OwnedTemporalSession/state runtime;
+normal exports, the fixed 20-frame comparison and the community probe remain.
+The loader checks diagnostic/source metadata, exact package file set and hashes,
+then all four loaded model interfaces before inference. No re-export is needed.
+
+One actor owns the imported movie, AVAssetReader, current prepared frame and
+session. It decodes the next presentation-ordered sample only when requested,
+uses the exact decoded CMTime, converts the track presentation transform into
+Core Image coordinates, renders sRGB 1024-square model input and an aspect-correct
+preview. Point selection uses normalized top-left coordinates. The UI supports
+initialization on the displayed frame, next frame, continuous demand-driven
+tracking, pause after the in-flight frame, seek and restart. Seeking/reselection
+starts fresh state and requires a new subject point. No frames are dropped to
+catch a clock; no audio or real-time playback-rate claim. A separate real-time
+renderer/scheduler is not implemented in this probe.
+
+Inference is synchronous inside the actor. UI task cancellation and a generation
+check across loading awaits prevent stale results after navigation/reset. On
+prediction/decode failure the state is invalidated and stale UI pixels are hidden;
+seek/restart recovers. The temporary import and compiled packages are released on
+replacement/close. Only bounded 7/16 banks and the current image survive requests;
+no per-video mask or decoded-frame cache. Diagnostic frame records are capped at
+120, with incremental warm timing totals and no retained tensors. Reports include
+source package provenance, actual timestamps, reset/segment counts, orientation,
+mask fraction/presence score, model/decode/render timings and thermal snapshots.
+There is no automatic quality/parity pass for an unseen video. Snapshot and native
+prediction checkpoint files overwrite fixed names instead of accumulating files.
+
+Assistant validation: static source/lifecycle/ownership review, project source
+registration and diff checks only. No Swift compiler/Apple SDK is available here;
+no tests, builds, decoding, inference or conversion were run by the assistant.
+The user has now built and run this path on a new portrait video of the same dog
+and reports that tracking looked good. See the result immediately below.
+The subsequent seek/reselection run also completed without reported errors;
+see the seek result below.
+Setup and report-sharing instructions belong in chat, not README.
+
+API references checked: Apple [decoded sample ordering and EOF status](https://developer.apple.com/documentation/avfoundation/avassetreaderoutput/copynextsamplebuffer%28%29),
+[reader time range](https://developer.apple.com/documentation/avfoundation/avassetreader/timerange),
+and [track presentation transform](https://developer.apple.com/documentation/avfoundation/avassettrack/preferredtransform).
+These support the decoder design, not device validation of this new path.
+
+## First arbitrary-video result: new dog clip
+
+`Audit/iphone17pro-new-dog-video-report.json` preserves the user report; the
+companion summary records derived statistics and limitations. iPhone18,1,
+iOS 27.0 (24A435), Release CPU + GPU, matching validated memoryfp16 fixture.
+The 27.838-second video reached EOF: 836 predictions, two subject-selection
+segments, zero empty masks and no reported error. Last segment accepted 821
+frames; final banks remain 7 spatial / 16 pointer entries. Only the latest 120
+frame records are retained, with strictly increasing timestamps and bounded
+states. Thermals are nominal at start/snapshot. The report has zero seeks.
+Do not call this 836 unique frames or a numerical quality/parity pass.
+
+Across 834 warm predictions, mean encoder/propagator/prediction-state/request
+costs are 29.521/33.971/73.358/104.363 ms. Request includes decode, orientation,
+resize, PNG preview and mask rendering, but excludes UI presentation and pauses.
+The final 120 records average 34.867 ms decode/preparation, 80.956 ms prediction/
+state, 0.426 ms mask rendering and 116.379 ms total request. No timing attribution
+within preparation or cause for the later increase is established. These are
+processing measurements, not sustained playback FPS.
+
+User says this NEW video looked good. In the supplied portrait screenshot, the
+blue mask broadly covers the dog and excludes most grass; edges are stepped in
+the nearest-neighbor low-resolution diagnostic overlay. Do not claim fine-edge
+quality or all-frame accuracy from one screenshot. The subsequent seek check is
+recorded below. Next investigate preparation/display overhead and broader visual
+tracking quality.
+No inference implementation or model bytes changed while recording this result.
+
+## Seek/reselection device check completed
+
+`Audit/iphone17pro-video-seek-report.json` preserves the next user run; its
+summary records validation of the retained tail. Same iPhone18,1 / iOS 27.0,
+Release CPU + GPU, validated memoryfp16 fixture. User explicitly reports forward
+and backward seeks. Report counters: 4 seeks, 5 initialized tracking segments,
+181 predictions, zero empty masks and no reported errors. Start/snapshot thermal
+states are nominal. The report ends during tracking at 8.937 s, not at EOF.
+
+The last 120 records cover parts of segments 4 and 5. A retained backward jump
+from 18.605 s to 6.617383 s starts an initializer prediction with state 1/1/1
+(accepted/spatial/pointer). Tracking then advances to 71 accepted frames, banks
+7/16. Every retained within-segment timestamp and accepted-frame count advances;
+all retained banks stay bounded. Earlier transitions have rolled off, so do not
+claim the JSON retains exact direction/timestamps for all four seeks.
+
+Across 176 propagated frames, means are encoder 22.624 ms, propagator 33.454 ms,
+prediction/state 65.584 ms and total request 95.150 ms. The remaining grouped
+preparation/render/other work averages 29.566 ms. This is not a controlled speed
+comparison against the previous run and excludes UI presentation. Seek/reset
+functional testing is sufficient for this stage; do not ask for more repeats.
+Next work: isolate decode, orientation/resize, preview encoding/display costs,
+then remove demonstrated overhead while preserving matching frame/mask timestamps
+and bounded state. Broader subject/edge/occlusion quality remains to be reviewed.
+No runtime/model changes were made while recording this evidence.
+
+## iPhone 17 Pro comparison passed: original versus memoryfp16
+
+Added `Temporal/prepare_attention_device.py`: read-only verification and copying,
+no conversion or inference. Requires matching passed source run, CPU/GPU temporal
+candidate evidence, full 76-pair GPU report and existing prepared original device
+fixture. Verifies package/input/reference bytes, shapes/finiteness and source RGB
+hashes, copies original reference tensors and BGRA inputs unchanged, and substitutes
+only the diagnostic Propagator in a NEW folder. The original baseline stays intact.
+Publishes fixture.json last with explicit diagnostic contract/variant, effective
+precision policy and hashes of baseline fixture, temporal report and paired report.
+
+Swift adds an Original / Memory FP16 candidate picker in the temporal probe.
+The candidate folder is DeviceValidationData/memoryfp16; original is still baseline.
+Only CPU-only and CPU+GPU are offered for the candidate; plan inspection stays on
+the original. Fixture choice must match its diagnostic metadata. Only Propagator
+may use the exact memoryfp16 diagnostic contract; all other component metadata,
+interfaces, references and numerical gates retain existing validation. Reports
+identify the variant, effective diagnostic precision policy and source provenance.
+The serialized candidate inherited the original package's source precision field;
+its diagnostic contract plus variant describes the explicit override. The normal
+exporter and installed baseline remain unchanged. These Swift/preparation changes
+have only static source/AST and diff review, no assistant tests or builds.
+
+The user built and ran both variants successfully on iPhone 17 Pro (iPhone18,1),
+iOS 27.0 (24A435), Release, CPU + GPU. All 20 frames pass in both runs with
+identical input hashes and matching original reference provenance. Thermal states
+are nominal and final banks are 7/16. Warm medians (frames 1–19): original versus
+memoryfp16 encoder 21.711/21.911 ms, propagator 66.509/32.329 ms, prediction and
+state 99.337/65.259 ms. Candidate latency reductions are 51.39% for propagation
+and 34.31% for prediction/state. Both minimum mask IoUs are 0.996804; candidate
+minimum pointer/memory cosines are 0.998931/0.996140. Full uploaded reports and
+summary are in Audit/iphone17pro-memoryfp16-*.json. These are separate short
+runs, original first; no sustained FPS or broader quality claim.
+
+The reverse-order repeat also passed on the same device/OS/Release GPU setup:
+candidate completed at 00:31:46Z, original at 00:32:10Z on 2026-09-16. Warm
+original/candidate propagator medians are 66.763/32.351 ms, prediction/state
+99.997/64.895 ms, encoder 21.967/21.792 ms. Reductions are 51.54% and 35.10%.
+Fixture and input identities match the first runs; every per-frame numerical
+comparison metric and bounded state exactly matches its same-variant first run.
+Both pass all 20 frames with nominal thermals. Reports are archived as
+Audit/iphone17pro-memoryfp16-repeat-*-report.json; comparison-summary.json
+contains both orders. The speed benefit survives reversed run order. No more
+repeats of this fixed fixture are needed. Carry memoryfp16 forward to requested-
+video-frame operation and broader visual/sustained validation. Original normal
+export remains selected until deliberate integration; this evidence does not
+validate unseen clips or sustained playback.
+
+## Mac pass: isolated memory-attention precision
+
+The chunk256 rewrite is slower on Mac despite passing correctness, so the
+original normal export remains selected. The next diagnostic `memoryfp16`
+changes only the four validated large memory SDPA operations to FP16: casts of
+existing Q/K/V and optional bias, fused attention, then restores FP32 output.
+The initializer and all mask-decoder attention, normalization, projections,
+learned weights and external interfaces keep their existing precision. This
+explicitly tests whether memory SDPA alone can tolerate reduced precision; it
+is NOT a claim that the earlier FP16 attention corruption was generally solved.
+No scaling changes, key pruning, head changes, clamping or weakened gates.
+
+`diagnose_propagator_attention.py --experiment memoryfp16` uses a new output
+folder and the same unchanged CPU control plus full candidate CPU/GPU temporal
+comparisons. Exact unrelated/new operation signature checks cover the casts,
+mask source and attention dtypes. Nonfinite outputs or parity failure stop the
+run. The paired benchmark accepts `--variant memoryfp16` only with matching
+passed temporal evidence and package hashes. Device readiness stays false;
+the user now passed all three 20-frame comparisons and 76 paired GPU checks.
+Median Mac latency is 14.3839 ms original versus 13.7715 ms memoryfp16 (4.257%
+lower); both order strata agree. GPU mask/pointer/memory minima are
+0.996804/0.999023/0.996592, final banks 7/16. See
+`Audit/mac-attention-memoryfp16-summary.json`. iPhone results are recorded above.
+User commands remain in chat, not README.
+
+## Completed Mac experiment: explicit FP32 memory attention
+
+`Temporal/diagnose_propagator_attention.py` prepares an unchanged reconversion
+control and a diagnostic `chunk256` propagator. The rewrite selects exactly four
+FP32 SDPA operations with query [1,1,4096,256]: two self-attentions with 4096 keys
+and no mask, and two cross-attentions with 3648 keys and the original broadcast
+FP32 validity bias. Each becomes 16 query chunks of 256 rows, using FP32 QK^T,
+scale 1/16, unchanged bias, softmax over ALL original keys, and FP32 weighted
+values before concatenating queries. No key pruning, head change, learned-weight
+change or precision reduction. This tests a different GPU implementation of the
+same attention equation; floating-point accumulation can still differ.
+
+The helper verifies unrelated operation signatures/constants, new operation
+signatures/precision and external interfaces after conversion. The unchanged
+control and candidate CPU/GPU each replay all 20 saved frames against independent
+original PyTorch with existing thresholds and bounded state. The unchanged CPU
+control also requires same-input allclose against the normal CPU model. Failures
+stop remaining modes; subprocess logs and checkpoints are retained. Candidate
+contract is `bytewave.propagator-attention.diagnostic.v1`, never device-ready.
+
+The existing paired benchmark accepts `--variant chunk256` and requires its
+passing CPU/GPU temporal evidence, verified source/package hashes, GPU compute
+units, and no linear-inspection report. It compares original versus candidate
+on identical CPU-generated state, four balanced-order pairs per propagated frame,
+with checked warm-up and every output gated. Existing conv2 CLI defaults and its
+legacy summary keys remain available. Shared replay helpers accept an explicit
+contract/script; the old convolution diagnostic retains its required inspection.
+
+The user passed all three full 20-frame comparisons and all 76 paired GPU
+checks. Paired medians: original 14.3616 ms, chunk256 34.5261 ms (2.404 times
+original latency); both call-order strata agree. No promotion. Archive:
+`Audit/mac-attention-chunk256-summary.json`. No candidate iPhone timing exists.
+Assistant work remains static review and uploaded-report parsing only. Normal
+exporter, README, installed dog-09 model set and Swift app are unchanged. Chunk
+score tensors are 4 MiB (self) or 3.5625 MiB (cross), but this is not a guarantee
+of peak allocation: scheduling and buffer lifetimes remain backend-dependent.
+
+## Latest profiling: iPhone 17 Pro GPU attention hotspot
+
+The user supplied a second Instruments run with Shader Timeline enabled. Offline
+XML analysis is archived in `Audit/iphone17pro-instruments-shader-summary.json`,
+including source/export hashes, per-prediction timings and interval methodology.
+All 41 prediction calls are present (20 encoder, 19 propagator, two initialization).
+Excluding each model's first call, median Propagator prediction is 67.497 ms and
+app GPU Active interval union is 62.119 ms. Encoder medians are 22.406/20.941 ms.
+Two shaders, `sdpa_tile_fwd_8x8x8_noEdgeCheck (230)` and
+`sdpa_tile_fwd_8x8x8_doEdgeCheck (234)`, each appear twice per warm Propagator call.
+Their combined observed interval median is 43.616 ms; across 18 warm calls,
+757.914 ms of 926.212 ms observed shader interval union belongs to this pair.
+Shader samples do not cover all 1119.562 ms of GPU Active time. These are sampled
+interval observations, not exact MIL-operation timings or additive CPU/GPU costs.
+
+The four expensive attention occurrences are consistent with the source's two
+memory-attention layers, each using self-attention and cross-attention. The XML
+provides shader identities but no exact mapping to those four MIL operation names.
+This redirects the next optimization toward memory attention; the unsuccessful
+two-linear convolution rewrite stays closed. Preserve FP32 attention and existing
+PyTorch gates until a specific equivalent attention candidate is validated. No
+model/fixture changes, tests, builds, conversion or inference were performed by
+the assistant. Next work is an isolated attention implementation experiment,
+not more generic GPU placement estimates. The trace itself does not embed model
+or fixture hashes, so dog-09 association is from the user's capture workflow.
+
+## Latest result: encoder fanout temporal comparison
+
+The user passed both 20-frame runs in `encoder-temporal-01` against original
+PyTorch, using the 39-edge `encoder-fanout-01` candidate with the tracker on CPU.
+CPU encoder minima: mask IoU 0.995740, pointer cosine 0.999027, memory cosine
+0.996570. CPU_AND_NE encoder minima: 0.998153, 0.999490, 0.998537. Both retained
+seven spatial entries and sixteen pointers. See
+`Audit/mac-encoder-fanout-temporal-summary.json`. This is a Mac diagnostic pass,
+not physical-device NE validation or observed hardware utilization.
+
+The normal exporter now reproduces the exact 39 shared-activation replacements
+(36 residuals and three saved-feature consumers), verifies their identities and
+preserves convolution precision and the RGB image interface. Graph revision is
+`dense-points-encoder-fanout.v1`; precision policy is
+`mixed-encoder-late-conv33-fanout-and-fp32-attention-iou.v1`. Swift requires these
+new identifiers and adds **Encoder NE + CPU tracker**, requesting CPU_AND_NE only
+for ImageEncoder and recording each component's requested units. Original PyTorch
+reference, learned weights, bounded state and comparison gates remain unchanged.
+Historical diagnostics explicitly accept the previous dog-08 policy where needed.
+
+Dog-09 has now passed the normal complete export comparison: referencePassed,
+coremlPassed and readyForDeviceValidation are true, with the new graph/precision
+identifiers. All 20 CPU frames passed; minimum mask IoU 0.995740, pointer cosine
+0.999027, memory cosine 0.996570, final banks 7/16. The RGB-interface export
+reproduces the diagnostic's CPU minima. Full supplied status/report and attachment
+hash are in `Audit/mac-fanout-normal-validation-report.json`.
+
+The user prepared and installed dog-09, then passed all 20 frames on physical
+iPhone15,2 / OS 26.5.2 with both CPU only and Encoder NE + CPU tracker. Complete
+reports are `Audit/owned-temporal-fanout-iphone-cpu-report.json` and
+`Audit/owned-temporal-fanout-iphone-encoder-ne-report.json`. Both match fixture
+80bfbde3da5d8d650a68d60a1f61e2da0050abbe576e0bc848da46d640298455 and source model
+manifest 47b7b85eef755ff7a440c0017f232a82ac7213af622d15d30a04f3487e07dd67.
+CPU minimum mask IoU/pointer cosine/memory cosine: 0.997512/0.998589/0.996618;
+encoder-NE mode: 0.997159/0.998731/0.996138. All timestamps, input hashes and bank
+states match; final banks are 7/16, thermal state nominal at start/end.
+
+The encoder-NE mode requests CPU_AND_NE only for ImageEncoder, CPU_ONLY for all
+tracker components. Excluding cold frame 0, median encoder call time is 157.89 ms
+versus 104.04 ms CPU; median propagator is 208.88 versus 207.45 ms. This establishes
+fixture correctness, not a speed improvement or observed hardware utilization.
+Debug diagnostic timings exclude several pipeline costs and are not playback FPS.
+
+Full **CPU + Neural Engine** also passed all 20 frames on the same physical phone
+and dog-09 fixture. `Audit/owned-temporal-fanout-iphone-all-ne-report.json` preserves
+the report. All four components requested CPU_AND_NE. Minimum mask IoU 0.996804,
+pointer cosine 0.998240, memory cosine 0.992768; final state 7/16, nominal thermal
+state. Source/fixture/frame/timestamp identities match the CPU and encoder-only
+NE reports. Full NE-permitted correctness is now established for this fixture;
+actual device execution and general segmentation quality remain unmeasured.
+
+Excluding cold frame 0, median encoder call was 168.04 ms and propagator 392.50 ms;
+median summed model-call time 564.02 ms versus 310.61 ms CPU only and 367.24 ms
+encoder-NE/CPU-tracker. Propagator compile/load was 20.14 seconds. These debug
+correctness-probe measurements establish no speed benefit or sustained FPS.
+
+Both remaining dog-09 modes passed all 20 physical-phone frames. GPU minimum
+mask IoU/pointer cosine/memory cosine: 0.996449/0.998735/0.996238; Automatic:
+0.996802/0.996997/0.992943. Complete reports are the fanout iphone gpu/automatic
+files in Audit. All five modes use identical model/fixture/frame/timestamp hashes
+and bounded state; all finish nominal thermally. The modes-summary JSON records
+metrics and timings, excluding cold frame zero. Median summed model-call times:
+CPU 311 ms, encoder-NE 367 ms, full NE 564 ms, GPU 265 ms, Automatic 581 ms.
+GPU is fastest in these supplied diagnostic runs, but prediction/state takes
+1137 ms versus 265 ms model calls. Do not treat these as playback FPS or measured
+NE utilization. Earlier reports do not record build configuration or Metal
+validation settings, so repeatable Release measurement is the next concrete need.
+
+Added additive report instrumentation `session-stages.v1`: per-component input
+preparation, output copy/validation, pre-prediction checkpoint/logging hook, plus
+state pack and commit times. Model timings retain their existing boundaries;
+stages exclude model calls and do not claim to cover all session overhead.
+`swiftDebugCompilation` records the DEBUG compilation condition; the checked-in
+project uses -Onone for Debug and -O for Release. Report decoding keeps the new
+frame stage field optional for old reports. No model, state, output-copy logic,
+correctness gate or checkpoint behavior is changed. Assistant static review only;
+no builds/tests/model execution.
+
+The user clarified that these recent runs are on their **iPhone 14 Pro**, not
+their newer 17 Pro; hardware iPhone15,2 is consistent across the owned fixtures.
+Preserve the older-device baseline and do not label these as 17 Pro measurements.
+The new GPU and CPU + NE reports both pass all 20 frames and explicitly record
+swiftDebugCompilation=false and session-stages.v1. Same dog-09 fixture/model/frame
+hashes and final banks; nominal thermal state. Reports and attachment hashes are
+archived in the iphone14pro-release Audit files and summary. Debugger/Metal
+validation settings are not recorded, so do not claim independent verification.
+
+Release medians excluding frame zero: GPU encoder 69.52 ms, propagator 184.78 ms,
+summed model calls 254.37 ms, whole session 281.67 ms. NE encoder 157.08 ms,
+propagator 384.18 ms, model calls 542.60 ms, session 563.16 ms. Per-frame session
+minus model-call medians are 26.98 ms GPU and 20.75 ms NE; instrumentation leaves
+only about 0.04/0.02 ms median unaccounted. Release largely removes the earlier
+Swift diagnostic overhead. Models, especially propagation, now dominate; do not
+optimize tensor handling as though it explains most remaining cost. These are
+fixed-fixture measurements, not sustained video playback or observed NE activity.
+
+The user completed both Release modes on **iPhone 17 Pro**, hardware iPhone18,1,
+OS 27.0 (24A435). Both pass all 20 frames with DEBUG disabled, matching dog-09
+model/fixture/frame/timestamp identities, final banks 7/16 and nominal thermal
+state. GPU minimum mask/pointer/memory metrics: 0.996804/0.998976/0.995975;
+NE: 0.996449/0.998667/0.992680. Full reports and a summary with attachment hashes
+are in the iphone17pro-release Audit files. Hardware AND OS differ from the 14 Pro
+(OS 26.5.2); do not attribute the entire change to hardware alone.
+
+17 Pro median encoder/propagator/session times, excluding cold frame zero:
+GPU 22.04/66.75/100.09 ms; NE 81.46/344.98/439.47 ms. Median summed model calls
+88.82/426.21 ms; non-model session overhead 11.20/12.71 ms. GPU is substantially
+faster for this export. Propagation is the largest remaining cost; these are
+fixed-fixture timings, not playback FPS or observed Neural Engine utilization.
+
+Added **Inspect GPU/NE plans** on the owned Temporal comparison screen. It checks
+the same fixture/model hashes and model metadata, compiles ImageEncoder and
+Propagator, and records both CPU_AND_GPU and CPU_AND_NE plans in one action.
+It does not run predictions, change model precision, or repeat the correctness
+fixture. New schema bytewave.temporal-compute-plan.v1 records all nonconstant
+operations with output names, paths, preferred/supported devices and optional
+estimated relative costs, per-plan counts/cost totals and errors. Missing costs
+stay unreported; estimates are not runtime device usage or measured milliseconds.
+Separate atomic temporal-last-plan.json checkpoints preserve load failures/native
+abort location, and **Share plan report** exports a unique final report. Existing
+prediction function and gates remain unchanged. The user built and completed this inspection on iPhone 17 Pro; all four plans loaded.
+
+The owned 17 Pro plan matches the dog-09 fixture and manifest. Its selected
+operations and source attachment hash are archived in
+`Audit/owned-temporal-iphone17pro-compute-plan-summary.json`. Encoder GPU prefers
+all 489 nonconstant operations; encoder CPU_AND_NE prefers 406 CPU / 83 NE, with
+95.82% of estimated relative cost assigned to CPU-preferred operations.
+Propagator GPU prefers 704 GPU / 18 CPU operations. The two linear outputs
+`linear_9_cast_fp16` and `linear_19_cast_fp16` together account for 46.12% of
+estimated relative cost; adding `linear_74_cast_fp16` and `linear_76_cast_fp16`
+brings this to 57.65%. Propagator CPU_AND_NE prefers 489 NE / 181 CPU / 52
+unreported, but supplies NO cost estimates. Counts and estimates do not measure
+runtime hardware usage or establish an optimization speedup.
+
+The user completed the static shape inspection; the parsed terminal summary and
+attachment hash are in `Audit/mac-propagator-linear-inspection-summary.json`.
+The two largest operations are memory-attention layers 0/1 linear2: FP16 input
+[1,4096,2048], weights [256,2048], bias [256], output [1,4096,256]. Each has
+2,147,483,648 dense multiply-accumulates. The next two are memory-encoder fuser
+layers 0/1 pwconv2, with channels-last input [1,64,64,1024]; they are not spatial
+perceiver layers. Their CPU_AND_NE plan prefers CPU.
+
+Next experiment: `Temporal/diagnose_propagator_convs.py` reads the inspected
+serialized propagator and creates an unchanged conversion control plus `conv2`.
+Only the two memory-attention linear2 operations become FP16 1x1 convolutions:
+transpose/reshape to [1,2048,64,64], identical flattened weight bytes and bias,
+then restore [1,4096,256]. `propagator_convs.py` guards exact source parameter
+names, shapes and precision, unchanged unrelated operation signatures/constants,
+replacement weight hashes and external interfaces. No normal exporter, app,
+precision policy, reference or correctness gate changes. Different accumulation
+and placement can still change numerical outputs or performance.
+
+The user-run diagnostic checks an unchanged reconversion on CPU against the
+original CPU propagator on identical inputs (all outputs allclose 1e-3), then
+validates unchanged CPU and candidate CPU/GPU/NE runs against the independent
+original PyTorch reference for all 20 saved frames. Non-propagator components
+stay CPU_ONLY; state is committed only after parity passes, with final banks 7/16.
+CPU failure stops accelerated runs. Workers have separate logs, timeouts and
+pre-call checkpoints. Mac call times exclude cold propagation and are diagnostic;
+no paired GPU/NE performance comparison or iPhone speedup is established.
+Packages have a diagnostic contract and readyForDeviceValidation stays false.
+Assistant review is AST/JSON parsing, static API/source review and diff checks
+only. The user has now passed all four 20-frame comparisons in
+propagator-convs-01. Selected supplied fields are archived in
+`Audit/mac-propagator-convs-summary.json`. Minimum mask/pointer/memory metrics:
+conv2 CPU 0.996448/0.998902/0.996327; GPU 0.996804/0.999025/0.996556;
+NE 0.995736/0.998918/0.994489. All final banks 7/16. Unchanged CPU also passes,
+and its latest identical-input control has zero absolute error for every output.
+Unpaired warm Mac propagator medians: unchanged CPU 96.99 ms, conv2 CPU 101.32 ms,
+conv2 GPU 27.49 ms, conv2 NE 179.95 ms. There is no original GPU/NE timing in this
+experiment; do not compare the Mac candidate to iPhone baseline timings.
+
+Next: `Temporal/benchmark_propagator_convs.py` reuses the passed packages without
+conversion. It verifies source/package/report hashes, drives the saved frames
+with the original CPU state, and gives original and conv2 propagators identical
+inputs under the same requested compute units (GPU by default). One warm-up per
+model is checked and excluded; four pairs at each of 19 propagated frames use
+balanced alternating order. All timed outputs pass the unchanged Core ML parity
+gates against same-input original CPU. Input hashes are checked after each frame;
+state commits only after checks pass. Report includes raw timings/checks, order
+strata and a compact summary. This is a co-resident repeated-input Mac benchmark,
+not a new temporal-feedback validation, device pass, hardware-utilization reading
+or sustained playback benchmark. No model promotion or installed fixture change.
+The user completed the paired Mac GPU run: all 76 pairs passed their accuracy
+checks. Median original 14.4065 ms, conv2 14.4707 ms; candidate is 0.0642 ms
+(0.45%) slower by median, with no useful gain demonstrated. Balanced-order
+strata also provide no consistent improvement. These data do not establish a
+statistically significant regression or any iPhone effect. Selected supplied
+fields are in `Audit/mac-propagator-paired-gpu-summary.json`. Keep the original
+normal export and device fixture; do not promote conv2 for GPU performance.
+
+The paired Mac CPU_AND_NE run also completed with all 76 pairs passing accuracy.
+Original median 176.5897 ms, conv2 177.0624 ms: no useful latency reduction
+(-0.2677%). Both call-order strata remain close. Two ANE compiler failure messages
+appeared after the Summary line in the pasted console output; they do not identify
+a model or partition, and log ordering does not establish when the failures
+occurred. Do not infer successful Neural Engine execution or specific CPU
+fallback from numerical success. Selected report fields and exact messages are
+in `Audit/mac-propagator-paired-ne-summary.json`.
+
+Close the two-linear convolution experiment: no useful Mac GPU or CPU_AND_NE
+benefit demonstrated. Retain the original normal export/dog-09 device fixture.
+Do not promote conv2, repeat the same benchmark, or infer device outcomes from
+Mac results. Compiler relative-cost estimates did not predict a useful benefit
+from this operator substitution; there is no proof of which kernels were used.
+
+Next is an Instruments capture of the ORIGINAL model on physical iPhone 17 Pro,
+Release, CPU + GPU. Use the Core ML template and GPU instrument, run the existing
+20-frame temporal comparison, then inspect a warm Propagator prediction's Activity,
+Data and Compute tracks against GPU activity. Core ML compute requests can be
+asynchronous; request intervals alone are not actual GPU occupancy. This is
+runtime profiling of the known fixture, not another correctness rerun or a
+sustained video benchmark. Native Core ML tracks already identify model calls,
+so no app/model/signpost changes are needed for this first capture. Ask for the
+model-level aggregation and an expanded warm Propagator timeline screenshot;
+keep a saved trace for deeper follow-up. Workflow verified against Apple's
+https://developer.apple.com/videos/play/wwdc2022/10027/ .
+Assistant runs no builds, benchmarks/tests/inference. Commands and report-reading
+steps remain in chat, never README.
+
 ## User goal and decisions
 
-Cody Peter is building ByteWave, a local video editor. The goal is general-subject segmentation and temporal tracking as video frames are requested, eventually enabling woven text (text behind selected subjects). Avoid full-video mask precomputation. There is no rush: choose a sound architecture instead of minimizing implementation effort. Neural Engine acceleration is a hypothesis to evaluate, not an established outcome. Keep explanations short. Do not ask for the Metal renderer at this stage. Do not run iOS builds/tests/servers on Cody's behalf; Cody validates on his Mac and physical iPhone 17 Pro.
+Cody Peter is building ByteWave, a local video editor. The goal is general-subject segmentation and temporal tracking as video frames are requested, eventually enabling woven text (text behind selected subjects). Avoid full-video mask precomputation. There is no rush: choose a sound architecture instead of minimizing implementation effort. Neural Engine acceleration is a hypothesis to evaluate, not an established outcome. Keep explanations short. Do not ask for the Metal renderer at this stage. Do not run iOS builds/tests/servers on Cody's behalf; Cody validates on his Mac and, for convenience, his physical iPhone 14 Pro (iPhone15,2); he also has a newer iPhone 17 Pro. Attribute results by report hardware and explicit user confirmation.
 
 ## What exists here
 
-This repository contains a standalone iOS 18+ SwiftUI hardware-placement diagnostic and a new first-frame prediction screen, NOT a working video tracker or ByteWave integration. `SegmentationProbeApp.swift` compiles and loads four Core ML models sequentially and examines `MLComputePlan` under CPU + Neural Engine, CPU + GPU, or Automatic. It exports a JSON report with device/OS, failures, timings, and preferred/supported devices for model operations.
+This repository contains a standalone iOS 18+ SwiftUI hardware-placement diagnostic and a new first-frame prediction screen, not ByteWave integration. A separate owned 20-frame temporal device comparison has now been built and passed CPU-only on a physical iPhone; accelerated iPhone modes remain pending. `SegmentationProbeApp.swift` compiles and loads four Core ML models sequentially and examines `MLComputePlan` under CPU + Neural Engine, CPU + GPU, or Automatic. It exports a JSON report with device/OS, failures, timings, and preferred/supported devices for model operations.
 
 The user successfully built and ran that original placement screen on iPhone18,1, OS Version 27.0 (Build 24A435), on 2026-09-14. All four components loaded and produced plans in all three modes, without reported errors. `Audit/device-placement-summary.json` preserves counts and input hashes from the three supplied reports. CPU + Neural Engine preferred nonconstant operations: image 278 NE / 2 CPU; initializer 149 NE / 82 CPU / 31 unspecified; memory 249 NE / 1 unspecified; propagator 635 NE / 11 CPU. These are operation counts, not timing shares or measured hardware execution.
 
-`FirstFrameProbe.swift` is the new, unbuilt device-validation step. Choose a video from Photos, tap a subject, and run image encoder → initializer → initial memory encoder. It displays a blue thresholded mask, checks final mask/memory tensors, and exports actual per-call timings (one untimed warm-up, three measured repetitions of the same frame). It uses a single oriented preview frame with an actual timestamp, cleans up the picker import, and creates no whole-video mask cache. No predictions from this new screen have been reported yet. Tracking quality, sustained frame rate, and runtime Neural Engine utilization remain unmeasured.
+`FirstFrameProbe.swift` has now been built and run by the user. Three reports on iPhone15,2 / OS 26.5.2 (23F84) show nonempty masks and successful recorded tensor checks: CPU + Neural Engine mean prediction total 50.3 ms, CPU + GPU 122.7 ms, Automatic 51.0 ms; mask coverage approximately 3.71% in each. These are repeated first-frame predictions, not video FPS. NE used a slightly different point; GPU/Automatic shared the point. This is a different phone from the earlier iPhone18,1 placement reports. See `Audit/device-first-frame-summary.json` for report contents and hashes. The user initially saw an empty mask and an E5RT conv_transpose shape warning, then obtained a mask after moving the point; the warning's cause remains unresolved. Tracking quality, sustained frame rate, and runtime Neural Engine utilization remain unmeasured.
+
+`Temporal/` implements an owned source-controlled export/runtime, separate from the community packages. It pins original EdgeTAM source/checkpoint, keeps one conditioning memory plus six recent memories and sixteen pointers, and puts rotary construction and validity masking inside the graph. The user passed all six state tests and the 20-frame PyTorch comparison on Mac, then exported all four v1 packages. Setup required PyAV 15 wheels; wrapper fixes extracted the memory-position tensor and gave rotary buffers separate identities for tracing. No inference, tests, tracing or conversion have been run by the assistant.
+
+The user's v1 Core ML comparison failed at initialization. A controlled one-frame sweep isolated a successful precision policy: retaining `matmul`, `softmax`, and `scaled_dot_product_attention` in FP32 while converting other eligible operations to FP16. Low/high mask IoU against identical-input PyTorch was 0.999599/0.999925; pointer cosine was 0.999997. FP32 interfaces alone and FP32 normalization did not resolve the failure. The original FP16 model produced non-finite masks on some runs and finite but incorrect masks on another. Full sweep evidence and its attachment hash are in `Audit/mac-initializer-precision-summary.json`. This identifies a working operation group, not a single faulty kernel.
+
+Contract v2 applies that attention policy to all four components with float32 tensor interfaces (labels remain int32), records excluded operations in the export manifest, and checks component outputs before they enter the next model. In the user's `dog-05` run, frames 0 and 1 passed Core ML parity. Frame 2 had mask IoU 1.0 and memory cosine 0.996503, but pointer cosine 0.978729 failed the unchanged 0.99 gate. No non-finite outputs were reported. The full Core ML comparison has not passed. `Temporal/diagnose_temporal.py` now reuses those v2 packages to compare each component against PyTorch on the same actual inputs for three frames, recording original independent-history comparisons and PyTorch mask-selection scores. This diagnostic has not been run by the assistant; it should distinguish local conversion error from accumulated state/input differences before another model change.
+
+The user completed that three-frame same-input diagnostic (`Audit/mac-temporal-pointer-summary.json`). Frame 2 propagator pointer cosine is 0.999997 on identical inputs, versus 0.978729 end-to-end. The encoder raw-feature cosine is approximately 0.99858 on all three frames; same-input initializer and memory components agree much more closely. Same-input and independent-reference PyTorch both select mask index 1 on frame 2. Thus the pointer discrepancy is inherited from input/state differences, with encoder conversion the strongest observed candidate cause; this is not yet causal proof. The next control is `diagnose_temporal.py --torch-image-encoder --frames 20`: substitute only PyTorch image features from the start, retaining Core ML masks, pointers, and memories. This changes no models or parity thresholds and never marks device readiness.
+
+The encoder control initially aborted in native PyTorch GELU with a GIL error. With PyTorch intra-op/inter-op threads set to one, the user completed all 20 frames (`Audit/mac-encoder-control-summary.json`). Seven zero-based frames failed: 2, 3, 4, 7, 8, 13, 19. Encoder replacement alone is therefore insufficient. Local same-input propagator pointer agreement fell sharply at frames 2, 7, 8, 13, with near-tied PyTorch mask-quality scores. Reduced-precision score ranking is a new hypothesis; the Core ML selected index was not directly recorded. Current export policy `fp16-with-fp32-attention-and-iou.v1` retains the attention fix and adds FP32 IoU-head computation plus score slicing/reduction through argmax. It verifies that scope/path matching occurred and records the protected operations. No selection rule or comparison threshold changes. The full validator now uses the single-thread settings too. Next is a fresh complete export/comparison, not another encoder control; no new policy inference/export has been run by the assistant.
+
+The user's `dog-06` full run still failed at frame 2 with essentially unchanged pointer cosine (0.978729). However, repeating the encoder control against these attention-plus-IoU packages passed all 20 frames: minimum mask IoU 0.999355, pointer cosine 0.999816, memory cosine 0.999107. This combined result is archived in `Audit/mac-combined-encoder-control-summary.json`. It validates this fixture's Core ML tracking components when driven by PyTorch encoder features, not a complete Core ML pipeline. The next `diagnose_temporal.py --fp32-image-encoder --frames 20` control exports only a diagnostic FP32 Core ML encoder and uses it with the existing tracker models. It remains explicitly diagnostic, records override package hashes, and does not select FP32 as the final acceleration policy. The assistant has only statically checked that new control.
+
+The user's FP32 Core ML encoder control completed and passed all 20 frames on CPU_ONLY (`Audit/mac-coreml-fp32-encoder-summary.json`): minimum mask IoU 0.999155, pointer cosine 0.999876, memory cosine 0.998751. All candidate components and stored state now come from Core ML in this successful diagnostic. This establishes a complete Core ML accuracy baseline for this fixture, but the regular exported set still contains the failing reduced-precision encoder and device readiness remains false. Next, `diagnose_temporal.py --fp16-conv-image-encoder` exports one diagnostic encoder starting from FP32 and lowering only convolution operations (including their inputs/weights) to FP16, retaining all other operations in FP32. This narrows the precision question by operation group; it does not claim to isolate a specific layer or establish acceleration. It reuses the same dog-06 tracker models, records selected convolution operations and package hashes, and preserves comparison thresholds. No inference/conversion was run by the assistant.
+
+The user's FP16-convolution encoder control completed all 20 frames with 132 convolutions selected. Zero-based frames 2 and 19 failed pointer cosine (0.989646 and 0.987672); minimum mask IoU remained 0.996094 and minimum memory cosine 0.993182. Evidence is archived in `Audit/mac-coreml-fp16-conv-summary.json`. Thus lowering encoder convolutions (including inputs/weights) is sufficient to reintroduce the discrepancy relative to the passing FP32 baseline. This does not establish a single faulty layer. Next are complementary controls retaining convolution indices [0,66) or [66,132) in FP32, with other convolutions in FP16 and all non-convolution operations in FP32. The diagnostic now accepts `--fp32-conv-range START END` with required `--expect-encoder-convs 132`, records indices/module scopes and selected/retained operations, and fails if the expected count or range is not matched. These are diagnostic graph-order ranges, not a final model policy; both controls use the full 20 frames and unchanged gates. No model work or tests were executed by the assistant.
+
+The complementary convolution controls completed (`Audit/mac-coreml-conv-halves-summary.json`). Retaining the later range [66,132) in FP32 passed all 20 frames (minimum mask IoU 0.997782, pointer cosine 0.998420); retaining only [0,66) failed zero-based frames 2,3,4,19. The later half is the next region to examine, without assuming there is a single sensitive layer or monotonic error behavior. The existing diagnostic supports the next two controls: retain [66,99) or [99,132) in FP32, other convolutions FP16, non-convolution operations FP32. Use the same dog-06 models, expected convolution count 132, and full 20-frame comparison. No tooling code changes were needed for this step.
+
+Both quarter-range controls passed all 20 frames (`Audit/mac-coreml-conv-quarters-summary.json`). Retaining [99,132) gave minimum pointer cosine 0.998431 versus 0.993769 for [66,99); its minimum mask IoU was 0.997046 and memory cosine 0.994446. Further bisection on this fixture is deferred. The regular exporter now uses policy `mixed-encoder-late-conv33-and-fp32-attention-iou.v1`: encoder non-convolution operations and the exact 33 tested convolution module paths stay FP32; other encoder convolutions are FP16. Tracker precision remains attention-plus-IoU FP32. `encoder_precision.py` records semantic paths derived from the diagnostic; export verifies the total 132 convolutions and all 33 protected matches, then records per-convolution precision. This implements the successful diagnostic policy as a reproducible complete set, pending a fresh normal validation run. The diagnostic can still read the prior dog-06 policy explicitly for reproducibility. No comparisons, conversion, inference or tests were run by the assistant; only static source/data checks. Next: normal `validate_export.py` into fresh dog-07, then inspect status, Core ML report and saved masks before iPhone work.
+
+The user completed the regular dog-07 validation: referencePassed/coremlPassed/readyForDeviceValidation are all true. The full Core ML report passed all 20 frames; minimum mask IoU 0.997046, pointer cosine 0.998431, memory cosine 0.994446. Evidence and the pasted status are in `Audit/mac-temporal-validation-summary.json`. This passes the Mac export gate for the selected policy; iPhone behavior remains unmeasured.
+
+The next device probe is now implemented in `OwnedTemporalRuntime.swift` and `OwnedTemporalProbe.swift`, with source/resource membership added to the existing Xcode project. It runs a fixed 20-frame fixture through a source-matched Swift state loop, retaining one conditioning + six recent spatial memories and one conditioning + fifteen recent pointers. CMTime timestamps, reset tokens, strict model metadata/schema checks and validation before state commit are included. CPU-only, CPU + Neural Engine, CPU + GPU and Automatic modes compare low-mask/pointer/memory tensors against Mac Core ML CPU replay references, check all outputs for finite values, and show the current frame/mask. High-resolution masks are checked for shape/finiteness but not numerically compared; the report says so. Model-call timings exclude copies/checks/packing and are explicitly not sustained FPS or hardware-utilization measurements. This is a fixed-fixture device correctness probe, not arbitrary-video playback or ByteWave integration.
+
+`Temporal/prepare_device.py` is a user-run Mac preparation step. It requires a passed current-policy run, verifies model hashes and identical saved frame identities, replays only the 20 Core ML CPU frames to save reference tensors, and requires replay mask IoU >= 0.999 against saved candidates. It copies model packages unchanged into a new output directory and publishes fixture.json only on success. Raw BGRA bytes ensure the phone sees the same input pixels, isolating Swift state/device execution from video decoding and color-management differences. The Xcode resource folder `DeviceValidationData` is tracked only as an empty placeholder; generated `baseline` contents are ignored by git. Preparation output is `DeviceValidationData/baseline`. Build/run the new “Test temporal tracking” screen on a physical phone, starting with CPU only, then accelerated modes after that passes. The assistant has not run preparation, tests, builds, inference or conversion; only static review is performed. The next user response may be a preparation traceback, Swift compiler error, or device JSON.
+
+The user built and ran the new Swift CPU-only temporal probe successfully (`Audit/owned-temporal-cpu-report.json`). All 20 frames passed; every compared tensor had maximum absolute error 0 against the Mac replay, all low-mask IoUs were 1, and final bank counts were 7 spatial/16 pointer entries. Source fixture SHA256 is `27bbdc854536a5d33153250bc4bac44940692c0bea76fd8e6e6b9c91fb1792e9`; source model manifest SHA256 is `b8d7f80fd31cc9ae75128379e18a228753254e0a9431d04d3e4fd86914d3b754`. Thermal state stayed nominal. The report identifies hardware as `iPad8,6`, OS Version 26.5.2 (Build 25F84), so the actual test host needs confirmation; do not label this physical-iPhone validation yet. Ask whether this was run on Mac or a physical device. If Mac, obtain physical-iPhone CPU-only first; otherwise confirm the device and proceed to CPU + Neural Engine and CPU + GPU comparisons using the same fixture. No source or threshold change is needed based on this passing result.
+
+The user confirmed that the Swift CPU-only pass was on Mac running the iPad build. The subsequent Mac CPU + Neural Engine run failed during the first image encoder: non-finite raw_vision_features, zero accepted frames. Mac CPU + GPU and Automatic both terminated with a Metal debug assertion that dispatch threadgroup dimensions included zero; the active component is unknown. These results are archived in `Audit/owned-temporal-mac-acceleration-failures.json`; they do not establish a specific defective operation or physical-iPhone behavior. No graph or numerical gate changes were made in response.
+
+The Swift probe now records ProcessInfo.isiOSAppOnMac explicitly and atomically saves `temporal-last-run.json` in app Documents before compile/load and every model prediction, with current frame/component, progress and all completed comparison rows. It also prints/flushed a concise pre-prediction console line. Native assertions cannot be caught as Swift errors, so reopening the temporal screen offers the saved report even when the last run aborted. `completed=false` identifies an interrupted run; `passed` stays false until the full comparison succeeds. Model-call timing excludes checkpoint writes; the broader diagnostic duration now explicitly includes them. The new instrumentation is statically reviewed only and needs the user's rebuild; models and prepared fixture do not need regeneration. Next physical iPhone CPU-only first. The same checkpoint instrumentation can localize any later accelerated-mode abort.
+
+The physical iPhone CPU-only run completed and passed all 20 frames (`Audit/owned-temporal-iphone-cpu-report.json`): hardware iPhone15,2, isIOSAppOnMac=false, OS Version 26.5.2 (Build 23F84). Minimum low-mask IoU against the Mac replay was 0.997465, pointer cosine 0.999296, and memory cosine 0.996183. Final state retained 7 spatial and 16 pointer entries; thermal state remained nominal. Fixture and model-manifest hashes match the previous Mac runs. This validates the fixed-fixture Swift CPU path on a physical phone, not sustained playback or general visual quality. Next assess CPU + Neural Engine and CPU + GPU on the same phone, sharing each report. Existing checkpoint instrumentation is present; no pull or model/fixture regeneration is needed for those runs. If a native abort occurs, relaunch and share the saved temporal report before starting another run.
+
+Physical-iPhone accelerated results are now in `Audit/owned-temporal-iphone-acceleration-failures.json`. CPU + Neural Engine returned non-finite raw_vision_features on frame 1 with ANE compiler errors. CPU + GPU natively aborted at frame 1 Initializer with a zero-threadgroup Metal assertion; the preceding encoder returned finite tensors, without a separate numerical encoder comparison. Both have zero completed comparison frames. The upstream prompt encoder performs boolean-index updates for absent labels, a candidate empty-selection path; the actual failing operation is not proven. `Temporal/inspect_export_graph.py` reads the existing serialized packages and reports zero/unknown output shapes and indexed operations with immediate context. It uses no MLModel, prediction, tracing, or conversion. Only AST/source review has been performed by the assistant. Next obtain this static report from dog-07 before changing graphs; no further device-mode reruns needed yet.
+
+The user completed the static graph inspection. The original initializer contains 10 non_zero operations, 6 scatter_nd and 8 gather_nd, with data-dependent point-selection dimensions; the other components have no non_zero operations. Evidence is summarized in `Audit/owned-temporal-point-indexing-summary.json`. `Temporal/diagnose_point_indexing.py` now prepares a one-frame control: identical CPU encoder inputs, original versus dense-select point encoding with unchanged weights/precision, original-source prompt checks for labels -1/0/1/2/3 and boundary/interior coordinates, full eager/traced initializer agreement, then original/candidate CPU and GPU predictions in isolated subprocesses. It exports only the initializer under a diagnostic contract that the regular device runner rejects; current validated packages/fixture stay unchanged. It requires zero non_zero operations in the candidate. The initializer comparison uses existing mask/pointer cosine and mask-IoU gates; this does not validate temporal memory, NE or physical-device acceleration. Workers preserve logs/return codes on native failures. No tests, conversion or inference were run by the assistant; AST and static review only. Next have the user run this diagnostic on Mac using dog-07 and share report.json before any model promotion.
+
+The user completed both point-indexing controls (`Audit/mac-point-indexing-control-summary.json`). Without explicit Metal validation, original and candidate CPU/GPU predictions passed. With MTL_DEBUG_LAYER=1, original GPU aborted (-6) with the same zero-threadgroup assertion; candidate GPU passed with low-mask IoU 1.0 and pointer cosine 0.999992846. Both GPU logs confirm validation enabled. All 15 prompt cases passed; eager PyTorch candidate exactly matched original on the first frame. This establishes a successful remedy for the reproduced initializer failure on Mac, not full GPU temporal/iPhone validation or the separate NE encoder issue.
+
+The normal Initializer now uses the identical dense-select point implementation. It copies the top-level module registry before replacing the prompt child, sharing learned weights read-only without replacing the independent reference's prompt encoder. Propagator and other component arithmetic are unchanged. Export rejects remaining initializer non_zero operations and records graphRevision=dense-initializer-points.v1 in status, comparison reports, model manifest/metadata, device fixture and device report. Normal validation/preparation and Swift device loading require that revision, preventing stale dog-07 packages being mistaken for the fix. Old precision and point-control diagnostics explicitly retain original prompt handling; diagnostic contracts remain rejected by the device runner. No assistant inference/conversion/build/tests occurred; AST/diff/static review only. Next user runs full normal validator into fresh dog-08, then provides status and Core ML report before fixture preparation/phone rebuild. The current bundled baseline is still dog-07 and must be regenerated after dog-08 passes.
+
+Dog-08 now passed the normal complete validation, with referencePassed/coremlPassed/readyForDeviceValidation=true and graphRevision=dense-initializer-points.v1. All 20 Core ML CPU frames passed: minimum mask IoU 0.997046, pointer cosine 0.998431, memory cosine 0.994446. Evidence is in `Audit/mac-dense-point-temporal-validation-summary.json`. Next prepare a fresh fixture from dog-08, preserving/moving the old bundled dog-07 baseline outside DeviceValidationData, and rebuild on physical iPhone. Run CPU-only then CPU + GPU with Metal API validation still enabled; share temporal reports or saved crash checkpoints. No new export is needed. NE encoder failure is unresolved and is not expected to be fixed by this initializer change.
+
+The revised dog-08 fixture has now passed all 20 frames on physical iPhone15,2 / OS 26.5.2 in both CPU-only and CPU + GPU modes. Both reports identify isIOSAppOnMac=false and graphRevision=dense-initializer-points.v1. CPU minimum mask IoU/pointer cosine/memory cosine: 0.997465/0.999296/0.996183; GPU: 0.997466/0.998979/0.994486. Final banks are 7 spatial/16 pointers, with nominal thermal state throughout. Reports are in `Audit/owned-temporal-dense-iphone-cpu-report.json` and `Audit/owned-temporal-dense-iphone-gpu-report.json`. Fixture SHA256 e0060f7bc8becb84b4ddac5ac425f119c9a4df62228e3afc1b34cbd78a5e6ccc; model manifest SHA256 8e3855c53deda132d4c378d3a93343ac3bc6a678b1a95a8cf5bb7c6bd99e61c1. The user reported both runs successful after being asked to keep Metal API Validation enabled; reports themselves do not record that setting. This confirms the full fixed-fixture GPU path on a phone, not sustained FPS or general tracking quality.
+
+Next narrow the still-unresolved Neural Engine encoder failure. `Temporal/diagnose_encoder_acceleration.py` verifies dog-08 encoder package/frame identity, uses pinned original PyTorch encoder outputs, and compares existing versus diagnostic FP32 encoder under CPU_ONLY and CPU_AND_NE in isolated prediction processes. It reuses the established FP32 encoder export helper and saves each worker log, output metrics and errors, plus incremental report.json. CPU_AND_NE permits CPU fallback; a pass does not prove NE execution, and FP32 changes both numerical precision and eligible placement. No tracker models or phone fixture are replaced. This diagnostic has been AST/static reviewed only; the assistant ran no inference/conversion/tests/builds. User command should use --upstream .upstream-edgetam --run .temporal-runs/dog-08 --output .temporal-runs/encoder-ane-01; include cat for report.json and existing-CPU_AND_NE.log/fp32-CPU_AND_NE.log in chat.
+
+The encoder-ane-01 control is complete (`Audit/mac-encoder-ane-control-summary.json`). Existing mixed encoder passes CPU_ONLY but fails CPU_AND_NE: raw/initial outputs each have 1,048,576 non-finite elements, with high-resolution features finite but approximately 1e37 magnitude. FP32 encoder passes both modes; reported output metrics are identical between CPU_ONLY and CPU_AND_NE, consistent with possible CPU fallback, not proof of ANE correctness. Logs show prediction returned; this isolated run does not reproduce the earlier ANE compiler error. No model promotion or precision change follows from this result.
+
+Next `Temporal/inspect_encoder_placement.py` loads/compiles the verified existing dog-08 and encoder-ane-01 FP32 packages, then inspects MLComputePlan under CPU_AND_NE. It records per-operation preferred/supported devices, nonconstant totals and per-type counts, plus summary.json. These are planned assignments, not actual runtime utilization or timing percentages. No inference/tracing/conversion occurs. It preserves completed/partial reports on ordinary errors. Python API usage was checked against Apple documentation and AST/static reviewed; no plans/models/tests were run by the assistant. User should pass --run .temporal-runs/dog-08 --diagnostic .temporal-runs/encoder-ane-01 --output .temporal-runs/encoder-plan-01 and share summary.json; full operation report is report.json if needed. Passing phone CPU/GPU models stay unchanged.
+
+Encoder-plan-01 confirms the FP32 control has a CPU-only plan: all 277 nonconstant operations support/prefer CPU and none support NE. The existing mixed encoder has 450 nonconstant operations, with 367 preferring CPU and 83 preferring NE; all 83 NE-preferred operations are convolutions (99 convolutions support NE). Evidence summary: `Audit/mac-encoder-placement-summary.json`. This rules out presenting the FP32 pass as an NE fix; the exact corruption location is not established.
+
+`Temporal/diagnose_encoder_taps.py` now prepares a diagnostic copy of the existing serialized encoder using Apple extract_submodel, retaining all four final outputs and exposing input/output tensors at five evenly spaced NE-preferred convolutions from encoder-plan-01 (optional --ne-indices for later targeted samples). It verifies package/frame/plan identity, validates probe CPU final outputs against the untouched original, records the probe compute plan and sampled device preferences, then compares CPU vs CPU_AND_NE tensors in isolated prediction workers. It explicitly reports whether the original non-finite final-output failure is reproduced and whether sampled convolution preferences remain NE; exposing outputs can change partitioning, so passing taps alone cannot exonerate the original graph. The first failing sampled checkpoint is not necessarily the first faulty operation. Existing models and phone fixture remain unchanged. Assistant ran only AST/static/diff checks; user must run --run .temporal-runs/dog-08 --plan .temporal-runs/encoder-plan-01 --output .temporal-runs/encoder-taps-01 and share report.json (plus probe-ne.log on failure).
+
+
+Encoder-taps-01 failed before any prediction: coremltools 9 extract_submodel exceeded Python's recursion limit inside copy.deepcopy while copying the MIL graph. Evidence: `Audit/mac-encoder-taps-preparation-failure.json`; no new NE result was obtained. The tap diagnostic now temporarily raises the recursion limit to at least 20,000 for extraction only, records both limits before extraction, and restores the original limit in finally. Existing output/placement checks and model bytes are unchanged. Static AST/diff checks only; no assistant model execution. Next user reruns into fresh encoder-taps-02 and shares report.json; include cat directly in chat.
+
+
+Encoder-taps-02/03/04 now complete, reproduce the NE final failure, preserve all sampled NE preferences and retain exact CPU final agreement. Taps-04 shows healthy shared input to convolutions 6/7 and closely agreeing outputs (cosine 0.999987/0.999974), but convolution 8 input input_39_to_fp16 already has 32,768 non-finite values. Selected supplied facts: `Audit/mac-encoder-tap-localization-summary.json`. No faulty operation is established. The diagnostic now accepts --trace-input for a sampled NE index, follows actual serialized dependencies back to every nearest convolution output, and adds taps for intervening operations. It records input connectivity, original/probe preferred devices and CPU baseline ranges. This includes parallel paths and avoids assuming adjacent convolution indices form a chain. Next user runs indices 6 7 8 with trace-input 8 into fresh encoder-taps-05 and shares report.json. Only AST/data/diff checks by assistant; no model execution or production precision change.
+
+
+Encoder-taps-05 completed (`Audit/mac-encoder-residual-taps-report.json`). CPU finals remain exact; NE full-graph failure persists. Exposed FP32 residual sums input_33 and input_39 are all zeros although operands agree closely with CPU. input_33_to_fp16 remains healthy, inconsistent with its exposed all-zero FP32 source; input_39_to_fp16 is now finite but wrong (cosine 0.64657). Five exposed FP16-to-FP32 casts move planned preference from CPU to NE (totals 362 CPU/88 NE), despite all sampled convolution preferences remaining NE. Do not identify a faulty add kernel from these inconsistent readouts. New diagnose_encoder_prefix.py extracts two separate prefixes directly from the verified original encoder, ending at input_33 and input_39 with each FP32 output and FP16 cast. It uses the saved taps-05 CPU baseline (checked against reported ranges and cast consistency), requires prefix CPU parity before NE, and records prefix plans, finite/cosine comparisons and within-run cast consistency. Shortening the graph changes downstream consumers and may change placement/lifetimes, so a passing prefix is not a full NE fix. Source packages and phone fixture are unchanged. AST/diff/data checks only by assistant. Next user runs --run dog-08 --taps encoder-taps-05 into fresh encoder-prefix-01 (full paths and cat report.json in chat).
+
+
+Encoder-prefix-01 completed (`Audit/mac-encoder-prefix-summary.json`): both CPU prefixes exactly match saved full-graph CPU. Under CPU_AND_NE, input_33 prefix passes (cosine 0.999988), but extending through the residual block to input_39 fails (cosine 0.547246), with finite outputs and exact within-run FP32/FP16 cast consistency for both. Terminal sums/casts prefer CPU; prefix plans have 6 and 8 NE-preferred operations respectively. No kernel/lifetime cause is proven. New diagnose_residual_inputs.py uses Apple extract_submodel input cuts on the verified input_39 prefix: shared input_33 versus separate input_33/input_33_to_fp16 boundaries. Both receive identical saved CPU values; separate inputs are independent arrays. It retains the two convolutions and original sums/precision, requires CPU parity against the prefix, and records full tiny-block compute plans and same-input NE metrics in isolated workers. A pass after cutting cannot establish a complete encoder fix or actual hardware usage. Checked Apple extractor input-cut source, Python AST and git diff only; no assistant inference/conversion/tests. User runs --run dog-08 --prefix encoder-prefix-01 into fresh residual-inputs-01 and shares report.json (full paths and cat in chat).
+
+
+Residual-inputs-01 completed (`Audit/mac-residual-input-controls-report.json`): shared and separate external-input variants both match CPU closely under CPU_AND_NE (all cosine values >0.9999999), with both convolutions still preferring NE. CPU outputs are exact. Sharing an external input alone is not sufficient to reproduce failure; the larger prefix remains the failing context. Next intervention uses diagnose_encoder_prefix.py --round-residual on the original failing input_39 prefix, retaining the upstream encoder. It replaces only the input_39 skip operand input_33 with float32(input_33_to_fp16), leaving convolution inputs/weights and FP32 sums unchanged. This deliberately rounds the skip value and changes possible lifetimes/placement; no production precision change is made. It verifies the exact add/cast topology, records the edit and plan, and requires CPU parity against an explicit saved-branch-sum plus rounded-skip reference before NE. Original CPU metrics also show the rounding impact. Coremltools 9 operation.set_inputs and Builder insertion API were checked against Apple source; only AST/data/diff checks by assistant. User runs --run dog-08 --taps encoder-taps-05 --round-residual into fresh encoder-residual-roundtrip-01, with cat report.json directly in chat.
+
+
+Encoder-residual-roundtrip-01 passes (`Audit/mac-rounded-residual-prefix-summary.json`): CPU equals the explicit rounded arithmetic exactly; original-prefix CPU max error is 0.001950 for FP32 output. NE cosine improves from 0.547246 to 0.999990 with all outputs finite and consistent casts; plan 35 CPU/8 NE. This is one prefix, not a full encoder fix. Next diagnose_encoder_residuals.py prepares three complete encoders from unchanged serialized source: unchanged (same second conversion), single (tested input_39 skip edit), and matching (same data-dependency pattern across the graph). A match requires an FP32 add operand with an existing FP16 cast and another add operand depending on that cast through convolution; ambiguous matches fail. Edits round only skip operands, retain weights/convolution precision and do not expose intermediate outputs. It requires the known successful edge, records every match/edit and full compute plans, and compares CPU/NE outputs on the saved first frame against untouched CPU. Unchanged CPU must be allclose; altered encoders must meet cosine 0.99 on CPU before NE and NE must agree with original and variant CPU. All stay diagnostic and outside phone fixture. No model execution by assistant, AST/diff checks only. User runs --run dog-08 --prefix-control encoder-residual-roundtrip-01 into fresh encoder-residuals-01; include cat report.json in chat.
+
+
+Encoder-residuals-01 completed (`Audit/mac-full-encoder-residual-controls-report.json`): unchanged/single/matching CPU comparisons pass. Unchanged second conversion still fails NE, and the single edit is insufficient. Matching all 36 residual edges makes all four outputs finite but badly wrong (original-CPU cosine high0 0.001781, high1 0.547801, raw 0.719460, initial 0.712026). All plans retain 83 NE-preferred convolutions; no promotion. The source FPN retains trunk features for later neck convolutions, a class of consumer outside residual additions. New optional --variants fanout in diagnose_encoder_residuals.py rounds later uses of each FP32 activation that already has an FP16 cast feeding a convolution, while retaining original convolution casts and consumers earlier than the cast. It includes non-add consumers, records exact source/cast/consumer edges, rejects model-output sources, and requires the known residual plus additional consumers. This remains a hypothesis about broader shared-value usage, not a proven buffer bug. Same CPU/NE gates apply; user runs only fanout into fresh encoder-fanout-01 with existing --run dog-08 and --prefix-control encoder-residual-roundtrip-01. Other modes remain reproducible; validated phone models unchanged. Assistant performed source review, AST/data/diff checks only. Include cat report.json in chat.
+
+
+Encoder-fanout-01 passes the full one-frame CPU and CPU_AND_NE comparison (`Audit/mac-encoder-fanout-report.json`). All outputs finite; minimum NE cosine vs original CPU 0.999308546 and vs candidate CPU 0.999305822. There are 39 edits: 36 residuals plus later consumers of input_49, input_121, input_383 (outputs x, x_97, var_1561). Plan: 406 CPU/83 NE-preferred operations, with all 83 NE preferences still convolutions. No physical-device NE or temporal validation yet. Next validate_encoder_candidate.py reuses the verified fanout package and all 20 saved dog-08 frame PNGs/PTS/prompt, running candidate encoder CPU_ONLY and CPU_AND_NE in separate workers with original tracker packages CPU_ONLY. It uses canonical v.reference_step/v.compare, independent pinned PyTorch history and bounded candidate state, strict frame hashes and original mask/pointer/memory/presence gates. Checks full 7/16 banks, saves masks/per-mode reports/logs and a compact root summary; checkpoints before model calls and uses Torch threads=1. No re-export or readiness promotion. Assistant ran AST/data/diff checks only. User supplies --upstream .upstream-edgetam --run .temporal-runs/dog-08 --candidate .temporal-runs/encoder-fanout-01 --output .temporal-runs/encoder-temporal-01, then cat root report.json. Candidate encoder image interface may be raw NCHW pixels; helper preserves existing 1/255 preprocessing. Current bundled phone models remain dog-08.
+
+The current fixture is `assets/IMG_2771.mov`, point 0.4912/0.4706; current validated Mac models are under `.temporal-runs/dog-09/models`; the prior physical-phone CPU/GPU fixture uses dog-08; dog-07 preserves the earlier initializer; dog-06 and dog-05 retain earlier diagnostic policies. Include `cat` or `open` commands whenever asking for reports (new explicit user preference). Give all setup/rerun commands directly in chat; the user explicitly rejected being sent to a branch README for commands. Keep `diagnose_initializer.py` targeted at the original v1 packages for reproducible diagnostics. Do not integrate the owned models into iPhone until the complete comparison passes.
 
 `Models/` and `ModelParts/` contain all model bytes. Two weight files exceeded the chat connector's upload-request limit and were split. Run `python3 restore_models.py` after cloning; it reconstructs them atomically and verifies all upstream file hashes. It makes no network requests. Then open `ByteWaveSegmentationProbe.xcodeproj`, choose a signing team, and run on a physical phone. Run CPU + Neural Engine and CPU + GPU separately; share both JSON reports for analysis. See README.md.
 
@@ -36,9 +3616,10 @@ Cody supplied `BackgroundRemovalSource.swift` as a pasted attachment. That app s
 
 ## Next work
 
-1. Help Cody build/run **Test a video frame**, resolve concrete errors, and inspect CPU + Neural Engine and CPU + GPU prediction reports plus the visible overlay. Check an off-center subject in portrait/landscape clips. Keep the same point when comparing modes.
-2. Read `Audit/temporal-contract.md`. The public model inventory has no exporter/runtime. Original EdgeTAM memory assembly is understood, but it does not establish this community conversion's fixed-bank attention-bias/rotary construction. Obtain the exporter's bank-building source plus startup/full-bank parity fixtures, or implement an owned export/runtime from the original EdgeTAM source. Do not infer these rules from tensor dimensions. Nothing in the loading results currently requires abandoning Neural Engine evaluation.
-3. Once that contract is established, implement and profile a complete live tracking loop with bounded memory, timestamps, subject selection, temporal state, seek/reset behavior, and real clip inputs.
+1. The 39-edge encoder candidate passed 20 Mac frames with CPU and CPU_AND_NE encoder, tracker CPU. The normal dog-09 export and physical-phone CPU/Encoder NE + CPU tracker modes now passed. All five physical-phone modes and the Release GPU/NE runs now passed on iPhone 14 Pro. Both 17 Pro Release modes also passed. GPU session is 100 ms, NE 439 ms; next inspect owned encoder/propagator GPU/NE plans to target graph optimization. Preserve old models and parity gates. Include cat/open with report requests. Do not run tests/inference/builds on the user's behalf.
+2. Resolve concrete parity/export failures without relaxing thresholds to hide a defect. Current gates are explicit engineering policies, not previously measured results. Obtain representative visual review and retain the fixture results. The community contract remains unknown; the owned implementation does not claim to reconstruct it.
+3. The Swift fixed-fixture temporal runner has built and passed CPU-only on both Mac and physical iPhone; accelerated-mode validation remains. Resolve concrete compiler/device failures, then extend to requested-video-frame operation and profile on iPhone. Keep the community packages and existing diagnostic usable until a validated replacement exists. The new export has different input names and no application-supplied rotary tensor; it is not a drop-in replacement.
 4. Evaluate mask edges, hair, occlusion/reappearance, fast motion, tracking drift, latency, and sustained performance before integrating woven text.
 
 The user authorized pushing this project to `crpeter/ByteWaveSegmentation`. The initial GitHub permission issue was fixed by granting repository access. No ByteWave production files have been changed. The previous downloadable ZIP failed to expand on macOS; use this repository instead.
+

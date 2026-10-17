@@ -1,0 +1,511 @@
+{
+  "contract": "bytewave.occlusion-backup.diagnostic.v1",
+  "completed": true,
+  "readyForDeviceValidation": false,
+  "sourceVideoSHA256": "a8a9d3fd5b85fbdf2770027353d6d19971845c13f83ffdcc6058ae5e6a0b1833",
+  "sourceFileBytes": 10796435,
+  "diagnosticScriptSHA256": "e821c6ac1dd4887590aab7809e48efb58c5c2fd3b39bfdb7ca99b72c9aa68377",
+  "sourceComparisonSHA256": "29ff27150c14715aca3375a82e9336eb3ff9628ae523b88bcfd2cc16a5d67fd3",
+  "sourceMemoryProbeSHA256": "9ed19a4ecad97e5160d7b833cfdcb65a7ffe784a04eafdc147c1641880c32024",
+  "sourceAppearanceReportSHA256": "f994a29da75e68b32fb3cbdf40f0f7e0c68dd891306366250afa1088261b306b",
+  "fixtureSHA256": "760dd45c6eed6972f434dd324920b74dbfa262fb6648983606c2872581430a61",
+  "phoneReportSHA256": "7c807a77903c90fc90d23dcad387e82bb454a315f690acb1d517bf8b73c4dc65",
+  "modelFiles": {
+    "models/BWTemporalImageEncoder.mlpackage/Manifest.json": "df20c1178e37ef2d4587281d5feca5979f2db8b859ffe7357161e4d5b51c254f",
+    "models/BWTemporalImageEncoder.mlpackage/Data/com.apple.CoreML/model.mlmodel": "a3046d4fbd83b7974d0b01d92ca30a55adad08aca218789b97034245023bbeba",
+    "models/BWTemporalImageEncoder.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "90e112d95a98e30486b768a2397f253766ceaa95bfd3cdb5a31a8db0341f61c3",
+    "models/BWTemporalInitializer.mlpackage/Data/com.apple.CoreML/model.mlmodel": "a70da7906ee21086122e9c24479b149308337f49609854455ae9cf65f790625f",
+    "models/BWTemporalInitializer.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "9409edf81128013f2ff61ef2565832f0a35782304e7adc54466e0396b5ab94c2",
+    "models/BWTemporalInitializer.mlpackage/Manifest.json": "d2311a29bb658bd6f16e801e91893985eb5aea3f7a6587f718e3e93539bc3068",
+    "models/BWTemporalInitialMemoryEncoder.mlpackage/Data/com.apple.CoreML/model.mlmodel": "613c7a310f1fae1b698aaba6e5a70c3afb842f459d3ec96cf9e0f4b6b4b9438a",
+    "models/BWTemporalInitialMemoryEncoder.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "21ae511f368835d55fe519b9b4ae9032bf9256cdb3cc0e91fdf5b4c467311563",
+    "models/BWTemporalInitialMemoryEncoder.mlpackage/Manifest.json": "64fb8412cf6229dda7ec7227113c7c8cf1a5278a96b62b94e2a0a76f6d790b52",
+    "models/BWTemporalPropagator.mlpackage/Manifest.json": "aec4bf7ef5dafc3816e3a645f93b134824268f4b0e8184170452e10c8c5618c1",
+    "models/BWTemporalPropagator.mlpackage/Data/com.apple.CoreML/model.mlmodel": "dec2227edc7d22832a3726a68237b6789f2d79ede1a5b0cc6f76d400c69d08d9",
+    "models/BWTemporalPropagator.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "3e679bfdc49fc43e895434b8c8bb6e75bad20a2cad37fd0aa2d5019cd186386e"
+  },
+  "pointNormalizedTopLeft": [
+    0.6468468468468468,
+    0.5888513513513512
+  ],
+  "anchorFrames": [
+    0,
+    30,
+    60
+  ],
+  "rule": {
+    "version": "baseline-first-appearance-backup.v1",
+    "missingFrames": 3,
+    "confirmationFrames": 3,
+    "minimumPredictedIoU": 0.8,
+    "minimumConsecutiveMaskIoU": 0.5,
+    "minimumPooledEncoderCosine": 0.8,
+    "minimumRGBHistogramIntersection": 0.5,
+    "sameAnchorMustPassBothAppearanceChecks": true,
+    "commonAnchorRequiredAcrossConfirmationStreak": true,
+    "continuationMustMatchAnAcceptanceAnchor": true,
+    "pointerCosineUsedAsGate": false,
+    "normalPresentAlwaysWins": true
+  },
+  "ruleLimit": "Exploratory thresholds chosen after sparse worker AND dog appearance review. These clips are development evidence. Stable wrong regions can still pass; small correct subjects can fail. Baseline priority protects only baseline-present frames and does not prove identity.",
+  "conditioningUnchangedAtEnd": true,
+  "anchorDescriptorsReproduced": true,
+  "summary": {
+    "framesReplayed": 276,
+    "events": [
+      {
+        "type": "searchStarted",
+        "frame": 114,
+        "ptsSeconds": 3.8016666666666667
+      },
+      {
+        "type": "normalResumed",
+        "frame": 117,
+        "ptsSeconds": 3.901666666666667,
+        "discardedBackup": false
+      },
+      {
+        "type": "searchStarted",
+        "frame": 120,
+        "ptsSeconds": 4.001666666666667
+      },
+      {
+        "type": "backupAccepted",
+        "frame": 169,
+        "ptsSeconds": 5.635,
+        "confirmationStartFrame": 167,
+        "matchingAnchors": [
+          0,
+          30,
+          60
+        ]
+      },
+      {
+        "type": "backupRejected",
+        "frame": 170,
+        "ptsSeconds": 5.668333333333333
+      },
+      {
+        "type": "searchStarted",
+        "frame": 170,
+        "ptsSeconds": 5.668333333333333
+      },
+      {
+        "type": "backupAccepted",
+        "frame": 172,
+        "ptsSeconds": 5.735,
+        "confirmationStartFrame": 170,
+        "matchingAnchors": [
+          0,
+          30,
+          60
+        ]
+      },
+      {
+        "type": "backupRejected",
+        "frame": 173,
+        "ptsSeconds": 5.7683333333333335
+      },
+      {
+        "type": "searchStarted",
+        "frame": 173,
+        "ptsSeconds": 5.7683333333333335
+      },
+      {
+        "type": "backupAccepted",
+        "frame": 175,
+        "ptsSeconds": 5.835,
+        "confirmationStartFrame": 173,
+        "matchingAnchors": [
+          0,
+          30,
+          60
+        ]
+      },
+      {
+        "type": "backupRejected",
+        "frame": 210,
+        "ptsSeconds": 7.003333333333333
+      },
+      {
+        "type": "searchStarted",
+        "frame": 210,
+        "ptsSeconds": 7.003333333333333
+      }
+    ],
+    "baselineMismatchFrames": [],
+    "probeMismatchFrames": [],
+    "normalPresentFrames": 113,
+    "normalPresentOutputsPreserved": true,
+    "backupDisplayIntervals": [
+      {
+        "firstFrame": 169,
+        "lastFrame": 169,
+        "firstPTSSeconds": 5.635,
+        "lastPTSSeconds": 5.635,
+        "frames": 1
+      },
+      {
+        "firstFrame": 172,
+        "lastFrame": 172,
+        "firstPTSSeconds": 5.735,
+        "lastPTSSeconds": 5.735,
+        "frames": 1
+      },
+      {
+        "firstFrame": 175,
+        "lastFrame": 209,
+        "firstPTSSeconds": 5.835,
+        "lastPTSSeconds": 6.97,
+        "frames": 35
+      }
+    ],
+    "emptyDisplayIntervals": [
+      {
+        "firstFrame": 112,
+        "lastFrame": 116,
+        "firstPTSSeconds": 3.735,
+        "lastPTSSeconds": 3.868333333333333,
+        "frames": 5
+      },
+      {
+        "firstFrame": 118,
+        "lastFrame": 168,
+        "firstPTSSeconds": 3.935,
+        "lastPTSSeconds": 5.601666666666667,
+        "frames": 51
+      },
+      {
+        "firstFrame": 170,
+        "lastFrame": 171,
+        "firstPTSSeconds": 5.668333333333333,
+        "lastPTSSeconds": 5.701666666666667,
+        "frames": 2
+      },
+      {
+        "firstFrame": 173,
+        "lastFrame": 174,
+        "firstPTSSeconds": 5.7683333333333335,
+        "lastPTSSeconds": 5.801666666666667,
+        "frames": 2
+      },
+      {
+        "firstFrame": 210,
+        "lastFrame": 275,
+        "firstPTSSeconds": 7.003333333333333,
+        "lastPTSSeconds": 9.17,
+        "frames": 66
+      }
+    ],
+    "rejectedNonemptySearchFrames": [
+      148,
+      150,
+      154,
+      155,
+      156,
+      157,
+      158,
+      159,
+      160,
+      161,
+      162,
+      163,
+      164,
+      165,
+      166,
+      167,
+      168,
+      170,
+      171,
+      173,
+      174,
+      210,
+      211,
+      212,
+      213,
+      214
+    ],
+    "interpretationAllowed": true,
+    "qualityMeaning": "Controls and normal-output preservation are not identity validation. Inspect every backup interval and rejection around visible return. Thresholds were informed by both clips; an independent clip is still required."
+  },
+  "sourceReportSHA256": "12bb1b25cdb1e117c8faa1ad6e5d14cf4b7aefcb792221508f9dfc5abfede9e2",
+  "offlineReview": {
+    "orderedCompletedRows": 276,
+    "allBaselineControlsReproduced": true,
+    "allSearchControlsReproduced": true,
+    "searchCalls": 125,
+    "normalPresentFramesPreserved": 113,
+    "backupDisplayedFrames": 37,
+    "normalStateCountsPreserved": true,
+    "visualReviewPending": true,
+    "assessment": "Controls reproduce. Backup adds masks at169,172,175..209, with gaps170..171 and173..174. Correct subject identity must be reviewed in new previews. Not ready for promotion; no new inference or speed claim."
+  },
+  "continuationRejections": [
+    {
+      "frame": 170,
+      "continuation": {
+        "present": true,
+        "predictedIoU": 0.0010083718225359917,
+        "againstAnchors": {
+          "0": {
+            "pointerCosine": 0.6635464137729372,
+            "pooledEncoderCosine": 0.873478759078346,
+            "rgbHistogramIntersection": 0.673036505318977,
+            "highMaskAreaRatio": 1.0427350427350428
+          },
+          "30": {
+            "pointerCosine": 0.5975479757795895,
+            "pooledEncoderCosine": 0.8889782151522294,
+            "rgbHistogramIntersection": 0.6519993287150831,
+            "highMaskAreaRatio": 0.9956057752667922
+          },
+          "60": {
+            "pointerCosine": 0.5347518100458036,
+            "pooledEncoderCosine": 0.8523296832176231,
+            "rgbHistogramIntersection": 0.8304383788254757,
+            "highMaskAreaRatio": 1.3118279569892473
+          }
+        },
+        "appearanceMatchingAnchors": [
+          0,
+          30,
+          60
+        ],
+        "qualifyingAnchors": [],
+        "passed": false
+      },
+      "search": {
+        "present": true,
+        "predictedIoU": 0.8739084601402283,
+        "againstAnchors": {
+          "0": {
+            "pointerCosine": 0.3935871240397597,
+            "pooledEncoderCosine": 0.876366227422127,
+            "rgbHistogramIntersection": 0.6699815486415983,
+            "highMaskAreaRatio": 1.0190664036817882
+          },
+          "30": {
+            "pointerCosine": 0.2868633368178806,
+            "pooledEncoderCosine": 0.8931767444468327,
+            "rgbHistogramIntersection": 0.6452580847660125,
+            "highMaskAreaRatio": 0.9730069052102951
+          },
+          "60": {
+            "pointerCosine": 0.3842756378018898,
+            "pooledEncoderCosine": 0.854614380065261,
+            "rgbHistogramIntersection": 0.8278908188585609,
+            "highMaskAreaRatio": 1.2820512820512822
+          }
+        },
+        "appearanceMatchingAnchors": [
+          0,
+          30,
+          60
+        ],
+        "qualifyingAnchors": [
+          0,
+          30,
+          60
+        ],
+        "consecutiveMaskIoU": null,
+        "confirmationStreak": 1,
+        "confirmationStartFrame": 170,
+        "commonAnchors": [
+          0,
+          30,
+          60
+        ]
+      }
+    },
+    {
+      "frame": 173,
+      "continuation": {
+        "present": true,
+        "predictedIoU": 0.2577628493309021,
+        "againstAnchors": {
+          "0": {
+            "pointerCosine": 0.6708476024427564,
+            "pooledEncoderCosine": 0.9011481909150941,
+            "rgbHistogramIntersection": 0.6825396825396824,
+            "highMaskAreaRatio": 1.0769230769230769
+          },
+          "30": {
+            "pointerCosine": 0.6096473144980832,
+            "pooledEncoderCosine": 0.9229256761101082,
+            "rgbHistogramIntersection": 0.6321130219435305,
+            "highMaskAreaRatio": 1.0282485875706215
+          },
+          "60": {
+            "pointerCosine": 0.5294960316516311,
+            "pooledEncoderCosine": 0.8722302926746286,
+            "rgbHistogramIntersection": 0.812143054078538,
+            "highMaskAreaRatio": 1.3548387096774193
+          }
+        },
+        "appearanceMatchingAnchors": [
+          0,
+          30,
+          60
+        ],
+        "qualifyingAnchors": [],
+        "passed": false
+      },
+      "search": {
+        "present": true,
+        "predictedIoU": 0.8878664374351501,
+        "againstAnchors": {
+          "0": {
+            "pointerCosine": 0.3948802912070912,
+            "pooledEncoderCosine": 0.903713056303708,
+            "rgbHistogramIntersection": 0.6818376068376069,
+            "highMaskAreaRatio": 1.0256410256410255
+          },
+          "30": {
+            "pointerCosine": 0.28324124043106513,
+            "pooledEncoderCosine": 0.9280634115204789,
+            "rgbHistogramIntersection": 0.6345550243855329,
+            "highMaskAreaRatio": 0.9792843691148776
+          },
+          "60": {
+            "pointerCosine": 0.373411510611011,
+            "pooledEncoderCosine": 0.8743203588196786,
+            "rgbHistogramIntersection": 0.8153019023986766,
+            "highMaskAreaRatio": 1.2903225806451613
+          }
+        },
+        "appearanceMatchingAnchors": [
+          0,
+          30,
+          60
+        ],
+        "qualifyingAnchors": [
+          0,
+          30,
+          60
+        ],
+        "consecutiveMaskIoU": null,
+        "confirmationStreak": 1,
+        "confirmationStartFrame": 173,
+        "commonAnchors": [
+          0,
+          30,
+          60
+        ]
+      }
+    },
+    {
+      "frame": 210,
+      "continuation": {
+        "present": true,
+        "predictedIoU": 0.9125622510910034,
+        "againstAnchors": {
+          "0": {
+            "pointerCosine": 0.6683500476269876,
+            "pooledEncoderCosine": 0.7669218472067558,
+            "rgbHistogramIntersection": 0.5681424868668528,
+            "highMaskAreaRatio": 0.6042077580539119
+          },
+          "30": {
+            "pointerCosine": 0.7412694643994194,
+            "pooledEncoderCosine": 0.7619322304373863,
+            "rgbHistogramIntersection": 0.4863490775406823,
+            "highMaskAreaRatio": 0.5768989328311362
+          },
+          "60": {
+            "pointerCosine": 0.867942097617484,
+            "pooledEncoderCosine": 0.7966908652202234,
+            "rgbHistogramIntersection": 0.6839193894899606,
+            "highMaskAreaRatio": 0.760132340777502
+          }
+        },
+        "appearanceMatchingAnchors": [],
+        "qualifyingAnchors": [],
+        "passed": false
+      },
+      "search": {
+        "present": true,
+        "predictedIoU": 0.9107412099838257,
+        "againstAnchors": {
+          "0": {
+            "pointerCosine": 0.35146088420957244,
+            "pooledEncoderCosine": 0.7712991236203547,
+            "rgbHistogramIntersection": 0.5211429826814442,
+            "highMaskAreaRatio": 0.5351742274819198
+          },
+          "30": {
+            "pointerCosine": 0.26931984830634287,
+            "pooledEncoderCosine": 0.7718026607710193,
+            "rgbHistogramIntersection": 0.43106820225464293,
+            "highMaskAreaRatio": 0.5109855618330195
+          },
+          "60": {
+            "pointerCosine": 0.38872523867299,
+            "pooledEncoderCosine": 0.7978631834251722,
+            "rgbHistogramIntersection": 0.6606420316097736,
+            "highMaskAreaRatio": 0.6732837055417701
+          }
+        },
+        "appearanceMatchingAnchors": [],
+        "qualifyingAnchors": [],
+        "consecutiveMaskIoU": null,
+        "confirmationStreak": 0,
+        "confirmationStartFrame": null,
+        "commonAnchors": []
+      }
+    }
+  ],
+  "requestedPreviewFrames": [
+    148,
+    167,
+    168,
+    169,
+    170,
+    171,
+    172,
+    173,
+    174,
+    175,
+    176,
+    177,
+    178,
+    179,
+    180,
+    181,
+    182,
+    183,
+    184,
+    185,
+    186,
+    187,
+    188,
+    189,
+    190,
+    191,
+    192,
+    193,
+    194,
+    195,
+    196,
+    197,
+    198,
+    199,
+    200,
+    201,
+    202,
+    203,
+    204,
+    205,
+    206,
+    207,
+    208,
+    209,
+    210,
+    211,
+    212,
+    213,
+    214,
+    215,
+    216,
+    217
+  ]
+}

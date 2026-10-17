@@ -1,0 +1,700 @@
+{
+  "sourceAttachment": "Pasted markdown(20260915-005415).md",
+  "sourceSHA256": "086f35c07265c6d0ad2584db18248be0e69ea84805249811f969677e04b2a1fd",
+  "scope": "User-run Mac initializer diagnostic on one frame, not temporal or device validation.",
+  "report": {
+    "contract": "bytewave.edgetam-temporal-owned.v1",
+    "readyForDeviceValidation": false,
+    "scope": "One-frame initializer precision diagnostic; FP32 computation and interfaces, identical numerical inputs",
+    "upstream": "7711e012a30a2402c4eaab637bdb00a521302c91",
+    "checkpointSHA256": "ed2d4850b8792c239689b043c47046ec239b6e808a3d9b6ae676c803fd8780df",
+    "pointNormalizedTopLeft": [
+      0.4912,
+      0.4706
+    ],
+    "versions": {
+      "coremltools": "9.0",
+      "torch": "2.7.0"
+    },
+    "frame": {
+      "imageSHA256": "df4fd26c6e7c6cce4cd9e6c04ace316788f125eb4f953f0aad96882e7b474dd9",
+      "ptsNumerator": 0,
+      "ptsDenominator": 1
+    },
+    "encoder": {
+      "high_res_feature_0": {
+        "shape": [
+          1,
+          32,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -1.140625,
+        "maximum": 0.58935546875
+      },
+      "raw_vision_features": {
+        "shape": [
+          1,
+          256,
+          64,
+          64
+        ],
+        "nonfinite": 0,
+        "minimum": -1.6396484375,
+        "maximum": 1.6865234375
+      },
+      "initial_vision_features": {
+        "shape": [
+          1,
+          256,
+          64,
+          64
+        ],
+        "nonfinite": 0,
+        "minimum": -1.6533203125,
+        "maximum": 1.6728515625
+      },
+      "high_res_feature_1": {
+        "shape": [
+          1,
+          64,
+          128,
+          128
+        ],
+        "nonfinite": 0,
+        "minimum": -3.18359375,
+        "maximum": 2.66796875
+      }
+    },
+    "sameInputTorch": {
+      "low_res_mask": {
+        "shape": [
+          1,
+          1,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -18.11211395263672,
+        "maximum": 17.083274841308594
+      },
+      "high_res_mask": {
+        "shape": [
+          1,
+          1,
+          1024,
+          1024
+        ],
+        "nonfinite": 0,
+        "minimum": -17.46967124938965,
+        "maximum": 16.575931549072266
+      },
+      "best_iou": {
+        "shape": [
+          1
+        ],
+        "nonfinite": 0,
+        "minimum": 0.9778218865394592,
+        "maximum": 0.9778218865394592
+      },
+      "object_pointer": {
+        "shape": [
+          1,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -1.358288049697876,
+        "maximum": 1.8085142374038696
+      },
+      "object_score": {
+        "shape": [
+          1,
+          1
+        ],
+        "nonfinite": 0,
+        "minimum": 33.3327751159668,
+        "maximum": 33.3327751159668
+      }
+    },
+    "existingFP16": {
+      "object_score": {
+        "shape": [
+          1,
+          1
+        ],
+        "nonfinite": 0,
+        "minimum": 0.28271484375,
+        "maximum": 0.28271484375,
+        "maximumAbsoluteError": 33.0500602722168,
+        "cosineSimilarity": 1.0
+      },
+      "best_iou": {
+        "shape": [
+          1
+        ],
+        "nonfinite": 0,
+        "minimum": 0.79833984375,
+        "maximum": 0.79833984375,
+        "maximumAbsoluteError": 0.17948204278945923,
+        "cosineSimilarity": 1.0
+      },
+      "object_pointer": {
+        "shape": [
+          1,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -0.73095703125,
+        "maximum": 0.78125,
+        "maximumAbsoluteError": 1.2820749282836914,
+        "cosineSimilarity": 0.4207726604539569
+      },
+      "low_res_mask": {
+        "shape": [
+          1,
+          1,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -2.119140625,
+        "maximum": 0.7421875,
+        "maximumAbsoluteError": 18.08873176574707,
+        "cosineSimilarity": 0.6653274509215702,
+        "maskIoUAgainstSameInputTorch": 0.03744704113707804
+      },
+      "high_res_mask": {
+        "shape": [
+          1,
+          1,
+          1024,
+          1024
+        ],
+        "nonfinite": 0,
+        "minimum": -2.072265625,
+        "maximum": 0.58642578125,
+        "maximumAbsoluteError": 17.36608123779297,
+        "cosineSimilarity": 0.7491827705273095,
+        "maskIoUAgainstSameInputTorch": 0.03616694201169844
+      }
+    },
+    "sameInputTracedTorch": {
+      "low_res_mask": {
+        "shape": [
+          1,
+          1,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -18.112098693847656,
+        "maximum": 17.08327293395996,
+        "maximumAbsoluteError": 2.384185791015625e-05,
+        "cosineSimilarity": 0.9999999999999181,
+        "maskIoUAgainstSameInputTorch": 1.0
+      },
+      "high_res_mask": {
+        "shape": [
+          1,
+          1,
+          1024,
+          1024
+        ],
+        "nonfinite": 0,
+        "minimum": -17.46965789794922,
+        "maximum": 16.575929641723633,
+        "maximumAbsoluteError": 2.193450927734375e-05,
+        "cosineSimilarity": 0.9999999999997914,
+        "maskIoUAgainstSameInputTorch": 1.0
+      },
+      "best_iou": {
+        "shape": [
+          1
+        ],
+        "nonfinite": 0,
+        "minimum": 0.9778218865394592,
+        "maximum": 0.9778218865394592,
+        "maximumAbsoluteError": 0.0,
+        "cosineSimilarity": 1.0
+      },
+      "object_pointer": {
+        "shape": [
+          1,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -1.358288049697876,
+        "maximum": 1.8085131645202637,
+        "maximumAbsoluteError": 2.086162567138672e-06,
+        "cosineSimilarity": 0.9999999999992472
+      },
+      "object_score": {
+        "shape": [
+          1,
+          1
+        ],
+        "nonfinite": 0,
+        "minimum": 33.33278274536133,
+        "maximum": 33.33278274536133,
+        "maximumAbsoluteError": 7.62939453125e-06,
+        "cosineSimilarity": 1.0
+      }
+    },
+    "traceExamples": "Zeros, except point_labels=1; same trace used for every precision variant",
+    "precisionPolicies": {
+      "diagnosticFP32": {
+        "compute": "float32",
+        "tensorInterface": "float32",
+        "requestedFP32OperationTypes": [],
+        "operationsExcludedFromFP16Transform": []
+      },
+      "sameTraceFP16": {
+        "compute": "float16",
+        "tensorInterface": "float16",
+        "requestedFP32OperationTypes": [],
+        "operationsExcludedFromFP16Transform": []
+      },
+      "fp16ComputeFP32IO": {
+        "compute": "float16",
+        "tensorInterface": "float32",
+        "requestedFP32OperationTypes": [],
+        "operationsExcludedFromFP16Transform": []
+      },
+      "fp32Normalization": {
+        "compute": "mixed",
+        "tensorInterface": "float32",
+        "requestedFP32OperationTypes": [
+          "batch_norm",
+          "instance_norm",
+          "l2_norm",
+          "layer_norm",
+          "pow",
+          "real_div",
+          "reduce_mean",
+          "reduce_sum",
+          "rsqrt",
+          "sqrt",
+          "square"
+        ],
+        "operationsExcludedFromFP16Transform": [
+          {
+            "name": "real_div_1",
+            "type": "real_div"
+          },
+          {
+            "name": "real_div_2",
+            "type": "real_div"
+          },
+          {
+            "name": "real_div_3",
+            "type": "real_div"
+          },
+          {
+            "name": "real_div_4",
+            "type": "real_div"
+          },
+          {
+            "name": "real_div_5",
+            "type": "real_div"
+          },
+          {
+            "name": "queries.1",
+            "type": "layer_norm"
+          },
+          {
+            "name": "input.13",
+            "type": "layer_norm"
+          },
+          {
+            "name": "queries.3",
+            "type": "layer_norm"
+          },
+          {
+            "name": "keys.3",
+            "type": "layer_norm"
+          },
+          {
+            "name": "queries.5",
+            "type": "layer_norm"
+          },
+          {
+            "name": "input.43",
+            "type": "layer_norm"
+          },
+          {
+            "name": "queries",
+            "type": "layer_norm"
+          },
+          {
+            "name": "keys",
+            "type": "layer_norm"
+          },
+          {
+            "name": "hs",
+            "type": "layer_norm"
+          },
+          {
+            "name": "u",
+            "type": "reduce_mean"
+          },
+          {
+            "name": "760",
+            "type": "pow"
+          },
+          {
+            "name": "s",
+            "type": "reduce_mean"
+          },
+          {
+            "name": "766",
+            "type": "sqrt"
+          },
+          {
+            "name": "x",
+            "type": "real_div"
+          },
+          {
+            "name": "input.69",
+            "type": "batch_norm"
+          }
+        ]
+      },
+      "fp32Attention": {
+        "compute": "mixed",
+        "tensorInterface": "float32",
+        "requestedFP32OperationTypes": [
+          "matmul",
+          "scaled_dot_product_attention",
+          "softmax"
+        ],
+        "operationsExcludedFromFP16Transform": [
+          {
+            "name": "x.13",
+            "type": "scaled_dot_product_attention"
+          },
+          {
+            "name": "x.29",
+            "type": "scaled_dot_product_attention"
+          },
+          {
+            "name": "x.45",
+            "type": "scaled_dot_product_attention"
+          },
+          {
+            "name": "x.61",
+            "type": "scaled_dot_product_attention"
+          },
+          {
+            "name": "x.77",
+            "type": "scaled_dot_product_attention"
+          },
+          {
+            "name": "x.93",
+            "type": "scaled_dot_product_attention"
+          },
+          {
+            "name": "x.109",
+            "type": "scaled_dot_product_attention"
+          },
+          {
+            "name": "878",
+            "type": "matmul"
+          }
+        ]
+      }
+    },
+    "diagnosticFP32": {
+      "object_score": {
+        "shape": [
+          1,
+          1
+        ],
+        "nonfinite": 0,
+        "minimum": 33.3327751159668,
+        "maximum": 33.3327751159668,
+        "maximumAbsoluteError": 0.0,
+        "cosineSimilarity": 1.0
+      },
+      "best_iou": {
+        "shape": [
+          1
+        ],
+        "nonfinite": 0,
+        "minimum": 0.9778221249580383,
+        "maximum": 0.9778221249580383,
+        "maximumAbsoluteError": 2.384185791015625e-07,
+        "cosineSimilarity": 1.0
+      },
+      "object_pointer": {
+        "shape": [
+          1,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -1.3582881689071655,
+        "maximum": 1.8085142374038696,
+        "maximumAbsoluteError": 3.635883331298828e-06,
+        "cosineSimilarity": 0.9999999999973931
+      },
+      "low_res_mask": {
+        "shape": [
+          1,
+          1,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -18.111982345581055,
+        "maximum": 17.08315658569336,
+        "maximumAbsoluteError": 0.0001506805419921875,
+        "cosineSimilarity": 0.9999999999997701,
+        "maskIoUAgainstSameInputTorch": 1.0
+      },
+      "high_res_mask": {
+        "shape": [
+          1,
+          1,
+          1024,
+          1024
+        ],
+        "nonfinite": 0,
+        "minimum": -17.469545364379883,
+        "maximum": 16.57581901550293,
+        "maximumAbsoluteError": 0.000141143798828125,
+        "cosineSimilarity": 0.999999999999646,
+        "maskIoUAgainstSameInputTorch": 1.0
+      }
+    },
+    "sameTraceFP16": {
+      "object_score": {
+        "shape": [
+          1,
+          1
+        ],
+        "nonfinite": 0,
+        "minimum": 0.28271484375,
+        "maximum": 0.28271484375,
+        "maximumAbsoluteError": 33.0500602722168,
+        "cosineSimilarity": 1.0
+      },
+      "best_iou": {
+        "shape": [
+          1
+        ],
+        "nonfinite": 0,
+        "minimum": 0.79833984375,
+        "maximum": 0.79833984375,
+        "maximumAbsoluteError": 0.17948204278945923,
+        "cosineSimilarity": 1.0
+      },
+      "object_pointer": {
+        "shape": [
+          1,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -0.73095703125,
+        "maximum": 0.78125,
+        "maximumAbsoluteError": 1.2820749282836914,
+        "cosineSimilarity": 0.4207726604539569
+      },
+      "low_res_mask": {
+        "shape": [
+          1,
+          1,
+          256,
+          256
+        ],
+        "nonfinite": 65536,
+        "minimum": null,
+        "maximum": null
+      },
+      "high_res_mask": {
+        "shape": [
+          1,
+          1,
+          1024,
+          1024
+        ],
+        "nonfinite": 1048576,
+        "minimum": null,
+        "maximum": null
+      }
+    },
+    "fp16ComputeFP32IO": {
+      "object_score": {
+        "shape": [
+          1,
+          1
+        ],
+        "nonfinite": 0,
+        "minimum": 0.28271484375,
+        "maximum": 0.28271484375,
+        "maximumAbsoluteError": 33.0500602722168,
+        "cosineSimilarity": 1.0
+      },
+      "best_iou": {
+        "shape": [
+          1
+        ],
+        "nonfinite": 0,
+        "minimum": 0.79833984375,
+        "maximum": 0.79833984375,
+        "maximumAbsoluteError": 0.17948204278945923,
+        "cosineSimilarity": 1.0
+      },
+      "object_pointer": {
+        "shape": [
+          1,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -0.73095703125,
+        "maximum": 0.78125,
+        "maximumAbsoluteError": 1.2820749282836914,
+        "cosineSimilarity": 0.4207726604539569
+      },
+      "low_res_mask": {
+        "shape": [
+          1,
+          1,
+          256,
+          256
+        ],
+        "nonfinite": 65536,
+        "minimum": null,
+        "maximum": null
+      },
+      "high_res_mask": {
+        "shape": [
+          1,
+          1,
+          1024,
+          1024
+        ],
+        "nonfinite": 1048576,
+        "minimum": null,
+        "maximum": null
+      }
+    },
+    "fp32Normalization": {
+      "object_score": {
+        "shape": [
+          1,
+          1
+        ],
+        "nonfinite": 0,
+        "minimum": 0.28271484375,
+        "maximum": 0.28271484375,
+        "maximumAbsoluteError": 33.0500602722168,
+        "cosineSimilarity": 1.0
+      },
+      "best_iou": {
+        "shape": [
+          1
+        ],
+        "nonfinite": 0,
+        "minimum": 0.79833984375,
+        "maximum": 0.79833984375,
+        "maximumAbsoluteError": 0.17948204278945923,
+        "cosineSimilarity": 1.0
+      },
+      "object_pointer": {
+        "shape": [
+          1,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -0.73095703125,
+        "maximum": 0.78125,
+        "maximumAbsoluteError": 1.2820749282836914,
+        "cosineSimilarity": 0.4207726604539569
+      },
+      "low_res_mask": {
+        "shape": [
+          1,
+          1,
+          256,
+          256
+        ],
+        "nonfinite": 65536,
+        "minimum": null,
+        "maximum": null
+      },
+      "high_res_mask": {
+        "shape": [
+          1,
+          1,
+          1024,
+          1024
+        ],
+        "nonfinite": 1048576,
+        "minimum": null,
+        "maximum": null
+      }
+    },
+    "fp32Attention": {
+      "object_score": {
+        "shape": [
+          1,
+          1
+        ],
+        "nonfinite": 0,
+        "minimum": 33.34375,
+        "maximum": 33.34375,
+        "maximumAbsoluteError": 0.010974884033203125,
+        "cosineSimilarity": 1.0
+      },
+      "best_iou": {
+        "shape": [
+          1
+        ],
+        "nonfinite": 0,
+        "minimum": 0.97802734375,
+        "maximum": 0.97802734375,
+        "maximumAbsoluteError": 0.00020545721054077148,
+        "cosineSimilarity": 1.0
+      },
+      "object_pointer": {
+        "shape": [
+          1,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -1.359375,
+        "maximum": 1.80859375,
+        "maximumAbsoluteError": 0.003863096237182617,
+        "cosineSimilarity": 0.9999971340994472
+      },
+      "low_res_mask": {
+        "shape": [
+          1,
+          1,
+          256,
+          256
+        ],
+        "nonfinite": 0,
+        "minimum": -18.125,
+        "maximum": 17.109375,
+        "maximumAbsoluteError": 0.08673858642578125,
+        "cosineSimilarity": 0.9999990909949892,
+        "maskIoUAgainstSameInputTorch": 0.9995990376904571
+      },
+      "high_res_mask": {
+        "shape": [
+          1,
+          1,
+          1024,
+          1024
+        ],
+        "nonfinite": 0,
+        "minimum": -17.484375,
+        "maximum": 16.59375,
+        "maximumAbsoluteError": 0.08135700225830078,
+        "cosineSimilarity": 0.9999993889694352,
+        "maskIoUAgainstSameInputTorch": 0.9999248572287346
+      }
+    }
+  }
+}

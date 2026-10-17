@@ -1,0 +1,1590 @@
+{
+  "scope": "Offline JSON and six-anchor-image review only. No inference, export, model/app changes, or tests.",
+  "readyForDeviceValidation": false,
+  "runs": {
+    "worker": {
+      "completed": true,
+      "diagnosticScriptSHA256": "b6f483e4473dd573447486eda72150634d0a4b03d7bbcf520f8d2d811bb53d90",
+      "sourceVideoSHA256": "a8a9d3fd5b85fbdf2770027353d6d19971845c13f83ffdcc6058ae5e6a0b1833",
+      "fixtureSHA256": "760dd45c6eed6972f434dd324920b74dbfa262fb6648983606c2872581430a61",
+      "sourceComparisonSHA256": "29ff27150c14715aca3375a82e9336eb3ff9628ae523b88bcfd2cc16a5d67fd3",
+      "sourceMemoryProbeSHA256": "9ed19a4ecad97e5160d7b833cfdcb65a7ffe784a04eafdc147c1641880c32024",
+      "pointNormalizedTopLeft": [
+        0.6468468468468468,
+        0.5888513513513512
+      ],
+      "referenceNumFrames": 276,
+      "framesToReplay": 218,
+      "anchorFrames": [
+        0,
+        30,
+        60
+      ],
+      "inspectFrames": [
+        112,
+        115,
+        148,
+        150,
+        154,
+        160,
+        167,
+        168,
+        169,
+        175,
+        205,
+        216,
+        217
+      ],
+      "conditioningUnchangedAtEnd": true,
+      "uploadedReportSHA256": "f994a29da75e68b32fb3cbdf40f0f7e0c68dd891306366250afa1088261b306b",
+      "controls": {
+        "framesReplayed": 218,
+        "baselineMismatchFrames": [],
+        "probeMismatchFrames": [],
+        "interpretationAllowed": true,
+        "meaning": "Control reproduction permits inspection only. No identity pass/fail, recommended threshold, accuracy improvement or device-readiness claim."
+      },
+      "anchorPreviews": [
+        {
+          "file": "anchor-0000.png",
+          "sha256": "4277e05ce4d0eb84cec1dd69f4c50091ad7aca53a717596af395d17c74ab0dba"
+        },
+        {
+          "file": "anchor-0030.png",
+          "sha256": "6e81a1a3d250fc53d1f21790db473e934f7eccab488da5188b06af922c6fcf84"
+        },
+        {
+          "file": "anchor-0060.png",
+          "sha256": "3764d95b27839a4e2a9dfda1e0eb9707c273b2576eaea76370c73003a87f9e57"
+        }
+      ],
+      "measurements": [
+        {
+          "frame": 112,
+          "appearance": {
+            "normalGPU": {
+              "geometry": null,
+              "againstAnchors": {
+                "0": null,
+                "30": null,
+                "60": null
+              }
+            },
+            "conditioningOnly": {
+              "geometry": null,
+              "againstAnchors": {
+                "0": null,
+                "30": null,
+                "60": null
+              }
+            }
+          }
+        },
+        {
+          "frame": 115,
+          "appearance": {
+            "normalGPU": {
+              "geometry": null,
+              "againstAnchors": {
+                "0": null,
+                "30": null,
+                "60": null
+              }
+            },
+            "conditioningOnly": {
+              "geometry": null,
+              "againstAnchors": {
+                "0": null,
+                "30": null,
+                "60": null
+              }
+            }
+          }
+        },
+        {
+          "frame": 148,
+          "appearance": {
+            "normalGPU": {
+              "geometry": null,
+              "againstAnchors": {
+                "0": null,
+                "30": null,
+                "60": null
+              }
+            },
+            "conditioningOnly": {
+              "geometry": {
+                "highMaskPixels": 1134,
+                "featureCoverageSum": 4.4296875,
+                "boxNormalizedXYXY": [
+                  0.5751953125,
+                  0.560546875,
+                  0.66015625,
+                  0.58203125
+                ]
+              },
+              "againstAnchors": {
+                "0": {
+                  "pointerCosine": 0.546107802734822,
+                  "pooledEncoderCosine": 0.6791886286321573,
+                  "rgbHistogramIntersection": 0.23255898896924537,
+                  "highMaskAreaRatio": 0.7455621301775148
+                },
+                "30": {
+                  "pointerCosine": 0.4151694679898662,
+                  "pooledEncoderCosine": 0.5993501541961699,
+                  "rgbHistogramIntersection": 0.2682868502077541,
+                  "highMaskAreaRatio": 0.711864406779661
+                },
+                "60": {
+                  "pointerCosine": 0.546237858208894,
+                  "pooledEncoderCosine": 0.6481765252647604,
+                  "rgbHistogramIntersection": 0.21593778583025894,
+                  "highMaskAreaRatio": 0.9379652605459057
+                }
+              }
+            }
+          }
+        },
+        {
+          "frame": 150,
+          "appearance": {
+            "normalGPU": {
+              "geometry": null,
+              "againstAnchors": {
+                "0": null,
+                "30": null,
+                "60": null
+              }
+            },
+            "conditioningOnly": {
+              "geometry": {
+                "highMaskPixels": 1018,
+                "featureCoverageSum": 3.9765625,
+                "boxNormalizedXYXY": [
+                  0.572265625,
+                  0.5595703125,
+                  0.6875,
+                  0.5810546875
+                ]
+              },
+              "againstAnchors": {
+                "0": {
+                  "pointerCosine": 0.5265875261744779,
+                  "pooledEncoderCosine": 0.673539850316189,
+                  "rgbHistogramIntersection": 0.19709851212042537,
+                  "highMaskAreaRatio": 0.6692965154503616
+                },
+                "30": {
+                  "pointerCosine": 0.40314995560662775,
+                  "pooledEncoderCosine": 0.5969871337245937,
+                  "rgbHistogramIntersection": 0.2512336018213278,
+                  "highMaskAreaRatio": 0.6390458254865035
+                },
+                "60": {
+                  "pointerCosine": 0.5259978274167215,
+                  "pooledEncoderCosine": 0.6397106169021399,
+                  "rgbHistogramIntersection": 0.1997096107939634,
+                  "highMaskAreaRatio": 0.8420181968569065
+                }
+              }
+            }
+          }
+        },
+        {
+          "frame": 154,
+          "appearance": {
+            "normalGPU": {
+              "geometry": null,
+              "againstAnchors": {
+                "0": null,
+                "30": null,
+                "60": null
+              }
+            },
+            "conditioningOnly": {
+              "geometry": {
+                "highMaskPixels": 246,
+                "featureCoverageSum": 0.9609375,
+                "boxNormalizedXYXY": [
+                  0.291015625,
+                  0.578125,
+                  0.3125,
+                  0.5927734375
+                ]
+              },
+              "againstAnchors": {
+                "0": {
+                  "pointerCosine": 0.32528811362241167,
+                  "pooledEncoderCosine": 0.6003887183102681,
+                  "rgbHistogramIntersection": 0.4360177033723,
+                  "highMaskAreaRatio": 0.16173570019723865
+                },
+                "30": {
+                  "pointerCosine": 0.2121112152616302,
+                  "pooledEncoderCosine": 0.6223079391841652,
+                  "rgbHistogramIntersection": 0.4558280893543398,
+                  "highMaskAreaRatio": 0.1544256120527307
+                },
+                "60": {
+                  "pointerCosine": 0.37560054397510634,
+                  "pooledEncoderCosine": 0.6689876882233076,
+                  "rgbHistogramIntersection": 0.7749500695999516,
+                  "highMaskAreaRatio": 0.20347394540942929
+                }
+              }
+            }
+          }
+        },
+        {
+          "frame": 160,
+          "appearance": {
+            "normalGPU": {
+              "geometry": null,
+              "againstAnchors": {
+                "0": null,
+                "30": null,
+                "60": null
+              }
+            },
+            "conditioningOnly": {
+              "geometry": {
+                "highMaskPixels": 479,
+                "featureCoverageSum": 1.87109375,
+                "boxNormalizedXYXY": [
+                  0.251953125,
+                  0.5673828125,
+                  0.2822265625,
+                  0.59375
+                ]
+              },
+              "againstAnchors": {
+                "0": {
+                  "pointerCosine": 0.4074282316611035,
+                  "pooledEncoderCosine": 0.6640634684203212,
+                  "rgbHistogramIntersection": 0.5693567713802177,
+                  "highMaskAreaRatio": 0.3149243918474688
+                },
+                "30": {
+                  "pointerCosine": 0.30122994248668206,
+                  "pooledEncoderCosine": 0.6831842153221594,
+                  "rgbHistogramIntersection": 0.47893511146757667,
+                  "highMaskAreaRatio": 0.30069052102950405
+                },
+                "60": {
+                  "pointerCosine": 0.44101800149596204,
+                  "pooledEncoderCosine": 0.7463045069392222,
+                  "rgbHistogramIntersection": 0.7355671019890833,
+                  "highMaskAreaRatio": 0.39619520264681557
+                }
+              }
+            }
+          }
+        },
+        {
+          "frame": 167,
+          "appearance": {
+            "normalGPU": {
+              "geometry": null,
+              "againstAnchors": {
+                "0": null,
+                "30": null,
+                "60": null
+              }
+            },
+            "conditioningOnly": {
+              "geometry": {
+                "highMaskPixels": 1381,
+                "featureCoverageSum": 5.39453125,
+                "boxNormalizedXYXY": [
+                  0.1806640625,
+                  0.5703125,
+                  0.248046875,
+                  0.60546875
+                ]
+              },
+              "againstAnchors": {
+                "0": {
+                  "pointerCosine": 0.37671476020449807,
+                  "pooledEncoderCosine": 0.8280428484995929,
+                  "rgbHistogramIntersection": 0.6438906717968713,
+                  "highMaskAreaRatio": 0.9079552925706772
+                },
+                "30": {
+                  "pointerCosine": 0.26923812555657745,
+                  "pooledEncoderCosine": 0.849531017744974,
+                  "rgbHistogramIntersection": 0.6359739137510096,
+                  "highMaskAreaRatio": 0.86691776522285
+                },
+                "60": {
+                  "pointerCosine": 0.36983742056121766,
+                  "pooledEncoderCosine": 0.8562339574434257,
+                  "rgbHistogramIntersection": 0.8376423744436639,
+                  "highMaskAreaRatio": 1.142266335814723
+                }
+              }
+            }
+          }
+        },
+        {
+          "frame": 168,
+          "appearance": {
+            "normalGPU": {
+              "geometry": null,
+              "againstAnchors": {
+                "0": null,
+                "30": null,
+                "60": null
+              }
+            },
+            "conditioningOnly": {
+              "geometry": {
+                "highMaskPixels": 1488,
+                "featureCoverageSum": 5.8125,
+                "boxNormalizedXYXY": [
+                  0.1748046875,
+                  0.5703125,
+                  0.2412109375,
+                  0.60546875
+                ]
+              },
+              "againstAnchors": {
+                "0": {
+                  "pointerCosine": 0.34686399238177384,
+                  "pooledEncoderCosine": 0.8628681572584952,
+                  "rgbHistogramIntersection": 0.6478998324531823,
+                  "highMaskAreaRatio": 0.9783037475345168
+                },
+                "30": {
+                  "pointerCosine": 0.23656617785352504,
+                  "pooledEncoderCosine": 0.8975106958047078,
+                  "rgbHistogramIntersection": 0.6327329242856854,
+                  "highMaskAreaRatio": 0.9340866290018832
+                },
+                "60": {
+                  "pointerCosine": 0.32213690957065483,
+                  "pooledEncoderCosine": 0.8585502776047765,
+                  "rgbHistogramIntersection": 0.8494106699751861,
+                  "highMaskAreaRatio": 1.2307692307692308
+                }
+              }
+            }
+          }
+        },
+        {
+          "frame": 169,
+          "appearance": {
+            "normalGPU": {
+              "geometry": null,
+              "againstAnchors": {
+                "0": null,
+                "30": null,
+                "60": null
+              }
+            },
+            "conditioningOnly": {
+              "geometry": {
+                "highMaskPixels": 1535,
+                "featureCoverageSum": 5.99609375,
+                "boxNormalizedXYXY": [
+                  0.1689453125,
+                  0.5703125,
+                  0.234375,
+                  0.6064453125
+                ]
+              },
+              "againstAnchors": {
+                "0": {
+                  "pointerCosine": 0.3367706401907274,
+                  "pooledEncoderCosine": 0.8763781256039163,
+                  "rgbHistogramIntersection": 0.6547141324390134,
+                  "highMaskAreaRatio": 1.0092044707429322
+                },
+                "30": {
+                  "pointerCosine": 0.22327160839021995,
+                  "pooledEncoderCosine": 0.9095187309729824,
+                  "rgbHistogramIntersection": 0.6447797877930932,
+                  "highMaskAreaRatio": 0.9635907093534212
+                },
+                "60": {
+                  "pointerCosine": 0.3068217501534829,
+                  "pooledEncoderCosine": 0.8372037715986831,
+                  "rgbHistogramIntersection": 0.83665828759871,
+                  "highMaskAreaRatio": 1.2696443341604633
+                }
+              }
+            }
+          }
+        },
+        {
+          "frame": 175,
+          "appearance": {
+            "normalGPU": {
+              "geometry": null,
+              "againstAnchors": {
+                "0": null,
+                "30": null,
+                "60": null
+              }
+            },
+            "conditioningOnly": {
+              "geometry": {
+                "highMaskPixels": 1638,
+                "featureCoverageSum": 6.3984375,
+                "boxNormalizedXYXY": [
+                  0.138671875,
+                  0.5673828125,
+                  0.208984375,
+                  0.60546875
+                ]
+              },
+              "againstAnchors": {
+                "0": {
+                  "pointerCosine": 0.3670650630790242,
+                  "pooledEncoderCosine": 0.9027269095645778,
+                  "rgbHistogramIntersection": 0.6562881562881563,
+                  "highMaskAreaRatio": 1.0769230769230769
+                },
+                "30": {
+                  "pointerCosine": 0.25527523728916246,
+                  "pooledEncoderCosine": 0.9431077626428831,
+                  "rgbHistogramIntersection": 0.574836337548202,
+                  "highMaskAreaRatio": 1.0282485875706215
+                },
+                "60": {
+                  "pointerCosine": 0.3459398765570465,
+                  "pooledEncoderCosine": 0.8532598890327892,
+                  "rgbHistogramIntersection": 0.765134507069991,
+                  "highMaskAreaRatio": 1.3548387096774193
+                }
+              }
+            }
+          }
+        },
+        {
+          "frame": 205,
+          "appearance": {
+            "normalGPU": {
+              "geometry": null,
+              "againstAnchors": {
+                "0": null,
+                "30": null,
+                "60": null
+              }
+            },
+            "conditioningOnly": {
+              "geometry": {
+                "highMaskPixels": 1542,
+                "featureCoverageSum": 6.0234375,
+                "boxNormalizedXYXY": [
+                  0.0048828125,
+                  0.5625,
+                  0.0712890625,
+                  0.5947265625
+                ]
+              },
+              "againstAnchors": {
+                "0": {
+                  "pointerCosine": 0.3584370510121499,
+                  "pooledEncoderCosine": 0.8697501626102453,
+                  "rgbHistogramIntersection": 0.7000104886965108,
+                  "highMaskAreaRatio": 1.0138067061143985
+                },
+                "30": {
+                  "pointerCosine": 0.2779855083239256,
+                  "pooledEncoderCosine": 0.8863502607957531,
+                  "rgbHistogramIntersection": 0.6492118973817846,
+                  "highMaskAreaRatio": 0.967984934086629
+                },
+                "60": {
+                  "pointerCosine": 0.39727448824331524,
+                  "pooledEncoderCosine": 0.8533782516791684,
+                  "rgbHistogramIntersection": 0.8249091605436527,
+                  "highMaskAreaRatio": 1.2754342431761787
+                }
+              }
+            }
+          }
+        },
+        {
+          "frame": 216,
+          "appearance": {
+            "normalGPU": {
+              "geometry": null,
+              "againstAnchors": {
+                "0": null,
+                "30": null,
+                "60": null
+              }
+            },
+            "conditioningOnly": {
+              "geometry": null,
+              "againstAnchors": {
+                "0": null,
+                "30": null,
+                "60": null
+              }
+            }
+          }
+        },
+        {
+          "frame": 217,
+          "appearance": {
+            "normalGPU": {
+              "geometry": null,
+              "againstAnchors": {
+                "0": null,
+                "30": null,
+                "60": null
+              }
+            },
+            "conditioningOnly": {
+              "geometry": null,
+              "againstAnchors": {
+                "0": null,
+                "30": null,
+                "60": null
+              }
+            }
+          }
+        }
+      ]
+    },
+    "dog": {
+      "completed": true,
+      "diagnosticScriptSHA256": "b6f483e4473dd573447486eda72150634d0a4b03d7bbcf520f8d2d811bb53d90",
+      "sourceVideoSHA256": "48df10abcbcd12df835d8f91edcf5fd8863506a40f190a4788e338ce1e460bce",
+      "fixtureSHA256": "760dd45c6eed6972f434dd324920b74dbfa262fb6648983606c2872581430a61",
+      "sourceComparisonSHA256": "f1bd9abde3a424f7c5bbfefff1ed0b40284602470b021a078d8f3c2a20b62102",
+      "sourceMemoryProbeSHA256": "f83406103dfbc5547bd4a6dee5dce691a4f985b8911502d729b0311336126bc1",
+      "pointNormalizedTopLeft": [
+        0.45,
+        0.27
+      ],
+      "referenceNumFrames": 600,
+      "framesToReplay": 256,
+      "anchorFrames": [
+        0,
+        15,
+        30
+      ],
+      "inspectFrames": [
+        48,
+        51,
+        52,
+        53,
+        54,
+        60,
+        75,
+        84,
+        85,
+        86,
+        241,
+        247,
+        248,
+        249,
+        250,
+        251,
+        255
+      ],
+      "conditioningUnchangedAtEnd": true,
+      "uploadedReportSHA256": "6a96030a69ccb3ccc2656efa3862c7fc725de6ae26f513167f444b2b52dff231",
+      "controls": {
+        "framesReplayed": 256,
+        "baselineMismatchFrames": [],
+        "probeMismatchFrames": [],
+        "interpretationAllowed": true,
+        "meaning": "Control reproduction permits inspection only. No identity pass/fail, recommended threshold, accuracy improvement or device-readiness claim."
+      },
+      "anchorPreviews": [
+        {
+          "file": "anchor-0000(1).png",
+          "sha256": "c3441e42c72113fa1372db40ba014fe103b6405dfd7abb9479a84418e79f4bce"
+        },
+        {
+          "file": "anchor-0015.png",
+          "sha256": "17498449cabbbf9a6aeecf81b414e33f890f03a2083e77beb6f1c5f60743e535"
+        },
+        {
+          "file": "anchor-0030(1).png",
+          "sha256": "ea400fc356cbda816b323a79f12eb5556246ab4aa9e341a5c470876a96758b5d"
+        }
+      ],
+      "measurements": [
+        {
+          "frame": 48,
+          "appearance": {
+            "normalGPU": {
+              "geometry": null,
+              "againstAnchors": {
+                "0": null,
+                "15": null,
+                "30": null
+              }
+            },
+            "conditioningOnly": {
+              "geometry": null,
+              "againstAnchors": {
+                "0": null,
+                "15": null,
+                "30": null
+              }
+            }
+          }
+        },
+        {
+          "frame": 51,
+          "appearance": {
+            "normalGPU": {
+              "geometry": null,
+              "againstAnchors": {
+                "0": null,
+                "15": null,
+                "30": null
+              }
+            },
+            "conditioningOnly": {
+              "geometry": {
+                "highMaskPixels": 40154,
+                "featureCoverageSum": 156.8515625,
+                "boxNormalizedXYXY": [
+                  0.6259765625,
+                  0,
+                  1,
+                  0.1796875
+                ]
+              },
+              "againstAnchors": {
+                "0": {
+                  "pointerCosine": 0.5984675516079114,
+                  "pooledEncoderCosine": 0.551583206060895,
+                  "rgbHistogramIntersection": 0.28686236709205093,
+                  "highMaskAreaRatio": 0.23745431751250726
+                },
+                "15": {
+                  "pointerCosine": 0.3500980269747446,
+                  "pooledEncoderCosine": 0.5700944200267742,
+                  "rgbHistogramIntersection": 0.3855687441379087,
+                  "highMaskAreaRatio": 0.2597367314596203
+                },
+                "30": {
+                  "pointerCosine": 0.2993230924663385,
+                  "pooledEncoderCosine": 0.5525669256796993,
+                  "rgbHistogramIntersection": 0.225533606439716,
+                  "highMaskAreaRatio": 0.44338195510307743
+                }
+              }
+            }
+          }
+        },
+        {
+          "frame": 52,
+          "appearance": {
+            "normalGPU": {
+              "geometry": null,
+              "againstAnchors": {
+                "0": null,
+                "15": null,
+                "30": null
+              }
+            },
+            "conditioningOnly": {
+              "geometry": {
+                "highMaskPixels": 87373,
+                "featureCoverageSum": 341.30078125,
+                "boxNormalizedXYXY": [
+                  0.3759765625,
+                  0,
+                  1,
+                  0.216796875
+                ]
+              },
+              "againstAnchors": {
+                "0": {
+                  "pointerCosine": 0.5996452844637422,
+                  "pooledEncoderCosine": 0.5867403553232088,
+                  "rgbHistogramIntersection": 0.29255062318947234,
+                  "highMaskAreaRatio": 0.516688152712564
+                },
+                "15": {
+                  "pointerCosine": 0.3938209880307062,
+                  "pooledEncoderCosine": 0.5911222115813282,
+                  "rgbHistogramIntersection": 0.3894563213558006,
+                  "highMaskAreaRatio": 0.5651735179016139
+                },
+                "30": {
+                  "pointerCosine": 0.3158490525933503,
+                  "pooledEncoderCosine": 0.5636842702442836,
+                  "rgbHistogramIntersection": 0.22601945606925566,
+                  "highMaskAreaRatio": 0.9647759018583748
+                }
+              }
+            }
+          }
+        },
+        {
+          "frame": 53,
+          "appearance": {
+            "normalGPU": {
+              "geometry": null,
+              "againstAnchors": {
+                "0": null,
+                "15": null,
+                "30": null
+              }
+            },
+            "conditioningOnly": {
+              "geometry": {
+                "highMaskPixels": 134016,
+                "featureCoverageSum": 523.5,
+                "boxNormalizedXYXY": [
+                  0.1240234375,
+                  0,
+                  1,
+                  0.263671875
+                ]
+              },
+              "againstAnchors": {
+                "0": {
+                  "pointerCosine": 0.6097506551941534,
+                  "pooledEncoderCosine": 0.6329467381635171,
+                  "rgbHistogramIntersection": 0.3027446595581749,
+                  "highMaskAreaRatio": 0.7925157597189861
+                },
+                "15": {
+                  "pointerCosine": 0.41802943995844166,
+                  "pooledEncoderCosine": 0.6437381659174485,
+                  "rgbHistogramIntersection": 0.39734343931186555,
+                  "highMaskAreaRatio": 0.8668844399883566
+                },
+                "30": {
+                  "pointerCosine": 0.3076829389121944,
+                  "pooledEncoderCosine": 0.6175968928601141,
+                  "rgbHistogramIntersection": 0.2339065740253206,
+                  "highMaskAreaRatio": 1.4798096352815167
+                }
+              }
+            }
+          }
+        },
+        {
+          "frame": 54,
+          "appearance": {
+            "normalGPU": {
+              "geometry": null,
+              "againstAnchors": {
+                "0": null,
+                "15": null,
+                "30": null
+              }
+            },
+            "conditioningOnly": {
+              "geometry": {
+                "highMaskPixels": 189210,
+                "featureCoverageSum": 739.1015625,
+                "boxNormalizedXYXY": [
+                  0,
+                  0,
+                  1,
+                  0.3046875
+                ]
+              },
+              "againstAnchors": {
+                "0": {
+                  "pointerCosine": 0.6208576822683614,
+                  "pooledEncoderCosine": 0.6638250516023622,
+                  "rgbHistogramIntersection": 0.3238940618705947,
+                  "highMaskAreaRatio": 1.118910480065286
+                },
+                "15": {
+                  "pointerCosine": 0.4066296537038581,
+                  "pooledEncoderCosine": 0.6633266395630477,
+                  "rgbHistogramIntersection": 0.41858986934187,
+                  "highMaskAreaRatio": 1.2239076296128595
+                },
+                "30": {
+                  "pointerCosine": 0.2886044285049678,
+                  "pooledEncoderCosine": 0.6299405960699513,
+                  "rgbHistogramIntersection": 0.2550559763377404,
+                  "highMaskAreaRatio": 2.089263827390877
+                }
+              }
+            }
+          }
+        },
+        {
+          "frame": 60,
+          "appearance": {
+            "normalGPU": {
+              "geometry": null,
+              "againstAnchors": {
+                "0": null,
+                "15": null,
+                "30": null
+              }
+            },
+            "conditioningOnly": {
+              "geometry": {
+                "highMaskPixels": 187925,
+                "featureCoverageSum": 734.08203125,
+                "boxNormalizedXYXY": [
+                  0,
+                  0,
+                  1,
+                  0.26953125
+                ]
+              },
+              "againstAnchors": {
+                "0": {
+                  "pointerCosine": 0.6455686953850802,
+                  "pooledEncoderCosine": 0.756121719907658,
+                  "rgbHistogramIntersection": 0.5668157920394298,
+                  "highMaskAreaRatio": 1.1113115161263616
+                },
+                "15": {
+                  "pointerCosine": 0.31054883037316744,
+                  "pooledEncoderCosine": 0.7575542942610912,
+                  "rgbHistogramIntersection": 0.5602683529115327,
+                  "highMaskAreaRatio": 1.2155955884731071
+                },
+                "30": {
+                  "pointerCosine": 0.3966755860924744,
+                  "pooledEncoderCosine": 0.7559339931367578,
+                  "rgbHistogramIntersection": 0.5306560630050143,
+                  "highMaskAreaRatio": 2.075074809800912
+                }
+              }
+            }
+          }
+        },
+        {
+          "frame": 75,
+          "appearance": {
+            "normalGPU": {
+              "geometry": null,
+              "againstAnchors": {
+                "0": null,
+                "15": null,
+                "30": null
+              }
+            },
+            "conditioningOnly": {
+              "geometry": {
+                "highMaskPixels": 218013,
+                "featureCoverageSum": 851.61328125,
+                "boxNormalizedXYXY": [
+                  0,
+                  0,
+                  0.583984375,
+                  0.4052734375
+                ]
+              },
+              "againstAnchors": {
+                "0": {
+                  "pointerCosine": 0.6028914378643412,
+                  "pooledEncoderCosine": 0.7413634951288646,
+                  "rgbHistogramIntersection": 0.4528306481277036,
+                  "highMaskAreaRatio": 1.2892396305188585
+                },
+                "15": {
+                  "pointerCosine": 0.2079495731630521,
+                  "pooledEncoderCosine": 0.7790318604610513,
+                  "rgbHistogramIntersection": 0.4460748394304792,
+                  "highMaskAreaRatio": 1.4102202529189172
+                },
+                "30": {
+                  "pointerCosine": 0.3036418465478724,
+                  "pooledEncoderCosine": 0.7394449255144364,
+                  "rgbHistogramIntersection": 0.48436852523729673,
+                  "highMaskAreaRatio": 2.4073076201097576
+                }
+              }
+            }
+          }
+        },
+        {
+          "frame": 84,
+          "appearance": {
+            "normalGPU": {
+              "geometry": null,
+              "againstAnchors": {
+                "0": null,
+                "15": null,
+                "30": null
+              }
+            },
+            "conditioningOnly": {
+              "geometry": {
+                "highMaskPixels": 34647,
+                "featureCoverageSum": 135.33984375,
+                "boxNormalizedXYXY": [
+                  0.7509765625,
+                  0,
+                  1,
+                  0.2802734375
+                ]
+              },
+              "againstAnchors": {
+                "0": {
+                  "pointerCosine": 0.54090175098578,
+                  "pooledEncoderCosine": 0.6113100582325177,
+                  "rgbHistogramIntersection": 0.5469844460434835,
+                  "highMaskAreaRatio": 0.20488817400149023
+                },
+                "15": {
+                  "pointerCosine": 0.40521051771797945,
+                  "pooledEncoderCosine": 0.6352658986150177,
+                  "rgbHistogramIntersection": 0.5507371334542637,
+                  "highMaskAreaRatio": 0.22411462207704
+                },
+                "30": {
+                  "pointerCosine": 0.36052864794149425,
+                  "pooledEncoderCosine": 0.6232190101192013,
+                  "rgbHistogramIntersection": 0.4907417707915509,
+                  "highMaskAreaRatio": 0.3825734571513753
+                }
+              }
+            }
+          }
+        },
+        {
+          "frame": 85,
+          "appearance": {
+            "normalGPU": {
+              "geometry": {
+                "highMaskPixels": 11066,
+                "featureCoverageSum": 43.2265625,
+                "boxNormalizedXYXY": [
+                  0.1328125,
+                  0.3720703125,
+                  0.2646484375,
+                  0.4873046875
+                ]
+              },
+              "againstAnchors": {
+                "0": {
+                  "pointerCosine": 0.6227105809832896,
+                  "pooledEncoderCosine": 0.6435849236639694,
+                  "rgbHistogramIntersection": 0.2988771779036542,
+                  "highMaskAreaRatio": 0.06543979373395939
+                },
+                "15": {
+                  "pointerCosine": 0.5702919733514423,
+                  "pooledEncoderCosine": 0.6964066786367511,
+                  "rgbHistogramIntersection": 0.2774566102586209,
+                  "highMaskAreaRatio": 0.07158058151945405
+                },
+                "30": {
+                  "pointerCosine": 0.5008110152803545,
+                  "pooledEncoderCosine": 0.6565596528698505,
+                  "rgbHistogramIntersection": 0.2992478638542737,
+                  "highMaskAreaRatio": 0.12219118182922385
+                }
+              }
+            },
+            "conditioningOnly": {
+              "geometry": null,
+              "againstAnchors": {
+                "0": null,
+                "15": null,
+                "30": null
+              }
+            }
+          }
+        },
+        {
+          "frame": 86,
+          "appearance": {
+            "normalGPU": {
+              "geometry": {
+                "highMaskPixels": 30618,
+                "featureCoverageSum": 119.6015625,
+                "boxNormalizedXYXY": [
+                  0.134765625,
+                  0.3671875,
+                  0.3974609375,
+                  0.6494140625
+                ]
+              },
+              "againstAnchors": {
+                "0": {
+                  "pointerCosine": 0.6916721019424322,
+                  "pooledEncoderCosine": 0.7622552809727869,
+                  "rgbHistogramIntersection": 0.6084017232226998,
+                  "highMaskAreaRatio": 0.1810623174178898
+                },
+                "15": {
+                  "pointerCosine": 0.7192453040477751,
+                  "pooledEncoderCosine": 0.8570660407219933,
+                  "rgbHistogramIntersection": 0.5853762503742799,
+                  "highMaskAreaRatio": 0.1980529771338012
+                },
+                "30": {
+                  "pointerCosine": 0.6486743784943745,
+                  "pooledEncoderCosine": 0.8036345658893803,
+                  "rgbHistogramIntersection": 0.5820099649576926,
+                  "highMaskAreaRatio": 0.33808508993739167
+                }
+              }
+            },
+            "conditioningOnly": {
+              "geometry": {
+                "highMaskPixels": 27650,
+                "featureCoverageSum": 108.0078125,
+                "boxNormalizedXYXY": [
+                  0.1357421875,
+                  0.3671875,
+                  0.392578125,
+                  0.6455078125
+                ]
+              },
+              "againstAnchors": {
+                "0": {
+                  "pointerCosine": 0.4689287139198309,
+                  "pooledEncoderCosine": 0.7663829467784523,
+                  "rgbHistogramIntersection": 0.6488831558546804,
+                  "highMaskAreaRatio": 0.16351078047568923
+                },
+                "15": {
+                  "pointerCosine": 0.5950924906330733,
+                  "pooledEncoderCosine": 0.8599986977485609,
+                  "rgbHistogramIntersection": 0.625116586785971,
+                  "highMaskAreaRatio": 0.17885442608105048
+                },
+                "30": {
+                  "pointerCosine": 0.6238106511771934,
+                  "pooledEncoderCosine": 0.8049484583703654,
+                  "rgbHistogramIntersection": 0.6234417234730885,
+                  "highMaskAreaRatio": 0.3053123240175348
+                }
+              }
+            }
+          }
+        },
+        {
+          "frame": 241,
+          "appearance": {
+            "normalGPU": {
+              "geometry": null,
+              "againstAnchors": {
+                "0": null,
+                "15": null,
+                "30": null
+              }
+            },
+            "conditioningOnly": {
+              "geometry": null,
+              "againstAnchors": {
+                "0": null,
+                "15": null,
+                "30": null
+              }
+            }
+          }
+        },
+        {
+          "frame": 247,
+          "appearance": {
+            "normalGPU": {
+              "geometry": {
+                "highMaskPixels": 3660,
+                "featureCoverageSum": 14.296875,
+                "boxNormalizedXYXY": [
+                  0,
+                  0.216796875,
+                  0.048828125,
+                  0.3779296875
+                ]
+              },
+              "againstAnchors": {
+                "0": {
+                  "pointerCosine": 0.6736007880758167,
+                  "pooledEncoderCosine": 0.4944915133512073,
+                  "rgbHistogramIntersection": 0.6442751046301605,
+                  "highMaskAreaRatio": 0.02164374164705326
+                },
+                "15": {
+                  "pointerCosine": 0.5374432639613849,
+                  "pooledEncoderCosine": 0.47775954683229427,
+                  "rgbHistogramIntersection": 0.5554336493891937,
+                  "highMaskAreaRatio": 0.02367476309065623
+                },
+                "30": {
+                  "pointerCosine": 0.5635633743877578,
+                  "pooledEncoderCosine": 0.5857717174454118,
+                  "rgbHistogramIntersection": 0.5174181617614981,
+                  "highMaskAreaRatio": 0.04041385554807151
+                }
+              }
+            },
+            "conditioningOnly": {
+              "geometry": {
+                "highMaskPixels": 3407,
+                "featureCoverageSum": 13.30859375,
+                "boxNormalizedXYXY": [
+                  0,
+                  0.21875,
+                  0.046875,
+                  0.37890625
+                ]
+              },
+              "againstAnchors": {
+                "0": {
+                  "pointerCosine": 0.5871880538555488,
+                  "pooledEncoderCosine": 0.48752184762177503,
+                  "rgbHistogramIntersection": 0.6371606937659962,
+                  "highMaskAreaRatio": 0.020147603221724167
+                },
+                "15": {
+                  "pointerCosine": 0.28599142201194905,
+                  "pooledEncoderCosine": 0.4694702277530563,
+                  "rgbHistogramIntersection": 0.5483192385250295,
+                  "highMaskAreaRatio": 0.022038228920728355
+                },
+                "30": {
+                  "pointerCosine": 0.3847012233901655,
+                  "pooledEncoderCosine": 0.580860862676673,
+                  "rgbHistogramIntersection": 0.5149775088095572,
+                  "highMaskAreaRatio": 0.03762022017821848
+                }
+              }
+            }
+          }
+        },
+        {
+          "frame": 248,
+          "appearance": {
+            "normalGPU": {
+              "geometry": {
+                "highMaskPixels": 17670,
+                "featureCoverageSum": 69.0234375,
+                "boxNormalizedXYXY": [
+                  0,
+                  0.1875,
+                  0.169921875,
+                  0.384765625
+                ]
+              },
+              "againstAnchors": {
+                "0": {
+                  "pointerCosine": 0.7212845693835055,
+                  "pooledEncoderCosine": 0.7218908454742337,
+                  "rgbHistogramIntersection": 0.6790967128555242,
+                  "highMaskAreaRatio": 0.10449314614847843
+                },
+                "15": {
+                  "pointerCosine": 0.49519868841860537,
+                  "pooledEncoderCosine": 0.7169991365622738,
+                  "rgbHistogramIntersection": 0.5777990295507698,
+                  "highMaskAreaRatio": 0.11429865131472558
+                },
+                "30": {
+                  "pointerCosine": 0.5415704737846865,
+                  "pooledEncoderCosine": 0.7971488712436027,
+                  "rgbHistogramIntersection": 0.46847617158090743,
+                  "highMaskAreaRatio": 0.19511279440831245
+                }
+              }
+            },
+            "conditioningOnly": {
+              "geometry": {
+                "highMaskPixels": 109768,
+                "featureCoverageSum": 428.78125,
+                "boxNormalizedXYXY": [
+                  0,
+                  0,
+                  0.583984375,
+                  0.384765625
+                ]
+              },
+              "againstAnchors": {
+                "0": {
+                  "pointerCosine": 0.6012692635566683,
+                  "pooledEncoderCosine": 0.7184372978478712,
+                  "rgbHistogramIntersection": 0.16081749066777348,
+                  "highMaskAreaRatio": 0.6491230145119513
+                },
+                "15": {
+                  "pointerCosine": 0.2431615124656817,
+                  "pooledEncoderCosine": 0.7072587275461714,
+                  "rgbHistogramIntersection": 0.15670989337560637,
+                  "highMaskAreaRatio": 0.7100359002555063
+                },
+                "30": {
+                  "pointerCosine": 0.25976542473915254,
+                  "pooledEncoderCosine": 0.6569457191865172,
+                  "rgbHistogramIntersection": 0.15135461166918562,
+                  "highMaskAreaRatio": 1.2120623212570254
+                }
+              }
+            }
+          }
+        },
+        {
+          "frame": 249,
+          "appearance": {
+            "normalGPU": {
+              "geometry": {
+                "highMaskPixels": 23888,
+                "featureCoverageSum": 93.3125,
+                "boxNormalizedXYXY": [
+                  0,
+                  0.1689453125,
+                  0.2431640625,
+                  0.3779296875
+                ]
+              },
+              "againstAnchors": {
+                "0": {
+                  "pointerCosine": 0.7027421407235028,
+                  "pooledEncoderCosine": 0.7192700368862359,
+                  "rgbHistogramIntersection": 0.6593695049503963,
+                  "highMaskAreaRatio": 0.14126385258601318
+                },
+                "15": {
+                  "pointerCosine": 0.5415873494090694,
+                  "pooledEncoderCosine": 0.706181100938795,
+                  "rgbHistogramIntersection": 0.5580739094720347,
+                  "highMaskAreaRatio": 0.15451987451081858
+                },
+                "30": {
+                  "pointerCosine": 0.6786472023876108,
+                  "pooledEncoderCosine": 0.7843351566810428,
+                  "rgbHistogramIntersection": 0.4406590825129271,
+                  "highMaskAreaRatio": 0.26377218069189406
+                }
+              }
+            },
+            "conditioningOnly": {
+              "geometry": {
+                "highMaskPixels": 109249,
+                "featureCoverageSum": 426.75390625,
+                "boxNormalizedXYXY": [
+                  0,
+                  0,
+                  0.41015625,
+                  0.3779296875
+                ]
+              },
+              "againstAnchors": {
+                "0": {
+                  "pointerCosine": 0.5972828799352702,
+                  "pooledEncoderCosine": 0.7407508579065695,
+                  "rgbHistogramIntersection": 0.20029899422465597,
+                  "highMaskAreaRatio": 0.6460538609833119
+                },
+                "15": {
+                  "pointerCosine": 0.25996202057405654,
+                  "pooledEncoderCosine": 0.7257224791406957,
+                  "rgbHistogramIntersection": 0.19509410692859824,
+                  "highMaskAreaRatio": 0.7066787412270772
+                },
+                "30": {
+                  "pointerCosine": 0.3140325929459383,
+                  "pooledEncoderCosine": 0.6882668533837778,
+                  "rgbHistogramIntersection": 0.1756134497752796,
+                  "highMaskAreaRatio": 1.2063315040358646
+                }
+              }
+            }
+          }
+        },
+        {
+          "frame": 250,
+          "appearance": {
+            "normalGPU": {
+              "geometry": {
+                "highMaskPixels": 28440,
+                "featureCoverageSum": 111.09375,
+                "boxNormalizedXYXY": [
+                  0,
+                  0.142578125,
+                  0.2626953125,
+                  0.3720703125
+                ]
+              },
+              "againstAnchors": {
+                "0": {
+                  "pointerCosine": 0.6692379624402967,
+                  "pooledEncoderCosine": 0.7719776314203836,
+                  "rgbHistogramIntersection": 0.6551464477843006,
+                  "highMaskAreaRatio": 0.1681825170607089
+                },
+                "15": {
+                  "pointerCosine": 0.5612174148127494,
+                  "pooledEncoderCosine": 0.7404827818563041,
+                  "rgbHistogramIntersection": 0.5961332760082843,
+                  "highMaskAreaRatio": 0.18396455254050909
+                },
+                "30": {
+                  "pointerCosine": 0.6906099385651581,
+                  "pooledEncoderCosine": 0.807231024274643,
+                  "rgbHistogramIntersection": 0.5019206613953442,
+                  "highMaskAreaRatio": 0.3140355332751786
+                }
+              }
+            },
+            "conditioningOnly": {
+              "geometry": {
+                "highMaskPixels": 120315,
+                "featureCoverageSum": 469.98046875,
+                "boxNormalizedXYXY": [
+                  0,
+                  0,
+                  0.58203125,
+                  0.373046875
+                ]
+              },
+              "againstAnchors": {
+                "0": {
+                  "pointerCosine": 0.6116738971165235,
+                  "pooledEncoderCosine": 0.7874437158249299,
+                  "rgbHistogramIntersection": 0.22106380835148054,
+                  "highMaskAreaRatio": 0.7114936547172712
+                },
+                "15": {
+                  "pointerCosine": 0.3149235425913433,
+                  "pooledEncoderCosine": 0.7593934265657162,
+                  "rgbHistogramIntersection": 0.21100433725281953,
+                  "highMaskAreaRatio": 0.7782593227465313
+                },
+                "30": {
+                  "pointerCosine": 0.3211780069198364,
+                  "pooledEncoderCosine": 0.7336206129120008,
+                  "rgbHistogramIntersection": 0.19152368009950094,
+                  "highMaskAreaRatio": 1.3285226858650885
+                }
+              }
+            }
+          }
+        },
+        {
+          "frame": 251,
+          "appearance": {
+            "normalGPU": {
+              "geometry": {
+                "highMaskPixels": 32592,
+                "featureCoverageSum": 127.3125,
+                "boxNormalizedXYXY": [
+                  0,
+                  0.1103515625,
+                  0.2626953125,
+                  0.3671875
+                ]
+              },
+              "againstAnchors": {
+                "0": {
+                  "pointerCosine": 0.624735007871097,
+                  "pooledEncoderCosine": 0.7791940638619395,
+                  "rgbHistogramIntersection": 0.5822295748542909,
+                  "highMaskAreaRatio": 0.19273574528982507
+                },
+                "15": {
+                  "pointerCosine": 0.5291743450242093,
+                  "pooledEncoderCosine": 0.7481596189792966,
+                  "rgbHistogramIntersection": 0.5671604869013137,
+                  "highMaskAreaRatio": 0.21082182476794203
+                },
+                "30": {
+                  "pointerCosine": 0.6703614854431679,
+                  "pooledEncoderCosine": 0.8032333547038213,
+                  "rgbHistogramIntersection": 0.5385107978004023,
+                  "highMaskAreaRatio": 0.3598820710444663
+                }
+              }
+            },
+            "conditioningOnly": {
+              "geometry": {
+                "highMaskPixels": 128664,
+                "featureCoverageSum": 502.59375,
+                "boxNormalizedXYXY": [
+                  0,
+                  0,
+                  0.6669921875,
+                  0.3671875
+                ]
+              },
+              "againstAnchors": {
+                "0": {
+                  "pointerCosine": 0.6247921570689718,
+                  "pooledEncoderCosine": 0.7921249532605639,
+                  "rgbHistogramIntersection": 0.23270781811087782,
+                  "highMaskAreaRatio": 0.7608662227531312
+                },
+                "15": {
+                  "pointerCosine": 0.3180736806280672,
+                  "pooledEncoderCosine": 0.7667763031910517,
+                  "rgbHistogramIntersection": 0.22392973559929863,
+                  "highMaskAreaRatio": 0.8322649503541512
+                },
+                "30": {
+                  "pointerCosine": 0.30892067213409136,
+                  "pooledEncoderCosine": 0.7399202001746665,
+                  "rgbHistogramIntersection": 0.2103437826354955,
+                  "highMaskAreaRatio": 1.4207126530702383
+                }
+              }
+            }
+          }
+        },
+        {
+          "frame": 255,
+          "appearance": {
+            "normalGPU": {
+              "geometry": {
+                "highMaskPixels": 37089,
+                "featureCoverageSum": 144.87890625,
+                "boxNormalizedXYXY": [
+                  0,
+                  0.0458984375,
+                  0.2158203125,
+                  0.345703125
+                ]
+              },
+              "againstAnchors": {
+                "0": {
+                  "pointerCosine": 0.5812337993360291,
+                  "pooledEncoderCosine": 0.7589026754046804,
+                  "rgbHistogramIntersection": 0.7573027265960249,
+                  "highMaskAreaRatio": 0.21932916228075364
+                },
+                "15": {
+                  "pointerCosine": 0.6345406410919473,
+                  "pooledEncoderCosine": 0.7385278131256611,
+                  "rgbHistogramIntersection": 0.6504002039961829,
+                  "highMaskAreaRatio": 0.23991073449982211
+                },
+                "30": {
+                  "pointerCosine": 0.7646357475745766,
+                  "pooledEncoderCosine": 0.7617095747890807,
+                  "rgbHistogramIntersection": 0.5852864884196438,
+                  "highMaskAreaRatio": 0.40953811159082626
+                }
+              }
+            },
+            "conditioningOnly": {
+              "geometry": {
+                "highMaskPixels": 151142,
+                "featureCoverageSum": 590.3984375,
+                "boxNormalizedXYXY": [
+                  0,
+                  0,
+                  0.771484375,
+                  0.3505859375
+                ]
+              },
+              "againstAnchors": {
+                "0": {
+                  "pointerCosine": 0.6012394002484048,
+                  "pooledEncoderCosine": 0.7603695800516638,
+                  "rgbHistogramIntersection": 0.24580251352965732,
+                  "highMaskAreaRatio": 0.8937919125734763
+                },
+                "15": {
+                  "pointerCosine": 0.35952907984555005,
+                  "pooledEncoderCosine": 0.7587539422026416,
+                  "rgbHistogramIntersection": 0.2399152774648138,
+                  "highMaskAreaRatio": 0.977664219412012
+                },
+                "30": {
+                  "pointerCosine": 0.3219523768789541,
+                  "pooledEncoderCosine": 0.7038414241493661,
+                  "rgbHistogramIntersection": 0.23475681113324676,
+                  "highMaskAreaRatio": 1.6689155615427935
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "anchorReview": {
+    "worker": "All masks are on the small selected bent-over worker region right of excavator/bucket, not standing worker at left. Only partial upper body/back, especially60. Consistent with previously selected subject, not pixel-perfect ground truth.",
+    "dog": "0 covers full visible dog, largely excludes pizza box;15 head clipped at right edge;30 visible rear body/tail/legs with front behind pillar. References include partial views."
+  },
+  "examples": [
+    {
+      "clip": "worker",
+      "frame": 148,
+      "stream": "conditioningOnly",
+      "visualLabel": "Rubble false candidate",
+      "maximumAcrossAnchors": {
+        "pointerCosine": 0.546237858208894,
+        "pooledEncoderCosine": 0.6791886286321573,
+        "rgbHistogramIntersection": 0.2682868502077541
+      }
+    },
+    {
+      "clip": "worker",
+      "frame": 169,
+      "stream": "conditioningOnly",
+      "visualLabel": "Correct worker first acceptance",
+      "maximumAcrossAnchors": {
+        "pointerCosine": 0.3367706401907274,
+        "pooledEncoderCosine": 0.9095187309729824,
+        "rgbHistogramIntersection": 0.83665828759871
+      }
+    },
+    {
+      "clip": "dog",
+      "frame": 54,
+      "stream": "conditioningOnly",
+      "visualLabel": "Background false acceptance",
+      "maximumAcrossAnchors": {
+        "pointerCosine": 0.6208576822683614,
+        "pooledEncoderCosine": 0.6638250516023622,
+        "rgbHistogramIntersection": 0.41858986934187
+      }
+    },
+    {
+      "clip": "dog",
+      "frame": 251,
+      "stream": "conditioningOnly",
+      "visualLabel": "Wrong wheel-inclusive acceptance",
+      "maximumAcrossAnchors": {
+        "pointerCosine": 0.6247921570689718,
+        "pooledEncoderCosine": 0.7921249532605639,
+        "rgbHistogramIntersection": 0.23270781811087782
+      }
+    },
+    {
+      "clip": "dog",
+      "frame": 85,
+      "stream": "normalGPU",
+      "visualLabel": "Correct returning dog head",
+      "maximumAcrossAnchors": {
+        "pointerCosine": 0.6227105809832896,
+        "pooledEncoderCosine": 0.6964066786367511,
+        "rgbHistogramIntersection": 0.2992478638542737
+      }
+    },
+    {
+      "clip": "dog",
+      "frame": 247,
+      "stream": "normalGPU",
+      "visualLabel": "Correct small dog edge fragment",
+      "maximumAcrossAnchors": {
+        "pointerCosine": 0.6736007880758167,
+        "pooledEncoderCosine": 0.5857717174454118,
+        "rgbHistogramIntersection": 0.6442751046301605
+      }
+    }
+  ],
+  "interpretation": [
+    "All baseline and search controls reproduce in both clips.",
+    "Per-metric maxima may use different anchors. Scores are not identity probabilities.",
+    "Worker rubble148 pointer similarity exceeds correct worker169. Pointer-only identity gate is not supported.",
+    "Pooled encoder/colour help distinguish sampled worker169 from rubble148.",
+    "Wrong dog wheel251 encoder similarity exceeds correct tiny edge fragment247; wrong background54 colour exceeds correct returning head85. A universal cutoff applied to normal tracking would risk rejecting good partial masks.",
+    "Earlier visuals identify exact search candidates148,169,54,251 through reproduced probe controls. Other side-call rows are not automatically labelled from recovery-ordinary screenshots.",
+    "No full-sequence appearance-gated recovery or feedback was tested. Both clips now development evidence."
+  ],
+  "nextExperimentProposal": {
+    "status": "Not implemented or validated",
+    "normalTracking": "Preserve independent normal history and present normal output when available; pending search must not hide its return.",
+    "recovery": "Consider appearance checks only on search candidates that fill absent baseline. Keep pending candidates out of accepted memory.",
+    "validation": "Document exploratory criteria before full worker/dog replay. Inspect all accepted intervals and verify feedback behavior, then use a separate holdout clip. No production threshold recommended.",
+    "limitation": "Baseline-first routing alone cannot prevent false masks during complete absence."
+  }
+}

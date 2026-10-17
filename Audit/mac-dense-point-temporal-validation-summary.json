@@ -1,0 +1,1093 @@
+{
+  "run": "dog-08",
+  "sourceAttachment": "Pasted text(20260915-162619).txt",
+  "sourceAttachmentSHA256": "636dfd089b7e049e85120655a716b0da205e34bba33c93257cfc29f475dc906c",
+  "summary": {
+    "minimumMaskIoU": 0.9970457902511078,
+    "minimumPointerCosine": 0.9984306495819557,
+    "minimumMemoryCosine": 0.9944459240205845
+  },
+  "status": {
+    "contract": "bytewave.edgetam-temporal-owned.v2",
+    "upstream": "7711e012a30a2402c4eaab637bdb00a521302c91",
+    "precisionPolicy": "mixed-encoder-late-conv33-and-fp32-attention-iou.v1",
+    "graphRevision": "dense-initializer-points.v1",
+    "tensorInterface": "float32",
+    "torchThreads": {
+      "intraOp": 1,
+      "interOp": 1
+    },
+    "checkpointSHA256": "ed2d4850b8792c239689b043c47046ec239b6e808a3d9b6ae676c803fd8780df",
+    "python": "3.11.16 (main, Aug 12 2026, 23:03:19) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "versions": {
+      "torch": "2.7.0",
+      "torchvision": "0.22.0",
+      "numpy": "1.26.4",
+      "av": "15.0.0",
+      "timm": "1.0.15",
+      "coremltools": "9.0"
+    },
+    "pointNormalizedTopLeft": [
+      0.4912,
+      0.4706
+    ],
+    "referencePassed": true,
+    "coremlPassed": true,
+    "readyForDeviceValidation": true
+  },
+  "coremlReport": {
+    "passed": true,
+    "contract": "bytewave.edgetam-temporal-owned.v2",
+    "graphRevision": "dense-initializer-points.v1",
+    "frames": [
+      {
+        "index": 0,
+        "ptsNumerator": 0,
+        "ptsDenominator": 1,
+        "imageSHA256": "df4fd26c6e7c6cce4cd9e6c04ace316788f125eb4f953f0aad96882e7b474dd9",
+        "candidateWallSecondsDiagnosticOnly": 0.0999390420038253,
+        "state": {
+          "acceptedFrames": 1,
+          "spatialEntries": 1,
+          "pointerEntries": 1
+        },
+        "passed": true,
+        "maskIoUAgainstReference": 0.9995990376904571,
+        "sameObjectPresence": true,
+        "outputs": {
+          "low_res_mask": {
+            "maximumAbsoluteError": 0.5473041534423828,
+            "cosineSimilarity": 0.9999856804535732,
+            "float32Close": false
+          },
+          "high_res_mask": {
+            "maximumAbsoluteError": 0.5053129196166992,
+            "cosineSimilarity": 0.9999886797881338,
+            "float32Close": false
+          },
+          "best_iou": {
+            "maximumAbsoluteError": 0.00196075439453125,
+            "cosineSimilarity": 1.0,
+            "float32Close": true
+          },
+          "object_pointer": {
+            "maximumAbsoluteError": 0.04215162992477417,
+            "cosineSimilarity": 0.9995576440147583,
+            "float32Close": false
+          },
+          "object_score": {
+            "maximumAbsoluteError": 0.046970367431640625,
+            "cosineSimilarity": 1.0,
+            "float32Close": false
+          },
+          "memory_features": {
+            "maximumAbsoluteError": 2.87807559967041,
+            "cosineSimilarity": 0.9974388359174114,
+            "float32Close": false
+          },
+          "memory_positions": {
+            "maximumAbsoluteError": 5.960464477539063e-08,
+            "cosineSimilarity": 0.9999999999999993,
+            "float32Close": true
+          }
+        }
+      },
+      {
+        "index": 1,
+        "ptsNumerator": 1,
+        "ptsDenominator": 30,
+        "imageSHA256": "8c59ab89ffc2586f78ef4ef021e62e9747201bc5ef42e32d8f6efa7854618b3f",
+        "candidateWallSecondsDiagnosticOnly": 0.1788962499704212,
+        "state": {
+          "acceptedFrames": 2,
+          "spatialEntries": 2,
+          "pointerEntries": 2
+        },
+        "passed": true,
+        "maskIoUAgainstReference": 0.99885801294252,
+        "sameObjectPresence": true,
+        "outputs": {
+          "low_res_mask": {
+            "maximumAbsoluteError": 1.1119976043701172,
+            "cosineSimilarity": 0.9999816084303813,
+            "float32Close": false
+          },
+          "high_res_mask": {
+            "maximumAbsoluteError": 1.0114898681640625,
+            "cosineSimilarity": 0.9999862963562919,
+            "float32Close": false
+          },
+          "best_iou": {
+            "maximumAbsoluteError": 0.0002918839454650879,
+            "cosineSimilarity": 1.0,
+            "float32Close": true
+          },
+          "object_pointer": {
+            "maximumAbsoluteError": 0.04597228020429611,
+            "cosineSimilarity": 0.9997562574853269,
+            "float32Close": false
+          },
+          "object_score": {
+            "maximumAbsoluteError": 0.07500076293945312,
+            "cosineSimilarity": 1.0,
+            "float32Close": false
+          },
+          "memory_features": {
+            "maximumAbsoluteError": 2.6702263355255127,
+            "cosineSimilarity": 0.9963944135846691,
+            "float32Close": false
+          },
+          "memory_positions": {
+            "maximumAbsoluteError": 5.960464477539063e-08,
+            "cosineSimilarity": 0.9999999999999993,
+            "float32Close": true
+          }
+        }
+      },
+      {
+        "index": 2,
+        "ptsNumerator": 1,
+        "ptsDenominator": 15,
+        "imageSHA256": "105621e87fbb3ffbd493d3256d4e672d453603a91bf2db14bfc36226a013f15f",
+        "candidateWallSecondsDiagnosticOnly": 0.15494875004515052,
+        "state": {
+          "acceptedFrames": 3,
+          "spatialEntries": 3,
+          "pointerEntries": 3
+        },
+        "passed": true,
+        "maskIoUAgainstReference": 0.999628666914222,
+        "sameObjectPresence": true,
+        "outputs": {
+          "low_res_mask": {
+            "maximumAbsoluteError": 1.3678169250488281,
+            "cosineSimilarity": 0.9999835853035852,
+            "float32Close": false
+          },
+          "high_res_mask": {
+            "maximumAbsoluteError": 1.2796993255615234,
+            "cosineSimilarity": 0.9999873416587226,
+            "float32Close": false
+          },
+          "best_iou": {
+            "maximumAbsoluteError": 0.0001685023307800293,
+            "cosineSimilarity": 1.0,
+            "float32Close": true
+          },
+          "object_pointer": {
+            "maximumAbsoluteError": 0.09588003158569336,
+            "cosineSimilarity": 0.9985755643043285,
+            "float32Close": false
+          },
+          "object_score": {
+            "maximumAbsoluteError": 0.09057807922363281,
+            "cosineSimilarity": 1.0,
+            "float32Close": false
+          },
+          "memory_features": {
+            "maximumAbsoluteError": 2.9290170669555664,
+            "cosineSimilarity": 0.9980805195910728,
+            "float32Close": false
+          },
+          "memory_positions": {
+            "maximumAbsoluteError": 5.960464477539063e-08,
+            "cosineSimilarity": 0.9999999999999993,
+            "float32Close": true
+          }
+        }
+      },
+      {
+        "index": 3,
+        "ptsNumerator": 1,
+        "ptsDenominator": 10,
+        "imageSHA256": "a5ff112a614abf780a0ee0a275e0890599673f0cf03a84d4e7d0a65abb4a8767",
+        "candidateWallSecondsDiagnosticOnly": 0.1490858329925686,
+        "state": {
+          "acceptedFrames": 4,
+          "spatialEntries": 4,
+          "pointerEntries": 4
+        },
+        "passed": true,
+        "maskIoUAgainstReference": 0.9992771955186122,
+        "sameObjectPresence": true,
+        "outputs": {
+          "low_res_mask": {
+            "maximumAbsoluteError": 1.317434310913086,
+            "cosineSimilarity": 0.9999857422357948,
+            "float32Close": false
+          },
+          "high_res_mask": {
+            "maximumAbsoluteError": 1.2059974670410156,
+            "cosineSimilarity": 0.999989344108459,
+            "float32Close": false
+          },
+          "best_iou": {
+            "maximumAbsoluteError": 0.0004303455352783203,
+            "cosineSimilarity": 1.0,
+            "float32Close": true
+          },
+          "object_pointer": {
+            "maximumAbsoluteError": 0.07073895633220673,
+            "cosineSimilarity": 0.9988553361256678,
+            "float32Close": false
+          },
+          "object_score": {
+            "maximumAbsoluteError": 0.030630111694335938,
+            "cosineSimilarity": 1.0,
+            "float32Close": false
+          },
+          "memory_features": {
+            "maximumAbsoluteError": 1.5249533653259277,
+            "cosineSimilarity": 0.998345422937412,
+            "float32Close": false
+          },
+          "memory_positions": {
+            "maximumAbsoluteError": 5.960464477539063e-08,
+            "cosineSimilarity": 0.9999999999999993,
+            "float32Close": true
+          }
+        }
+      },
+      {
+        "index": 4,
+        "ptsNumerator": 2,
+        "ptsDenominator": 15,
+        "imageSHA256": "62f93ffbadcdcf628dcc60349c18fa0a12df52ccbf0658b2f20312d3d1af018e",
+        "candidateWallSecondsDiagnosticOnly": 0.15115554188378155,
+        "state": {
+          "acceptedFrames": 5,
+          "spatialEntries": 5,
+          "pointerEntries": 5
+        },
+        "passed": true,
+        "maskIoUAgainstReference": 0.9989376770538244,
+        "sameObjectPresence": true,
+        "outputs": {
+          "low_res_mask": {
+            "maximumAbsoluteError": 0.6294116973876953,
+            "cosineSimilarity": 0.999986060977871,
+            "float32Close": false
+          },
+          "high_res_mask": {
+            "maximumAbsoluteError": 0.5742092132568359,
+            "cosineSimilarity": 0.99998920393057,
+            "float32Close": false
+          },
+          "best_iou": {
+            "maximumAbsoluteError": 0.00047385692596435547,
+            "cosineSimilarity": 1.0,
+            "float32Close": true
+          },
+          "object_pointer": {
+            "maximumAbsoluteError": 0.040244221687316895,
+            "cosineSimilarity": 0.9995467513445551,
+            "float32Close": false
+          },
+          "object_score": {
+            "maximumAbsoluteError": 0.007152557373046875,
+            "cosineSimilarity": 1.0,
+            "float32Close": true
+          },
+          "memory_features": {
+            "maximumAbsoluteError": 2.896608352661133,
+            "cosineSimilarity": 0.9978949788735314,
+            "float32Close": false
+          },
+          "memory_positions": {
+            "maximumAbsoluteError": 5.960464477539063e-08,
+            "cosineSimilarity": 0.9999999999999993,
+            "float32Close": true
+          }
+        }
+      },
+      {
+        "index": 5,
+        "ptsNumerator": 1,
+        "ptsDenominator": 6,
+        "imageSHA256": "f6a40decba22d155c87c3c1266d596fd2bd6196f17b8aa8a8e331ce6f5cd4e2d",
+        "candidateWallSecondsDiagnosticOnly": 0.15200962498784065,
+        "state": {
+          "acceptedFrames": 6,
+          "spatialEntries": 6,
+          "pointerEntries": 6
+        },
+        "passed": true,
+        "maskIoUAgainstReference": 0.998561668464581,
+        "sameObjectPresence": true,
+        "outputs": {
+          "low_res_mask": {
+            "maximumAbsoluteError": 0.7677764892578125,
+            "cosineSimilarity": 0.999987997721093,
+            "float32Close": false
+          },
+          "high_res_mask": {
+            "maximumAbsoluteError": 0.7074489593505859,
+            "cosineSimilarity": 0.9999909591783978,
+            "float32Close": false
+          },
+          "best_iou": {
+            "maximumAbsoluteError": 0.00027889013290405273,
+            "cosineSimilarity": 1.0,
+            "float32Close": true
+          },
+          "object_pointer": {
+            "maximumAbsoluteError": 0.039476096630096436,
+            "cosineSimilarity": 0.9996938321187215,
+            "float32Close": false
+          },
+          "object_score": {
+            "maximumAbsoluteError": 0.028749465942382812,
+            "cosineSimilarity": 1.0,
+            "float32Close": false
+          },
+          "memory_features": {
+            "maximumAbsoluteError": 1.4663103818893433,
+            "cosineSimilarity": 0.9985014027938609,
+            "float32Close": false
+          },
+          "memory_positions": {
+            "maximumAbsoluteError": 5.960464477539063e-08,
+            "cosineSimilarity": 0.9999999999999993,
+            "float32Close": true
+          }
+        }
+      },
+      {
+        "index": 6,
+        "ptsNumerator": 1,
+        "ptsDenominator": 5,
+        "imageSHA256": "2ac9074fac47bc62545f8737795e6a64f267b59a0ad55d10b1a85150bcbaa59f",
+        "candidateWallSecondsDiagnosticOnly": 0.15083774994127452,
+        "state": {
+          "acceptedFrames": 7,
+          "spatialEntries": 7,
+          "pointerEntries": 7
+        },
+        "passed": true,
+        "maskIoUAgainstReference": 0.9985179696183771,
+        "sameObjectPresence": true,
+        "outputs": {
+          "low_res_mask": {
+            "maximumAbsoluteError": 0.734527587890625,
+            "cosineSimilarity": 0.9999876194351296,
+            "float32Close": false
+          },
+          "high_res_mask": {
+            "maximumAbsoluteError": 0.6502399444580078,
+            "cosineSimilarity": 0.9999906735287039,
+            "float32Close": false
+          },
+          "best_iou": {
+            "maximumAbsoluteError": 0.0005310773849487305,
+            "cosineSimilarity": 1.0,
+            "float32Close": true
+          },
+          "object_pointer": {
+            "maximumAbsoluteError": 0.050705790519714355,
+            "cosineSimilarity": 0.9993453828171657,
+            "float32Close": false
+          },
+          "object_score": {
+            "maximumAbsoluteError": 0.03356456756591797,
+            "cosineSimilarity": 1.0,
+            "float32Close": false
+          },
+          "memory_features": {
+            "maximumAbsoluteError": 1.969890832901001,
+            "cosineSimilarity": 0.9970243142637022,
+            "float32Close": false
+          },
+          "memory_positions": {
+            "maximumAbsoluteError": 5.960464477539063e-08,
+            "cosineSimilarity": 0.9999999999999993,
+            "float32Close": true
+          }
+        }
+      },
+      {
+        "index": 7,
+        "ptsNumerator": 7,
+        "ptsDenominator": 30,
+        "imageSHA256": "bdc67ced61153a28b0569c2781bdb6aff68dd07dd278389e9ec387fe11e9dc9a",
+        "candidateWallSecondsDiagnosticOnly": 0.1619336251169443,
+        "state": {
+          "acceptedFrames": 8,
+          "spatialEntries": 7,
+          "pointerEntries": 8
+        },
+        "passed": true,
+        "maskIoUAgainstReference": 0.9977341389728097,
+        "sameObjectPresence": true,
+        "outputs": {
+          "low_res_mask": {
+            "maximumAbsoluteError": 0.5713405609130859,
+            "cosineSimilarity": 0.9999878965921284,
+            "float32Close": false
+          },
+          "high_res_mask": {
+            "maximumAbsoluteError": 0.5220508575439453,
+            "cosineSimilarity": 0.9999908528131523,
+            "float32Close": false
+          },
+          "best_iou": {
+            "maximumAbsoluteError": 0.00035244226455688477,
+            "cosineSimilarity": 1.0,
+            "float32Close": true
+          },
+          "object_pointer": {
+            "maximumAbsoluteError": 0.04198658466339111,
+            "cosineSimilarity": 0.999574910870314,
+            "float32Close": false
+          },
+          "object_score": {
+            "maximumAbsoluteError": 0.001125335693359375,
+            "cosineSimilarity": 1.0,
+            "float32Close": true
+          },
+          "memory_features": {
+            "maximumAbsoluteError": 2.5548746585845947,
+            "cosineSimilarity": 0.9979365219415313,
+            "float32Close": false
+          },
+          "memory_positions": {
+            "maximumAbsoluteError": 5.960464477539063e-08,
+            "cosineSimilarity": 0.9999999999999993,
+            "float32Close": true
+          }
+        }
+      },
+      {
+        "index": 8,
+        "ptsNumerator": 4,
+        "ptsDenominator": 15,
+        "imageSHA256": "74ab3b24632b67dd4d82592166b5c02da84d02aa8a00d0aeff6724b6e98d9816",
+        "candidateWallSecondsDiagnosticOnly": 0.150262915994972,
+        "state": {
+          "acceptedFrames": 9,
+          "spatialEntries": 7,
+          "pointerEntries": 9
+        },
+        "passed": true,
+        "maskIoUAgainstReference": 0.9988632057597575,
+        "sameObjectPresence": true,
+        "outputs": {
+          "low_res_mask": {
+            "maximumAbsoluteError": 0.6999053955078125,
+            "cosineSimilarity": 0.9999867298439927,
+            "float32Close": false
+          },
+          "high_res_mask": {
+            "maximumAbsoluteError": 0.6406517028808594,
+            "cosineSimilarity": 0.9999896507138595,
+            "float32Close": false
+          },
+          "best_iou": {
+            "maximumAbsoluteError": 0.0004982948303222656,
+            "cosineSimilarity": 1.0,
+            "float32Close": true
+          },
+          "object_pointer": {
+            "maximumAbsoluteError": 0.04445210099220276,
+            "cosineSimilarity": 0.9996634962147172,
+            "float32Close": false
+          },
+          "object_score": {
+            "maximumAbsoluteError": 0.022991180419921875,
+            "cosineSimilarity": 1.0,
+            "float32Close": false
+          },
+          "memory_features": {
+            "maximumAbsoluteError": 3.017267942428589,
+            "cosineSimilarity": 0.9975923731662538,
+            "float32Close": false
+          },
+          "memory_positions": {
+            "maximumAbsoluteError": 5.960464477539063e-08,
+            "cosineSimilarity": 0.9999999999999993,
+            "float32Close": true
+          }
+        }
+      },
+      {
+        "index": 9,
+        "ptsNumerator": 3,
+        "ptsDenominator": 10,
+        "imageSHA256": "0a7e27e0429e46facf8d23eb41c4ab25e8cebf9b579a9f5c679125bb06cdc782",
+        "candidateWallSecondsDiagnosticOnly": 0.15012041688896716,
+        "state": {
+          "acceptedFrames": 10,
+          "spatialEntries": 7,
+          "pointerEntries": 10
+        },
+        "passed": true,
+        "maskIoUAgainstReference": 0.9988644965934897,
+        "sameObjectPresence": true,
+        "outputs": {
+          "low_res_mask": {
+            "maximumAbsoluteError": 0.6151914596557617,
+            "cosineSimilarity": 0.999988023690965,
+            "float32Close": false
+          },
+          "high_res_mask": {
+            "maximumAbsoluteError": 0.5559148788452148,
+            "cosineSimilarity": 0.9999907002357814,
+            "float32Close": false
+          },
+          "best_iou": {
+            "maximumAbsoluteError": 0.00041097402572631836,
+            "cosineSimilarity": 1.0,
+            "float32Close": true
+          },
+          "object_pointer": {
+            "maximumAbsoluteError": 0.04905647039413452,
+            "cosineSimilarity": 0.9994886218391685,
+            "float32Close": false
+          },
+          "object_score": {
+            "maximumAbsoluteError": 0.05894756317138672,
+            "cosineSimilarity": 1.0,
+            "float32Close": false
+          },
+          "memory_features": {
+            "maximumAbsoluteError": 3.2210519313812256,
+            "cosineSimilarity": 0.997069383581214,
+            "float32Close": false
+          },
+          "memory_positions": {
+            "maximumAbsoluteError": 5.960464477539063e-08,
+            "cosineSimilarity": 0.9999999999999993,
+            "float32Close": true
+          }
+        }
+      },
+      {
+        "index": 10,
+        "ptsNumerator": 1,
+        "ptsDenominator": 3,
+        "imageSHA256": "e4257f051a23bb1524c2a20ae52414fa2791055db7e7a7dbb167f3f38af38eda",
+        "candidateWallSecondsDiagnosticOnly": 0.15014449995942414,
+        "state": {
+          "acceptedFrames": 11,
+          "spatialEntries": 7,
+          "pointerEntries": 11
+        },
+        "passed": true,
+        "maskIoUAgainstReference": 0.9970457902511078,
+        "sameObjectPresence": true,
+        "outputs": {
+          "low_res_mask": {
+            "maximumAbsoluteError": 0.7147235870361328,
+            "cosineSimilarity": 0.999987523406442,
+            "float32Close": false
+          },
+          "high_res_mask": {
+            "maximumAbsoluteError": 0.665740966796875,
+            "cosineSimilarity": 0.9999902066804851,
+            "float32Close": false
+          },
+          "best_iou": {
+            "maximumAbsoluteError": 0.00024366378784179688,
+            "cosineSimilarity": 1.0,
+            "float32Close": true
+          },
+          "object_pointer": {
+            "maximumAbsoluteError": 0.04016005992889404,
+            "cosineSimilarity": 0.9997375365765944,
+            "float32Close": false
+          },
+          "object_score": {
+            "maximumAbsoluteError": 0.08167076110839844,
+            "cosineSimilarity": 1.0,
+            "float32Close": false
+          },
+          "memory_features": {
+            "maximumAbsoluteError": 2.3706185817718506,
+            "cosineSimilarity": 0.9975212477386372,
+            "float32Close": false
+          },
+          "memory_positions": {
+            "maximumAbsoluteError": 5.960464477539063e-08,
+            "cosineSimilarity": 0.9999999999999993,
+            "float32Close": true
+          }
+        }
+      },
+      {
+        "index": 11,
+        "ptsNumerator": 11,
+        "ptsDenominator": 30,
+        "imageSHA256": "399ed04cfbb7808f567feb7165eb91011183ef33b2974d8b0bda2d917c2561d5",
+        "candidateWallSecondsDiagnosticOnly": 0.15214654197916389,
+        "state": {
+          "acceptedFrames": 12,
+          "spatialEntries": 7,
+          "pointerEntries": 12
+        },
+        "passed": true,
+        "maskIoUAgainstReference": 0.9975115535015997,
+        "sameObjectPresence": true,
+        "outputs": {
+          "low_res_mask": {
+            "maximumAbsoluteError": 0.9076061248779297,
+            "cosineSimilarity": 0.9999863705363938,
+            "float32Close": false
+          },
+          "high_res_mask": {
+            "maximumAbsoluteError": 0.8264284133911133,
+            "cosineSimilarity": 0.9999892566897209,
+            "float32Close": false
+          },
+          "best_iou": {
+            "maximumAbsoluteError": 0.0006053447723388672,
+            "cosineSimilarity": 1.0,
+            "float32Close": true
+          },
+          "object_pointer": {
+            "maximumAbsoluteError": 0.06586313247680664,
+            "cosineSimilarity": 0.9993962332642404,
+            "float32Close": false
+          },
+          "object_score": {
+            "maximumAbsoluteError": 0.06078910827636719,
+            "cosineSimilarity": 1.0,
+            "float32Close": false
+          },
+          "memory_features": {
+            "maximumAbsoluteError": 2.5678679943084717,
+            "cosineSimilarity": 0.9979098735213022,
+            "float32Close": false
+          },
+          "memory_positions": {
+            "maximumAbsoluteError": 5.960464477539063e-08,
+            "cosineSimilarity": 0.9999999999999993,
+            "float32Close": true
+          }
+        }
+      },
+      {
+        "index": 12,
+        "ptsNumerator": 2,
+        "ptsDenominator": 5,
+        "imageSHA256": "ff7db0909555b0146117f02782d1239dee34abe6bb449a74ed55810aecd501b9",
+        "candidateWallSecondsDiagnosticOnly": 0.15211454103700817,
+        "state": {
+          "acceptedFrames": 13,
+          "spatialEntries": 7,
+          "pointerEntries": 13
+        },
+        "passed": true,
+        "maskIoUAgainstReference": 0.9986440677966102,
+        "sameObjectPresence": true,
+        "outputs": {
+          "low_res_mask": {
+            "maximumAbsoluteError": 0.7083492279052734,
+            "cosineSimilarity": 0.9999861843828642,
+            "float32Close": false
+          },
+          "high_res_mask": {
+            "maximumAbsoluteError": 0.6426677703857422,
+            "cosineSimilarity": 0.9999889929105387,
+            "float32Close": false
+          },
+          "best_iou": {
+            "maximumAbsoluteError": 0.00013488531112670898,
+            "cosineSimilarity": 1.0,
+            "float32Close": true
+          },
+          "object_pointer": {
+            "maximumAbsoluteError": 0.04000133275985718,
+            "cosineSimilarity": 0.9997288091564622,
+            "float32Close": false
+          },
+          "object_score": {
+            "maximumAbsoluteError": 0.06189537048339844,
+            "cosineSimilarity": 1.0,
+            "float32Close": false
+          },
+          "memory_features": {
+            "maximumAbsoluteError": 0.9513335227966309,
+            "cosineSimilarity": 0.998264980634879,
+            "float32Close": false
+          },
+          "memory_positions": {
+            "maximumAbsoluteError": 5.960464477539063e-08,
+            "cosineSimilarity": 0.9999999999999993,
+            "float32Close": true
+          }
+        }
+      },
+      {
+        "index": 13,
+        "ptsNumerator": 13,
+        "ptsDenominator": 30,
+        "imageSHA256": "f38ef5b23bc0ab5ee6d09f4713dcaaa89cebee59b82ec68ce9f7a55f38a5fbe1",
+        "candidateWallSecondsDiagnosticOnly": 0.1504054160322994,
+        "state": {
+          "acceptedFrames": 14,
+          "spatialEntries": 7,
+          "pointerEntries": 14
+        },
+        "passed": true,
+        "maskIoUAgainstReference": 0.999677523379555,
+        "sameObjectPresence": true,
+        "outputs": {
+          "low_res_mask": {
+            "maximumAbsoluteError": 0.5932846069335938,
+            "cosineSimilarity": 0.9999828084241462,
+            "float32Close": false
+          },
+          "high_res_mask": {
+            "maximumAbsoluteError": 0.5469131469726562,
+            "cosineSimilarity": 0.9999856973197178,
+            "float32Close": false
+          },
+          "best_iou": {
+            "maximumAbsoluteError": 0.0003477931022644043,
+            "cosineSimilarity": 1.0,
+            "float32Close": true
+          },
+          "object_pointer": {
+            "maximumAbsoluteError": 0.041218966245651245,
+            "cosineSimilarity": 0.9996663903171655,
+            "float32Close": false
+          },
+          "object_score": {
+            "maximumAbsoluteError": 0.06310272216796875,
+            "cosineSimilarity": 1.0,
+            "float32Close": false
+          },
+          "memory_features": {
+            "maximumAbsoluteError": 1.9126121997833252,
+            "cosineSimilarity": 0.9980561428136188,
+            "float32Close": false
+          },
+          "memory_positions": {
+            "maximumAbsoluteError": 5.960464477539063e-08,
+            "cosineSimilarity": 0.9999999999999993,
+            "float32Close": true
+          }
+        }
+      },
+      {
+        "index": 14,
+        "ptsNumerator": 7,
+        "ptsDenominator": 15,
+        "imageSHA256": "19ac8be183ee9a5566c9bad4c3b46cc2fde023da81f6ee81650fd7e3b87a54b1",
+        "candidateWallSecondsDiagnosticOnly": 0.15400674985721707,
+        "state": {
+          "acceptedFrames": 15,
+          "spatialEntries": 7,
+          "pointerEntries": 15
+        },
+        "passed": true,
+        "maskIoUAgainstReference": 0.999079754601227,
+        "sameObjectPresence": true,
+        "outputs": {
+          "low_res_mask": {
+            "maximumAbsoluteError": 0.6962947845458984,
+            "cosineSimilarity": 0.9999869297992974,
+            "float32Close": false
+          },
+          "high_res_mask": {
+            "maximumAbsoluteError": 0.6316967010498047,
+            "cosineSimilarity": 0.9999901777880427,
+            "float32Close": false
+          },
+          "best_iou": {
+            "maximumAbsoluteError": 0.00020200014114379883,
+            "cosineSimilarity": 1.0,
+            "float32Close": true
+          },
+          "object_pointer": {
+            "maximumAbsoluteError": 0.03275585174560547,
+            "cosineSimilarity": 0.9997498261765737,
+            "float32Close": false
+          },
+          "object_score": {
+            "maximumAbsoluteError": 0.028934478759765625,
+            "cosineSimilarity": 1.0,
+            "float32Close": false
+          },
+          "memory_features": {
+            "maximumAbsoluteError": 2.717181444168091,
+            "cosineSimilarity": 0.9970986885511416,
+            "float32Close": false
+          },
+          "memory_positions": {
+            "maximumAbsoluteError": 5.960464477539063e-08,
+            "cosineSimilarity": 0.9999999999999993,
+            "float32Close": true
+          }
+        }
+      },
+      {
+        "index": 15,
+        "ptsNumerator": 1,
+        "ptsDenominator": 2,
+        "imageSHA256": "a1f6f364fc6b52333e04ce09c28846a3605aa2a56ba3ff3614dcdd52533b987d",
+        "candidateWallSecondsDiagnosticOnly": 0.1527785831131041,
+        "state": {
+          "acceptedFrames": 16,
+          "spatialEntries": 7,
+          "pointerEntries": 16
+        },
+        "passed": true,
+        "maskIoUAgainstReference": 0.9977464788732394,
+        "sameObjectPresence": true,
+        "outputs": {
+          "low_res_mask": {
+            "maximumAbsoluteError": 0.5735139846801758,
+            "cosineSimilarity": 0.9999867320408635,
+            "float32Close": false
+          },
+          "high_res_mask": {
+            "maximumAbsoluteError": 0.5139484405517578,
+            "cosineSimilarity": 0.9999895603949128,
+            "float32Close": false
+          },
+          "best_iou": {
+            "maximumAbsoluteError": 0.0002465248107910156,
+            "cosineSimilarity": 1.0,
+            "float32Close": true
+          },
+          "object_pointer": {
+            "maximumAbsoluteError": 0.03845864534378052,
+            "cosineSimilarity": 0.9996908956627781,
+            "float32Close": false
+          },
+          "object_score": {
+            "maximumAbsoluteError": 0.0806112289428711,
+            "cosineSimilarity": 1.0,
+            "float32Close": false
+          },
+          "memory_features": {
+            "maximumAbsoluteError": 1.3399730920791626,
+            "cosineSimilarity": 0.9980909768366121,
+            "float32Close": false
+          },
+          "memory_positions": {
+            "maximumAbsoluteError": 5.960464477539063e-08,
+            "cosineSimilarity": 0.9999999999999993,
+            "float32Close": true
+          }
+        }
+      },
+      {
+        "index": 16,
+        "ptsNumerator": 8,
+        "ptsDenominator": 15,
+        "imageSHA256": "9769759d13e3292cd9f6c52fda09ac76903c406362fe801c399c4fa7a1b05a53",
+        "candidateWallSecondsDiagnosticOnly": 0.15114004211500287,
+        "state": {
+          "acceptedFrames": 17,
+          "spatialEntries": 7,
+          "pointerEntries": 16
+        },
+        "passed": true,
+        "maskIoUAgainstReference": 0.9997340425531915,
+        "sameObjectPresence": true,
+        "outputs": {
+          "low_res_mask": {
+            "maximumAbsoluteError": 0.5683870315551758,
+            "cosineSimilarity": 0.9999831403328072,
+            "float32Close": false
+          },
+          "high_res_mask": {
+            "maximumAbsoluteError": 0.5182209014892578,
+            "cosineSimilarity": 0.999986558155863,
+            "float32Close": false
+          },
+          "best_iou": {
+            "maximumAbsoluteError": 0.0002377629280090332,
+            "cosineSimilarity": 1.0,
+            "float32Close": true
+          },
+          "object_pointer": {
+            "maximumAbsoluteError": 0.03931853175163269,
+            "cosineSimilarity": 0.9997747255777868,
+            "float32Close": false
+          },
+          "object_score": {
+            "maximumAbsoluteError": 0.06862926483154297,
+            "cosineSimilarity": 1.0,
+            "float32Close": false
+          },
+          "memory_features": {
+            "maximumAbsoluteError": 3.670285224914551,
+            "cosineSimilarity": 0.9952922884571731,
+            "float32Close": false
+          },
+          "memory_positions": {
+            "maximumAbsoluteError": 5.960464477539063e-08,
+            "cosineSimilarity": 0.9999999999999993,
+            "float32Close": true
+          }
+        }
+      },
+      {
+        "index": 17,
+        "ptsNumerator": 17,
+        "ptsDenominator": 30,
+        "imageSHA256": "547d222bd5a2f255779e7afc5269080924c0b7d2475607e930cc59342c0f2a59",
+        "candidateWallSecondsDiagnosticOnly": 0.14963833312503994,
+        "state": {
+          "acceptedFrames": 18,
+          "spatialEntries": 7,
+          "pointerEntries": 16
+        },
+        "passed": true,
+        "maskIoUAgainstReference": 0.9989733059548255,
+        "sameObjectPresence": true,
+        "outputs": {
+          "low_res_mask": {
+            "maximumAbsoluteError": 0.5582923889160156,
+            "cosineSimilarity": 0.999985150978973,
+            "float32Close": false
+          },
+          "high_res_mask": {
+            "maximumAbsoluteError": 0.5120601654052734,
+            "cosineSimilarity": 0.9999886511844736,
+            "float32Close": false
+          },
+          "best_iou": {
+            "maximumAbsoluteError": 0.0002956390380859375,
+            "cosineSimilarity": 1.0,
+            "float32Close": true
+          },
+          "object_pointer": {
+            "maximumAbsoluteError": 0.07276058197021484,
+            "cosineSimilarity": 0.9993569585654202,
+            "float32Close": false
+          },
+          "object_score": {
+            "maximumAbsoluteError": 0.055866241455078125,
+            "cosineSimilarity": 1.0,
+            "float32Close": false
+          },
+          "memory_features": {
+            "maximumAbsoluteError": 2.2025723457336426,
+            "cosineSimilarity": 0.9978448266926038,
+            "float32Close": false
+          },
+          "memory_positions": {
+            "maximumAbsoluteError": 5.960464477539063e-08,
+            "cosineSimilarity": 0.9999999999999993,
+            "float32Close": true
+          }
+        }
+      },
+      {
+        "index": 18,
+        "ptsNumerator": 3,
+        "ptsDenominator": 5,
+        "imageSHA256": "a29dd4d4ec155aef133fe670ff73065aa2558101d980f187e24752dd0976bab9",
+        "candidateWallSecondsDiagnosticOnly": 0.15123658394441009,
+        "state": {
+          "acceptedFrames": 19,
+          "spatialEntries": 7,
+          "pointerEntries": 16
+        },
+        "passed": true,
+        "maskIoUAgainstReference": 0.9997473471450228,
+        "sameObjectPresence": true,
+        "outputs": {
+          "low_res_mask": {
+            "maximumAbsoluteError": 0.5685977935791016,
+            "cosineSimilarity": 0.9999863972522809,
+            "float32Close": false
+          },
+          "high_res_mask": {
+            "maximumAbsoluteError": 0.5552425384521484,
+            "cosineSimilarity": 0.9999897699447232,
+            "float32Close": false
+          },
+          "best_iou": {
+            "maximumAbsoluteError": 0.0002301335334777832,
+            "cosineSimilarity": 1.0,
+            "float32Close": true
+          },
+          "object_pointer": {
+            "maximumAbsoluteError": 0.048594892024993896,
+            "cosineSimilarity": 0.9996349766119583,
+            "float32Close": false
+          },
+          "object_score": {
+            "maximumAbsoluteError": 0.07714462280273438,
+            "cosineSimilarity": 1.0,
+            "float32Close": false
+          },
+          "memory_features": {
+            "maximumAbsoluteError": 2.712923049926758,
+            "cosineSimilarity": 0.9974619182787933,
+            "float32Close": false
+          },
+          "memory_positions": {
+            "maximumAbsoluteError": 5.960464477539063e-08,
+            "cosineSimilarity": 0.9999999999999993,
+            "float32Close": true
+          }
+        }
+      },
+      {
+        "index": 19,
+        "ptsNumerator": 19,
+        "ptsDenominator": 30,
+        "imageSHA256": "05ef5ea441e42bb439f0a87c950f827d4b3cf5e2e6ddcee5125c2462295137a6",
+        "candidateWallSecondsDiagnosticOnly": 0.15011025010608137,
+        "state": {
+          "acceptedFrames": 20,
+          "spatialEntries": 7,
+          "pointerEntries": 16
+        },
+        "passed": true,
+        "maskIoUAgainstReference": 0.9984962406015038,
+        "sameObjectPresence": true,
+        "outputs": {
+          "low_res_mask": {
+            "maximumAbsoluteError": 0.7533073425292969,
+            "cosineSimilarity": 0.9999834121968787,
+            "float32Close": false
+          },
+          "high_res_mask": {
+            "maximumAbsoluteError": 0.7128133773803711,
+            "cosineSimilarity": 0.9999865449798717,
+            "float32Close": false
+          },
+          "best_iou": {
+            "maximumAbsoluteError": 0.00013184547424316406,
+            "cosineSimilarity": 1.0,
+            "float32Close": true
+          },
+          "object_pointer": {
+            "maximumAbsoluteError": 0.13224923610687256,
+            "cosineSimilarity": 0.9984306495819557,
+            "float32Close": false
+          },
+          "object_score": {
+            "maximumAbsoluteError": 0.1439037322998047,
+            "cosineSimilarity": 1.0,
+            "float32Close": false
+          },
+          "memory_features": {
+            "maximumAbsoluteError": 3.9770421981811523,
+            "cosineSimilarity": 0.9944459240205845,
+            "float32Close": false
+          },
+          "memory_positions": {
+            "maximumAbsoluteError": 5.960464477539063e-08,
+            "cosineSimilarity": 0.9999999999999993,
+            "float32Close": true
+          }
+        }
+      }
+    ],
+    "scope": "20 consecutive frames; correctness fixture, not a speed or general-quality benchmark",
+    "policy": {
+      "maskIoUMinimum": 0.95,
+      "cosineMinimumCoreML": 0.99,
+      "float32Atol": 0.001,
+      "float32Rtol": 0.001
+    },
+    "coremlComputeUnits": "CPU_ONLY"
+  }
+}

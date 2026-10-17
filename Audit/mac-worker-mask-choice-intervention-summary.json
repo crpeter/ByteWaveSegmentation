@@ -1,0 +1,1383 @@
+{
+  "scope": "Measure the downstream effect of changing one GPU candidate-mask choice.\n\nReplay identical installed GPU outputs into two separate states until the fork.\nAt the fork only, the intervention uses the original model's candidate index.\nRequire exact tapped and same-index override controls before committing it.\nAll subsequent predictions use the unmodified installed GPU propagator, with\nindependent histories and shared encoder features. Existing accuracy gates stay\nunchanged. Default 49-frame prefix precedes occlusion: no recovery, identity,\nspeed, device readiness or deployable selection-policy claim.\n",
+  "contract": "bytewave.mask-choice-intervention.diagnostic.v1",
+  "completed": true,
+  "readyForDeviceValidation": false,
+  "sourceVideoSHA256": "a8a9d3fd5b85fbdf2770027353d6d19971845c13f83ffdcc6058ae5e6a0b1833",
+  "sourceFileBytes": 10796435,
+  "phoneReportSHA256": "7c807a77903c90fc90d23dcad387e82bb454a315f690acb1d517bf8b73c4dc65",
+  "fixtureSHA256": "760dd45c6eed6972f434dd324920b74dbfa262fb6648983606c2872581430a61",
+  "modelFiles": {
+    "models/BWTemporalImageEncoder.mlpackage/Manifest.json": "df20c1178e37ef2d4587281d5feca5979f2db8b859ffe7357161e4d5b51c254f",
+    "models/BWTemporalImageEncoder.mlpackage/Data/com.apple.CoreML/model.mlmodel": "a3046d4fbd83b7974d0b01d92ca30a55adad08aca218789b97034245023bbeba",
+    "models/BWTemporalImageEncoder.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "90e112d95a98e30486b768a2397f253766ceaa95bfd3cdb5a31a8db0341f61c3",
+    "models/BWTemporalInitializer.mlpackage/Data/com.apple.CoreML/model.mlmodel": "a70da7906ee21086122e9c24479b149308337f49609854455ae9cf65f790625f",
+    "models/BWTemporalInitializer.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "9409edf81128013f2ff61ef2565832f0a35782304e7adc54466e0396b5ab94c2",
+    "models/BWTemporalInitializer.mlpackage/Manifest.json": "d2311a29bb658bd6f16e801e91893985eb5aea3f7a6587f718e3e93539bc3068",
+    "models/BWTemporalInitialMemoryEncoder.mlpackage/Data/com.apple.CoreML/model.mlmodel": "613c7a310f1fae1b698aaba6e5a70c3afb842f459d3ec96cf9e0f4b6b4b9438a",
+    "models/BWTemporalInitialMemoryEncoder.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "21ae511f368835d55fe519b9b4ae9032bf9256cdb3cc0e91fdf5b4c467311563",
+    "models/BWTemporalInitialMemoryEncoder.mlpackage/Manifest.json": "64fb8412cf6229dda7ec7227113c7c8cf1a5278a96b62b94e2a0a76f6d790b52",
+    "models/BWTemporalPropagator.mlpackage/Manifest.json": "aec4bf7ef5dafc3816e3a645f93b134824268f4b0e8184170452e10c8c5618c1",
+    "models/BWTemporalPropagator.mlpackage/Data/com.apple.CoreML/model.mlmodel": "dec2227edc7d22832a3726a68237b6789f2d79ede1a5b0cc6f76d400c69d08d9",
+    "models/BWTemporalPropagator.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "3e679bfdc49fc43e895434b8c8bb6e75bad20a2cad37fd0aa2d5019cd186386e"
+  },
+  "upstream": "7711e012a30a2402c4eaab637bdb00a521302c91",
+  "checkpointSHA256": "ed2d4850b8792c239689b043c47046ec239b6e808a3d9b6ae676c803fd8780df",
+  "sourceComparisonSHA256": "29ff27150c14715aca3375a82e9336eb3ff9628ae523b88bcfd2cc16a5d67fd3",
+  "sourceChoiceReportSHA256": "8fcce19a32a6573c97760258f3f50d5194634ba035aab0ecaa95ba420e4fc71a",
+  "pointNormalizedTopLeft": [
+    0.6468468468468468,
+    0.5888513513513512
+  ],
+  "referenceNumFrames": 276,
+  "requestedFrames": 49,
+  "forkFrame": 26,
+  "normalCandidateIndex": 2,
+  "forcedCandidateIndex": 1,
+  "computeUnits": "CPU_AND_GPU",
+  "forkApplied": true,
+  "policy": {
+    "maskIoUMinimum": 0.95,
+    "cosineMinimum": 0.99,
+    "float32Atol": 0.001,
+    "float32Rtol": 0.001,
+    "interventionRequiresExactSameIndexControl": true
+  },
+  "torchThreads": {
+    "intraOp": 1,
+    "interOp": 1
+  },
+  "versions": {
+    "torch": "2.7.0",
+    "coremltools": "9.0",
+    "numpy": "1.26.4",
+    "av": "15.0.0",
+    "Pillow": "11.2.1"
+  },
+  "memoryPolicy": "Two independent normal bounded states, initial condition retained. Identical GPU outputs before fork; own outputs from fork onward, including absent frames. No reference tensors enter GPU state.",
+  "interpretation": "One original-reference candidate index is a diagnostic oracle only. Candidate indices do not identify subjects. best_iou stays the maximum natural score. This intervention measures the combined downstream mask/pointer/memory effect, not any one contribution separately.",
+  "variants": {
+    "tapped": {
+      "mapping": {
+        "scores": "ious",
+        "index": "best_iou_inds",
+        "argmaxOperation": "best_iou_inds",
+        "scoreShape": [
+          1,
+          3
+        ],
+        "feedsLowMaskAndPointer": true,
+        "feedsBestIoU": true
+      },
+      "operationsPreserved": true,
+      "originalInterfacesPreserved": true,
+      "files": {
+        "Data/com.apple.CoreML/model.mlmodel": "50d9dbecbf5069029a866e820b3a2123cb4eac3fd8be22d965a1c70cd3a97601",
+        "Data/com.apple.CoreML/weights/weight.bin": "3e679bfdc49fc43e895434b8c8bb6e75bad20a2cad37fd0aa2d5019cd186386e",
+        "Manifest.json": "6ff4b6b31e9da7d39cea6703f3727e51cf30fae5dba80c045b8f5cb9fdef5f75"
+      }
+    },
+    "override": {
+      "mapping": {
+        "scores": "ious",
+        "index": "best_iou_inds",
+        "overrideInput": "diagnostic_candidate_index",
+        "affectedOutputs": [
+          "low_res_mask",
+          "high_res_mask",
+          "object_pointer",
+          "memory_features"
+        ]
+      },
+      "onlyIndexUsesReplaced": true,
+      "originalInterfacesPreserved": true,
+      "bestIoUSemantics": "Unchanged maximum score, not the forced candidate score.",
+      "files": {
+        "Data/com.apple.CoreML/model.mlmodel": "b903f19448720d9d3db26d0af350ce48239a33bbbc89492f10f2c564f82cfba6",
+        "Data/com.apple.CoreML/weights/weight.bin": "3e679bfdc49fc43e895434b8c8bb6e75bad20a2cad37fd0aa2d5019cd186386e",
+        "Manifest.json": "56ea3261831e061af4465e2d0aca20abf166ebc176c8a67225816403c19f7988"
+      }
+    }
+  },
+  "controlsPassed": true,
+  "summary": {
+    "framesReplayed": 49,
+    "forkApplied": true,
+    "controlsPassed": true,
+    "normalPriorComparisonMismatchFrames": [],
+    "originalPriorObservationMismatchFrames": [],
+    "postForkComparisons": {
+      "normalGPUAgainstOriginal": {
+        "failedFrames": [
+          26,
+          27,
+          28,
+          30,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          40,
+          41,
+          42,
+          43,
+          45,
+          47,
+          48
+        ],
+        "minimumMaskIoU": 0.8571428571428571,
+        "minimumPointerCosine": 0.7770946660179124,
+        "minimumMemoryCosine": 0.8584682294053531,
+        "presenceMismatchFrames": []
+      },
+      "overrideGPUAgainstOriginal": {
+        "failedFrames": [
+          27,
+          28,
+          32,
+          33,
+          41,
+          42,
+          43
+        ],
+        "minimumMaskIoU": 0.9405940594059405,
+        "minimumPointerCosine": 0.7853672909540425,
+        "minimumMemoryCosine": 0.9294400092231139,
+        "presenceMismatchFrames": []
+      }
+    },
+    "normalFailureResolvedByOverrideFrames": [
+      26,
+      30,
+      34,
+      35,
+      36,
+      37,
+      38,
+      40,
+      45,
+      47,
+      48
+    ],
+    "normalPassFailedWithOverrideFrames": [],
+    "interpretationAllowed": true
+  },
+  "uploadedReportSHA256": "f35d013d27ef57631c6acbfb4e755ef5e20b2c41ca2dff78800263748e610df7",
+  "forkEvidence": {
+    "controls": {
+      "tapped": {
+        "allOutputsExact": true,
+        "outputsExact": {
+          "low_res_mask": true,
+          "high_res_mask": true,
+          "best_iou": true,
+          "object_pointer": true,
+          "object_score": true,
+          "memory_features": true,
+          "memory_positions": true
+        },
+        "existingGateComparison": {
+          "passed": true,
+          "maskIoUAgainstReference": 1.0,
+          "sameObjectPresence": true,
+          "outputs": {
+            "low_res_mask": {
+              "maximumAbsoluteError": 0.0,
+              "cosineSimilarity": 0.9999999999999998,
+              "float32Close": true
+            },
+            "high_res_mask": {
+              "maximumAbsoluteError": 0.0,
+              "cosineSimilarity": 0.9999999999999998,
+              "float32Close": true
+            },
+            "best_iou": {
+              "maximumAbsoluteError": 0.0,
+              "cosineSimilarity": 1.0,
+              "float32Close": true
+            },
+            "object_pointer": {
+              "maximumAbsoluteError": 0.0,
+              "cosineSimilarity": 1.0,
+              "float32Close": true
+            },
+            "object_score": {
+              "maximumAbsoluteError": 0.0,
+              "cosineSimilarity": 1.0,
+              "float32Close": true
+            },
+            "memory_features": {
+              "maximumAbsoluteError": 0.0,
+              "cosineSimilarity": 1.0,
+              "float32Close": true
+            },
+            "memory_positions": {
+              "maximumAbsoluteError": 0.0,
+              "cosineSimilarity": 0.9999999999999998,
+              "float32Close": true
+            }
+          }
+        }
+      },
+      "sameIndexOverride": {
+        "allOutputsExact": true,
+        "outputsExact": {
+          "low_res_mask": true,
+          "high_res_mask": true,
+          "best_iou": true,
+          "object_pointer": true,
+          "object_score": true,
+          "memory_features": true,
+          "memory_positions": true
+        },
+        "existingGateComparison": {
+          "passed": true,
+          "maskIoUAgainstReference": 1.0,
+          "sameObjectPresence": true,
+          "outputs": {
+            "low_res_mask": {
+              "maximumAbsoluteError": 0.0,
+              "cosineSimilarity": 0.9999999999999998,
+              "float32Close": true
+            },
+            "high_res_mask": {
+              "maximumAbsoluteError": 0.0,
+              "cosineSimilarity": 0.9999999999999998,
+              "float32Close": true
+            },
+            "best_iou": {
+              "maximumAbsoluteError": 0.0,
+              "cosineSimilarity": 1.0,
+              "float32Close": true
+            },
+            "object_pointer": {
+              "maximumAbsoluteError": 0.0,
+              "cosineSimilarity": 1.0,
+              "float32Close": true
+            },
+            "object_score": {
+              "maximumAbsoluteError": 0.0,
+              "cosineSimilarity": 1.0,
+              "float32Close": true
+            },
+            "memory_features": {
+              "maximumAbsoluteError": 0.0,
+              "cosineSimilarity": 1.0,
+              "float32Close": true
+            },
+            "memory_positions": {
+              "maximumAbsoluteError": 0.0,
+              "cosineSimilarity": 0.9999999999999998,
+              "float32Close": true
+            }
+          }
+        }
+      }
+    },
+    "originalChoice": {
+      "scores": [
+        0.914826512336731,
+        0.926173985004425,
+        0.9258070588111877
+      ],
+      "selectedIndex": 1,
+      "topTwoMargin": 0.0003669261932373047,
+      "exactTopTie": false,
+      "indexSelectsMaximum": true,
+      "numpyFirstArgmax": 1
+    },
+    "naturalGPUChoice": {
+      "scores": [
+        0.9144673347473145,
+        0.9259235262870789,
+        0.9260018467903137
+      ],
+      "selectedIndex": 2,
+      "topTwoMargin": 7.832050323486328e-05,
+      "exactTopTie": false,
+      "indexSelectsMaximum": true,
+      "numpyFirstArgmax": 2
+    },
+    "overrideNaturalChoice": {
+      "scores": [
+        0.9144673347473145,
+        0.9259235262870789,
+        0.9260018467903137
+      ],
+      "selectedIndex": 2,
+      "topTwoMargin": 7.832050323486328e-05,
+      "exactTopTie": false,
+      "indexSelectsMaximum": true,
+      "numpyFirstArgmax": 2
+    },
+    "unaffectedOutputsExact": {
+      "ious": true,
+      "best_iou_inds": true,
+      "best_iou": true,
+      "object_score": true,
+      "memory_positions": true
+    },
+    "forcedCandidateIndex": 1,
+    "sameInputAlternateAgainstNormal": {
+      "passed": false,
+      "maskIoUAgainstReference": 0.968421052631579,
+      "sameObjectPresence": true,
+      "outputs": {
+        "low_res_mask": {
+          "maximumAbsoluteError": 7.1567840576171875,
+          "cosineSimilarity": 0.9976077164480448,
+          "float32Close": false
+        },
+        "high_res_mask": {
+          "maximumAbsoluteError": 6.5625,
+          "cosineSimilarity": 0.9986672278823386,
+          "float32Close": false
+        },
+        "best_iou": {
+          "maximumAbsoluteError": 0.0,
+          "cosineSimilarity": 1.0,
+          "float32Close": true
+        },
+        "object_pointer": {
+          "maximumAbsoluteError": 0.3016394376754761,
+          "cosineSimilarity": 0.983690284226646,
+          "float32Close": false
+        },
+        "object_score": {
+          "maximumAbsoluteError": 0.0,
+          "cosineSimilarity": 1.0,
+          "float32Close": true
+        },
+        "memory_features": {
+          "maximumAbsoluteError": 5.251953125,
+          "cosineSimilarity": 0.9507696274341232,
+          "float32Close": false
+        },
+        "memory_positions": {
+          "maximumAbsoluteError": 0.0,
+          "cosineSimilarity": 0.9999999999999998,
+          "float32Close": true
+        }
+      }
+    }
+  },
+  "findings": {
+    "postForkFrames": 23,
+    "normalFailedFrames": 18,
+    "overrideFailedFrames": 7,
+    "resolvedFailuresIncludingFork": 11,
+    "resolvedFailuresAfterFork": 10,
+    "newOverallFailureFrames": [],
+    "normalMaskIoUBelow095Frames": [
+      33,
+      35,
+      37,
+      38,
+      40,
+      41,
+      43,
+      48
+    ],
+    "overrideMaskIoUBelow095Frames": [
+      27
+    ],
+    "interpretation": "Controlled one-frame intervention demonstrates a contribution to later numerical divergence on this prefix. Does not establish ground-truth mask quality, recovery or a deployable selection policy.",
+    "localRegression": "Frame27 pointer cosine worsens from 0.9779055965 to 0.7853672910. Fewer overall failing frames does not mean every output improved.",
+    "nextExperiment": "Use the same script and fork once at26, with --frames276 and fresh output worker-mask-choice-override-full-01, to observe full-clip absence/recovery. No model or app promotion."
+  },
+  "frameMetrics": [
+    {
+      "index": 26,
+      "ptsSeconds": 0.8666666666666667,
+      "priorNormalComparisonExact": true,
+      "priorOriginalObservationExact": true,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "objectScore": 7.25242280960083
+        },
+        "normalGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 7.19921875
+        },
+        "overrideGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 7.19921875
+        }
+      },
+      "comparisons": {
+        "normalGPUAgainstOriginal": {
+          "passed": false,
+          "maskIoU": 0.968421052631579,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9842180570405579,
+          "memoryCosine": 0.9586199705161454
+        },
+        "overrideGPUAgainstOriginal": {
+          "passed": true,
+          "maskIoU": 1.0,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9999147302594527,
+          "memoryCosine": 0.9950305351835937
+        },
+        "overrideGPUAgainstNormal": {
+          "passed": false,
+          "maskIoU": 0.968421052631579,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.983690284226646,
+          "memoryCosine": 0.9507696274341232
+        }
+      }
+    },
+    {
+      "index": 27,
+      "ptsSeconds": 0.9,
+      "priorNormalComparisonExact": true,
+      "priorOriginalObservationExact": true,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "objectScore": 7.136505126953125
+        },
+        "normalGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 7.109375
+        },
+        "overrideGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 7.0546875
+        }
+      },
+      "comparisons": {
+        "normalGPUAgainstOriginal": {
+          "passed": false,
+          "maskIoU": 1.0,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9779055964793838,
+          "memoryCosine": 0.9218135149941749
+        },
+        "overrideGPUAgainstOriginal": {
+          "passed": false,
+          "maskIoU": 0.9405940594059405,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.7853672909540425,
+          "memoryCosine": 0.9920728176249172
+        },
+        "overrideGPUAgainstNormal": {
+          "passed": false,
+          "maskIoU": 0.9405940594059405,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.6677813874087966,
+          "memoryCosine": 0.9204365242168996
+        }
+      }
+    },
+    {
+      "index": 28,
+      "ptsSeconds": 0.9333333333333333,
+      "priorNormalComparisonExact": true,
+      "priorOriginalObservationExact": true,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.7974138259887695
+        },
+        "overrideGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.88671875
+        },
+        "normalGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.4921875
+        }
+      },
+      "comparisons": {
+        "normalGPUAgainstOriginal": {
+          "passed": false,
+          "maskIoU": 0.978494623655914,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9888671756243207,
+          "memoryCosine": 0.9993493362180835
+        },
+        "overrideGPUAgainstOriginal": {
+          "passed": false,
+          "maskIoU": 0.9891304347826086,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9643106734305095,
+          "memoryCosine": 0.9998182466390249
+        },
+        "overrideGPUAgainstNormal": {
+          "passed": false,
+          "maskIoU": 0.9680851063829787,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9198283482937323,
+          "memoryCosine": 0.9994543436702008
+        }
+      }
+    },
+    {
+      "index": 29,
+      "ptsSeconds": 0.9666666666666667,
+      "priorNormalComparisonExact": true,
+      "priorOriginalObservationExact": true,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.969019412994385
+        },
+        "normalGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.58984375
+        },
+        "overrideGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 7.078125
+        }
+      },
+      "comparisons": {
+        "normalGPUAgainstOriginal": {
+          "passed": true,
+          "maskIoU": 1.0,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9921639995447677,
+          "memoryCosine": 0.99554570804127
+        },
+        "overrideGPUAgainstOriginal": {
+          "passed": true,
+          "maskIoU": 1.0,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9909312615437804,
+          "memoryCosine": 0.9980017435291363
+        },
+        "overrideGPUAgainstNormal": {
+          "passed": false,
+          "maskIoU": 1.0,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9717015371451134,
+          "memoryCosine": 0.9989764338236904
+        }
+      }
+    },
+    {
+      "index": 30,
+      "ptsSeconds": 1.0,
+      "priorNormalComparisonExact": true,
+      "priorOriginalObservationExact": true,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.880054473876953
+        },
+        "overrideGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 7.015625
+        },
+        "normalGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.48046875
+        }
+      },
+      "comparisons": {
+        "normalGPUAgainstOriginal": {
+          "passed": false,
+          "maskIoU": 0.9801980198019802,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9978246935259621,
+          "memoryCosine": 0.9794246756023667
+        },
+        "overrideGPUAgainstOriginal": {
+          "passed": true,
+          "maskIoU": 0.98,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9970569938634856,
+          "memoryCosine": 0.9998561605404447
+        },
+        "overrideGPUAgainstNormal": {
+          "passed": false,
+          "maskIoU": 0.9607843137254902,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9947966524782549,
+          "memoryCosine": 0.9795617055984348
+        }
+      }
+    },
+    {
+      "index": 31,
+      "ptsSeconds": 1.0333333333333334,
+      "priorNormalComparisonExact": true,
+      "priorOriginalObservationExact": true,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.572658061981201
+        },
+        "normalGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.2890625
+        },
+        "overrideGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.73828125
+        }
+      },
+      "comparisons": {
+        "normalGPUAgainstOriginal": {
+          "passed": true,
+          "maskIoU": 1.0,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9973824286153715,
+          "memoryCosine": 0.9986980958392966
+        },
+        "overrideGPUAgainstOriginal": {
+          "passed": true,
+          "maskIoU": 0.9896907216494846,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9988157005681485,
+          "memoryCosine": 0.9998478666554079
+        },
+        "overrideGPUAgainstNormal": {
+          "passed": true,
+          "maskIoU": 0.9896907216494846,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9947271126772808,
+          "memoryCosine": 0.9986116231931766
+        }
+      }
+    },
+    {
+      "index": 32,
+      "ptsSeconds": 1.0666666666666667,
+      "priorNormalComparisonExact": true,
+      "priorOriginalObservationExact": true,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "objectScore": 7.0131001472473145
+        },
+        "overrideGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 7.12109375
+        },
+        "normalGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.61328125
+        }
+      },
+      "comparisons": {
+        "normalGPUAgainstOriginal": {
+          "passed": false,
+          "maskIoU": 0.9803921568627451,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9954235705327787,
+          "memoryCosine": 0.9069983400457936
+        },
+        "overrideGPUAgainstOriginal": {
+          "passed": false,
+          "maskIoU": 1.0,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9983754795042206,
+          "memoryCosine": 0.9750771349599873
+        },
+        "overrideGPUAgainstNormal": {
+          "passed": false,
+          "maskIoU": 0.9803921568627451,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9929271542686472,
+          "memoryCosine": 0.9319837389990703
+        }
+      }
+    },
+    {
+      "index": 33,
+      "ptsSeconds": 1.1,
+      "priorNormalComparisonExact": true,
+      "priorOriginalObservationExact": true,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "objectScore": 7.002447605133057
+        },
+        "normalGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.41015625
+        },
+        "overrideGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 7.21875
+        }
+      },
+      "comparisons": {
+        "normalGPUAgainstOriginal": {
+          "passed": false,
+          "maskIoU": 0.9223300970873787,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.980561937418199,
+          "memoryCosine": 0.8883007485803838
+        },
+        "overrideGPUAgainstOriginal": {
+          "passed": false,
+          "maskIoU": 1.0,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9971326631824711,
+          "memoryCosine": 0.9880767336098149
+        },
+        "overrideGPUAgainstNormal": {
+          "passed": false,
+          "maskIoU": 0.9223300970873787,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9794642517733269,
+          "memoryCosine": 0.8814129140747429
+        }
+      }
+    },
+    {
+      "index": 34,
+      "ptsSeconds": 1.1333333333333333,
+      "priorNormalComparisonExact": true,
+      "priorOriginalObservationExact": true,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.940194606781006
+        },
+        "overrideGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 7.171875
+        },
+        "normalGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.86328125
+        }
+      },
+      "comparisons": {
+        "normalGPUAgainstOriginal": {
+          "passed": false,
+          "maskIoU": 1.0,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9969816427420588,
+          "memoryCosine": 0.9885914829380021
+        },
+        "overrideGPUAgainstOriginal": {
+          "passed": true,
+          "maskIoU": 0.9905660377358491,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9974957252522193,
+          "memoryCosine": 0.993273719025844
+        },
+        "overrideGPUAgainstNormal": {
+          "passed": true,
+          "maskIoU": 0.9905660377358491,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9943272085564796,
+          "memoryCosine": 0.9955118170511422
+        }
+      }
+    },
+    {
+      "index": 35,
+      "ptsSeconds": 1.1666666666666667,
+      "priorNormalComparisonExact": true,
+      "priorOriginalObservationExact": true,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.800110340118408
+        },
+        "normalGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.80078125
+        },
+        "overrideGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 7.01171875
+        }
+      },
+      "comparisons": {
+        "normalGPUAgainstOriginal": {
+          "passed": false,
+          "maskIoU": 0.9369369369369369,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.7770946660179124,
+          "memoryCosine": 0.8584682294053531
+        },
+        "overrideGPUAgainstOriginal": {
+          "passed": true,
+          "maskIoU": 0.9903846153846154,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9990962653242841,
+          "memoryCosine": 0.9996760898552292
+        },
+        "overrideGPUAgainstNormal": {
+          "passed": false,
+          "maskIoU": 0.9279279279279279,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.7808189842484624,
+          "memoryCosine": 0.8588826113870889
+        }
+      }
+    },
+    {
+      "index": 36,
+      "ptsSeconds": 1.2,
+      "priorNormalComparisonExact": true,
+      "priorOriginalObservationExact": true,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.798527240753174
+        },
+        "overrideGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 7.01171875
+        },
+        "normalGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.32421875
+        }
+      },
+      "comparisons": {
+        "normalGPUAgainstOriginal": {
+          "passed": false,
+          "maskIoU": 0.9896907216494846,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9842533231374667,
+          "memoryCosine": 0.9996750815040597
+        },
+        "overrideGPUAgainstOriginal": {
+          "passed": true,
+          "maskIoU": 1.0,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9988738133368918,
+          "memoryCosine": 0.9998714098256672
+        },
+        "overrideGPUAgainstNormal": {
+          "passed": false,
+          "maskIoU": 0.9896907216494846,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.976796446216551,
+          "memoryCosine": 0.9995593040820595
+        }
+      }
+    },
+    {
+      "index": 37,
+      "ptsSeconds": 1.2333333333333334,
+      "priorNormalComparisonExact": true,
+      "priorOriginalObservationExact": true,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.602565288543701
+        },
+        "normalGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.15234375
+        },
+        "overrideGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.796875
+        }
+      },
+      "comparisons": {
+        "normalGPUAgainstOriginal": {
+          "passed": false,
+          "maskIoU": 0.8571428571428571,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9796397748331561,
+          "memoryCosine": 0.9917488081226228
+        },
+        "overrideGPUAgainstOriginal": {
+          "passed": true,
+          "maskIoU": 1.0,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.999352523955575,
+          "memoryCosine": 0.9997595108534343
+        },
+        "overrideGPUAgainstNormal": {
+          "passed": false,
+          "maskIoU": 0.8571428571428571,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9744644634637094,
+          "memoryCosine": 0.9919671016987939
+        }
+      }
+    },
+    {
+      "index": 38,
+      "ptsSeconds": 1.2666666666666666,
+      "priorNormalComparisonExact": true,
+      "priorOriginalObservationExact": true,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.791431427001953
+        },
+        "overrideGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.96484375
+        },
+        "normalGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.40234375
+        }
+      },
+      "comparisons": {
+        "normalGPUAgainstOriginal": {
+          "passed": false,
+          "maskIoU": 0.89,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9810274877023436,
+          "memoryCosine": 0.980691459363078
+        },
+        "overrideGPUAgainstOriginal": {
+          "passed": true,
+          "maskIoU": 1.0,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9990443394683967,
+          "memoryCosine": 0.9998978089687818
+        },
+        "overrideGPUAgainstNormal": {
+          "passed": false,
+          "maskIoU": 0.89,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9763691269352893,
+          "memoryCosine": 0.9807671823103662
+        }
+      }
+    },
+    {
+      "index": 39,
+      "ptsSeconds": 1.3,
+      "priorNormalComparisonExact": true,
+      "priorOriginalObservationExact": true,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.854609966278076
+        },
+        "normalGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.2890625
+        },
+        "overrideGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 7.12109375
+        }
+      },
+      "comparisons": {
+        "normalGPUAgainstOriginal": {
+          "passed": true,
+          "maskIoU": 1.0,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9921769868724029,
+          "memoryCosine": 0.9940200691856768
+        },
+        "overrideGPUAgainstOriginal": {
+          "passed": true,
+          "maskIoU": 0.9900990099009901,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9992091566601391,
+          "memoryCosine": 0.9923208572541762
+        },
+        "overrideGPUAgainstNormal": {
+          "passed": true,
+          "maskIoU": 0.9900990099009901,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9905296779857895,
+          "memoryCosine": 0.9967610148292714
+        }
+      }
+    },
+    {
+      "index": 40,
+      "ptsSeconds": 1.3333333333333333,
+      "priorNormalComparisonExact": true,
+      "priorOriginalObservationExact": true,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.942498683929443
+        },
+        "overrideGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 7.16015625
+        },
+        "normalGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.05078125
+        }
+      },
+      "comparisons": {
+        "normalGPUAgainstOriginal": {
+          "passed": false,
+          "maskIoU": 0.9361702127659575,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9709027581029687,
+          "memoryCosine": 0.9214658714863667
+        },
+        "overrideGPUAgainstOriginal": {
+          "passed": true,
+          "maskIoU": 1.0,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9989040551037731,
+          "memoryCosine": 0.9968278411847868
+        },
+        "overrideGPUAgainstNormal": {
+          "passed": false,
+          "maskIoU": 0.9361702127659575,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9665679936919492,
+          "memoryCosine": 0.9192291896360053
+        }
+      }
+    },
+    {
+      "index": 41,
+      "ptsSeconds": 1.3666666666666667,
+      "priorNormalComparisonExact": true,
+      "priorOriginalObservationExact": true,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "objectScore": 7.155910491943359
+        },
+        "normalGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.5
+        },
+        "overrideGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 7.34375
+        }
+      },
+      "comparisons": {
+        "normalGPUAgainstOriginal": {
+          "passed": false,
+          "maskIoU": 0.9381443298969072,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9865423924305644,
+          "memoryCosine": 0.9297940468859048
+        },
+        "overrideGPUAgainstOriginal": {
+          "passed": false,
+          "maskIoU": 1.0,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.998945862226381,
+          "memoryCosine": 0.9796458892474692
+        },
+        "overrideGPUAgainstNormal": {
+          "passed": false,
+          "maskIoU": 0.9381443298969072,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9818056266753288,
+          "memoryCosine": 0.9188595195914014
+        }
+      }
+    },
+    {
+      "index": 42,
+      "ptsSeconds": 1.4,
+      "priorNormalComparisonExact": true,
+      "priorOriginalObservationExact": true,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "objectScore": 7.112797260284424
+        },
+        "overrideGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 7.21484375
+        },
+        "normalGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.6796875
+        }
+      },
+      "comparisons": {
+        "normalGPUAgainstOriginal": {
+          "passed": false,
+          "maskIoU": 0.9894736842105263,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9930924703416122,
+          "memoryCosine": 0.9788287367540082
+        },
+        "overrideGPUAgainstOriginal": {
+          "passed": false,
+          "maskIoU": 0.9574468085106383,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9822547003639841,
+          "memoryCosine": 0.9294400092231139
+        },
+        "overrideGPUAgainstNormal": {
+          "passed": false,
+          "maskIoU": 0.9473684210526315,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9787275797155098,
+          "memoryCosine": 0.9299181033964357
+        }
+      }
+    },
+    {
+      "index": 43,
+      "ptsSeconds": 1.4333333333333333,
+      "priorNormalComparisonExact": true,
+      "priorOriginalObservationExact": true,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "objectScore": 7.091564655303955
+        },
+        "normalGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.6953125
+        },
+        "overrideGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 7.28125
+        }
+      },
+      "comparisons": {
+        "normalGPUAgainstOriginal": {
+          "passed": false,
+          "maskIoU": 0.8846153846153846,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9758776356421548,
+          "memoryCosine": 0.9799267012155052
+        },
+        "overrideGPUAgainstOriginal": {
+          "passed": false,
+          "maskIoU": 1.0,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9733968698802488,
+          "memoryCosine": 0.9995525418074287
+        },
+        "overrideGPUAgainstNormal": {
+          "passed": false,
+          "maskIoU": 0.8846153846153846,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9254807142952443,
+          "memoryCosine": 0.9801541277381486
+        }
+      }
+    },
+    {
+      "index": 44,
+      "ptsSeconds": 1.4666666666666666,
+      "priorNormalComparisonExact": true,
+      "priorOriginalObservationExact": true,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "objectScore": 7.053559303283691
+        },
+        "overrideGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 7.171875
+        },
+        "normalGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.515625
+        }
+      },
+      "comparisons": {
+        "normalGPUAgainstOriginal": {
+          "passed": true,
+          "maskIoU": 1.0,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9953966754852591,
+          "memoryCosine": 0.9979149949943642
+        },
+        "overrideGPUAgainstOriginal": {
+          "passed": true,
+          "maskIoU": 0.9901960784313726,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9951088717666351,
+          "memoryCosine": 0.9998006577026926
+        },
+        "overrideGPUAgainstNormal": {
+          "passed": true,
+          "maskIoU": 0.9901960784313726,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.992971238026542,
+          "memoryCosine": 0.997820154016752
+        }
+      }
+    },
+    {
+      "index": 45,
+      "ptsSeconds": 1.5,
+      "priorNormalComparisonExact": true,
+      "priorOriginalObservationExact": true,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "objectScore": 7.081570625305176
+        },
+        "normalGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.515625
+        },
+        "overrideGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 7.2265625
+        }
+      },
+      "comparisons": {
+        "normalGPUAgainstOriginal": {
+          "passed": false,
+          "maskIoU": 0.9732142857142857,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9974118652524775,
+          "memoryCosine": 0.9784405643193597
+        },
+        "overrideGPUAgainstOriginal": {
+          "passed": true,
+          "maskIoU": 0.9818181818181818,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9956797349154007,
+          "memoryCosine": 0.9996865905813312
+        },
+        "overrideGPUAgainstNormal": {
+          "passed": false,
+          "maskIoU": 0.9557522123893806,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9932163986028547,
+          "memoryCosine": 0.9783056924661403
+        }
+      }
+    },
+    {
+      "index": 46,
+      "ptsSeconds": 1.5333333333333334,
+      "priorNormalComparisonExact": true,
+      "priorOriginalObservationExact": true,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "objectScore": 7.028357028961182
+        },
+        "overrideGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 7.1875
+        },
+        "normalGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.4375
+        }
+      },
+      "comparisons": {
+        "normalGPUAgainstOriginal": {
+          "passed": true,
+          "maskIoU": 1.0,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9975232987086435,
+          "memoryCosine": 0.9976137056248812
+        },
+        "overrideGPUAgainstOriginal": {
+          "passed": true,
+          "maskIoU": 1.0,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9980796445626848,
+          "memoryCosine": 0.9998662430153601
+        },
+        "overrideGPUAgainstNormal": {
+          "passed": true,
+          "maskIoU": 1.0,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9962027408776093,
+          "memoryCosine": 0.9975110035757906
+        }
+      }
+    },
+    {
+      "index": 47,
+      "ptsSeconds": 1.5666666666666667,
+      "priorNormalComparisonExact": true,
+      "priorOriginalObservationExact": true,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "objectScore": 7.335463523864746
+        },
+        "normalGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.6171875
+        },
+        "overrideGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 7.48046875
+        }
+      },
+      "comparisons": {
+        "normalGPUAgainstOriginal": {
+          "passed": false,
+          "maskIoU": 0.9905660377358491,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9918863134347679,
+          "memoryCosine": 0.9694411003268945
+        },
+        "overrideGPUAgainstOriginal": {
+          "passed": true,
+          "maskIoU": 1.0,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9991802633983624,
+          "memoryCosine": 0.9909572710701661
+        },
+        "overrideGPUAgainstNormal": {
+          "passed": false,
+          "maskIoU": 0.9905660377358491,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9896031909873749,
+          "memoryCosine": 0.9723876953874653
+        }
+      }
+    },
+    {
+      "index": 48,
+      "ptsSeconds": 1.6,
+      "priorNormalComparisonExact": true,
+      "priorOriginalObservationExact": true,
+      "streams": {
+        "original": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.994793891906738
+        },
+        "overrideGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 7.3203125
+        },
+        "normalGPU": {
+          "lowMaskEmpty": false,
+          "objectScore": 6.25390625
+        }
+      },
+      "comparisons": {
+        "normalGPUAgainstOriginal": {
+          "passed": false,
+          "maskIoU": 0.9306930693069307,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9672987532629135,
+          "memoryCosine": 0.9845668795376225
+        },
+        "overrideGPUAgainstOriginal": {
+          "passed": true,
+          "maskIoU": 0.9801980198019802,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.99862806678471,
+          "memoryCosine": 0.9977388900928901
+        },
+        "overrideGPUAgainstNormal": {
+          "passed": false,
+          "maskIoU": 0.9494949494949495,
+          "sameObjectPresence": true,
+          "pointerCosine": 0.9661012958286725,
+          "memoryCosine": 0.9864618123235952
+        }
+      }
+    }
+  ],
+  "preForkComparisonsIdentical": true
+}
