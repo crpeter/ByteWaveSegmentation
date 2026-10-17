@@ -1,6 +1,54 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: backward tracking diagnostic prepared; Mac run pending
+## Current work: backward tracking reviewed; useful recovery with remaining identity errors
+
+Evidence: Audit/mac-new-backward-reacquisition-review.json.
+Uploaded occlusion-new-backward-01.zip SHA
+09cdf76d3f6f6a698a91795d8d00e3ae3d2a300bc8461146a9322acc9538a85b.
+Report SHA c09965caefbabf1da7af6de571f729e4a1a3e5bf1422e95254149086be696cf4.
+Completed all211 compared frames375 down to165. All initialization and211
+reverse-index controls passed. Controls verify same-input temporal indexing,
+not identity. Original PyTorch CPU only; no device/Core ML performance result.
+
+Offline checked source replay/anchor/script hashes, all211 source image hashes/PTS
+and saved-forward observations,422 binary mask files/hashes/fractions/emptiness,
+exact211 saved-forward PNGs against prior replay, all211 recomputed mask-agreement
+rows, reverse frame order/ordinals,210 actual attention budgets and exact seed PNG.
+All211 paired previews inspected; enlarged165/191/225/229/234/261/277/300/310/
+346/354/360. Assistant performed saved-data arithmetic and image review only.
+
+Useful complementary evidence:
+- Approximately265..309: backward follows intended man's visible head/body while
+  forward is blank except277. Frame300 (10.0s) is a clear recovery, though the
+  backward mask still omits his forearm. Early strips261..264 are ambiguous.
+-343..364: backward avoids many wrong foreground hand/woman inclusions seen in
+  forward. Frame346 selects target partial head instead of foreground hand;
+  354/360 exclude much of the blonde woman and hand mixed into forward masks.
+
+Remaining errors prohibit globally preferring backward:
+-165..179: backward loses genuine edge partials preserved by forward.
+-224..226 and229..231: backward adds the foreground man's pointing hand/forearm.
+  Enlarged225/229 make the wrong inclusion clear; forward avoids it.
+-235..236: backward blank versus tiny forward edge fragments.
+-310: both blank despite visible target sliver.
+-191..196 and261..264 tiny fragments are not established clean recoveries.
+-375 exact agreement is the seed by construction, not validation.
+
+Presence only: forward89/backward124 of211; both nonempty70, backward-only54,
+forward-only19, both empty68. Do not call the54 additions correct recovered frames.
+The later seed is a manually reviewed forward prediction; passes are correlated,
+and changed seed/future evidence/direction are not isolated causal factors.
+
+Decision: useful offline backward candidate, no automatic fusion or promotion.
+Next direction is controlled choice/review of disagreeing forward/backward segments
+using saved outputs, preserving true partials while rejecting wrong foreground.
+No global preference, union/intersection, automatic identity threshold or seed
+selector has been validated. Fits calculate-once/cache extraction research, but
+no runtime support or cost claim. App/models/fixtures/exporter/gates/frozen recovery
+policy unchanged. No additional Mac run requested for this review.
+
+
+## Prior step: backward tracking diagnostic prepared
 
 Added Temporal/diagnose_backward_reacquisition.py. Source review of pinned
 sam2_base.track_step, _track_step, _use_mask_as_output and memory selection confirms

@@ -1,0 +1,216 @@
+{
+  "contract": "bytewave.backward-reacquisition.review.v1",
+  "scope": "Offline audit and visual review of a user-run original-PyTorch backward tracking diagnostic. No inference, builds, conversions, exports or benchmarks were run by the assistant.",
+  "completed": true,
+  "readyForDeviceValidation": false,
+  "source": {
+    "archive": "occlusion-new-backward-01.zip",
+    "archiveSHA256": "09cdf76d3f6f6a698a91795d8d00e3ae3d2a300bc8461146a9322acc9538a85b",
+    "reportSHA256": "c09965caefbabf1da7af6de571f729e4a1a3e5bf1422e95254149086be696cf4",
+    "scriptSHA256": "7407e9ce89815b17c427c51c5f1ebc996a0ca83a4c30607c6b24747072d1e128",
+    "preparedCommit": "b8ce258373493f67adf8737b1ce6dda6f3feed99",
+    "sourceReplaySHA256": "5f9378e84e1b78ca19e00574245434e07180065dbcd608bdb34051338156cc56",
+    "sourceAnchorReportSHA256": "ce4496788c83d981cf4c5391b9ae5cd6ecad4b8f1715db4887633715d478c6ce",
+    "sourceVideoSHA256": "5170ab7d885e131cbcd79be302d422f58e014f0c7ffbde51dcdcf8ad27bfa1e9",
+    "sourceFileBytes": 35866195,
+    "upstream": "7711e012a30a2402c4eaab637bdb00a521302c91",
+    "checkpointSHA256": "ed2d4850b8792c239689b043c47046ec239b6e808a3d9b6ae676c803fd8780df",
+    "seedMaskSHA256": "8f5c205d46986543443bcefbb951dc6a8b90c4076dabbfa6501c4573703fed9d"
+  },
+  "run": {
+    "completed": true,
+    "seedFrame": 375,
+    "lastFrame": 165,
+    "comparedFrames": 211,
+    "sourceNumFrames": 590,
+    "decodedFramesChecked": 376,
+    "reverseIndexControlsChecked": 211,
+    "allInitializationAndDirectionControlsPassed": true,
+    "controlMeaning": "Same-input relabeled forward calls validate reverse indexing under the pinned settings. They do not establish subject identity or independent accuracy.",
+    "seedMeaning": "A manually reviewed saved forward prediction at frame 375 is the mask prompt. A fresh pointer and memory are built from that mask and its source pixels; seed presence is forced by the native mask-input path, not measured identity confidence."
+  },
+  "offlineChecks": {
+    "sourceReportAndScriptHashesMatched": true,
+    "sourceFrameHashesAndPTSMatched": 211,
+    "sourceForwardObservationsMatched": 211,
+    "verifiedBinaryMaskFiles": 422,
+    "maskShape": [
+      1024,
+      1024
+    ],
+    "maskValues": [
+      0,
+      255
+    ],
+    "maskHashesFractionsAndEmptinessMatched": true,
+    "savedForwardMasksByteIdenticalToPriorReplay": 211,
+    "maskAgreementRowsRecomputed": 211,
+    "reverseSourceOrderAndOrdinalsMatched": true,
+    "attentionBudgetsChecked": 210,
+    "attentionBudgetMeaning": "One conditioning frame plus up to six recent spatial records and fifteen recent pointers; spatial records expand to 512 tokens each and pointers to four tokens each.",
+    "backwardSeedMaskExactlyMatchesReviewedMask": true
+  },
+  "descriptivePresence": {
+    "savedForwardNonemptyFrames": 89,
+    "backwardNonemptyFrames": 124,
+    "bothEmpty": 68,
+    "backwardOnlyNonempty": 54,
+    "forwardOnlyNonempty": 19,
+    "bothNonempty": 70,
+    "savedForwardNonemptyIntervals": [
+      [
+        165,
+        179
+      ],
+      [
+        197,
+        236
+      ],
+      [
+        277,
+        277
+      ],
+      [
+        343,
+        375
+      ]
+    ],
+    "backwardNonemptyIntervals": [
+      [
+        191,
+        234
+      ],
+      [
+        261,
+        309
+      ],
+      [
+        345,
+        375
+      ]
+    ],
+    "meaning": "Presence counts are not correct-recovery counts. Masks can select the wrong person, include foreground distractors, or miss part of the target; empty/empty overlap is not a success."
+  },
+  "visualReview": {
+    "allPairedPreviewsReviewed": 211,
+    "fullResolutionFrames": [
+      165,
+      191,
+      225,
+      229,
+      234,
+      261,
+      277,
+      300,
+      310,
+      346,
+      354,
+      360
+    ],
+    "targetDescription": "The selected man wearing a black graphic T-shirt and khaki shorts.",
+    "findings": [
+      {
+        "frames": [
+          165,
+          179
+        ],
+        "kind": "regression",
+        "observation": "Backward is empty while saved forward retains genuine target partials at the left image edge. Full-resolution frame 165 confirms visible torso/arm omitted by backward."
+      },
+      {
+        "frames": [
+          191,
+          196
+        ],
+        "kind": "ambiguous",
+        "observation": "Backward produces tiny lower-left fragments before forward resumes. Their identity is not established by presence; enlarged frame 191 is too limited to count as a clean recovery."
+      },
+      {
+        "frames": [
+          197,
+          223
+        ],
+        "kind": "preserved_partials",
+        "observation": "Both broadly follow the target shoe and partial body; exact boundaries remain imperfect."
+      },
+      {
+        "frameIntervals": [
+          [
+            224,
+            226
+          ],
+          [
+            229,
+            231
+          ]
+        ],
+        "kind": "wrong_foreground_inclusion",
+        "observation": "Backward includes the foreground man's pointing hand/forearm along with the intended target. Enlarged frames 225 and 229 clearly show this added error, which forward avoids."
+      },
+      {
+        "frames": [
+          235,
+          236
+        ],
+        "kind": "lost_edge_fragments",
+        "observation": "Backward is blank while forward retains tiny edge fragments; no per-pixel ground-truth claim."
+      },
+      {
+        "frames": [
+          261,
+          264
+        ],
+        "kind": "ambiguous_onset",
+        "observation": "Backward begins as a narrow strip near the foreground occluder's shoulder. The earliest strip is ambiguous and should not be counted as confirmed recovery."
+      },
+      {
+        "frames": [
+          265,
+          309
+        ],
+        "kind": "useful_recovery",
+        "observation": "Backward generally follows the reappearing intended man through a stretch where forward is blank except at 277. Enlarged frame 300 (10.0 s) clearly shows recovered target head/torso, with imperfect coverage including an omitted forearm. This is qualitative benefit, not 45 ground-truth-correct masks."
+      },
+      {
+        "frame": 310,
+        "kind": "shared_miss",
+        "observation": "Both are empty despite a visible target sliver. Agreement on absence does not establish correctness."
+      },
+      {
+        "frames": [
+          343,
+          364
+        ],
+        "kind": "reduced_wrong_foreground_masks",
+        "observation": "Forward repeatedly selects a foreground hand and later mixes the target with the blonde foreground woman's hair/shoulder. Backward is blank at 343-344 and then generally follows target head/hair/visible body instead. Enlarged 346, 354 and 360 show a substantial improvement; boundaries are not asserted perfect."
+      },
+      {
+        "frames": [
+          365,
+          374
+        ],
+        "kind": "broad_agreement",
+        "observation": "Both broadly select the intended man with coverage differences."
+      },
+      {
+        "frame": 375,
+        "kind": "seed_control",
+        "observation": "Exact agreement is by construction from the saved forward mask prompt, not independent validation."
+      }
+    ]
+  },
+  "interpretation": {
+    "conclusion": "A manually seeded backward pass provides useful complementary target masks on this development clip, but is not a global replacement for forward tracking.",
+    "rejectedInferences": [
+      "All additional nonempty backward frames are correct recoveries.",
+      "Passing reverse-index controls validates subject identity.",
+      "Backward is always preferable, or union/intersection can safely fuse the masks.",
+      "The effect isolates direction alone: later initialization and temporal evidence change jointly.",
+      "Two agreeing passes provide independent evidence; the later seed is itself a forward prediction.",
+      "This original-PyTorch CPU result establishes Core ML reverse support, device performance, or held-out accuracy."
+    ],
+    "nextDirection": "Use saved forward/backward disagreement examples to design and evaluate a controlled segment-selection or user-review approach. Preserve genuine partials as well as rejecting wrong foreground masks. No automatic selection rule or acceptance threshold has been established.",
+    "newMacRunRequested": false,
+    "appModelsFixturesExporterGatesAndFrozenRecoveryPolicyChanged": false
+  }
+}
