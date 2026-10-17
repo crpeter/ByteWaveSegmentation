@@ -1,6 +1,64 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: saved bidirectional selection analysis and local review page
+## Current work: manual same-subject correction in the probe
+
+User authorized a practical correction path: when tracking loses the intended
+subject or includes the wrong hand/person, manually reselect the intended subject
+as part of the same logical track. No automatic hand/loss classification.
+
+OwnedVideoTracking.swift now separates a stable subject UUID from model-memory
+segments. Seeking preserves the cache but resets inference memory. "Correct
+tracking from here" removes cached masks at/after the displayed frame, retaining
+the earlier prefix. Seek to a clear frame at/after that boundary, tap the intended
+subject and choose "Continue same subject": initialization uses fresh memory under
+the same UUID. "New subject" is a separate confirmed action that clears the cache.
+There is no undo of invalidation in this first implementation.
+
+Replay decodes the source timeline, checks exact cached PTS/ownership/hash, and
+shows no overlay for missing entries with "Not tracked" text. A missing mask is
+not a model-predicted empty mask. The old timeline end is retained across correction
+so an invalidated but not yet rerun tail remains explicitly untracked.
+Replay does not predict or advance inference banks, and restores the working frame
+when finished/stopped. Seek explicitly to the desired correction frame afterward.
+
+Cache remains temporary, single-subject, bounded to 2048 binary masks / 256 MiB.
+Disk append repair truncates to indexed retained records and refuses a short prefix.
+A failed truncation cannot republish invalidated metadata; seek then retry reselection.
+A failed cache write stops further cache writes and displays a notice. No export,
+production ByteWave integration, automatic identity proof or persistent project cache.
+
+Report schema is bytewave.requested-video-tracking.v2, cache implementation
+subject-correction-bitmask-replay.v2. Includes UUID, correction boundaries and
+replacement segments, retained/invalidated counts, prefix metadata digest, cached
+segment summaries, and replay mask/untracked counts plus state/prediction snapshots.
+Prefix metadata SHA is not a runtime proof of unchanged disk bytes; individual
+cached masks are still hash-checked when read. Historical v1 single-segment Mac
+diagnostics deliberately reject v2 reports; their source/selection guards are unchanged.
+
+Validation: static source review only. No assistant build, Swift compiler, runtime
+test, inference, conversion or benchmark. Device/build validation is pending.
+See Audit/manual-subject-correction-implementation.json for the expected test cases.
+
+Next device check:
+1. Build/run probe; track a clip until after an obvious mistake.
+2. Pause, seek to the first wrong frame, choose Correct tracking from here.
+3. Seek later to a clear view; tap the intended subject, Continue same subject,
+   then Run tracking.
+4. Replay: earlier masks retained, gap untracked, corrected segment uses new masks.
+5. Repeat a correction earlier in the clip; ensure the old later correction is
+   discarded too. Share video tracking report after replay.
+Report checks: one current UUID across cachedSegments, expected correction bounds,
+completed count, no replayError/cacheError, unchanged replay prediction/state/UUID.
+Visual review is still required to establish the intended subject.
+
+```bash
+cd /Users/petercody/Documents/Projects/ByteWaveSegmentation &&
+export DEVELOPER_DIR="/Applications/Xcode-beta.app/Contents/Developer" &&
+git pull --ff-only &&
+open -a "/Applications/Xcode-beta.app" "/Users/petercody/Documents/Projects/ByteWaveSegmentation/ByteWaveSegmentationProbe.xcodeproj"
+```
+
+## Prior step: saved bidirectional selection analysis and local review page
 
 Evidence: Audit/mac-new-bidirectional-selection-review.json.
 Added Temporal/review_bidirectional_masks.py and Temporal/bidirectional_review.html.

@@ -1,0 +1,70 @@
+{
+  "schema": "bytewave.manual-subject-correction.implementation.v1",
+  "sourceCommit": "0e92997f3e35d177a835df4a4e37db6f4c90806a",
+  "sourceFile": "OwnedVideoTracking.swift",
+  "originalSourceSHA256": "c3480fa1104ac21fd5b01210a3b7298962869debfdaa151819a6108ed2cf3249",
+  "updatedSourceSHA256": "fad6fa684d4a03085c49c5c252f21d97f67214b893884e02ea6f98388fc270b5",
+  "scope": "Probe-only manual correction preserving a logical subject across fresh tracking segments.",
+  "status": "Implemented; static source review only; Xcode build and device validation pending.",
+  "reportSchema": "bytewave.requested-video-tracking.v2",
+  "review": [
+    "Reviewed cache reset sites, subject assignment, correction suffix invalidation, exact timestamp replay, cache ownership/hash reads and error paths.",
+    "Reviewed report optional-struct mutations to avoid simultaneous read/write access.",
+    "Inspected unchanged OwnedTemporalSession.reset and next initialization behavior.",
+    "Checked historical Mac report readers: v1-only guards remain unchanged; v2 multi-segment reports are not accepted."
+  ],
+  "executed": {
+    "build": false,
+    "swiftCompiler": false,
+    "runtimeTests": false,
+    "inference": false,
+    "conversion": false,
+    "benchmark": false
+  },
+  "expectedDeviceCases": [
+    {
+      "case": "Track then seek without correction",
+      "expected": "Subject and cache preserved; model memory reset; exact cached mask shown only on matching PTS."
+    },
+    {
+      "case": "Correct at first incorrect frame; reselect later",
+      "expected": "Prefix retained; suffix removed; fresh segment under same UUID; gap replays without overlay and labelled untracked."
+    },
+    {
+      "case": "Correct and reselect on same frame",
+      "expected": "Boundary mask replaced; no duplicate timestamps."
+    },
+    {
+      "case": "Correct earlier than an existing correction",
+      "expected": "All masks from new boundary onward removed, including old replacement segment."
+    },
+    {
+      "case": "Replay then continue tracking",
+      "expected": "Prediction count, inference state and subject UUID unchanged by replay; working frame restored."
+    },
+    {
+      "case": "Invalidate all cached masks",
+      "expected": "Existing timeline can replay as untracked until replacement masks exist."
+    },
+    {
+      "case": "Failed correction initialization or disk truncation",
+      "expected": "Pending correction and retained prefix remain; invalidated suffix cannot replay; seek and retry or explicitly start new subject."
+    },
+    {
+      "case": "Explicit new subject",
+      "expected": "Confirmation required; old mask cache cleared; subsequent initialization assigns new UUID."
+    },
+    {
+      "case": "Leave view or import new video",
+      "expected": "Temporary cache and old subject released."
+    }
+  ],
+  "limitations": [
+    "Identity is asserted by user reselection, not automatically proven.",
+    "No automatic hand/loss detector or identity confidence threshold.",
+    "No undo of invalidation; no persistent project cache or export integration.",
+    "Cache still limited to 2048 masks / 256 MiB payload.",
+    "Prefix metadata digest is not a runtime disk preservation test.",
+    "No model, precision, compute-unit, exporter or accuracy-gate changes."
+  ]
+}

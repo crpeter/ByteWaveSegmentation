@@ -21,6 +21,7 @@ private struct VideoTimingTotal: Encodable {
 
 private struct VideoFrameRecord: Encodable {
     let requestIndex: Int
+    let subjectID: UUID
     let segment: Int
     let ptsValue: Int64
     let ptsTimescale: Int32
@@ -38,8 +39,31 @@ private struct VideoFrameRecord: Encodable {
     let state: OwnedStateSummary
 }
 
+private struct VideoCorrectionRecord: Encodable {
+    let subjectID: UUID
+    let fromPTSValue: Int64
+    let fromPTSTimescale: Int32
+    let retainedMaskFrames: Int
+    let invalidatedMaskFrames: Int
+    // Metadata digest; replay separately verifies the retained bytes on disk.
+    let retainedPrefixMetadataSHA256: String
+    var replacementPTSValue: Int64?
+    var replacementPTSTimescale: Int32?
+    var replacementSegment: Int?
+}
+
+private struct VideoCachedSegmentRecord: Encodable {
+    let subjectID: UUID
+    let segment: Int
+    var masks: Int
+    let firstPTSValue: Int64
+    let firstPTSTimescale: Int32
+    var lastPTSValue: Int64
+    var lastPTSTimescale: Int32
+}
+
 private struct VideoTrackingReport: Encodable {
-    let schema = "bytewave.requested-video-tracking.v1"
+    let schema = "bytewave.requested-video-tracking.v2"
     let createdAt = Date()
     let clipID = UUID()
     let hardware: String
@@ -54,7 +78,7 @@ private struct VideoTrackingReport: Encodable {
     #else
     let swiftDebugCompilation = false
     #endif
-    let scope = "On-demand sequential decoded frames from a user-selected video. One positive point per reset; no ground-truth parity or automatic quality pass. All model outputs retain shape/finiteness checks. No audio, frame dropping or pre-scan. Bounded current-selection mask cache supports separate replay. Run tracking advances as requests finish; cached replay is paced by source timestamps."
+    let scope = "On-demand sequential decoded frames from a user-selected video. One logical subject can have multiple manually corrected tracking segments, each initialized with one positive point and fresh model memory. No automatic identity/loss decision or ground-truth quality pass. Shape/finiteness checks remain. No audio, frame dropping or pre-scan. Bounded subject mask cache supports replay paced by source timestamps."
     let timingScope = "Request time includes synchronous decode, orientation/resize, preview image rendering, prediction/state, mask image creation, mask packing/hash/disk write and small pre-prediction checkpoint writes. Excludes model loading, UI presentation, report saving and user pauses. Initialization uses the already prepared displayed frame. Warm totals exclude initialization after every reset. Replay is measured separately. These are processing diagnostics, not sustained playback FPS."
     let timingInstrumentation = "video-mask-cache.v1"
     let sessionTimingInstrumentation = "session-stages.v1"
@@ -81,6 +105,12 @@ private struct VideoTrackingReport: Encodable {
     var lastDisplaySize: [Double] = []
     var framesPredicted = 0
     var segmentsStarted = 0
+    var subjectID: UUID?
+    var subjectsStarted = 0
+    var correctionsStarted = 0
+    var correctionsCompleted = 0
+    var pendingCorrectionFromSeconds: Double?
+    var recentCorrections: [VideoCorrectionRecord] = [] // Last 120; subject IDs distinguish new tracks.
     var seeks = 0
     var lastResetReason = "new video"
     var lastPointNormalizedTopLeft: [Double]?
@@ -94,13 +124,16 @@ private struct VideoTrackingReport: Encodable {
     var warmDecodeAndPreparationTotals = VideoTimingTotal()
     var warmPreparationStageTotals: [String: VideoTimingTotal] = [:]
     var warmMaskRenderingTotals = VideoTimingTotal()
-    let maskCacheImplementation = "selection-bitmask-replay.v1"
-    let maskCacheScope = "Current selection only; exact source PTS, lossless packed high_res_mask > 0. Up to 256 MiB of mask payload on temporary disk. No model tensors, persistent project cache, audio or export integration. Seeking/reselecting clears the cache. Replay uses a separate decoder and never advances tracking state or calls models."
+    let maskCacheImplementation = "subject-correction-bitmask-replay.v2"
+    let maskCacheScope = "One logical subject; exact source PTS, lossless packed high_res_mask > 0, subject and segment ownership. Up to 256 MiB of mask payload on temporary disk. Seeking preserves masks but resets inference memory. Manual correction discards masks at/after the marked frame, retains the prefix, and initializes a fresh segment at the reselected frame. Missing masks replay as explicitly untracked, not predicted absence. New subject/video clears the cache. No persistent project cache, audio or export integration. Replay never calls models or advances inference state."
     var cachedMaskFrames = 0
     var cachedMaskBytes = 0
     var cacheSelectionSegment: Int?
     var cachedStartSeconds: Double?
     var cachedEndSeconds: Double?
+    var cacheTimelineStartSeconds: Double?
+    var cacheTimelineEndSeconds: Double?
+    var cachedSegments: [VideoCachedSegmentRecord] = [] // Populated from the bounded cache at report save.
     var cacheLimitReached = false
     var cacheError: String?
     var cacheWriteTotals = VideoTimingTotal()
@@ -111,6 +144,10 @@ private struct VideoTrackingReport: Encodable {
     var lastReplayStateBefore: OwnedStateSummary?
     var lastReplayStateAfter: OwnedStateSummary?
     var lastReplayFramesRead = 0
+    var lastReplayMasksRead = 0
+    var lastReplayUntrackedFrames = 0
+    var lastReplaySubjectIDBefore: UUID?
+    var lastReplaySubjectIDAfter: UUID?
     var replayError: String?
     var replayRequestTotals = VideoTimingTotal()
     let replayTimingScope = "Replay request includes video decode/orientation/preview, disk mask read/hash verification and overlay construction. Excludes presentation pacing, UI rendering and report saving. Inference totals exclude replay."
@@ -129,12 +166,17 @@ struct OwnedVideoDisplay: Sendable {
     let message: String
     let cachedFrames: Int
     let cacheNotice: String?
+    let hasSubject: Bool
+    let isTracking: Bool
+    let correctionFromSeconds: Double?
+    let canReplay: Bool
 }
 
 // Owns decoding and inference on one actor. Each next() finishes before another
 // sample is requested. Only the current prepared frame and bounded model state
 // survive a request; Core ML output tensors are released after rendering.
-// A bounded disk cache keeps thresholded masks for the current selection only.
+// Logical subject identity survives model resets and manual correction segments.
+// A bounded disk cache keeps the valid prefix; gaps never masquerade as masks.
 actor OwnedVideoRunner {
     private struct PreparedFrame {
         let buffer: CVPixelBuffer?
@@ -156,22 +198,29 @@ actor OwnedVideoRunner {
     private var session: OwnedTemporalSession?
     private var compiledURLs: [URL] = []
     private var point: [Double]?
+    private var subjectID: UUID?
+    private var correctionStart: CMTime?
     private var report: VideoTrackingReport?
     private var checkpointURL: URL?
     private struct CachedMask {
         let time: CMTime
         let sha256: String
+        let subjectID: UUID
+        let segment: Int
     }
     private static let maskByteCount = 1024 * 1024 / 8
     private static let maximumCachedFrames = 2048 // 256 MiB payload, bounded metadata.
     private var cacheDirectory: URL?
     private var cacheWriter: FileHandle?
     private var cachedMasks: [CachedMask] = []
+    private var cacheTimelineStart: CMTime?
+    private var cacheTimelineEnd: CMTime?
     private var currentOverlay: CGImage?
     private var replayReader: AVAssetReader?
     private var replayOutput: AVAssetReaderTrackOutput?
     private var replayFile: FileHandle?
     private var replayIndex = 0
+    private var replayLastTime: CMTime?
 
     // Takes ownership of the ProbeMovie temporary import, including on failure.
     func open(url: URL, modelsRoot: URL, hardware: String,
@@ -288,15 +337,107 @@ actor OwnedVideoRunner {
 
     func initialize(point selected: [Double]) throws -> OwnedVideoDisplay {
         guard selected.count == 2, selected.allSatisfy({ $0.isFinite && (0...1).contains($0) }),
-              current != nil, let session else { throw OwnedTemporalError.invalid("Choose a frame and tap the subject.") }
+              let current, let session else { throw OwnedTemporalError.invalid("Choose a frame and tap the subject.") }
+        try Task.checkCancellation()
+        let correcting = subjectID != nil
+        if correcting {
+            guard let correctionStart, CMTimeCompare(current.time, correctionStart) >= 0 else {
+                throw OwnedTemporalError.invalid("Mark where tracking went wrong, then select the same subject at that frame or later.")
+            }
+            // Repair a failed truncate/write tail before appending; never extend
+            // a short file with zeros or publish a mask over retained entries.
+            try reopenCacheWriter()
+        } else {
+            resetMaskCache(create: true)
+            guard cacheWriter != nil else { throw OwnedTemporalError.invalid("The mask cache could not be created. Try starting again.") }
+            let identity = UUID()
+            subjectID = identity
+            report?.subjectID = identity
+            report?.subjectsStarted += 1
+        }
         session.reset()
-        resetMaskCache(create: true)
         currentOverlay = nil
         point = selected
         report?.segmentsStarted += 1
-        report?.lastResetReason = "subject selection on current frame"
+        report?.lastResetReason = correcting ? "same subject; fresh memory after manual correction" : "new subject selection"
         report?.lastPointNormalizedTopLeft = selected
-        return try predictCurrent(initialized: true, requestStart: now(), preparationMS: 0)
+        report?.reachedEnd = false
+        let result: OwnedVideoDisplay
+        do {
+            result = try predictCurrent(initialized: true, requestStart: now(), preparationMS: 0)
+        } catch {
+            if !correcting {
+                subjectID = nil
+                report?.subjectID = nil
+            }
+            throw error
+        }
+        if correcting, var snapshot = report, !snapshot.recentCorrections.isEmpty {
+            let index = snapshot.recentCorrections.count - 1
+            let segment = snapshot.segmentsStarted
+            snapshot.recentCorrections[index].replacementPTSValue = current.time.value
+            snapshot.recentCorrections[index].replacementPTSTimescale = current.time.timescale
+            snapshot.recentCorrections[index].replacementSegment = segment
+            snapshot.correctionsCompleted += 1
+            snapshot.pendingCorrectionFromSeconds = nil
+            report = snapshot
+        }
+        correctionStart = nil
+        return display(current, overlay: currentOverlay, message: result.message)
+    }
+
+    func correctFromCurrentFrame() throws -> OwnedVideoDisplay {
+        guard let current, let subjectID, correctionStart == nil else {
+            throw OwnedTemporalError.invalid("Choose the first incorrect frame before starting a correction.")
+        }
+        try Task.checkCancellation()
+        stopReplay()
+        let keep = cachedMasks.firstIndex { CMTimeCompare($0.time, current.time) >= 0 } ?? cachedMasks.count
+        let removed = cachedMasks.count - keep
+        cachedMasks.removeSubrange(keep..<cachedMasks.count)
+        // Invalidate metadata before touching disk: even if truncation fails,
+        // rejected tail bytes can never be replayed as accepted masks.
+        let prefix = cachedMasks.map {
+            "\($0.subjectID.uuidString)|\($0.segment)|\($0.time.value)/\($0.time.timescale)|\($0.sha256)"
+        }.joined(separator: "\n")
+        correctionStart = current.time
+        session?.reset()
+        point = nil
+        currentOverlay = nil
+        extendCacheTimeline(to: current.time)
+        report?.correctionsStarted += 1
+        report?.pendingCorrectionFromSeconds = current.time.seconds
+        let correction = VideoCorrectionRecord(subjectID: subjectID,
+            fromPTSValue: current.time.value, fromPTSTimescale: current.time.timescale,
+            retainedMaskFrames: keep, invalidatedMaskFrames: removed,
+            retainedPrefixMetadataSHA256: digest(Data(prefix.utf8)))
+        report?.recentCorrections.append(correction)
+        if (report?.recentCorrections.count ?? 0) > 120 { report?.recentCorrections.removeFirst() }
+        report?.lastState = nil
+        report?.reachedEnd = false
+        report?.lastResetReason = "manual correction; masks at/after current frame invalidated"
+        report?.lastAction = "Awaiting same-subject reselection"
+        refreshCacheReport()
+        try reopenCacheWriter()
+        return display(current, overlay: nil,
+                       message: "Earlier masks kept. Seek to a clear view if needed, tap the same subject, then Continue same subject.")
+    }
+
+    func startNewSubject() throws -> OwnedVideoDisplay {
+        guard let current else { throw OwnedTemporalError.invalid("Choose a video frame first.") }
+        session?.reset()
+        resetMaskCache(create: false)
+        subjectID = nil
+        correctionStart = nil
+        point = nil
+        currentOverlay = nil
+        report?.subjectID = nil
+        report?.pendingCorrectionFromSeconds = nil
+        report?.lastState = nil
+        report?.reachedEnd = false
+        report?.lastResetReason = "explicit new subject; previous subject cache cleared"
+        report?.lastAction = "Awaiting new subject selection"
+        return display(current, overlay: nil, message: "Tap the new subject. Previous subject masks have been cleared.")
     }
 
     func next() throws -> OwnedVideoDisplay? {
@@ -325,12 +466,12 @@ actor OwnedVideoRunner {
             throw OwnedTemporalError.invalid("Choose a time before the end of the video.")
         }
         session?.reset()
-        resetMaskCache(create: false)
+        stopReplay()
         currentOverlay = nil
         point = nil
         current = nil
         report?.seeks += 1
-        report?.lastResetReason = "seek; new selection required"
+        report?.lastResetReason = "seek; masks and subject preserved, inference memory reset"
         report?.lastState = nil
         report?.reachedEnd = false
         do {
@@ -340,8 +481,14 @@ actor OwnedVideoRunner {
                 throw OwnedTemporalError.invalid("No frame at this time. Seek earlier.")
             }
             current = frame
-            report?.lastAction = "Seek completed; awaiting selection"
-            return display(frame, overlay: nil, message: "Tracking reset. Tap the subject in this frame.")
+            currentOverlay = try cachedOverlay(at: frame.time)
+            report?.lastAction = "Seek completed; cache preserved"
+            let message = correctionStart != nil
+                ? "Correction pending. Tap the same subject at this frame or seek to a clear view."
+                : subjectID != nil
+                    ? "Reviewing saved masks. Mark the first wrong frame with Correct tracking from here to resume tracking."
+                    : "Tap the subject in this frame."
+            return display(frame, overlay: currentOverlay, message: message)
         } catch {
             invalidatePrediction(error)
             throw error
@@ -352,11 +499,11 @@ actor OwnedVideoRunner {
     // inference decoder, current frame, point and temporal banks stay untouched.
     func beginReplay() throws {
         stopReplay()
-        guard let first = cachedMasks.first, let cacheDirectory else {
+        guard subjectID != nil, let start = cacheTimelineStart, cacheTimelineEnd != nil, let cacheDirectory else {
             throw OwnedTemporalError.invalid("Track some frames before replaying cached masks.")
         }
         do {
-            let pair = try makeReader(at: first.time)
+            let pair = try makeReader(at: start)
             replayReader = pair.0
             replayOutput = pair.1
             replayFile = try FileHandle(forReadingFrom: cacheDirectory.appendingPathComponent("masks.bin"))
@@ -372,6 +519,10 @@ actor OwnedVideoRunner {
             report?.lastReplayStateBefore = state
             report?.lastReplayStateAfter = nil
             report?.lastReplayFramesRead = 0
+            report?.lastReplayMasksRead = 0
+            report?.lastReplayUntrackedFrames = 0
+            report?.lastReplaySubjectIDBefore = subjectID
+            report?.lastReplaySubjectIDAfter = nil
         } catch {
             stopReplay()
             report?.replayError = error.localizedDescription
@@ -380,34 +531,50 @@ actor OwnedVideoRunner {
     }
 
     func nextReplay() throws -> OwnedVideoDisplay? {
-        guard replayIndex < cachedMasks.count else { return nil }
-        guard let replayReader, let replayOutput, let replayFile else {
+        guard let replayReader, let replayOutput, let replayFile,
+              let firstTime = cacheTimelineStart, let endTime = cacheTimelineEnd else {
             throw OwnedTemporalError.invalid("Cached replay is not open.")
         }
+        if let replayLastTime, CMTimeCompare(replayLastTime, endTime) >= 0 { return nil }
         let start = now()
         do {
             return try autoreleasepool {
                 try Task.checkCancellation()
-                let entry = cachedMasks[replayIndex]
                 guard let frame = try readFrame(reader: replayReader, output: replayOutput,
-                                                notBefore: replayIndex == 0 ? entry.time : nil,
-                                                prepareModel: false),
-                      CMTimeCompare(frame.time, entry.time) == 0 else {
-                    throw OwnedTemporalError.invalid("Cached mask and decoded frame timestamps do not match. Replay stopped.")
+                                                notBefore: replayLastTime == nil ? firstTime : nil,
+                                                prepareModel: false) else {
+                    throw OwnedTemporalError.invalid("Video ended before the cached timeline. Replay stopped.")
                 }
-                try replayFile.seek(toOffset: UInt64(replayIndex * Self.maskByteCount))
-                guard let data = try replayFile.read(upToCount: Self.maskByteCount),
-                      data.count == Self.maskByteCount, digest(data) == entry.sha256 else {
-                    throw OwnedTemporalError.invalid("Cached mask is missing or damaged. Replay stopped.")
+                guard CMTimeCompare(frame.time, endTime) <= 0,
+                      replayLastTime != nil || CMTimeCompare(frame.time, firstTime) == 0,
+                      replayLastTime.map({ CMTimeCompare(frame.time, $0) > 0 }) ?? true else {
+                    throw OwnedTemporalError.invalid("Decoded replay timestamps do not match the cached timeline.")
                 }
-                let overlay = try maskImage(packed: data)
+                var overlay: CGImage?
+                var hasMask = false
+                if replayIndex < cachedMasks.count {
+                    let entry = cachedMasks[replayIndex]
+                    let order = CMTimeCompare(frame.time, entry.time)
+                    guard order <= 0, entry.subjectID == subjectID else {
+                        throw OwnedTemporalError.invalid("Cached mask ownership or timestamp mismatch. Replay stopped.")
+                    }
+                    if order == 0 {
+                        overlay = try readCachedOverlay(index: replayIndex, file: replayFile)
+                        replayIndex += 1
+                        hasMask = true
+                    }
+                }
                 try Task.checkCancellation()
-                replayIndex += 1
+                replayLastTime = frame.time
                 report?.replayFrames += 1
-                report?.lastReplayFramesRead = replayIndex
+                report?.lastReplayFramesRead += 1
+                if hasMask { report?.lastReplayMasksRead += 1 }
+                else { report?.lastReplayUntrackedFrames += 1 }
                 report?.replayRequestTotals.add(elapsed(start))
                 return display(frame, overlay: overlay,
-                               message: "Cached replay · \(replayIndex)/\(cachedMasks.count) frames · no model predictions")
+                               message: hasMask
+                                ? "Cached replay · \(replayIndex)/\(cachedMasks.count) masks · same subject"
+                                : "Not tracked at this frame · no mask saved · same subject")
             }
         } catch {
             stopReplay()
@@ -422,9 +589,10 @@ actor OwnedVideoRunner {
         let state = report?.lastState
         report?.lastReplayPredictionCountAfter = predictionCount
         report?.lastReplayStateAfter = state
+        report?.lastReplaySubjectIDAfter = subjectID
         guard let current else { return nil }
         return display(current, overlay: currentOverlay,
-                       message: "Replay finished. Returned to your latest tracked frame.")
+                       message: "Replay finished. Returned to your working frame.")
     }
 
     private func stopReplay() {
@@ -434,6 +602,68 @@ actor OwnedVideoRunner {
         try? replayFile?.close()
         replayFile = nil
         replayIndex = 0
+        replayLastTime = nil
+    }
+
+    private func readCachedOverlay(index: Int, file: FileHandle) throws -> CGImage {
+        let entry = cachedMasks[index]
+        guard entry.subjectID == subjectID else { throw OwnedTemporalError.invalid("Mask belongs to a different subject.") }
+        try file.seek(toOffset: UInt64(index * Self.maskByteCount))
+        guard let data = try file.read(upToCount: Self.maskByteCount),
+              data.count == Self.maskByteCount, digest(data) == entry.sha256 else {
+            throw OwnedTemporalError.invalid("Cached mask is missing or damaged.")
+        }
+        return try maskImage(packed: data)
+    }
+
+    private func cachedOverlay(at time: CMTime) throws -> CGImage? {
+        guard let index = cachedMasks.firstIndex(where: { CMTimeCompare($0.time, time) == 0 }),
+              let cacheDirectory else { return nil }
+        let file = try FileHandle(forReadingFrom: cacheDirectory.appendingPathComponent("masks.bin"))
+        defer { try? file.close() }
+        return try readCachedOverlay(index: index, file: file)
+    }
+
+    private func extendCacheTimeline(to time: CMTime) {
+        if cacheTimelineStart.map({ CMTimeCompare(time, $0) < 0 }) ?? true { cacheTimelineStart = time }
+        if cacheTimelineEnd.map({ CMTimeCompare(time, $0) > 0 }) ?? true { cacheTimelineEnd = time }
+    }
+
+    private func refreshCacheReport() {
+        report?.cachedMaskFrames = cachedMasks.count
+        report?.cachedMaskBytes = cachedMasks.count * Self.maskByteCount
+        report?.cacheSelectionSegment = cachedMasks.last?.segment
+        report?.cachedStartSeconds = cachedMasks.first?.time.seconds
+        report?.cachedEndSeconds = cachedMasks.last?.time.seconds
+        report?.cacheTimelineStartSeconds = cacheTimelineStart?.seconds
+        report?.cacheTimelineEndSeconds = cacheTimelineEnd?.seconds
+        report?.cacheLimitReached = cachedMasks.count >= Self.maximumCachedFrames
+    }
+
+    private func reopenCacheWriter() throws {
+        do {
+            try cacheWriter?.close()
+            cacheWriter = nil
+            guard let cacheDirectory else { throw OwnedTemporalError.invalid("Mask cache unavailable. Start a new subject to retry.") }
+            let file = try FileHandle(forWritingTo: cacheDirectory.appendingPathComponent("masks.bin"))
+            do {
+                let retainedBytes = UInt64(cachedMasks.count * Self.maskByteCount)
+                guard try file.seekToEnd() >= retainedBytes else {
+                    throw OwnedTemporalError.invalid("The retained mask prefix is incomplete. Cached replay cannot be trusted.")
+                }
+                try file.truncate(atOffset: retainedBytes)
+                try file.seek(toOffset: retainedBytes)
+                cacheWriter = file
+                report?.cacheError = nil
+            } catch {
+                try? file.close()
+                throw error
+            }
+        } catch {
+            cacheWriter = nil
+            report?.cacheError = error.localizedDescription
+            throw error
+        }
     }
 
     private func resetMaskCache(create: Bool) {
@@ -441,11 +671,15 @@ actor OwnedVideoRunner {
         try? cacheWriter?.close()
         cacheWriter = nil
         cachedMasks.removeAll()
+        cacheTimelineStart = nil
+        cacheTimelineEnd = nil
         report?.cachedMaskFrames = 0
         report?.cachedMaskBytes = 0
         report?.cacheSelectionSegment = nil
         report?.cachedStartSeconds = nil
         report?.cachedEndSeconds = nil
+        report?.cacheTimelineStartSeconds = nil
+        report?.cacheTimelineEndSeconds = nil
         report?.cacheLimitReached = false
         report?.cacheError = nil
         if let directory = cacheDirectory {
@@ -475,7 +709,7 @@ actor OwnedVideoRunner {
     }
 
     private func cacheMask(_ mask: OwnedTensor, at time: CMTime) {
-        guard let cacheWriter else { return }
+        guard let cacheWriter, let subjectID else { return }
         guard cachedMasks.count < Self.maximumCachedFrames else {
             report?.cacheLimitReached = true
             return
@@ -497,13 +731,10 @@ actor OwnedVideoRunner {
             try cacheWriter.write(contentsOf: data)
             // Publish only after the complete write succeeds. A failed partial
             // tail is never indexed/read, and no later appends are attempted.
-            cachedMasks.append(CachedMask(time: time, sha256: hash))
-            let selectionSegment = report?.segmentsStarted
-            report?.cachedMaskFrames = cachedMasks.count
-            report?.cachedMaskBytes = cachedMasks.count * Self.maskByteCount
-            report?.cacheSelectionSegment = selectionSegment
-            report?.cachedStartSeconds = cachedMasks.first?.time.seconds
-            report?.cachedEndSeconds = time.seconds
+            let segment = report?.segmentsStarted ?? 0
+            cachedMasks.append(CachedMask(time: time, sha256: hash, subjectID: subjectID, segment: segment))
+            extendCacheTimeline(to: time)
+            refreshCacheReport()
         } catch {
             report?.cacheError = error.localizedDescription
             try? cacheWriter.close()
@@ -514,6 +745,19 @@ actor OwnedVideoRunner {
     func saveReport() throws -> URL {
         guard var snapshot = report else { throw OwnedTemporalError.invalid("No video report yet.") }
         snapshot.thermalStateAtSnapshot = thermal()
+        snapshot.cachedSegments = []
+        for entry in cachedMasks {
+            if let last = snapshot.cachedSegments.last, last.segment == entry.segment, last.subjectID == entry.subjectID {
+                let index = snapshot.cachedSegments.count - 1
+                snapshot.cachedSegments[index].masks += 1
+                snapshot.cachedSegments[index].lastPTSValue = entry.time.value
+                snapshot.cachedSegments[index].lastPTSTimescale = entry.time.timescale
+            } else {
+                snapshot.cachedSegments.append(VideoCachedSegmentRecord(subjectID: entry.subjectID, segment: entry.segment,
+                    masks: 1, firstPTSValue: entry.time.value, firstPTSTimescale: entry.time.timescale,
+                    lastPTSValue: entry.time.value, lastPTSTimescale: entry.time.timescale))
+            }
+        }
         let url = try documents().appendingPathComponent("video-tracking-last-run.json")
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
@@ -531,6 +775,8 @@ actor OwnedVideoRunner {
 
     private func releaseResources() {
         resetMaskCache(create: false)
+        subjectID = nil
+        correctionStart = nil
         currentOverlay = nil
         reader?.cancelReading()
         reader = nil
@@ -653,7 +899,7 @@ actor OwnedVideoRunner {
     }
 
     private func predictCurrent(initialized: Bool, requestStart: Double, preparationMS: Double) throws -> OwnedVideoDisplay {
-        guard let current, let buffer = current.buffer, let session, let point else { throw OwnedTemporalError.invalid("Select a subject first.") }
+        guard let current, let buffer = current.buffer, let session, let point, let subjectID else { throw OwnedTemporalError.invalid("Select a subject first.") }
         do {
             return try autoreleasepool {
                 let start = now()
@@ -671,7 +917,7 @@ actor OwnedVideoRunner {
                 cacheMask(previewMask, at: current.time)
                 currentOverlay = overlay
                 let fraction = Double(mask.values.lazy.filter { $0 > 0 }.count) / Double(mask.values.count)
-                let row = VideoFrameRecord(requestIndex: report?.framesPredicted ?? 0, segment: report?.segmentsStarted ?? 0,
+                let row = VideoFrameRecord(requestIndex: report?.framesPredicted ?? 0, subjectID: subjectID, segment: report?.segmentsStarted ?? 0,
                     ptsValue: current.time.value, ptsTimescale: current.time.timescale, initialized: initialized,
                     foregroundFraction: fraction, objectScore: score.values[0], predictedIoU: iou.values[0],
                     modelMilliseconds: prediction.modelMilliseconds,
@@ -712,20 +958,23 @@ actor OwnedVideoRunner {
 
     private func invalidatePrediction(_ error: Error) {
         session?.reset()
-        resetMaskCache(create: false)
+        stopReplay()
         currentOverlay = nil
         point = nil
         report?.lastState = nil
         report?.lastResetReason = "error or cancellation"
         report?.lastError = error.localizedDescription
-        report?.lastAction = "Stopped; new selection required"
+        report?.lastAction = "Stopped; saved masks retained; correction or new subject required"
     }
 
     private func display(_ frame: PreparedFrame, overlay: CGImage?, message: String) -> OwnedVideoDisplay {
         OwnedVideoDisplay(previewImage: frame.preview, overlayImage: overlay, seconds: frame.time.seconds,
                           durationSeconds: duration.seconds, message: message, cachedFrames: cachedMasks.count,
-                          cacheNotice: report?.cacheError.map { "Mask cache unavailable: \($0)" }
-                              ?? (report?.cacheLimitReached == true ? "Cache full. Replay covers the first \(cachedMasks.count) tracked frames." : nil))
+                          cacheNotice: report?.cacheError.map { "Mask cache: \($0)" }
+                              ?? (report?.cacheLimitReached == true ? "Mask cache full. Uncached frames cannot replay with a mask." : nil),
+                          hasSubject: subjectID != nil, isTracking: point != nil,
+                          correctionFromSeconds: correctionStart?.seconds,
+                          canReplay: subjectID != nil && cacheDirectory != nil && cacheTimelineStart != nil && cacheTimelineEnd != nil)
     }
     private func check(_ ticket: UInt64) throws {
         try Task.checkCancellation()
@@ -822,6 +1071,10 @@ struct OwnedVideoTrackingView: View {
     @State private var cachedFrames = 0
     @State private var cacheNotice: String?
     @State private var replaying = false
+    @State private var hasSubject = false
+    @State private var correctionFromSeconds: Double?
+    @State private var canReplay = false
+    @State private var showNewSubjectConfirmation = false
 
     var body: some View {
         ScrollView {
@@ -843,22 +1096,39 @@ struct OwnedVideoTrackingView: View {
                         .contentShape(Rectangle())
                         .onTapGesture { location in
                             guard !busy, geometry.size.width > 0, geometry.size.height > 0 else { return }
+                            guard !hasSubject || correctionFromSeconds != nil else {
+                                status = "Use Correct tracking from here to reselect this subject, or New subject to replace it."
+                                return
+                            }
                             point = CGPoint(x: min(max(location.x / geometry.size.width, 0), 1),
                                             y: min(max(location.y / geometry.size.height, 0), 1))
                             tracking = false
-                            cachedFrames = 0
                             overlay = nil
                             reportURL = nil
-                            status = "Tap Track selected subject to start a fresh selection here."
+                            status = hasSubject ? "Tap Continue same subject to resume from this selection." : "Tap Track selected subject to begin."
                         }
                         .accessibilityLabel("Current video frame. Tap the subject to select it.")
                     }.aspectRatio(preview.size.width / preview.size.height, contentMode: .fit)
                     Button("Use center point") {
                         point = CGPoint(x: 0.5, y: 0.5); tracking = false; overlay = nil; reportURL = nil
-                        cachedFrames = 0
-                    }.disabled(busy)
-                    Button("Track selected subject") { initialize() }
-                        .buttonStyle(.borderedProminent).disabled(busy || point == nil || tracking)
+                    }.disabled(busy || (hasSubject && correctionFromSeconds == nil))
+                    Button(hasSubject ? "Continue same subject" : "Track selected subject") { initialize() }
+                        .buttonStyle(.borderedProminent)
+                        .disabled(busy || point == nil || tracking || (hasSubject && correctionFromSeconds == nil)
+                                  || correctionFromSeconds.map({ seconds < $0 }) == true)
+                    if hasSubject {
+                        Button("Correct tracking from here") { correctTracking() }
+                            .buttonStyle(.bordered)
+                            .disabled(busy || correctionFromSeconds != nil)
+                        if let correctionFromSeconds {
+                            Text(String(format: "Correction starts at %.3f s. Seek to a clear view at this time or later, then tap the same subject. The gap stays untracked.", correctionFromSeconds))
+                                .font(.footnote)
+                        } else {
+                            Text("Pause and seek to the first wrong frame before correcting. Earlier masks are kept; masks from that frame onward are removed.")
+                                .font(.footnote)
+                        }
+                        Button("New subject…") { showNewSubjectConfirmation = true }.disabled(busy)
+                    }
                     HStack {
                         Button("Next frame") { advance(continuous: false) }.disabled(busy || !tracking || ended)
                         Button(playing ? "Pause" : "Run tracking") {
@@ -869,9 +1139,9 @@ struct OwnedVideoTrackingView: View {
                         if replaying { pauseRequested = true } else { replay() }
                     }
                     .buttonStyle(.bordered)
-                    .disabled(replaying ? pauseRequested : (busy || !tracking || cachedFrames == 0))
+                    .disabled(replaying ? pauseRequested : (busy || !canReplay))
                     if cachedFrames > 0 {
-                        Text("\(cachedFrames) frames cached for this selection").font(.footnote)
+                        Text("\(cachedFrames) masks saved for this subject").font(.footnote)
                     }
                     if let cacheNotice { Text(cacheNotice).font(.footnote).foregroundStyle(.secondary) }
                     Toggle("Show mask", isOn: $showMask)
@@ -881,9 +1151,9 @@ struct OwnedVideoTrackingView: View {
                     Slider(value: $seekSeconds, in: 0...max(duration - 0.001, 0.001)).disabled(busy)
                     HStack {
                         Button(String(format: "Seek to %.2f s", seekSeconds)) { seek(to: seekSeconds) }
-                        Button("Restart") { seek(to: 0) }
+                        Button("Go to start") { seek(to: 0) }
                     }.disabled(busy)
-                    Text("Seeking starts a new track and clears cached masks. Use Replay cached masks to review this selection.").font(.footnote)
+                    Text("Seeking keeps saved masks and pauses tracking. Use Correct tracking from here to resume the same subject, or Replay cached masks to review it.").font(.footnote)
                 }
                 if busy { ProgressView() }
                 Text(status).textSelection(.enabled)
@@ -893,6 +1163,12 @@ struct OwnedVideoTrackingView: View {
             }.padding()
         }
         .navigationTitle("Track a video")
+        .confirmationDialog("Start a new subject?", isPresented: $showNewSubjectConfirmation, titleVisibility: .visible) {
+            Button("Clear masks and start new subject", role: .destructive) { newSubject() }
+            Button("Cancel", role: .cancel) { }
+        } message: {
+            Text("This clears the current subject's saved masks. Use Correct tracking from here to keep the same subject and its earlier masks.")
+        }
         .onChange(of: selection) { _, item in open(item) }
         .onChange(of: scenePhase) { _, phase in
             if phase != .active { pauseRequested = true }
@@ -905,6 +1181,10 @@ struct OwnedVideoTrackingView: View {
             replaying = false
             cachedFrames = 0
             cacheNotice = nil
+            hasSubject = false
+            correctionFromSeconds = nil
+            canReplay = false
+            showNewSubjectConfirmation = false
             tracking = false
             preview = nil
             overlay = nil
@@ -928,6 +1208,7 @@ struct OwnedVideoTrackingView: View {
         let ticket = lifecycle
         busy = true; preview = nil; overlay = nil; point = nil; tracking = false; ended = false
         cachedFrames = 0; cacheNotice = nil
+        hasSubject = false; correctionFromSeconds = nil; canReplay = false
         duration = 0; reportURL = nil; status = "Opening video…"
         job = Task {
             defer { if ticket == lifecycle { busy = false; selection = nil } }
@@ -965,14 +1246,25 @@ struct OwnedVideoTrackingView: View {
             let result = try await runner.initialize(point: [Double(point.x), Double(point.y)])
             try Task.checkCancellation()
             apply(result)
-            tracking = true
+            ended = false
         }
+    }
+
+    private func correctTracking() {
+        guard !busy, hasSubject, correctionFromSeconds == nil else { return }
+        point = nil; overlay = nil; tracking = false; ended = false
+        perform { apply(try await runner.correctFromCurrentFrame()) }
+    }
+
+    private func newSubject() {
+        guard !busy else { return }
+        point = nil; overlay = nil; tracking = false; ended = false
+        perform { apply(try await runner.startNewSubject()) }
     }
 
     private func seek(to value: Double) {
         guard !busy else { return }
         preview = nil; overlay = nil; point = nil; tracking = false; ended = false
-        cachedFrames = 0; cacheNotice = nil
         perform { apply(try await runner.seek(seconds: value)) }
     }
 
@@ -1000,12 +1292,13 @@ struct OwnedVideoTrackingView: View {
     }
 
     private func replay() {
-        guard !busy, tracking, cachedFrames > 0 else { return }
+        guard !busy, canReplay else { return }
         let ticket = lifecycle
         busy = true
         replaying = true
         pauseRequested = false
         reportURL = nil
+        point = nil
         job = Task {
             defer { if ticket == lifecycle { busy = false; replaying = false } }
             var failure: String?
@@ -1044,7 +1337,7 @@ struct OwnedVideoTrackingView: View {
             let restored = await runner.finishReplay()
             guard ticket == lifecycle, !Task.isCancelled else { return }
             if let restored { apply(restored) }
-            if let failure { status = "Replay stopped: \(failure) Returned to your tracked frame." }
+            if let failure { status = "Replay stopped: \(failure) Returned to your working frame." }
             do {
                 let saved = try await runner.saveReport()
                 if ticket == lifecycle, !Task.isCancelled { reportURL = saved }
@@ -1068,8 +1361,8 @@ struct OwnedVideoTrackingView: View {
                 // The actor may already hold the next decoded frame. Hide the
                 // previous image rather than permit selection on stale pixels.
                 preview = nil; overlay = nil; point = nil; tracking = false
-                cachedFrames = 0
-                status = "\(error.localizedDescription) Use Restart or seek to recover."
+                canReplay = false
+                status = "\(error.localizedDescription) Seek to a frame to recover; saved earlier masks are retained."
             }
             guard ticket == lifecycle, !Task.isCancelled else { return }
             do {
@@ -1091,6 +1384,10 @@ struct OwnedVideoTrackingView: View {
         status = result.message
         cachedFrames = result.cachedFrames
         cacheNotice = result.cacheNotice
+        hasSubject = result.hasSubject
+        tracking = result.isTracking
+        correctionFromSeconds = result.correctionFromSeconds
+        canReplay = result.canReplay
     }
     private func hardware() -> String {
         var size: size_t = 0
@@ -1100,4 +1397,5 @@ struct OwnedVideoTrackingView: View {
         return String(cString: bytes)
     }
 }
+
 
