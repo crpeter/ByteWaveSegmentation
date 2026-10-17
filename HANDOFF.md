@@ -1,6 +1,65 @@
 # ByteWave segmentation: continuation handoff
 
-## Current work: backward tracking reviewed; useful recovery with remaining identity errors
+## Current work: saved bidirectional selection analysis and local review page
+
+Evidence: Audit/mac-new-bidirectional-selection-review.json.
+Added Temporal/review_bidirectional_masks.py and Temporal/bidirectional_review.html.
+This is offline JSON/PNG arithmetic and a read-only local HTML report. It imports
+no model code and requires no source video, Torch, Core ML, inference or builds.
+Defaults read the previously reviewed backward run and its exact Audit-bound
+report hash; all422 mask hashes/shape/binary values/fractions,211 overlaps,
+source frame order/controls and211 paired previews are verified before output.
+Original paired JPEG bytes are copied unchanged and verified again.
+
+Compared descriptive rules: higher raw object-presence logit, larger mask, smaller
+nonempty mask. These do NOT output a final chosen mask. Seed375 is excluded from
+rule comparisons because its mask/presence are set by the explicit input.
+Thirteen selected visual cases are reported individually;224/343 additionally
+inspected at full resolution this turn. No ground-truth accuracy percentage.
+
+Results:
+- Higher score picks the wrong foreground hand at224 (backward) and343 (forward).
+  It often picks the more useful pass in the other reviewed examples, but presence
+  logits do not establish identity or comparable mask quality between histories.
+- Larger mask selects wrong foreground in several cases. Smaller-nonempty loses
+  the more useful backward coverage at277 and still selects the wrong sole hand343.
+- Both blank310 still miss a visible target sliver. Selection cannot recover a
+  mask absent from both inputs; this requires additional evidence/correction.
+- IoU<.90 flags105 of210 nonseed frames in8 intervals. First/last2 frames of3
+  shared-empty intervals add12 boundary frames, including310/311:117 queued total.
+  This is review organization, not reliable automatic acceptance or small workload.
+- Threshold sensitivity .50/.75/.90/.95 flags95/101/105/111 frames. At.50 the queue
+  misses wrong-hand224..226. None of these display cutoffs is a correctness gate.
+  Similar masks and unqueued empty interiors can still be wrong.
+
+Generated index.html has a chronological slider, queue/all/disagreement/absence
+filters, interval jumps,13 reviewed-example buttons, raw metrics and source hashes.
+All frames remain accessible, including shared misses and seed. Opens locally with
+relative copied previews, no server/network requests or annotation upload.
+Output preserves existing directories by refusing to overwrite them.
+
+Assistant executed saved-data analysis only, AST-parsed Python and syntax-parsed
+inline JavaScript. Embedded HTML data equals report;211 preview copies hash-match.
+Browser interaction was not exercised. No model tests/builds/inference/conversion/
+benchmarks. No app/models/fixtures/exporter/gates/frozen recovery rule changes.
+Analysis report SHA6dcaf54ab59e4c163bb39b01b3fd14d750f8f3230ba0313cd46e6c7c58504d82;
+summary SHA6e741017a345cb016a12e2506c590e038a7ec392d179e695e8995a3c49d3f8fc.
+
+Next: use this bounded evidence set to assess a separately justified identity or
+correction mechanism. Keep unresolved cases explicit; do not fit video-specific
+switch times or invent a validated confidence cutoff from this same clip.
+No new recording/model run/upload is needed for this review. Optional inspection:
+
+```bash
+cd /Users/petercody/Documents/Projects/ByteWaveSegmentation &&
+export DEVELOPER_DIR="/Applications/Xcode-beta.app/Contents/Developer" &&
+git pull --ff-only &&
+.venv-temporal/bin/python Temporal/review_bidirectional_masks.py &&
+open .temporal-runs/occlusion-new-bidirectional-review-01/index.html
+```
+
+
+## Prior step: backward tracking reviewed; useful recovery with remaining identity errors
 
 Evidence: Audit/mac-new-backward-reacquisition-review.json.
 Uploaded occlusion-new-backward-01.zip SHA

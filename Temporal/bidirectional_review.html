@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ByteWave · Forward and backward review</title>
+<style>
+:root{color-scheme:dark;font:16px/1.5 system-ui,sans-serif;background:#10151b;color:#edf2f6}
+*{box-sizing:border-box}body{max-width:1440px;margin:0 auto;padding:24px}h1{font-size:1.8rem;margin:0 0 8px}
+p{margin:8px 0 16px}.muted{color:#bac6d1}.panel{background:#1b242e;border:1px solid #40505e;border-radius:12px;padding:16px;margin:16px 0}
+.controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap}label{display:flex;gap:8px;align-items:center}
+button,select,input{font:inherit}button,select{color:inherit;background:#263545;border:1px solid #738294;border-radius:6px;padding:8px 12px}
+button{cursor:pointer}button:disabled{opacity:.45;cursor:default}button:hover:enabled{background:#344a61}
+:focus-visible{outline:3px solid #8fcfff;outline-offset:3px}a{color:#a5d7ff}input[type=range]{width:100%;margin:16px 0}
+#comparison{display:block;width:100%;height:auto;background:#000}.labels{display:grid;grid-template-columns:1fr 1fr;text-align:center;font-weight:650;margin:10px 0}
+#status{font-weight:650}table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}td,th{text-align:left;padding:8px;border-bottom:1px solid #40505e}th{color:#c6d4e2}
+#cases{display:flex;flex-wrap:wrap;gap:8px}.callout{border-left:4px solid #e4bc70;padding-left:12px}details>summary{cursor:pointer;font-weight:650}
+@media(max-width:600px){body{padding:12px}h1{font-size:1.4rem}td,th{padding:6px;font-size:.85rem}.controls label{flex-wrap:wrap}}
+</style>
+<h1>Forward and backward tracking</h1>
+<p>Compare the saved masks and jump directly to occlusion problems. The left image tracks forward; the right starts from the later reviewed view and tracks backward.</p>
+<p id="overview" class="muted"></p>
+<div class="panel callout">This page only reviews existing results. It does not choose a final mask. Agreement can still be wrong, and a blank mask can miss a visible subject.</div>
+<div class="panel">
+ <div class="controls">
+  <label>Show <select id="filter"><option value="queue">Review queue</option><option value="all">All frames</option><option value="disagreement">Mask disagreements</option><option value="absence">Shared absence</option></select></label>
+  <label>Jump to interval <select id="interval"><option value="">Choose an interval</option></select></label>
+  <button id="previous" type="button">Previous</button><button id="next" type="button">Next</button>
+ </div>
+ <label for="position" class="muted">Frame within the current view</label><input id="position" type="range" min="0" max="0" value="0">
+ <div id="status" aria-live="polite"></div>
+ <p id="reason" class="muted"></p>
+ <div class="labels"><span>Forward</span><span>Backward from the later view</span></div>
+ <a id="fullsize" target="_blank" rel="noopener"><img id="comparison" alt=""></a>
+ <p class="muted">Click the comparison to open its original full-size image. Use Previous / Next or the arrow keys to step through frames.</p>
+ <p id="case-note" class="callout" hidden></p>
+ <table><thead><tr><th scope="col">Saved observation</th><th scope="col">Forward</th><th scope="col">Backward</th></tr></thead><tbody id="metrics"></tbody></table>
+ <p id="overlap"></p>
+ <details><summary>What simple selection rules would do</summary><p id="rules"></p><p class="muted">These choices are descriptive experiments. The raw object score measures predicted object presence; it is not a calibrated identity probability or mask-quality score.</p></details>
+</div>
+<div class="panel"><h2>Reviewed examples</h2><p>These are selected observations from this clip, not complete ground-truth labels.</p><div id="cases"></div></div>
+<details class="panel"><summary>Review scope</summary><ul id="limits"></ul><p id="provenance" class="muted"></p><p><a href="summary.json">Summary JSON</a> · <a href="report.json">All frame measurements</a></p></details>
+<script id="data" type="application/json">__REVIEW_DATA__</script>
+<script>
+'use strict';
+const data=JSON.parse(document.getElementById('data').textContent);
+const el=id=>document.getElementById(id), rows=data.frames, cases=new Map(data.summary.qualitativeCases.map(c=>[c.frame,c]));
+let visible=[], position=0;
+const names={savedForward:'Forward',backward:'Backward',tie:'Tie',bothEmpty:'Both blank',seedExcluded:'Seed excluded'};
+function render(){
+ const r=visible[position];
+ el('previous').disabled=position===0;el('next').disabled=position>=visible.length-1;
+ el('position').max=Math.max(0,visible.length-1);el('position').value=position;el('position').disabled=!r;
+ if(!r){el('status').textContent='No frames in this view.';el('comparison').hidden=true;return;}
+ el('comparison').hidden=false;
+ el('status').textContent=`Frame ${r.index} · ${r.ptsSeconds.toFixed(3)} s · ${position+1} of ${visible.length} in this view`;
+ el('reason').textContent=r.isSeed?'Later reference: agreement here is by construction.':r.reviewReasons.length?r.reviewReasons.map(x=>x==='maskDisagreement'?'Masks disagree':'Boundary of a shared blank interval').join(' · '):r.category==='bothEmpty'?'Both masks are blank. A visible target may still be missed.':'Similar masks. This does not confirm identity.';
+ el('comparison').src=r.preview;el('fullsize').href=r.preview;
+ el('comparison').alt=`Frame ${r.index}: saved forward mask on the left and backward mask on the right.`;
+ const c=cases.get(r.index);el('case-note').hidden=!c;el('case-note').textContent=c?c.note:'';
+ el('metrics').replaceChildren();
+ const f=r.streams.savedForward,b=r.streams.backward;
+ for(const values of [['Mask',f.highMaskEmpty?'Blank':'Nonempty',b.highMaskEmpty?'Blank':'Nonempty'],['Image covered',(100*f.highForegroundFraction).toFixed(3)+'%',(100*b.highForegroundFraction).toFixed(3)+'%'],['Raw object score',f.objectScore.toFixed(3),b.objectScore.toFixed(3)]]){
+  const tr=document.createElement('tr');values.forEach((v,i)=>{const cell=document.createElement(i?'td':'th');if(!i)cell.scope='row';cell.textContent=v;tr.append(cell);});el('metrics').append(tr);
+ }
+ el('overlap').textContent='Mask overlap (IoU): '+(r.iou===null?'not defined when both masks are blank.':(100*r.iou).toFixed(1)+'%.');
+ el('rules').textContent=`Higher score: ${names[r.rules.higherObjectScore]}. Larger mask: ${names[r.rules.largerMask]}. Smaller nonempty mask: ${names[r.rules.smallerNonemptyMask]}.`;
+}
+function refilter(index){
+ const mode=el('filter').value;
+ visible=rows.filter(r=>mode==='all'||(mode==='queue'&&r.reviewReasons.length)||(mode==='disagreement'&&r.reviewReasons.includes('maskDisagreement'))||(mode==='absence'&&r.category==='bothEmpty'));
+ position=Math.max(0,visible.findIndex(r=>r.index>=index));render();
+}
+function jump(index){el('filter').value='all';refilter(index);}
+el('filter').addEventListener('change',()=>refilter(visible[position]?.index??rows[0].index));
+el('position').addEventListener('input',()=>{position=Number(el('position').value);render();});
+el('previous').addEventListener('click',()=>{if(position>0){position--;render();}});
+el('next').addEventListener('click',()=>{if(position+1<visible.length){position++;render();}});
+document.addEventListener('keydown',e=>{if(/^(INPUT|SELECT|BUTTON|TEXTAREA)$/.test(e.target.tagName))return;if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();el(e.key==='ArrowLeft'?'previous':'next').click();}});
+const groups=[...data.summary.disagreementIntervals.map(g=>({...g,label:'Disagreement'})),...data.summary.sharedAbsenceIntervals.map(g=>({...g,label:'Both blank'}))].sort((a,b)=>a.firstFrame-b.firstFrame);
+for(const g of groups){const option=document.createElement('option');option.value=g.firstFrame;option.textContent=`${g.firstSeconds.toFixed(2)}–${g.lastSeconds.toFixed(2)} s · ${g.label}`;el('interval').append(option);}
+el('interval').addEventListener('change',()=>{if(el('interval').value!=='')jump(Number(el('interval').value));});
+for(const c of cases.values()){const button=document.createElement('button');button.type='button';button.textContent=`${c.ptsSeconds.toFixed(2)} s · frame ${c.frame}`;button.title=c.note;button.addEventListener('click',()=>jump(c.frame));el('cases').append(button);}
+for(const text of data.limitations){const li=document.createElement('li');li.textContent=text;el('limits').append(li);}
+el('overview').textContent=`${rows.length} saved comparisons · ${data.summary.disagreementFrames} disagreement frames in ${data.summary.disagreementIntervals.length} intervals · ${data.summary.sharedAbsenceIntervals.length} shared blank intervals`;
+el('provenance').textContent=`Source report SHA-256: ${data.sourceReportSHA256}. Review cutoff: IoU below ${data.policy.reviewIoUBelow}; a browsing setting, not an accuracy requirement.`;
+refilter(rows[0].index);
+</script>
+</html>
